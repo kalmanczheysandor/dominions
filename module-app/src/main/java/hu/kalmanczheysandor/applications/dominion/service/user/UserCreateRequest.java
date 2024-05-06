@@ -1,0 +1,17 @@
+package hu.kalmanczheysandor.applications.dominion.service.user;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class UserCreateRequest {
+    private String identifier;
+    private String password;
+    private String name;
+    private Boolean rolePlayer;
+    private Boolean roleAdmin;
+    private Boolean roleEngineer;
+
+
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  layout:decorate="~{fragments/main.html}"
+>
+	<head>
+		<title>Login</title>
+	</head>
+	</head>
+	<body>
+		<div layout:fragment="page" class="card" style="padding:10px;margin-top: 1.5em;">
+			<div class="card" id="UserListPage_card">
+				<div class="card-header">
+					<h3 class="card-title">
+						<strong>User list</strong>
+					</h3>
+					<div class="card-tools">
+						<button ffw-type="Link" ffw-target="/user/add" ffw-request-mode="GET" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+						<button ffw-type="DataTable.RefreshButton" ffw-target="UserListPage_table" class="btn btn-sm btn-primary"><i class="fas fa-sync"></i></button>
+					</div>
+				</div>
+				
+				<div class="card-body">
+					<form action="" id="UserListPage_form" method="post">
+						<table id="UserListPage_table" class="table table-striped">
+							<thead>
+							<tr>
+								<th>Identifier</th>
+								<th>Name</th>
+								<th>*</th>
+							</tr>
+							</thead>
+						</table>
+					</form>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$.fn.serializeObject = function () {
+					var o = {};
+					var a = this.serializeArray();
+					$.each(a, function () {
+						if (o[this.name]) {
+							if (!o[this.name].push) {
+								o[this.name] = [o[this.name]];
+							}
+							o[this.name].push(this.value || '');
+						} else {
+							o[this.name] = this.value || '';
+						}
+					});
+					return o;
+				};
+				$(document).ready(function () {
+					new DataTable('#UserListPage_table', {
+						lengthMenu: 100,
+						processing: true,
+						serverSide: false,
+						searching: true,
+						searchDelay: false,
+						autoWidth: false,
+						ajax: {
+							destroy: false,
+							dataSrc: '',
+							url: '/user/data/list',
+							type: 'GET'
+						},
+						columns: [
+							{
+								data: 'identifier'
+							},
+							{
+								data: 'name',
+							},
+							{
+								data: 'id',
+								render: function (rowId, type, row, meta) {
+									return '<td className=" menu-container ">' +
+											'<rowmenu>' +
+											'<img src="images/rowmenu/menu.svg">' +
+											'<dropdown>' +
+											'<item ffw-type="Link" ffw-target="/user/edit/' + rowId + '"><img src="images/rowmenu/pen.svg">Edit</item>' +
+											'<item ffw-type="ConfirmLink" ffw-request-mode="DELETE" ffw-target="/user/data/delete/'+rowId+'" ffw-dialog-message="Do you wish continue?" ffw-dialog-title="Confirm" ffw-dialog-yesbutton-caption="Yes" ffw-dialog-nobutton-caption="No"><img src="images/rowmenu/trash2.svg">Delete</item>' +
+											'</dropdown>' +
+											'</rowmenu>';
+								}
+							}
+						],
+						columnDefs: [
+							{
+								targets: 0,
+								className: 'text-left',
+								bSortable: true
+							},
+							{
+								targets: 1,
+								className: 'text-left',
+								bSortable: true
+							},
+							{
+								targets: 2,
+								className: 'menu-container',
+								bSortable: false
+							}
+						],
+					});
+					
+					
+				});
+				
+				// Refreshing table after row-menu action
+				$('#UserListPage_table').on('onSuccessResponse', 'item', function (event, data) {
+					$('#UserListPage_table').DataTable().ajax.reload();
+				});
+				$('#UserListPage_table').on('onErrorResponse', 'item', function (event, data) {
+					$('#UserListPage_table').DataTable().ajax.reload();
+				});
+			</script>
+		</div>
+	</body>
+</html>

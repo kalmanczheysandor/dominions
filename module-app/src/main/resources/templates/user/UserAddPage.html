@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  layout:decorate="~{fragments/main.html}"
+>
+	<head>
+		<title>Login</title>
+	</head>
+	<body>
+		<div layout:fragment="page" class="card" style="padding:10px;margin-top: 1.5em;">
+			<h1>User</h1>
+			
+			<form action="/user/add" method="post">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+				
+				<div class="form-group row">
+					<label class="col-12 col-sm-3 col-md-2 col-form-label">Identifier</label>
+					<div class="col-12 col-sm-9 col-md-10">
+						<input type="email" class="form-control" th:field="${user.identifier}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-12 col-sm-3 col-md-2 col-form-label">Name</label>
+					<div class="col-12 col-sm-9 col-md-10">
+						<input type="text" class="form-control" th:field="${user.name}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-12 col-sm-3 col-md-2 col-form-label">Password</label>
+					<div class="col-12 col-sm-9 col-md-10">
+						<input type="password" class="form-control" th:field="${user.password}"/>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-12 col-sm-3 col-md-2 col-form-label">Confirm password</label>
+					<div class="col-12 col-sm-9 col-md-10">
+						<input type="password" class="form-control" id="confirmPassword"/>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="form-check-label col-12 col-sm-3 col-md-2 col-form-label" for="rolePlayer1">Player role</label>
+					<div class="form-switch " style="width:auto; margin-top:auto;margin-bottom:auto;">
+						<input class="form-check-input" type="checkbox" role="switch" id="rolePlayer1" th:field="${user.rolePlayer}">
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="form-check-label col-12 col-sm-3 col-md-2 col-form-label" for="roleEngineer1">Engineer role</label>
+					<div class="form-switch " style="width:auto; margin-top:auto;margin-bottom:auto;">
+						<input class="form-check-input" type="checkbox" role="switch" id="roleEngineer1" th:field="${user.roleEngineer}">
+					</div>
+				</div>
+				
+				
+				<div class="form-group row">
+					<label class="form-check-label col-12 col-sm-3 col-md-2 col-form-label" for="roleAdmin1">Admin role</label>
+					<div class="form-switch " style="width:auto; margin-top:auto;margin-bottom:auto;">
+						<input class="form-check-input" type="checkbox" role="switch" id="roleAdmin1" th:field="${user.roleAdmin}">
+					</div>
+				</div>
+				
+				
+				<div class="d-flex justify-content-end">
+					<button class="btn btn-outline-primary" type="submit">Save</button>
+				</div>
+				
+			</form>
+		</div>
+	</body>
+</html>

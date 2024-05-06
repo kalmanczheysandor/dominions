@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html
+		xmlns:th="http://thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+		lang="en"
+>
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<title>Dialog</title>
+	</head>
+	<body>
+		
+		<div th:fragment="dialog" id="UserAddDialog" ffw-type="Dialog" class="modal fade" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+			<div class="modal-dialog" role="document">
+				<form action="/user/data/add" method="post" id="UserAddDialog_form" enctype="multipart/form-data" autocomplete="off">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Add user</h5>
+							<div class="card-tools">
+							
+							</div>
+							
+							<button ffw-target="Dialog.Header.CloseButton" type="button" class="close" aria-label="Close" data-bs-dismiss="modal">
+								&times;
+							</button>
+						</div>
+						
+						<div class="modal-body">
+							
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+							
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">Identifier</label>
+								<div class="col-md-9">
+									<input type="email" class="form-control" th:field="${user.identifier}" autocomplete="off"/>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">Name</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" th:field="${user.name}" autocomplete="off"/>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">Password</label>
+								<div class="col-md-9">
+									<input type="password" class="form-control" th:field="${user.password}" autocomplete="off"/>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">Confirm password</label>
+								<div class="col-md-9">
+									<input type="password" class="form-control" id="confirmPassword"/>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label class="form-check-label col-md-3 col-form-label" for="rolePlayer1">Player role</label>
+								<div class="form-switch " style="width:auto; margin-top:auto;margin-bottom:auto;">
+									<input class="form-check-input" type="checkbox" role="switch" id="rolePlayer1" th:field="${user.rolePlayer}">
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label class="form-check-label col-md-3 col-form-label" for="roleEngineer1">Engineer role</label>
+								<div class="form-switch " style="width:auto; margin-top:auto;margin-bottom:auto;">
+									<input class="form-check-input" type="checkbox" role="switch" id="roleEngineer1" th:field="${user.roleEngineer}">
+								</div>
+							</div>
+							
+							
+							<div class="form-group row">
+								<label class="form-check-label col-md-3 col-form-label" for="roleAdmin1">Admin role</label>
+								<div class="form-switch " style="width:auto; margin-top:auto;margin-bottom:auto;">
+									<input class="form-check-input" type="checkbox" role="switch" id="roleAdmin1" th:field="${user.roleAdmin}">
+								</div>
+							</div>
+							
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary btn-basic" ffw-type="ConfirmSubmit" ffw-source-formId="UserAddDialog_form" ffw-dialog-message="Do you wish to continue?"
+									ffw-dialog-title="Confirm" ffw-dialog-yesbutton-caption="Yes" ffw-dialog-nobutton-caption="No">Save
+							</button>
+							<button type="button" class="btn btn-primary btn-basic" data-bs-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<script type="text/javascript">
+				$(document).ready(function () {
+					
+					$('#UserAddDialog').modal('show');
+					
+					$('#UserAddDialog').on('shown.bs.modal', function () {
+						$('#UserAddDialog .focus').focus();
+					})
+					
+					$('#UserAddDialog').on('hidden.bs.modal', function () {
+						$('#UserAddDialog').data('bs.modal', null).remove();
+					});
+					
+					$('#UserAddDialog_form').validate({
+						ignore: '',
+						errorPlacement: function (error, element) {
+							// $(element).parents('.inputcontainer').append(error);
+						},
+						invalidHandler: function (e, validator) {
+							// if (validator.errorList.length) {
+							// 	$('.nav-tabs a[href="#' + $(validator.errorList[0].element).closest(".tab-pane").attr('id') + '"]').tab('show');
+							// }
+						},
+						submitHandler: function (form) {
+							$.ajax({
+								type: 'POST',
+								url: $('#UserAddDialog_form').attr('action'),
+								data: $('#UserAddDialog_form').serialize(),
+								dataType: 'json',
+								beforeSend: function(xhr) {
+									let csrfToken = $("meta[name='_csrf']").attr("content");
+									let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+									xhr.setRequestHeader(csrfHeader, csrfToken); // Include CSRF token in request headers
+								},
+								success: function (response) {
+									console.log(response);
+									$('#UserListPage_table').DataTable().ajax.reload();
+									$('#UserAddDialog').modal('hide');
+								},
+								error: function (error, message) {
+									console.error(error);
+									console.error(message);
+								}
+							});
+						}
+					});
+				});
+			
+			</script>
+		</div>
+	</body>
+
+</html>
