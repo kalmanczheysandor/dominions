@@ -1,7 +1,7 @@
 #spring.web.resources.static-locations=classpath:/files/,classpath:/static-files
 
 server:
-  port: 8000
+  port: 7000
 
 spring:
   datasource:
