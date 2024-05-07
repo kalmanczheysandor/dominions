@@ -1,0 +1,16 @@
+server:
+  port: 7001
+
+spring:
+  application:
+  name: naming-server
+
+  config:
+    import: 'optional:configserver:'
+
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
