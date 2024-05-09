@@ -6,5 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CalculationResponse {
-    public Integer cell;
+    public Integer x;
+    public Integer y;
+    public Integer z;
 }

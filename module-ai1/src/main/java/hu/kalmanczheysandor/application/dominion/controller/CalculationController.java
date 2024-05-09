@@ -12,6 +12,6 @@ public class CalculationController {
     @GetMapping("/calculate")
     @ResponseStatus(HttpStatus.OK)
     public CalculationResponse calculate() {
-        return new CalculationResponse(5);
+        return new CalculationResponse(1,2,3);
     }
 }
