@@ -1,0 +1,10 @@
+package hu.kalmanczheysandor.application.dominion.service;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class CalculationResponse {
+    public Integer cell;
+}

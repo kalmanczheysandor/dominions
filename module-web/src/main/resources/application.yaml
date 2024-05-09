@@ -1,9 +1,14 @@
 #spring.web.resources.static-locations=classpath:/files/,classpath:/static-files
 
 server:
-  port: 7000
+  port: 7002
 
 spring:
+  application:
+    name: 'web'
+  config:
+    import: 'optional:configserver:'
+
   datasource:
 
     # Case-1: No container in use
@@ -26,6 +31,7 @@ spring:
     show-sql: on
 
   debug: true
+
   thymeleaf:
     mode: HTML5
     prefix: classpath:/templates/
@@ -35,3 +41,17 @@ spring:
       enabled:
         - org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect
         - nz.net.ultraq.thymeleaf.LayoutDialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:7001/eureka'
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'

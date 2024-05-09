@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/web/user")
 @BlockAllRequestByDefault
 public class UserController {
     @Autowired

@@ -52,13 +52,13 @@ public class SecurityConfig {
             )
             .formLogin(formlogin ->
                 formlogin
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/dashboard")
+                    .loginPage("/web/login")
+                    .defaultSuccessUrl("/web/dashboard")
                     .permitAll()
 
             )
             .logout(logout -> logout
-                .logoutUrl("/logout")
+                .logoutUrl("/web/logout")
                 .permitAll()
             )
             .httpBasic(Customizer.withDefaults());

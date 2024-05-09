@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-  name: naming-server
+    name: naming-server
 
   config:
     import: 'optional:configserver:'
@@ -13,4 +13,3 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
-
