@@ -57,6 +57,7 @@
         <module>module-naming-server</module>
         <module>module-gateway</module>
         <module>module-ai1</module>
+        <module>module-ai-common</module>
     </modules>
 
     <dependencyManagement>
