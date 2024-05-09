@@ -11,6 +11,7 @@
 
     <groupId>hu.kalmanczheysandor.application.dominion</groupId>
     <artifactId>dominions-ai1</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>

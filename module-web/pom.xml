@@ -19,6 +19,7 @@
         <dependency>
             <groupId>hu.kalmanczheysandor.application.dominion</groupId>
             <artifactId>dominions-ai1</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

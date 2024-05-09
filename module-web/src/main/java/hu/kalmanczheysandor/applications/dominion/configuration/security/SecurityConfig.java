@@ -47,8 +47,8 @@ public class SecurityConfig {
                 .requestMatchers("/dashboard").hasRole("PLAYER")
                 .requestMatchers("/register").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().hasRole("PLAYER")
-                //.anyRequest().permitAll()
+                //.anyRequest().hasRole("PLAYER")
+                .anyRequest().permitAll()
             )
             .formLogin(formlogin ->
                 formlogin
