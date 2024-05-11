@@ -2,26 +2,24 @@ package hu.kalmanczheysandor.application.dominion;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class AiRequest {
-    private Integer yourKey;
-    private Integer reserveSize;
-    private Map<Integer, LandCell> landCells = new HashMap<>();
+public class GameState {
+    private int yourKey;
+    private Map<Integer,BoardCell> cells = new HashMap<>();
 
     @Data
     @AllArgsConstructor
-    public static class LandCell {
-        private Integer playerKey;
-        private Integer troopSize = 0;
+    private static class BoardCell {
+        private int playerKey;
+        private int armySize = 0;
         private Set<Integer> neighbours = new HashSet<>();
     }
 }
