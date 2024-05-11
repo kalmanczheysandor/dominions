@@ -91,6 +91,7 @@
         <module>module-gateway</module>
         <module>module-ai1</module>
         <module>module-ai-common</module>
+        <module>module-ai-basic</module>
     </modules>
 
     <dependencyManagement>

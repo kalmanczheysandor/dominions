@@ -1,4 +1,4 @@
-package hu.kalmanczheysandor.application.dominion;
+package hu.kalmanczheysandor.application.dominion.ai.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

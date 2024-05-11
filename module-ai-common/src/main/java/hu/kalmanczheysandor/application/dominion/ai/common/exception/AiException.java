@@ -1,4 +1,4 @@
-package hu.kalmanczheysandor.application.dominion.exception;
+package hu.kalmanczheysandor.application.dominion.ai.common.exception;
 
 public class AiException extends RuntimeException {
     public AiException() {
