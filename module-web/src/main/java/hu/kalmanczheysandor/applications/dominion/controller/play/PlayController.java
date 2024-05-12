@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/web/play/{key}")
+@RequestMapping("/play/{key}")
 @BlockAllRequestByDefault
 public class PlayController {
     @Autowired

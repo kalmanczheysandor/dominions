@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/web/game")
+@RequestMapping("/game")
 //@BlockAllRequestByDefault
 public class GameController {
   @Autowired

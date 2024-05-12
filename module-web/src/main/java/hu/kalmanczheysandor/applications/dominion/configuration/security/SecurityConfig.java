@@ -52,13 +52,13 @@ public class SecurityConfig {
             )
             .formLogin(formlogin ->
                 formlogin
-                    .loginPage("/web/login")
-                    .defaultSuccessUrl("/web/dashboard")
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/dashboard")
                     .permitAll()
 
             )
             .logout(logout -> logout
-                .logoutUrl("/web/logout")
+                .logoutUrl("/logout")
                 .permitAll()
             )
             .httpBasic(Customizer.withDefaults());
@@ -73,7 +73,7 @@ public class SecurityConfig {
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/js/**", "/css/**", "/font/**");
+        return (web) -> web.ignoring().requestMatchers("/js/**", "/css/**", "/font/**","/image/**");
     }
 
     @Bean

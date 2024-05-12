@@ -16,13 +16,11 @@
 		
 		<div th:fragment="dialog" id="UserEditDialog" ffw-type="Dialog" class="modal fade" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 			<div class="modal-dialog" role="document">
-				<form th:action="@{/user/data/edit/{value}(value=${user.id})}"
-					  method="post" id="UserEditDialog_form" enctype="multipart/form-data" autocomplete="off">
+				<form th:action="${@environment.getProperty('server.servlet.context-path')}+'/user/data/edit/'+${user.id}" method="post" id="UserEditDialog_form" enctype="multipart/form-data" autocomplete="off">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title">Modify user</h5>
 							<div class="card-tools">
-							
 							</div>
 							<button ffw-target="Dialog.Header.CloseButton" type="button" class="close" aria-label="Close" data-bs-dismiss="modal">
 								&times;
@@ -30,9 +28,7 @@
 						</div>
 						
 						<div class="modal-body">
-							
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-							
 							<div class="form-group row">
 								<label class="col-md-3 col-form-label">Identifier</label>
 								<div class="col-md-9">

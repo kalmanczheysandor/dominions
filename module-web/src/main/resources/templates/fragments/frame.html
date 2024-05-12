@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html
+		xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 		xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 		lang="en"
@@ -10,6 +11,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="_csrf" th:content="${_csrf.token}">
 		<meta name="_csrf_header" th:content="${_csrf.headerName}">
+		
+<!--		<base th:href="${@environment.getProperty('server.servlet.context-path')}">-->
+		<script type="text/javascript" th:inline="javascript">
+			Document.prototype.currentBaseUrl = function () {
+				return /*[[${@environment.getProperty('server.servlet.context-path')}]]*/ '';
+			};
+		</script>
 		<!-- Bootstrap CSS -->
 		<!--		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
 		<!--		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>-->
@@ -47,8 +55,14 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
 			  integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 		
-		<link href="/css/custom.css" rel="stylesheet">
-		<script src="/js/custom.js"></script>
+		
+		<link th:href="${@environment.getProperty('server.servlet.context-path') + '/css/custom.css'}" rel="stylesheet">
+		<script th:src="${@environment.getProperty('server.servlet.context-path')+'/js/custom.js'}"></script>
+		<!--		<script th:src="${@environment.getProperty('server.servlet.context-path')}"></script>-->
+		<!--		-->
+		<!--		<link href="/css/custom.css" rel="stylesheet">-->
+		<!--		<script src="/js/custom.js"></script>-->
+		
 		
 		<title layout:title-pattern="$CONTENT_TITLE">????</title>
 	</head>

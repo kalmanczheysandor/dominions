@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/web")
+@RequestMapping("/")
 public class LoginController {
     @Autowired
     private UserService userService;
@@ -30,6 +30,6 @@ public class LoginController {
     public String registerPost(User user) {
         User savedUser = userService.saveAsPlayer(user);
 
-        return "redirect:/web/login";
+        return "redirect:/login";
     }
 }

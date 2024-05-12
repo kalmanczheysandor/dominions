@@ -16,7 +16,7 @@
 		
 		<div th:fragment="dialog" id="UserAddDialog" ffw-type="Dialog" class="modal fade" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 			<div class="modal-dialog" role="document">
-				<form action="/user/data/add" method="post" id="UserAddDialog_form" enctype="multipart/form-data" autocomplete="off">
+				<form th:action="${@environment.getProperty('server.servlet.context-path')}+'/user/data/add'" method="post" id="UserAddDialog_form" enctype="multipart/form-data" autocomplete="off">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title">Add user</h5>

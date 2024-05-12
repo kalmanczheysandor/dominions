@@ -16,7 +16,7 @@
 						<strong>User list</strong>
 					</h3>
 					<div class="card-tools">
-						<button ffw-type="Link" ffw-target="/user/add" ffw-request-mode="GET" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+						<button ffw-type="Link" th:ffw-target="${@environment.getProperty('server.servlet.context-path')+'/user/add'}" ffw-request-mode="GET" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
 						<button ffw-type="DataTable.RefreshButton" ffw-target="UserListPage_table" class="btn btn-sm btn-primary"><i class="fas fa-sync"></i></button>
 					</div>
 				</div>
@@ -35,7 +35,7 @@
 					</form>
 				</div>
 			</div>
-			<script type="text/javascript">
+			<script type="text/javascript" th:inline="javascript">
 				$.fn.serializeObject = function () {
 					var o = {};
 					var a = this.serializeArray();
@@ -62,7 +62,7 @@
 						ajax: {
 							destroy: false,
 							dataSrc: '',
-							url: '/user/data/list',
+							url:/*[[${@environment.getProperty(\'server.servlet.context-path\')+'/user/data/list'}]]*/ '??',
 							type: 'GET'
 						},
 						columns: [
@@ -77,10 +77,12 @@
 								render: function (rowId, type, row, meta) {
 									return '<td className=" menu-container ">' +
 											'<rowmenu>' +
-											'<img src="images/rowmenu/menu.svg">' +
+											'<img src="'+document.currentBaseUrl()+'/image/rowmenu/menu.svg">' +
 											'<dropdown>' +
-											'<item ffw-type="Link" ffw-target="/user/edit/' + rowId + '"><img src="images/rowmenu/pen.svg">Edit</item>' +
-											'<item ffw-type="ConfirmLink" ffw-request-mode="DELETE" ffw-target="/user/data/delete/'+rowId+'" ffw-dialog-message="Do you wish continue?" ffw-dialog-title="Confirm" ffw-dialog-yesbutton-caption="Yes" ffw-dialog-nobutton-caption="No"><img src="images/rowmenu/trash2.svg">Delete</item>' +
+											'<item ffw-type="Link" ffw-target="'+document.currentBaseUrl()+'/user/edit/' + rowId + '"><img src="'+document.currentBaseUrl()+'/image/rowmenu/pen.svg">Edit</item>' +
+											
+											'<item ffw-type="Link" ffw-target="'+document.currentBaseUrl()+'/user/edit/' + rowId + '"><img src="'+document.currentBaseUrl()+'/image/rowmenu/pen.svg">Edit</item>' +
+											'<item ffw-type="ConfirmLink" ffw-request-mode="DELETE" ffw-target="'+document.currentBaseUrl()+'/user/data/delete/'+rowId+'" ffw-dialog-message="Do you wish continue?" ffw-dialog-title="Confirm" ffw-dialog-yesbutton-caption="Yes" ffw-dialog-nobutton-caption="No"><img src="'+document.currentBaseUrl()+'/image/rowmenu/trash2.svg">Delete</item>' +
 											'</dropdown>' +
 											'</rowmenu>';
 								}
