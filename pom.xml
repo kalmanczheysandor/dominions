@@ -92,6 +92,9 @@
         <module>module-ai1</module>
         <module>module-ai-common</module>
         <module>module-ai-basic</module>
+
+
+        <module>module-game-common</module>
     </modules>
 
     <dependencyManagement>
