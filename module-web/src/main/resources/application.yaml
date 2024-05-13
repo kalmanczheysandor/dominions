@@ -3,7 +3,7 @@
 server:
   port: 7002
   servlet:
-    context-path: '/web'
+    context-path: ''
 
 spring:
   application:

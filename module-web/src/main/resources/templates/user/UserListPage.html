@@ -75,49 +75,48 @@
 							{
 								data: 'id',
 								render: function (rowId, type, row, meta) {
-									return '<td className=" menu-container ">' +
+									return	'<td className=" menu-container ">' +
 											'<rowmenu>' +
-											'<img src="'+document.currentBaseUrl()+'/image/rowmenu/menu.svg">' +
+											'<img src="' + /*[+[[${@environment.getProperty(\'server.servlet.context-path\')}]]+]*/ +'/image/rowmenu/menu.svg">' +
 											'<dropdown>' +
-											'<item ffw-type="Link" ffw-target="'+document.currentBaseUrl()+'/user/edit/' + rowId + '"><img src="'+document.currentBaseUrl()+'/image/rowmenu/pen.svg">Edit</item>' +
-											
-											'<item ffw-type="Link" ffw-target="'+document.currentBaseUrl()+'/user/edit/' + rowId + '"><img src="'+document.currentBaseUrl()+'/image/rowmenu/pen.svg">Edit</item>' +
-											'<item ffw-type="ConfirmLink" ffw-request-mode="DELETE" ffw-target="'+document.currentBaseUrl()+'/user/data/delete/'+rowId+'" ffw-dialog-message="Do you wish continue?" ffw-dialog-title="Confirm" ffw-dialog-yesbutton-caption="Yes" ffw-dialog-nobutton-caption="No"><img src="'+document.currentBaseUrl()+'/image/rowmenu/trash2.svg">Delete</item>' +
+											'<item ffw-type="Link" ffw-target="' + /*[+[[${@environment.getProperty(\'server.servlet.context-path\')}]]+]*/ +'/user/edit/' + rowId + '"><img src="' + /*[+[[${@environment.getProperty(\'server.servlet.context-path\')}]]+]*/ +'/image/rowmenu/pen.svg">Edit</item>' +
+											'<item ffw-type="ConfirmLink" ffw-request-mode="DELETE" ffw-target="' + /*[+[[${@environment.getProperty(\'server.servlet.context-path\')}]]+]*/ +'/user/data/delete/' + rowId + '" ffw-dialog-message="Do you wish continue?" ffw-dialog-title="Confirm" ffw-dialog-yesbutton-caption="Yes" ffw-dialog-nobutton-caption="No"><img src="' + /*[+[[${@environment.getProperty(\'server.servlet.context-path\')}]]+]*/ +'/image/rowmenu/trash2.svg">Delete</item>' +
 											'</dropdown>' +
-											'</rowmenu>';
-								}
-							}
-						],
-						columnDefs: [
-							{
-								targets: 0,
-								className: 'text-left',
-								bSortable: true
-							},
-							{
-								targets: 1,
-								className: 'text-left',
-								bSortable: true
-							},
-							{
-								targets: 2,
-								className: 'menu-container',
-								bSortable: false
-							}
-						],
-					});
-					
-					
-				});
-				
-				// Refreshing table after row-menu action
-				$('#UserListPage_table').on('onSuccessResponse', 'item', function (event, data) {
-					$('#UserListPage_table').DataTable().ajax.reload();
-				});
-				$('#UserListPage_table').on('onErrorResponse', 'item', function (event, data) {
-					$('#UserListPage_table').DataTable().ajax.reload();
-				});
-			</script>
+											'</rowmenu>' +
+											'</td>';
+	}
+}
+],
+columnDefs: [
+{
+	targets: 0,
+	className: 'text-left',
+	bSortable: true
+},
+{
+	targets: 1,
+	className: 'text-left',
+	bSortable: true
+},
+{
+	targets: 2,
+	className: 'menu-container',
+	bSortable: false
+}
+],
+});
+
+
+});
+
+// Refreshing table after row-menu action
+$('#UserListPage_table').on('onSuccessResponse', 'item', function (event, data) {
+$('#UserListPage_table').DataTable().ajax.reload();
+});
+$('#UserListPage_table').on('onErrorResponse', 'item', function (event, data) {
+$('#UserListPage_table').DataTable().ajax.reload();
+});
+</script>
 		</div>
 	</body>
 </html>
