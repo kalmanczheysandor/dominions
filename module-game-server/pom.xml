@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>hu.kalmanczheysandor.application.dominion</groupId>
-    <artifactId>dominions-game</artifactId>
+    <artifactId>dominions-game-server</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -20,7 +20,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>hu.kalmanczheysandor.application.dominion</groupId>
+            <artifactId>dominions-game-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
