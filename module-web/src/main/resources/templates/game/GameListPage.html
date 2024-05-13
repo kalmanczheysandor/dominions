@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<div layout:fragment="page" class="card" style="padding:10px;margin-top: 1.5em;">
-			<a href="/play/5566">Go and play</a>
+			<a th:href="${@environment.getProperty('server.servlet.context-path')+'/play/5566'}">Go and play</a>
 		</div>
 	</body>
 </html>
