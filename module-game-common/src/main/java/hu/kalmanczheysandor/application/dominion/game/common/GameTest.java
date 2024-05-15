@@ -69,10 +69,39 @@ public class GameTest {
         System.out.println(state);
     }
 
+    private static void testDominionDemolish() {
+        GameState gameState = new GameState(5,4);
+
+        gameState.getOpponents()[player0Key].setAlive(false);
+        gameState.getOpponents()[player3Key].setAlive(false);
+        gameState.getOpponents()[player4Key].setAlive(false);
+
+        gameState.getCells()[cell1Key].setOccupierKey(player1Key);
+        gameState.getCells()[cell1Key].setDefendingTroopSize(40);
+
+        gameState.getCells()[cell2Key].setOccupierKey(player2Key);
+        gameState.getCells()[cell2Key].setDefendingTroopSize(40);
+
+        gameState.getCells()[cell3Key].setOccupierKey(player2Key);
+        gameState.getCells()[cell3Key].setDefendingTroopSize(10);
+
+        gameState.getCells()[cell4Key].setOccupierKey(player2Key);
+        gameState.getCells()[cell4Key].setDefendingTroopSize(10);
+
+        GameState state;
+        Set<GameEngine.Action> actionGroup;
+        GameEngine engine = new GameEngine(gameState);
+
+        actionGroup = new HashSet<>();
+        //actionGroup.add(new GameEngine.Action(player1Key,cell1Key,1));
+        state = engine.doAction(actionGroup);
+        System.out.println(state);
+    }
 
     public static void main(String[] args) {
         //testDoughnutAttackRange_forFail();
-        testDoughnutAttackRange_forPass();
+        //testDoughnutAttackRange_forPass();
+        testDominionDemolish();
     }
 
 

@@ -1,8 +1,6 @@
 package hu.kalmanczheysandor.application.dominion.game.common;
 
 
-import java.util.Arrays;
-
 public class GameState {
     private StatusCode statusCode;
     private final int cellCount;
@@ -62,6 +60,7 @@ public class GameState {
 
     public static class Opponent {
         private int reserveSize = 0;
+        private boolean alive =true;
 
         public Opponent(int reserveSize) {
             this.reserveSize = reserveSize;
@@ -69,6 +68,14 @@ public class GameState {
 
         public int getReserveSize() {
             return reserveSize;
+        }
+
+        public boolean isAlive() {
+            return alive;
+        }
+
+        public void setAlive(boolean alive) {
+            this.alive = alive;
         }
 
         public void incrementReserveSize(int incrementWithValue) {
@@ -109,6 +116,11 @@ public class GameState {
                 return true;
             }
             return false;
+        }
+
+        public void free() {
+            occupierKey = -1;
+            defendingTroopSize = 0;
         }
 
         //        public void decrementTroopSize(int decrementWithValue) {
