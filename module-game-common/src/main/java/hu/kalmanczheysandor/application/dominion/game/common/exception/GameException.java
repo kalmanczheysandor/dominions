@@ -1,4 +1,4 @@
 package hu.kalmanczheysandor.application.dominion.game.common.exception;
 
-public class GameException extends RuntimeException {
+public abstract class GameException extends RuntimeException {
 }

@@ -25,7 +25,7 @@ public class GameState {
 
     private void init() {
         for (int playerIndex = 0; playerIndex < this.playerCount; playerIndex++) {
-            this.opponents[playerIndex] = new Opponent(1);
+            this.opponents[playerIndex] = new Opponent(10);
         }
 
         for (int cellIndex = 0; cellIndex < this.cellCount; cellIndex++) {
@@ -104,6 +104,12 @@ public class GameState {
             this.defendingTroopSize = defendingTroopSize;
         }
 
+        public boolean isEmpty() {
+            if(occupierKey==-1) {
+                return true;
+            }
+            return false;
+        }
 
         //        public void decrementTroopSize(int decrementWithValue) {
 //            this.troopSize -= decrementWithValue;

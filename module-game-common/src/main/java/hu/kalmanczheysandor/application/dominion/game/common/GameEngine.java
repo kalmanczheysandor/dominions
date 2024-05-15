@@ -1,12 +1,8 @@
 package hu.kalmanczheysandor.application.dominion.game.common;
 
-import hu.kalmanczheysandor.application.dominion.game.common.exception.NoTroopsWereSentActionException;
-import hu.kalmanczheysandor.application.dominion.game.common.exception.NotEnoughSupplyActionException;
-import hu.kalmanczheysandor.application.dominion.game.common.exception.NotValidTargetActionException;
+import hu.kalmanczheysandor.application.dominion.game.common.exception.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class GameEngine {
     private GameState gameState;
@@ -15,62 +11,55 @@ public class GameEngine {
         this.gameState = gameState;
     }
 
-
     public GameState doAction(Set<Action> plannedActions) {
         // Validations
         validatePlayersAction(plannedActions);
 
+        // Grouping and resolving conflicting actions
+        Map<Integer,Set<Action>> group = new HashMap<>();
+        for (Action observedAction : plannedActions) {
 
-//        GameState.Cell targetCell;
-//        GameState.Opponent player;
-//        int playerKey;
-//        int targetCellKey;
-
-
-        // Non-conflicting targets
-        Set<Action> actionsToProcess = new HashSet<>(plannedActions);
-        Set<Action> remove = new HashSet<>();
-        for (Action processedAction : actionsToProcess) {
-            if (aimingSameCell(processedAction.getTargetCellKey(), plannedActions) == 1) {
-                GameState.Cell cell = getCell(processedAction.getTargetCellKey());
-
-                if (cell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
-                    cell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - cell.getDefendingTroopSize());
-                    cell.setOccupierKey(processedAction.getPlayerKey());
-                }
-                else if (cell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
-                    cell.setDefendingTroopSize(cell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
-                }
-                else {
-                    cell.setDefendingTroopSize(0);
-                    cell.setOccupierKey(-1);
-                }
-                remove.add(processedAction);
+            if (!group.containsKey(observedAction.getTargetCellKey())) {// The first action in the group
+                Set<Action> actions = new HashSet<>();
+                actions.add(observedAction);
+                group.put(observedAction.getTargetCellKey(), actions);
+            }
+            else { // After the first action in the group
+                Set<Action> actions = group.get(observedAction.getTargetCellKey());
+                actions.add(observedAction);
             }
         }
-        actionsToProcess.removeAll(remove);
+      //  System.out.println(group);
 
+        // find the highest offer
+        Set<Action> actionsToProcess= new HashSet<>();
+        for(Set<Action> actions:group.values()) {
+            Action a = chooseTheHighestOffer(actions);
+            if(a!=null) {
+                actionsToProcess.add(a);
+            }
+        }
 
+        // Calculate the outcome of battle
+        for (Action processedAction : actionsToProcess) {
+            GameState.Cell cell = getCell(processedAction.getTargetCellKey());
 
-
-
+            if (cell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
+                cell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - cell.getDefendingTroopSize());
+                cell.setOccupierKey(processedAction.getPlayerKey());
+            }
+            else if (cell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
+                cell.setDefendingTroopSize(cell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
+            }
+            else {
+                cell.setDefendingTroopSize(0);
+                cell.setOccupierKey(-1);
+            }
+        }
 
         incrementAllReserve();
         return gameState;
     }
-
-
-    private int aimingSameCell(int targetedCellKey, Set<Action> actions) {
-        int count = 0;
-        for (Action action : actions) {
-            if (action.getTargetCellKey() == targetedCellKey) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-
     private void validatePlayersAction(Set<Action> actions) {
         GameState.Cell targetCell;
         GameState.Opponent player;
@@ -84,22 +73,133 @@ public class GameEngine {
             targetCell = getCell(targetCellKey);
             player = getPlayer(playerKey);
 
-            // Check whether is action to a valid target
-            if (targetCell.getOccupierKey() == action.getPlayerKey()) {
-                throw new NotValidTargetActionException(playerKey, targetCellKey);
-            }
-
-            // No troops were sent
+            // When it is an attack without troops
             if (action.getAttackingTroopSize() == 0) {
                 throw new NoTroopsWereSentActionException(playerKey);
             }
 
-            //
+            // When it is an attack but the army size is overcalculated
             if (player.getReserveSize() < action.getAttackingTroopSize()) {
                 throw new NotEnoughSupplyActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
             }
+
+            // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
+            if (targetCell.getOccupierKey() == action.getPlayerKey()) {
+                System.out.println("SElf attack: cellKey:"+targetCellKey+" "+targetCell.getOccupierKey() +" - "+ action.getPlayerKey());
+                throw new SelfAttackActionException(playerKey, targetCellKey);
+            }
+
+            if(!isCellANeighbourOfPlayer(action.getPlayerKey(),action.getTargetCellKey())) {
+                throw new OutOfAttackRangeActionException(action.getPlayerKey(),action.getTargetCellKey());
+            }
+
+
+            if(isPlayerCausingDoughnutEffect(action.getPlayerKey())) {
+//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
+                 if(!isCellAnEmptyNeighbourOfPlayer(action.getPlayerKey(),action.getTargetCellKey())) {
+                     throw new OutOfDoughnutAttackRangeActionException(action.getPlayerKey(),action.getTargetCellKey());
+                 }
+            }
+            else {
+//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> no ");
+            }
+
         }
     }
+
+    private boolean isCellANeighbourOfPlayer(int playerKey, int cellKey) {
+        GameState.Cell observedCell = getCell(cellKey);
+
+        // Any cell occupied by player is not a counted as a neighbour of that player
+        if(observedCell.getOccupierKey()==playerKey) {
+            return false;
+        }
+
+        for (GameState.Cell neighbourCell:getNeighboursOfCell(cellKey)) {
+            if(neighbourCell.getOccupierKey()==playerKey){ // When the neighbour cell is occupied by the player
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isCellAnEmptyNeighbourOfPlayer(int playerKey, int cellKey) {
+        GameState.Cell observedCell = getCell(cellKey);
+
+        // Any cell occupied by the player is not a counted as a neighbour of that player
+        if(observedCell.getOccupierKey()==playerKey) {
+            return false;
+        }
+
+        // Cell must be empty
+        if(!observedCell.isEmpty()) {
+            return false;
+        }
+
+
+        for (GameState.Cell neighbourCell:getNeighboursOfCell(cellKey)) {
+            if(neighbourCell.getOccupierKey()==playerKey){ // When the neighbour cell is occupied by the player
+                return true;
+            }
+        }
+        return false;
+    }
+    private Action chooseTheHighestOffer(Set<Action> actions) {
+        int highestValue=0;
+        int count=0;
+        Action a=null;
+        for(Action action:actions) {
+            if(action.getAttackingTroopSize()==highestValue) {
+                count++;
+                a=null;
+            }
+            else if(action.getAttackingTroopSize()>highestValue) {
+                highestValue=action.getAttackingTroopSize();
+                count=1;
+                a=action;
+            }
+        }
+
+        if(count==1 && a!=null) {
+            return a;
+        }
+        return null;
+    }
+
+    private int aimingSameCell(int targetedCellKey, Set<Action> actions) {
+        int count = 0;
+        for (Action action : actions) {
+            if (action.getTargetCellKey() == targetedCellKey) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
+    private boolean isPlayerCausingDoughnutEffect(int playerKey) {
+        for (int emptyCellKey:getEmptyCellKeys()){
+            if(isCellBlockedByPlayer(emptyCellKey,playerKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isCellBlockedByPlayer(int cellKey,int playerKey) {
+//        System.out.println("isCellBlockedByPlayer(C:"+cellKey+",P:"+playerKey+")");
+
+
+        for(GameState.Cell neighbourCell:getNeighboursOfCell(cellKey)) {
+//            System.out.println("-neighbourCell(Defenders:"+neighbourCell.getDefendingTroopSize()+",P:"+neighbourCell.getOccupierKey()+")");
+
+            if(neighbourCell.getOccupierKey()!=playerKey) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     private void incrementAllReserve() {
         for (GameState.Opponent player : gameState.getOpponents()) {
@@ -107,17 +207,34 @@ public class GameEngine {
         }
     }
 
-
-//
-//    public boolean isCellOwnedByPlayer(int cellKey, int playerKey) {
-//        for (GameState.Cell cell : gameState.getCells()) {
-//            cell.getOccupierKey()
-//        }
-//    }
-
     private GameState.Cell getCell(int cellKey) {
         GameState.Cell[] cells = gameState.getCells();
         return cells[cellKey];
+    }
+
+    private Set<GameState.Cell> getNeighboursOfCell(int cellKey) {
+        Set<GameState.Cell> realNeighbours= new HashSet<>();
+
+        boolean[] neighboursRow = gameState.getNeighboursMatrix()[cellKey];
+        for (int neighbourKey=0; neighbourKey<neighboursRow.length;neighbourKey++){
+            if(neighboursRow[neighbourKey]==true) {
+                realNeighbours.add(getCell(neighbourKey));
+            }
+        }
+        return realNeighbours;
+    }
+
+
+    private Set<Integer> getEmptyCellKeys() {
+        Set<Integer> emptyCellKeys= new HashSet<>();
+        GameState.Cell[] cells = gameState.getCells();
+
+        for(int cellKey=0;cellKey<cells.length;cellKey++) {
+            if(cells[cellKey].isEmpty()) {
+                emptyCellKeys.add(cellKey);
+            }
+        }
+        return emptyCellKeys;
     }
 
     private GameState.Opponent getPlayer(int playerKey) {
@@ -165,6 +282,16 @@ public class GameEngine {
         @Override
         public int hashCode() {
             return Objects.hash(playerKey);
+        }
+
+
+        @Override
+        public String toString() {
+            return "Action{" +
+                "playerKey=" + playerKey +
+                ", targetCellKey=" + targetCellKey +
+                ", attackingTroopSize=" + attackingTroopSize +
+                '}';
         }
     }
 

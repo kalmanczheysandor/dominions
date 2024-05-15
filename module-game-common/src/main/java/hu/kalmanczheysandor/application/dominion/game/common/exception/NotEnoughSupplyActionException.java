@@ -9,4 +9,13 @@ public class NotEnoughSupplyActionException extends InvalidActionException {
         this.expectedSupplySize = expectedSupplySize;
         this.availableSupplySize = availableSupplySize;
     }
+
+    @Override
+    public String toString() {
+        return "NotEnoughSupplyActionException{" +
+            "expectedSupplySize=" + expectedSupplySize +
+            ", availableSupplySize=" + availableSupplySize +
+            ", playerKey=" + playerKey +
+            '}';
+    }
 }

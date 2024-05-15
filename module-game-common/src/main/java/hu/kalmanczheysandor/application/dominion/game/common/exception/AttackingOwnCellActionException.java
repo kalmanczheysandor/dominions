@@ -7,4 +7,12 @@ public class AttackingOwnCellActionException extends InvalidActionException{
         super(playerKey);
         this.cellKey = cellKey;
     }
+
+    @Override
+    public String toString() {
+        return "AttackingOwnCellActionException{" +
+            "cellKey=" + cellKey +
+            ", playerKey=" + playerKey +
+            '}';
+    }
 }
