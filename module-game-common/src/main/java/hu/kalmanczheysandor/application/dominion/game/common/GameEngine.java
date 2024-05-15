@@ -12,7 +12,7 @@ public class GameEngine {
     }
 
     public GameState doAction(Set<Action> plannedActions) {
-        if (isMoreActionPossible()) {
+        if (!isMoreActionPossible()) {
             throw new EndOfGameException();
         }
 
@@ -46,19 +46,26 @@ public class GameEngine {
 
         // Calculate the outcome of battles
         for (Action processedAction : actionsToProcess) {
-            GameState.Cell cell = getCell(processedAction.getTargetCellKey());
+            GameState.Cell attackedCell = getCell(processedAction.getTargetCellKey());
 
-            if (cell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
-                cell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - cell.getDefendingTroopSize());
-                cell.setOccupierKey(processedAction.getPlayerKey());
+
+            if (attackedCell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
+                attackedCell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - attackedCell.getDefendingTroopSize());
+                attackedCell.setOccupierKey(processedAction.getPlayerKey());
             }
-            else if (cell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
-                cell.setDefendingTroopSize(cell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
+            else if (attackedCell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
+                attackedCell.setDefendingTroopSize(attackedCell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
             }
             else {
-                cell.setDefendingTroopSize(0);
-                cell.setOccupierKey(-1);
+                attackedCell.setDefendingTroopSize(0);
+                attackedCell.setOccupierKey(-1);
             }
+        }
+
+        // Decreasing reserve
+        for (Action observedAction : plannedActions) {
+            GameState.Opponent attackingPlayer = getPlayer(observedAction.getPlayerKey());
+            attackingPlayer.setReserveSize(attackingPlayer.getReserveSize() - observedAction.getAttackingTroopSize());
         }
 
         // Removal of the weakest player in case of no more empty cell
@@ -69,11 +76,11 @@ public class GameEngine {
                 getPlayer(weakestPlayerKey).setAlive(false);
             }
 
-            if(countAlivePlayers()==1) {
-                Integer winnerKey= null;
+            if (countAlivePlayers() == 1) {
+                Integer winnerKey = null;
                 GameState.Opponent[] opponents = gameState.getOpponents();
-                for(int playerKey=0;playerKey< opponents.length;playerKey++) {
-                    if(opponents[playerKey].isAlive()) {
+                for (int playerKey = 0; playerKey < opponents.length; playerKey++) {
+                    if (opponents[playerKey].isAlive()) {
                         winnerKey = playerKey;
                     }
                 }
@@ -84,7 +91,7 @@ public class GameEngine {
             }
         }
 
-        if(!isEndOfGame()) {
+        if (!isEndOfGame()) {
             incrementAllReserve();
         }
 
@@ -176,7 +183,7 @@ public class GameEngine {
 
     private void occupyEverythingForTheWinner(int playerKey) {
         for (GameState.Cell cell : gameState.getCells()) {
-            if(cell.isEmpty() || cell.getOccupierKey()!=playerKey) {
+            if (cell.isEmpty() || cell.getOccupierKey() != playerKey) {
                 cell.setOccupierKey(playerKey);
                 cell.setDefendingTroopSize(0);
             }
@@ -298,7 +305,7 @@ public class GameEngine {
     }
 
     public boolean isEndOfGame() {
-        if(gameState.getStatusCode()== GameState.StatusCode.FINISHED) {
+        if (gameState.getStatusCode() == GameState.StatusCode.FINISHED) {
             return true;
         }
         return false;
@@ -363,6 +370,9 @@ public class GameEngine {
         return gameState.getStatusCode();
     }
 
+    public GameState getGameState() {
+        return this.gameState;
+    }
 
     public static class Action {
         private int playerKey;

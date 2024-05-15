@@ -1,6 +1,8 @@
 package hu.kalmanczheysandor.application.dominion.game.common;
 
 
+import hu.kalmanczheysandor.application.dominion.game.common.exception.UnexpectedCaseFoundGameException;
+
 public class GameState {
     private StatusCode statusCode;
     private final int cellCount;
@@ -90,9 +92,9 @@ public class GameState {
 
     @Override
     public String toString() {
-        String s ="";
-        for(int i=0; i<cells.length;i++) {
-            s += "(Cell:"+i+")[P:"+cells[i].getOccupierKey()+"| T:"+cells[i].getDefendingTroopSize()+"]\n";
+        String s = "";
+        for (int i = 0; i < cells.length; i++) {
+            s += "(Cell:" + i + ")[P:" + cells[i].getOccupierKey() + "| T:" + cells[i].getDefendingTroopSize() + "]\n";
         }
 
         return s;
@@ -113,12 +115,9 @@ public class GameState {
     }
 
 
-
-
-
     public static class Opponent {
         private int reserveSize = 0;
-        private boolean alive =true;
+        private boolean alive = true;
 
         public Opponent(int reserveSize) {
             this.reserveSize = reserveSize;
@@ -126,6 +125,13 @@ public class GameState {
 
         public int getReserveSize() {
             return reserveSize;
+        }
+
+        public void setReserveSize(int reserveSize) {
+            if (reserveSize < 0) {
+                throw new UnexpectedCaseFoundGameException("Reserve size must not be less than 0!");
+            }
+            this.reserveSize = reserveSize;
         }
 
         public boolean isAlive() {
@@ -170,7 +176,7 @@ public class GameState {
         }
 
         public boolean isEmpty() {
-            if(occupierKey==-1) {
+            if (occupierKey == -1) {
                 return true;
             }
             return false;
@@ -196,7 +202,6 @@ public class GameState {
         PROCEEDED,
         FINISHED
     }
-
 
 
 }

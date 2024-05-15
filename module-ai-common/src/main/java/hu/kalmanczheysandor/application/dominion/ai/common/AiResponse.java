@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AiResponse {
-    private Integer cellKey;
-    private Integer cellValue;
+    private Integer targetCellKey;
+    private Integer troopSize;
 }

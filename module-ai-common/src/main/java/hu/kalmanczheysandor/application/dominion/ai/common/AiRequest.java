@@ -18,10 +18,16 @@ public class AiRequest {
     private Map<Integer, LandCell> landCells = new HashMap<>();
 
     @Data
-    @AllArgsConstructor
+
     public static class LandCell {
         private Integer playerKey;
         private Integer troopSize = 0;
         private Set<Integer> neighbours = new HashSet<>();
+
+        public LandCell(Integer playerKey, Integer troopSize, Set<Integer> neighbours) {
+            this.playerKey = playerKey;
+            this.troopSize = troopSize;
+            this.neighbours = neighbours;
+        }
     }
 }
