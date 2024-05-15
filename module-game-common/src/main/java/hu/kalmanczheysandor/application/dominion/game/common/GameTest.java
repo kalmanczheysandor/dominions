@@ -96,6 +96,10 @@ public class GameTest {
         //actionGroup.add(new GameEngine.Action(player1Key,cell1Key,1));
         state = engine.doAction(actionGroup);
         System.out.println(state);
+
+        if(engine.isEndOfGame()) {
+            System.out.println("END OF GAME");
+        }
     }
 
     public static void main(String[] args) {

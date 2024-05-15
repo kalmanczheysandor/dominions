@@ -1,16 +1,16 @@
 package hu.kalmanczheysandor.application.dominion.game.common.exception;
 
-public class SelfAttackActionException extends InvalidActionException {
+public class SelfAttackPlayerActionException extends PlayerActionException {
     private int targetedCellKey;
 
-    public SelfAttackActionException(int playerKey, int targetedCellKey) {
+    public SelfAttackPlayerActionException(int playerKey, int targetedCellKey) {
         super(playerKey);
         this.targetedCellKey = targetedCellKey;
     }
 
     @Override
     public String toString() {
-        return "SelfAttackActionException{" +
+        return "SelfAttackPlayerActionException{" +
             "targetedCellKey=" + targetedCellKey +
             ", playerKey=" + playerKey +
             '}';

@@ -1,16 +1,16 @@
 package hu.kalmanczheysandor.application.dominion.game.common.exception;
 
-public class OutOfDoughnutAttackRangeActionException extends InvalidActionException {
+public class OutOfAttackRangePlayerActionException extends PlayerActionException {
     private int targetedCellKey;
 
-    public OutOfDoughnutAttackRangeActionException(int playerKey, int targetedCellKey) {
+    public OutOfAttackRangePlayerActionException(int playerKey, int targetedCellKey) {
         super(playerKey);
         this.targetedCellKey = targetedCellKey;
     }
 
     @Override
     public String toString() {
-        return "OutOfDoughnutAttackRangeActionException{" +
+        return "OutOfAttackRangePlayerActionException{" +
             "targetedCellKey=" + targetedCellKey +
             ", playerKey=" + playerKey +
             '}';

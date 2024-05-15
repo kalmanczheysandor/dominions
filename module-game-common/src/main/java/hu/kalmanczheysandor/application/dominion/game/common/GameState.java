@@ -5,6 +5,7 @@ public class GameState {
     private StatusCode statusCode;
     private final int cellCount;
     private final int playerCount;
+    private Integer winnerKey = null;
 
     private boolean[][] neighboursMatrix;
     private Cell[] cells;
@@ -51,8 +52,65 @@ public class GameState {
     }
 
 
+    public StatusCode getStatusCode() {
+        return statusCode;
+    }
 
+    public void setStatusCode(StatusCode statusCode) {
+        this.statusCode = statusCode;
+    }
 
+    public int getCellCount() {
+        return cellCount;
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
+    }
+
+    public boolean[][] getNeighboursMatrix() {
+        return neighboursMatrix;
+    }
+
+    public Cell[] getCells() {
+        return cells;
+    }
+
+    public Opponent[] getOpponents() {
+        return opponents;
+    }
+
+    public Integer getWinnerKey() {
+        return winnerKey;
+    }
+
+    public void setWinnerKey(Integer winnerKey) {
+        this.winnerKey = winnerKey;
+    }
+
+    @Override
+    public String toString() {
+        String s ="";
+        for(int i=0; i<cells.length;i++) {
+            s += "(Cell:"+i+")[P:"+cells[i].getOccupierKey()+"| T:"+cells[i].getDefendingTroopSize()+"]\n";
+        }
+
+        return s;
+//
+//
+//
+//
+//
+//
+//        return "GameState{" +
+//            "statusCode=" + statusCode +
+//            ", cellCount=" + cellCount +
+//            ", playerCount=" + playerCount +
+//            ", neighboursMatrix=" + Arrays.toString(neighboursMatrix) +
+//            ", cells=" + Arrays.toString(cells) +
+//            ", opponents=" + Arrays.toString(opponents) +
+//            '}';
+    }
 
 
 
@@ -123,6 +181,7 @@ public class GameState {
             defendingTroopSize = 0;
         }
 
+
         //        public void decrementTroopSize(int decrementWithValue) {
 //            this.troopSize -= decrementWithValue;
 //            if(this.troopSize<0) {
@@ -140,55 +199,4 @@ public class GameState {
 
 
 
-
-
-
-    public StatusCode getStatusCode() {
-        return statusCode;
-    }
-
-    public int getCellCount() {
-        return cellCount;
-    }
-
-    public int getPlayerCount() {
-        return playerCount;
-    }
-
-    public boolean[][] getNeighboursMatrix() {
-        return neighboursMatrix;
-    }
-
-    public Cell[] getCells() {
-        return cells;
-    }
-
-    public Opponent[] getOpponents() {
-        return opponents;
-    }
-
-
-    @Override
-    public String toString() {
-        String s ="";
-        for(int i=0; i<cells.length;i++) {
-            s += "(Cell:"+i+")[P:"+cells[i].getOccupierKey()+"| T:"+cells[i].getDefendingTroopSize()+"]\n";
-        }
-
-        return s;
-//
-//
-//
-//
-//
-//
-//        return "GameState{" +
-//            "statusCode=" + statusCode +
-//            ", cellCount=" + cellCount +
-//            ", playerCount=" + playerCount +
-//            ", neighboursMatrix=" + Arrays.toString(neighboursMatrix) +
-//            ", cells=" + Arrays.toString(cells) +
-//            ", opponents=" + Arrays.toString(opponents) +
-//            '}';
-    }
 }

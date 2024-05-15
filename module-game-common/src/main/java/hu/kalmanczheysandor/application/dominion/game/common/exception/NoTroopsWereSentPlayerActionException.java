@@ -1,13 +1,13 @@
 package hu.kalmanczheysandor.application.dominion.game.common.exception;
 
-public class NoTroopsWereSentActionException extends InvalidActionException {
-    public NoTroopsWereSentActionException(int playerKey) {
+public class NoTroopsWereSentPlayerActionException extends PlayerActionException {
+    public NoTroopsWereSentPlayerActionException(int playerKey) {
         super(playerKey);
     }
 
     @Override
     public String toString() {
-        return "NoTroopsWereSentActionException{" +
+        return "NoTroopsWereSentPlayerActionException{" +
             "playerKey=" + playerKey +
             '}';
     }

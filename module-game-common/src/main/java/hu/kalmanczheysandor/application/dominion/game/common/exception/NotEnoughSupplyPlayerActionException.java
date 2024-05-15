@@ -1,10 +1,10 @@
 package hu.kalmanczheysandor.application.dominion.game.common.exception;
 
-public class NotEnoughSupplyActionException extends InvalidActionException {
+public class NotEnoughSupplyPlayerActionException extends PlayerActionException {
     private int expectedSupplySize;
     private int availableSupplySize;
 
-    public NotEnoughSupplyActionException(int playerKey, int expectedSupplySize, int availableSupplySize) {
+    public NotEnoughSupplyPlayerActionException(int playerKey, int expectedSupplySize, int availableSupplySize) {
         super(playerKey);
         this.expectedSupplySize = expectedSupplySize;
         this.availableSupplySize = availableSupplySize;
@@ -12,7 +12,7 @@ public class NotEnoughSupplyActionException extends InvalidActionException {
 
     @Override
     public String toString() {
-        return "NotEnoughSupplyActionException{" +
+        return "NotEnoughSupplyPlayerActionException{" +
             "expectedSupplySize=" + expectedSupplySize +
             ", availableSupplySize=" + availableSupplySize +
             ", playerKey=" + playerKey +

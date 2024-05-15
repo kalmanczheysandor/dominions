@@ -12,6 +12,10 @@ public class GameEngine {
     }
 
     public GameState doAction(Set<Action> plannedActions) {
+        if (isMoreActionPossible()) {
+            throw new EndOfGameException();
+        }
+
         // Validations
         validatePlayersAction(plannedActions);
 
@@ -58,21 +62,32 @@ public class GameEngine {
         }
 
         // Removal of the weakest player in case of no more empty cell
-        if (isNoMoreEmptyCell() && countAlivePlayers() > 2) {
-//            System.out.println("isNoMoreEmptyCell");
-
+        if (isNoMoreEmptyCell() && countAlivePlayers() > 1) {
             Integer weakestPlayerKey = findTheWeakestPlayer();
-//            System.out.println("weakestPlayerKey:"+weakestPlayerKey);
-
             if (weakestPlayerKey != null) {
-//                System.out.println("DEMOLISH:"+weakestPlayerKey);
                 demolishPlayerDominion(weakestPlayerKey);
                 getPlayer(weakestPlayerKey).setAlive(false);
             }
+
+            if(countAlivePlayers()==1) {
+                Integer winnerKey= null;
+                GameState.Opponent[] opponents = gameState.getOpponents();
+                for(int playerKey=0;playerKey< opponents.length;playerKey++) {
+                    if(opponents[playerKey].isAlive()) {
+                        winnerKey = playerKey;
+                    }
+                }
+
+                occupyEverythingForTheWinner(winnerKey);
+                gameState.setWinnerKey(winnerKey);
+                gameState.setStatusCode(GameState.StatusCode.FINISHED);
+            }
         }
 
+        if(!isEndOfGame()) {
+            incrementAllReserve();
+        }
 
-        incrementAllReserve();
         return gameState;
     }
 
@@ -91,29 +106,29 @@ public class GameEngine {
 
             // When it is an attack without troops
             if (action.getAttackingTroopSize() == 0) {
-                throw new NoTroopsWereSentActionException(playerKey);
+                throw new NoTroopsWereSentPlayerActionException(playerKey);
             }
 
             // When it is an attack but the army size is overcalculated
             if (player.getReserveSize() < action.getAttackingTroopSize()) {
-                throw new NotEnoughSupplyActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
+                throw new NotEnoughSupplyPlayerActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
             }
 
             // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
             if (targetCell.getOccupierKey() == action.getPlayerKey()) {
 //                System.out.println("SElf attack: cellKey:" + targetCellKey + " " + targetCell.getOccupierKey() + " - " + action.getPlayerKey());
-                throw new SelfAttackActionException(playerKey, targetCellKey);
+                throw new SelfAttackPlayerActionException(playerKey, targetCellKey);
             }
 
             if (!isCellANeighbourOfPlayer(action.getPlayerKey(), action.getTargetCellKey())) {
-                throw new OutOfAttackRangeActionException(action.getPlayerKey(), action.getTargetCellKey());
+                throw new OutOfAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
             }
 
 
             if (isPlayerCausingDoughnutEffect(action.getPlayerKey())) {
 //                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
                 if (!isCellAnEmptyNeighbourOfPlayer(action.getPlayerKey(), action.getTargetCellKey())) {
-                    throw new OutOfDoughnutAttackRangeActionException(action.getPlayerKey(), action.getTargetCellKey());
+                    throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
                 }
             }
             else {
@@ -157,10 +172,16 @@ public class GameEngine {
                 cell.free();
             }
         }
-
-
     }
 
+    private void occupyEverythingForTheWinner(int playerKey) {
+        for (GameState.Cell cell : gameState.getCells()) {
+            if(cell.isEmpty() || cell.getOccupierKey()!=playerKey) {
+                cell.setOccupierKey(playerKey);
+                cell.setDefendingTroopSize(0);
+            }
+        }
+    }
 
     private Integer findTheWeakestPlayer() {
         //System.out.println("findTheWeakestPlayer");
@@ -172,7 +193,7 @@ public class GameEngine {
         for (int playerKey = 0; playerKey < opponents.length; playerKey++) {
             GameState.Opponent player = opponents[playerKey];
 
-            if(player.isAlive()) {
+            if (player.isAlive()) {
                 //System.out.println("--------" + playerKey+"--------");
                 int dominionSize = countPlayerCells(playerKey);
 
@@ -267,6 +288,20 @@ public class GameEngine {
             }
         }
         return true;
+    }
+
+    private boolean isMoreActionPossible() {
+        if (isNoMoreEmptyCell() && countAlivePlayers() <= 2) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isEndOfGame() {
+        if(gameState.getStatusCode()== GameState.StatusCode.FINISHED) {
+            return true;
+        }
+        return false;
     }
 
 

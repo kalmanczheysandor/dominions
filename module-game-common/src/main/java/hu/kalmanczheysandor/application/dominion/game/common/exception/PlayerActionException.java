@@ -1,15 +1,15 @@
 package hu.kalmanczheysandor.application.dominion.game.common.exception;
 
-public class InvalidActionException extends GameException {
+public class PlayerActionException extends GameException {
     protected int playerKey;
 
-    public InvalidActionException(int playerKey) {
+    public PlayerActionException(int playerKey) {
         this.playerKey = playerKey;
     }
 
     @Override
     public String toString() {
-        return "InvalidActionException{" +
+        return "PlayerActionException{" +
             "playerKey=" + playerKey +
             '}';
     }
