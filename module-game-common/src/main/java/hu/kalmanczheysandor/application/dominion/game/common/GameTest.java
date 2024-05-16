@@ -1,6 +1,8 @@
 package hu.kalmanczheysandor.application.dominion.game.common;
 
-import hu.kalmanczheysandor.application.dominion.ai.basic.BasicEngine;
+import hu.kalmanczheysandor.application.dominion.ai.basic.Basic2Engine;
+import hu.kalmanczheysandor.application.dominion.ai.basic.Basic1Engine;
+import hu.kalmanczheysandor.application.dominion.ai.common.AiEngine;
 import hu.kalmanczheysandor.application.dominion.ai.common.AiRequest;
 import hu.kalmanczheysandor.application.dominion.ai.common.AiResponse;
 
@@ -17,10 +19,10 @@ public class GameTest {
     private final static int player3Key = 3;
     private final static int player4Key = 4;
 
-    private final static int cell1Key = 0;
-    private final static int cell2Key = 1;
-    private final static int cell3Key = 2;
-    private final static int cell4Key = 3;
+    private final static int cell0Key = 0;
+    private final static int cell1Key = 1;
+    private final static int cell2Key = 2;
+    private final static int cell3Key = 3;
 
     private static void println(String s) {
         System.out.println(s);
@@ -29,21 +31,21 @@ public class GameTest {
     private static void testDoughnutAttackRange_forFail() {
         GameState gameState = new GameState(5, 4);
 
+        gameState.getCells()[cell1Key].setOccupierKey(player1Key);
+        gameState.getCells()[cell1Key].setDefendingTroopSize(40);
+
         gameState.getCells()[cell2Key].setOccupierKey(player1Key);
-        gameState.getCells()[cell2Key].setDefendingTroopSize(40);
+        gameState.getCells()[cell2Key].setDefendingTroopSize(10);
 
-        gameState.getCells()[cell3Key].setOccupierKey(player1Key);
-        gameState.getCells()[cell3Key].setDefendingTroopSize(10);
-
-        gameState.getCells()[cell4Key].setOccupierKey(player3Key);
-        gameState.getCells()[cell4Key].setDefendingTroopSize(1);
+        gameState.getCells()[cell3Key].setOccupierKey(player3Key);
+        gameState.getCells()[cell3Key].setDefendingTroopSize(1);
 
 
         GameEngine engine = new GameEngine(gameState);
 
 
         Set<GameEngine.Action> actionGroup = new HashSet<>();
-        actionGroup.add(new GameEngine.Action(player1Key, cell4Key, 10));
+        actionGroup.add(new GameEngine.Action(player1Key, cell3Key, 10));
 
         GameState state = engine.doAction(actionGroup);
 
@@ -54,11 +56,11 @@ public class GameTest {
     private static void testDoughnutAttackRange_forPass() {
         GameState gameState = new GameState(5, 4);
 
-        gameState.getCells()[cell2Key].setOccupierKey(player1Key);
-        gameState.getCells()[cell2Key].setDefendingTroopSize(40);
+        gameState.getCells()[cell1Key].setOccupierKey(player1Key);
+        gameState.getCells()[cell1Key].setDefendingTroopSize(40);
 
-        gameState.getCells()[cell3Key].setOccupierKey(player1Key);
-        gameState.getCells()[cell3Key].setDefendingTroopSize(10);
+        gameState.getCells()[cell2Key].setOccupierKey(player1Key);
+        gameState.getCells()[cell2Key].setDefendingTroopSize(10);
 
 
         GameState state;
@@ -66,13 +68,13 @@ public class GameTest {
         GameEngine engine = new GameEngine(gameState);
 
         actionGroup = new HashSet<>();
-        actionGroup.add(new GameEngine.Action(player1Key, cell1Key, 1));
+        actionGroup.add(new GameEngine.Action(player1Key, cell0Key, 1));
         state = engine.doAction(actionGroup);
         System.out.println(state);
 
 
         actionGroup = new HashSet<>();
-        actionGroup.add(new GameEngine.Action(player1Key, cell4Key, 2));
+        actionGroup.add(new GameEngine.Action(player1Key, cell3Key, 2));
         state = engine.doAction(actionGroup);
 
         System.out.println(state);
@@ -85,17 +87,17 @@ public class GameTest {
         gameState.getOpponents()[player3Key].setAlive(false);
         gameState.getOpponents()[player4Key].setAlive(false);
 
-        gameState.getCells()[cell1Key].setOccupierKey(player1Key);
+        gameState.getCells()[cell0Key].setOccupierKey(player1Key);
+        gameState.getCells()[cell0Key].setDefendingTroopSize(40);
+
+        gameState.getCells()[cell1Key].setOccupierKey(player2Key);
         gameState.getCells()[cell1Key].setDefendingTroopSize(40);
 
         gameState.getCells()[cell2Key].setOccupierKey(player2Key);
-        gameState.getCells()[cell2Key].setDefendingTroopSize(40);
+        gameState.getCells()[cell2Key].setDefendingTroopSize(10);
 
         gameState.getCells()[cell3Key].setOccupierKey(player2Key);
         gameState.getCells()[cell3Key].setDefendingTroopSize(10);
-
-        gameState.getCells()[cell4Key].setOccupierKey(player2Key);
-        gameState.getCells()[cell4Key].setDefendingTroopSize(10);
 
         GameState state;
         Set<GameEngine.Action> actionGroup;
@@ -121,17 +123,17 @@ public class GameTest {
         gameState.getOpponents()[player1Key].setReserveSize(100);
 
 
-        gameState.getCells()[cell1Key].setOccupierKey(player1Key);
-        gameState.getCells()[cell1Key].setDefendingTroopSize(40);
+        gameState.getCells()[cell0Key].setOccupierKey(player1Key);
+        gameState.getCells()[cell0Key].setDefendingTroopSize(20);
 
-        gameState.getCells()[cell4Key].setOccupierKey(player2Key);
-        gameState.getCells()[cell4Key].setDefendingTroopSize(20);
+        gameState.getCells()[cell1Key].setOccupierKey(player2Key);
+        gameState.getCells()[cell1Key].setDefendingTroopSize(40);
 
         Set<GameEngine.Action> actionGroup;
         GameEngine engine = new GameEngine(gameState);
         GameState state = engine.getGameState();
-        BasicEngine ai1 = new BasicEngine();
-        BasicEngine ai2 = new BasicEngine();
+        AiEngine ai1 = new Basic1Engine();
+        AiEngine ai2 = new Basic2Engine();
 
 
         println(state.toString());
@@ -147,14 +149,20 @@ public class GameTest {
 
             actionGroup = new HashSet<>();
 
-            AiResponse response1 = ai2.generateResponse(convert(player1Key, state));
+            AiResponse response1 = ai1.generateResponse(convert(player1Key, state));
             AiResponse response2 = ai2.generateResponse(convert(player2Key, state));
 
-            println("Player1Response:"+response1);
-            println("Player2Response:"+response2);
+//            println("Player1Response:"+response1);
+//            println("Player2Response:"+response2);
 
-            actionGroup.add(new GameEngine.Action(player1Key, response1.getTargetCellKey(), response1.getTroopSize()));
-            actionGroup.add(new GameEngine.Action(player2Key, response2.getTargetCellKey(), response2.getTroopSize()));
+            GameEngine.Action action1 = new GameEngine.Action(player1Key, response1.getTargetCellKey(), response1.getTroopSize());
+            GameEngine.Action action2 = new GameEngine.Action(player2Key, response2.getTargetCellKey(), response2.getTroopSize());
+
+            println("Player1 Action:" + action1);
+            println("Player2 Action:" + action2);
+
+            actionGroup.add(action1);
+            actionGroup.add(action2);
 
             engine.doAction(actionGroup);
             state = engine.getGameState();
@@ -196,8 +204,14 @@ public class GameTest {
         for (int cellKey = 0; cellKey < cells.length; cellKey++) {
             GameState.Cell cell = cells[cellKey];
 
+            Integer occupierKey = null;
+            if (cell.getOccupierKey() > -1) {
+                occupierKey = cell.getOccupierKey();
+            }
+
+
             Set<Integer> neighbours = neighbours(gameState.getNeighboursMatrix(), cellKey);
-            landCells.put(cellKey, new AiRequest.LandCell(cell.getOccupierKey(), cell.getDefendingTroopSize(), neighbours));
+            landCells.put(cellKey, new AiRequest.LandCell(occupierKey, cell.getDefendingTroopSize(), neighbours));
         }
 
         AiRequest request = new AiRequest();

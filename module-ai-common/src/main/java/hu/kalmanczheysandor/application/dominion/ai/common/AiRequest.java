@@ -29,5 +29,12 @@ public class AiRequest {
             this.troopSize = troopSize;
             this.neighbours = neighbours;
         }
+
+        public boolean isEmpty() {
+            if(playerKey==null) {
+                return true;
+            }
+            return false;
+        }
     }
 }

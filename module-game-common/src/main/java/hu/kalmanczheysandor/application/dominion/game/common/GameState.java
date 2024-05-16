@@ -94,8 +94,11 @@ public class GameState {
     public String toString() {
         String s = "";
         for (int i = 0; i < cells.length; i++) {
-            s += "(Cell:" + i + ")[P:" + cells[i].getOccupierKey() + "| T:" + cells[i].getDefendingTroopSize() + "]\n";
+            s += "(Cell:" + (i) + ")[P:" + cells[i].getOccupierKey() + "| T:" + cells[i].getDefendingTroopSize() + "]\n";
         }
+        s += "-------------------------\n";
+        s += "status:" + statusCode + "\n";
+        s += "winnerKey:" + winnerKey + "\n";
 
         return s;
 //

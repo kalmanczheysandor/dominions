@@ -12,8 +12,10 @@ public class GameEngine {
     }
 
     public GameState doAction(Set<Action> plannedActions) {
-        if (!isMoreActionPossible()) {
+        //if (!isMoreActionPossible()) {
+        if (isEndOfGame()) {
             throw new EndOfGameException();
+
         }
 
         // Validations
@@ -93,6 +95,7 @@ public class GameEngine {
 
         if (!isEndOfGame()) {
             incrementAllReserve();
+            gameState.setStatusCode(GameState.StatusCode.PROCEEDED);
         }
 
         return gameState;
@@ -182,6 +185,8 @@ public class GameEngine {
     }
 
     private void occupyEverythingForTheWinner(int playerKey) {
+        System.out.println("occupyEverythingForTheWinner");
+
         for (GameState.Cell cell : gameState.getCells()) {
             if (cell.isEmpty() || cell.getOccupierKey() != playerKey) {
                 cell.setOccupierKey(playerKey);
@@ -298,6 +303,11 @@ public class GameEngine {
     }
 
     private boolean isMoreActionPossible() {
+        System.out.println("isMoreActionPossible");
+        if (isNoMoreEmptyCell()) {
+            System.out.println("---isNoMoreEmptyCell");
+        }
+
         if (isNoMoreEmptyCell() && countAlivePlayers() <= 2) {
             return false;
         }
