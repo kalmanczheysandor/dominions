@@ -172,8 +172,10 @@ public class GameEngine {
 
     private void incrementAllReserve() {
         for (GameState.Opponent player : gameState.getOpponents()) {
+
             player.incrementReserveSize(1);
         }
+        gameState.getOpponents()[1].incrementReserveSize(0);
     }
 
     private void demolishPlayerDominion(int playerKey) {
@@ -231,19 +233,27 @@ public class GameEngine {
         return null;
     }
 
-    private boolean isCellANeighbourOfPlayer(int playerKey, int cellKey) {
-        GameState.Cell observedCell = getCell(cellKey);
-
+    private boolean isCellANeighbourOfPlayer(int playerKey, int observedCellKey) {
+        GameState.Cell observedCell = getCell(observedCellKey);
+        System.out.println("isCellANeighbourOfPlayer("+playerKey+","+observedCellKey+")");
+        System.out.println("observed:"+observedCell);
         // Any cell occupied by player is not a counted as a neighbour of that player
         if (observedCell.getOccupierKey() == playerKey) {
+            System.out.println("r1");
             return false;
         }
 
-        for (GameState.Cell neighbourCell : getNeighboursOfCell(cellKey)) {
+        for (GameState.Cell neighbourCell : getNeighboursOfCell(observedCellKey)) {
+            System.out.println("-occup:"+neighbourCell.getOccupierKey());
+
+
             if (neighbourCell.getOccupierKey() == playerKey) { // When the neighbour cell is occupied by the player
+                System.out.println("r2");
                 return true;
             }
         }
+
+        System.out.println("r3");
         return false;
     }
 

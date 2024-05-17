@@ -1,6 +1,7 @@
 package hu.kalmanczheysandor.application.dominion.game.common;
 
 
+import hu.kalmanczheysandor.application.dominion.game.common.exception.InvalidStateGameException;
 import hu.kalmanczheysandor.application.dominion.game.common.exception.UnexpectedCaseFoundGameException;
 
 public class GameState {
@@ -13,16 +14,23 @@ public class GameState {
     private Cell[] cells;
     private Opponent[] opponents;
 
-    public GameState(final int playerCount, final int cellCount) {
+    public GameState(final int playerCount, final int cellCount,final boolean[][] neighbouringMatrix) {
+        // Validations
+        if(playerCount<2) {
+            throw new InvalidStateGameException("At leats two player needed!");
+        }
+        validateNeighbouringMatrix(cellCount,neighbouringMatrix);
+
         this.playerCount = playerCount;
         this.cellCount = cellCount;
-        this.neighboursMatrix = new boolean[cellCount][cellCount];
+        this.neighboursMatrix = neighbouringMatrix;
         this.statusCode = StatusCode.INITIALISED;
 
         this.opponents = new Opponent[playerCount];
         this.cells = new Cell[cellCount];
         init();
     }
+
 
     private void init() {
         for (int playerIndex = 0; playerIndex < this.playerCount; playerIndex++) {
@@ -52,7 +60,18 @@ public class GameState {
         this.neighboursMatrix[3][2] = true;
         this.neighboursMatrix[3][3] = false;
     }
+    private static void validateNeighbouringMatrix(int expectedCellCount,boolean[][] neighbouringMatrix) {
 
+        if(neighbouringMatrix.length != expectedCellCount) {
+            throw new InvalidStateGameException("Neighbouring matrix outer size is not equal with expected cell count!");
+        }
+
+        for (int i = 0; i < expectedCellCount; i++) {
+            if(neighbouringMatrix[i].length != expectedCellCount) {
+                throw new InvalidStateGameException("Neighbouring matrix inner size at "+i+" index is not equal with expected cell count!");
+            }
+        }
+    }
 
     public StatusCode getStatusCode() {
         return statusCode;
@@ -94,7 +113,14 @@ public class GameState {
     public String toString() {
         String s = "";
         for (int i = 0; i < cells.length; i++) {
-            s += "(Cell:" + (i) + ")[P:" + cells[i].getOccupierKey() + "| T:" + cells[i].getDefendingTroopSize() + "]\n";
+            String occupierSymbol = String.valueOf(cells[i].getOccupierKey());
+            if(cells[i].getOccupierKey()==-1) {
+                occupierSymbol=" ";
+            }
+
+
+
+            s += "(Cell:" + (i) + ")[P:" +occupierSymbol + "| T:" + cells[i].getDefendingTroopSize() + "]\n";
         }
         s += "-------------------------\n";
         s += "status:" + statusCode + "\n";
@@ -190,8 +216,14 @@ public class GameState {
             defendingTroopSize = 0;
         }
 
-
-        //        public void decrementTroopSize(int decrementWithValue) {
+        @Override
+        public String toString() {
+            return "Cell{" +
+                       "occupierKey=" + occupierKey +
+                       ", defendingTroopSize=" + defendingTroopSize +
+                       '}';
+        }
+//        public void decrementTroopSize(int decrementWithValue) {
 //            this.troopSize -= decrementWithValue;
 //            if(this.troopSize<0) {
 //                this.troopSize=0;

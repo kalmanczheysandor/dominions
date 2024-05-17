@@ -33,8 +33,12 @@ public abstract class BasicEngine extends AiEngine {
         return attackZone;
     }
 
-    private static boolean isPlayerCausingDoughnutEffect(Map<Integer, AiRequest.LandCell> landCells, int playerKey) {
+    protected static boolean isPlayerCausingDoughnutEffect(Map<Integer, AiRequest.LandCell> landCells, int playerKey) {
+        System.out.println("isPlayerCausingDoughnutEffect(player:"+playerKey+")");
+
+
         for (Integer emptyCellKey : getEmptyCellKeys(landCells)) {
+            System.out.println("----EmptyKey:"+emptyCellKey);
             if (isCellBlockedByPlayer(landCells, emptyCellKey, playerKey)) {
                 return true;
             }
@@ -42,8 +46,10 @@ public abstract class BasicEngine extends AiEngine {
         return false;
     }
 
-    private static boolean isCellBlockedByPlayer(Map<Integer, AiRequest.LandCell> landCells, int cellKey, int playerKey) {
-        for (Integer neighbourKey : landCells.get(cellKey).getNeighbours()) {
+    private static boolean isCellBlockedByPlayer(Map<Integer, AiRequest.LandCell> landCells, int observedCellKey, int playerKey) {
+        Set<Integer> neighbourKeys=landCells.get(observedCellKey).getNeighbours();
+
+        for (Integer neighbourKey : neighbourKeys) {
             AiRequest.LandCell neighbourCell = landCells.get(neighbourKey);
 
             if (neighbourCell.getPlayerKey() == null || neighbourCell.getPlayerKey() != playerKey) {
@@ -69,15 +75,27 @@ public abstract class BasicEngine extends AiEngine {
     protected static Integer findEmptyLand(Map<Integer, AiRequest.LandCell> landCells, Integer yourKey) {
         Set<Integer> myLandKeys = collectAllYourLand(yourKey, landCells);
 
+        System.out.println("findEmptyLand (yourKey:" + yourKey + ")");
+
+
+
         Set<Integer> attackZoneKeys = collectCellKeysOfCurrentAttackZone(landCells, yourKey);
 
         // Attempt to find an empty land to attack
         for (Integer landKey : myLandKeys) {
             Set<Integer> neighbourKeys = collectNeighbourKeysOfALand(landKey, landCells);
+            System.out.println("--LandKey::" + landKey + "");
 
             for (Integer neighbourKey : neighbourKeys) {
+                AiRequest.LandCell neighbourCell = landCells.get(neighbourKey);
+                System.out.println("-- ---(" + landKey + ")neighbourKey::" + neighbourKey + " owner:" + neighbourCell.getPlayerKey());
+
+
+
                 if (attackZoneKeys.contains(neighbourKey) &&
-                        isEmptyLand(neighbourKey, landCells)) {
+                        neighbourCell.isEmpty()
+                ) {
+                    System.out.println("return:" + neighbourKey + " playerKey:" + neighbourCell.getPlayerKey() + " yourKey" + yourKey);
                     return neighbourKey;
                 }
             }
