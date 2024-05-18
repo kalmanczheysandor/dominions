@@ -30,12 +30,13 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
@@ -114,7 +115,8 @@
         <module>module-api-ai-basic</module>
         <module>module-server-game</module>
         <module>module-api-game-common</module>
-        <module>module-server-ai</module>
+        <module>module-server-ai-player1</module>
+        <module>module-server-ai-player2</module>
     </modules>
 
     <dependencyManagement>

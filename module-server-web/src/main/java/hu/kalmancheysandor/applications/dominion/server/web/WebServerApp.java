@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableFeignClients
-public class WebServer {
+public class WebServerApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(WebServer.class, args);
+        SpringApplication.run(WebServerApp.class, args);
     }
 
     @Bean

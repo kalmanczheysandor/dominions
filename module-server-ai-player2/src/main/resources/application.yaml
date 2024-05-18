@@ -1,11 +1,11 @@
 server:
-  port: 7010
+  port: 7022
   servlet:
-    context-path: '/game'
+    context-path: '/ai-2'
 
 spring:
   application:
-    name: 'game'
+    name: 'ai-2'
 
 
 

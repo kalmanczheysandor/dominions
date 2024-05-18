@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>hu.kalmancheysandor.application.dominion</groupId>
-    <artifactId>dominions-server-ai</artifactId>
+    <artifactId>dominions-server-ai-player1</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -24,6 +24,17 @@
             <groupId>hu.kalmancheysandor.application.dominion</groupId>
             <artifactId>dominions-api-game-common</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.kalmancheysandor.application.dominion</groupId>
+            <artifactId>dominions-api-ai-basic</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 
