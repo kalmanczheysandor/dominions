@@ -106,14 +106,14 @@
         </dependency>
     </dependencies>
     <modules>
-        <module>module-web</module>
-        <module>module-naming-server</module>
-        <module>module-gateway</module>
+        <module>module-server-web</module>
+        <module>module-server-eureka</module>
+        <module>module-server-gateway</module>
         <module>module-ai1</module>
-        <module>module-ai-common</module>
-        <module>module-ai-basic</module>
-        <module>module-game-server</module>
-        <module>module-game-common</module>
+        <module>module-api-ai-common</module>
+        <module>module-api-ai-basic</module>
+        <module>module-server-game</module>
+        <module>module-api-game-common</module>
         <module>module-server-ai</module>
     </modules>
 

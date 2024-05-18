@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>hu.kalmanczheysandor.application.dominion</groupId>
-    <artifactId>dominions-server-ai</artifactId>
+    <artifactId>dominions-api-ai-common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -18,13 +18,5 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>hu.kalmanczheysandor.application.dominion</groupId>
-            <artifactId>dominions-api-game-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 
 </project>
