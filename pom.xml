@@ -114,6 +114,7 @@
         <module>module-ai-basic</module>
         <module>module-game-server</module>
         <module>module-game-common</module>
+        <module>module-server-ai</module>
     </modules>
 
     <dependencyManagement>
