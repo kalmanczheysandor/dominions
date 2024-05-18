@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>hu.kalmanczheysandor.application.dominion</groupId>
+    <groupId>hu.kalmancheysandor.application.dominion</groupId>
     <artifactId>dominions-server-ai</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -21,7 +21,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>hu.kalmanczheysandor.application.dominion</groupId>
+            <groupId>hu.kalmancheysandor.application.dominion</groupId>
             <artifactId>dominions-api-game-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

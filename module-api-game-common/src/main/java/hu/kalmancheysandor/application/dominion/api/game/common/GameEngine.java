@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.application.dominion.api.game.common;
 
 import hu.kalmancheysandor.application.dominion.api.game.common.exception.*;
-import hu.kalmancheysandor.application.dominion.game.common.exception.*;
+import hu.kalmancheysandor.application.dominion.api.game.common.exception.*;
 
 import java.util.*;
 
