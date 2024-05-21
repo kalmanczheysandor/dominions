@@ -1,16 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	  layout:decorate="~{fragments/main.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{fragments/main.html}"
 >
-	<head>
-		<title>Login</title>
-	</head>
-	</head>
-	<body>
-		<div layout:fragment="page" class="card" style="padding:10px;margin-top: 1.5em;">
-			<a th:href="${@environment.getProperty('server.servlet.context-path')+'/play/5566'}">Go and play</a>
-		</div>
-	</body>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <div layout:fragment="page" class="card" style="padding:10px;margin-top: 1.5em;">
+        <a th:href="${@environment.getProperty('server.servlet.context-path')+'/play/5566'}">Go and play</a>
+        
+        
+        <h1>WebSocket Client</h1>
+        
+        
+        <script type="text/javascript">
+            var stompClient = null;
+            
+            function setConnected(connected) {
+                document.getElementById('connect').disabled = connected;
+                document.getElementById('disconnect').disabled = !connected;
+                document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+                document.getElementById('response').innerHTML = '';
+            }
+            
+            function connect() {
+                
+                var socket = new SockJS('/web/chat');
+                
+                
+                
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, function(frame) {
+                    setConnected(true);
+                    console.log('ConnectedDDDD: ' + frame);
+                    stompClient.subscribe('/topic/messages', function(messageOutput) {
+                        showMessageOutput(JSON.parse(messageOutput.body));
+                    });
+                });
+            }
+            
+            function disconnect() {
+                if(stompClient != null) {
+                    stompClient.disconnect();
+                }
+                setConnected(false);
+                console.log("Disconnected");
+            }
+            
+            function sendMessage() {
+                var from = document.getElementById('from').value;
+                var text = document.getElementById('text').value;
+                stompClient.send("/web/chat", {},JSON.stringify({'from':from, 'text':text}));
+            }
+            
+            function showMessageOutput(messageOutput) {
+                var response = document.getElementById('response');
+                var p = document.createElement('p');
+                p.style.wordWrap = 'break-word';
+                p.appendChild(document.createTextNode(messageOutput.from + ": "+ messageOutput.text + " (" + messageOutput.time + ")"));
+                response.appendChild(p);
+            }
+        </script>
+        
+        <div>
+            <div>
+                <input type="text" id="from" placeholder="Choose a nickname"/>
+            </div>
+            <br>
+            <div>
+                <button id="connect" onclick="connect();">Connect</button>
+                <button id="disconnect" disabled="disabled" onclick="disconnect();">
+                    Disconnect
+                </button>
+            </div>
+            <br>
+            <div id="conversationDiv">
+                <input type="text" id="text" placeholder="Write a message..."/>
+                <button id="sendMessage" onclick="sendMessage();">Send</button>
+                <p id="response"></p>
+            </div>
+        </div>
+        
+        
+    </div>
+
+</body>
 </html>
