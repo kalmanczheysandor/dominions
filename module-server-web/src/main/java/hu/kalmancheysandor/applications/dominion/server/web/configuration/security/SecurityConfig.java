@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -32,12 +35,47 @@ public class SecurityConfig {
 //        return http.build();
 //    }
 
+//    @Bean
+//    fun messageAuthorizationManager(messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager<Message<*>> {
+//        messages.nullDestMatcher().authenticated()
+//            .simpSubscribeDestMatchers("/app/notifications").permitAll()
+//            .simpSubscribeDestMatchers("/queue/tasks/**").hasAuthority("SCOPE_tasks.read")
+//            .simpDestMatchers("/app/**").hasRole("ADMIN")
+//        return messages.build()
+//    }
+
+
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .userDetailsService(userDetailsService)
+//        http
+//            .authorizeRequests()
+//            .anyRequest().permitAll() // Allow all requests without authentication
+//            .and()
+//            .csrf().disable(); // Disable CSRF protection
+//
+
+
+//        http.cors(cors -> cors.configurationSource(request -> {
+//            CorsConfiguration configuration = new CorsConfiguration();
+//            configuration.setAllowedOrigins(Arrays.asList("*"));
+//            configuration.setAllowedMethods(Arrays.asList("*"));
+//            configuration.setAllowedHeaders(Arrays.asList("*"));
+//            return configuration;
+//        }));
+
+
+        http.userDetailsService(userDetailsService)
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(Arrays.asList("*"));
+                configuration.setAllowedMethods(Arrays.asList("*"));
+                configuration.setAllowedHeaders(Arrays.asList("*"));
+                return configuration;
+            }))
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/").permitAll()
+                .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/css/**").permitAll()
                 .requestMatchers("/js/**").permitAll()
                 .requestMatchers("/font/**").permitAll()
@@ -47,18 +85,11 @@ public class SecurityConfig {
                 //.anyRequest().hasRole("PLAYER")
                 .anyRequest().permitAll()
             )
-            .formLogin(formlogin ->
-                formlogin
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/dashboard")
-                    .permitAll()
-
+            .formLogin(formlogin -> formlogin.loginPage("/login").defaultSuccessUrl("/dashboard").permitAll()
             )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .permitAll()
-            )
-            .httpBasic(Customizer.withDefaults());
+            .logout(logout -> logout.logoutUrl("/logout").permitAll()).httpBasic(Customizer.withDefaults())
+            .csrf(httpSecurityCsrfConfigurer ->httpSecurityCsrfConfigurer.disable())
+        ;
         return http.build();
     }
 
@@ -70,7 +101,8 @@ public class SecurityConfig {
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/js/**", "/css/**", "/font/**","/image/**");
+        return (web) -> web.ignoring()
+            .requestMatchers("/js/**", "/css/**", "/font/**", "/image/**", "/ws/**");
     }
 
     @Bean

@@ -11,6 +11,7 @@ import hu.kalmancheysandor.application.dominion.api.game.common.GameState;
 import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer1ServerProxy;
 import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer2ServerProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class GameService {
 
     @Autowired
     private AiPlayer1ServerProxy proxy;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
 
     @Autowired
@@ -134,7 +137,7 @@ public class GameService {
             engine.doAction(actionGroup);
             state = engine.getGameState();
             printStateMatrix(state.getCells(),sizeX,sizeY);
-
+            simpMessagingTemplate.convertAndSend("/topic/game-progress/",turn);
             if (turn >= 100) {
                 println("!!! <TO MUCH LOOP> !!!");
                 break;

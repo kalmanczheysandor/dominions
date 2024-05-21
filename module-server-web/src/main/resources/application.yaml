@@ -1,5 +1,6 @@
 #spring.web.resources.static-locations=classpath:/files/,classpath:/static-files
 
+
 server:
   port: 7002
   servlet:
@@ -43,6 +44,24 @@ spring:
       enabled:
         - org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect
         - nz.net.ultraq.thymeleaf.LayoutDialect
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+
+
+  mvc:
+    cors:
+      allowed-origins: 'http://localhost:7000'
+
 
 eureka:
   client:
