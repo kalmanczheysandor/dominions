@@ -1,9 +1,9 @@
-package hu.kalmancheysandor.application.dominion.server.game.controller;
+package hu.kalmancheysandor.application.dominion.server.game.controller.test;
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
-import hu.kalmancheysandor.application.dominion.api.game.common.GameEngine;
-import hu.kalmancheysandor.application.dominion.server.game.service.GameService;
+import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameJoinResponse;
+import hu.kalmancheysandor.application.dominion.server.game.service.test.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +17,13 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @Slf4j
-public class GameController {
+public class TestController {
 
 //    @Autowired
 //    private GameEngine gameEngine;
 
     @Autowired
-    private GameService gameService;
+    private TestService gameService;
 
 
     @GetMapping("/join/{joinKey}")

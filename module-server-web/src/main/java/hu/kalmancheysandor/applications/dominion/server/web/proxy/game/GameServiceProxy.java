@@ -1,6 +1,6 @@
 package hu.kalmancheysandor.applications.dominion.server.web.proxy.game;
 
-import hu.kalmancheysandor.application.dominion.server.game.controller.GameJoinResponse;
+import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameJoinResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,9 +1,6 @@
-package hu.kalmancheysandor.application.dominion.server.game.service;
+package hu.kalmancheysandor.application.dominion.server.game.service.test;
 
 
-import hu.kalmancheysandor.application.dominion.api.ai.basic.Basic1Engine;
-import hu.kalmancheysandor.application.dominion.api.ai.basic.Basic2Engine;
-import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
 import hu.kalmancheysandor.application.dominion.api.game.common.GameEngine;
@@ -22,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 //import java.util.concurrent.TimeUnit;
 
 @Service
-public class GameService {
+public class TestService {
 
     @Autowired
     private AiPlayer1ServerProxy proxy;
