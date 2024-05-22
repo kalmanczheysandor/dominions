@@ -3,8 +3,8 @@ package hu.kalmancheysandor.application.dominion.server.game.service.test;
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
-import hu.kalmancheysandor.application.dominion.api.game.common.GameEngine;
-import hu.kalmancheysandor.application.dominion.api.game.common.GameState;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer1ServerProxy;
 import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer2ServerProxy;
 import org.springframework.beans.factory.annotation.Autowired;

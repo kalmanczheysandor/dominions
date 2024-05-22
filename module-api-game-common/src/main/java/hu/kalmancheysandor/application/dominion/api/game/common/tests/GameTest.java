@@ -1,6 +1,7 @@
-package hu.kalmancheysandor.application.dominion.api.game.common;
+package hu.kalmancheysandor.application.dominion.api.game.common.tests;
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 
 
 import java.util.HashMap;

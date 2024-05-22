@@ -1,8 +1,8 @@
-package hu.kalmancheysandor.application.dominion.api.game.common;
+package hu.kalmancheysandor.application.dominion.api.game.common.engine;
 
 
-import hu.kalmancheysandor.application.dominion.api.game.common.exception.InvalidStateGameException;
-import hu.kalmancheysandor.application.dominion.api.game.common.exception.UnexpectedCaseFoundGameException;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.InvalidStateGameException;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.UnexpectedCaseFoundGameException;
 
 public class GameState {
     private StatusCode statusCode;

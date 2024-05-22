@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.application.dominion.server.game.exception;
+package hu.kalmancheysandor.application.dominion.api.game.common.session.exception;
 
 public class DuplicateGamePlaySessionException extends RuntimeException {
    private String sessionKey;

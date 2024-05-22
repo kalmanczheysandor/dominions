@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.application.dominion.api.game.common.exception;
+package hu.kalmancheysandor.application.dominion.api.game.common.engine.exception;
 
 public class OutOfAttackRangePlayerActionException extends PlayerActionException {
     private int targetedCellKey;

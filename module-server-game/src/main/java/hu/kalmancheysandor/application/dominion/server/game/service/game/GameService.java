@@ -1,16 +1,13 @@
 package hu.kalmancheysandor.application.dominion.server.game.service.game;
 
 
-import hu.kalmancheysandor.application.dominion.server.game.exception.NotExistingSession;
-import hu.kalmancheysandor.application.dominion.server.game.exception.PendingTurnSessionException;
-import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer1ServerProxy;
-import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer2ServerProxy;
-import hu.kalmancheysandor.application.dominion.server.game.repository.game.GameRepository;
-import hu.kalmancheysandor.application.dominion.server.game.repository.game.PlaySession;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingSession;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.PendingTurnSessionException;
+import hu.kalmancheysandor.application.dominion.server.game.repository.game.SessionRepository;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStepRequest;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
 
@@ -18,21 +15,22 @@ import org.springframework.stereotype.Service;
 public class GameService {
 
     @Autowired
-    private GameRepository gameRepository;
+    private SessionRepository sessionRepository;
 
-    @Autowired
-    private AiPlayer1ServerProxy proxy;
+//    @Autowired
+//    private AiPlayer1ServerProxy proxy;
+//
+//    @Autowired
+//    private AiPlayer1ServerProxy proxyAiPlayer1;
+//
+//    @Autowired
+//    private AiPlayer2ServerProxy proxyAiPlayer2;
 
-    @Autowired
-    private AiPlayer1ServerProxy proxyAiPlayer1;
 
-    @Autowired
-    private AiPlayer2ServerProxy proxyAiPlayer2;
+
 
     public GameStateResponse currentState(String sessionKey) {
         validateSessionKeyAccess(sessionKey);
-        PlaySession session = gameRepository.findSession(sessionKey);
-
         return generateGameStateResponse(sessionKey);
     }
 
@@ -41,7 +39,7 @@ public class GameService {
 
         // Find session
         validateSessionKeyAccess(sessionKey);
-        PlaySession session = gameRepository.findSession(sessionKey);
+        PlaySession session = sessionRepository.findSession(sessionKey);
 
         // Save intention
         session.saveIntention(playerId, gameStepRequest.getValue());
@@ -60,7 +58,7 @@ public class GameService {
     private GameStateResponse generateGameStateResponse(String sessionKey) {
         // Find session
         validateSessionKeyAccess(sessionKey);
-        PlaySession session = gameRepository.findSession(sessionKey);
+        PlaySession session = sessionRepository.findSession(sessionKey);
 
         return new GameStateResponse(session.getTurn(), session.pendingCount(), session.playerCount());
     }
@@ -68,7 +66,7 @@ public class GameService {
     private void doTurnIfPossible(String sessionKey) {
         // Find session
         validateSessionKeyAccess(sessionKey);
-        PlaySession session = gameRepository.findSession(sessionKey);
+        PlaySession session = sessionRepository.findSession(sessionKey);
 
         if (session.isPending()) {
             return;
@@ -79,7 +77,7 @@ public class GameService {
     private void goToNextTurn(String sessionKey) {
         // Find session
         validateSessionKeyAccess(sessionKey);
-        PlaySession session = gameRepository.findSession(sessionKey);
+        PlaySession session = sessionRepository.findSession(sessionKey);
 
         if (session.isPending()) {
             throw new PendingTurnSessionException(sessionKey);
@@ -89,10 +87,8 @@ public class GameService {
     }
 
     private void validateSessionKeyAccess(String sessionKey) {
-        if (!gameRepository.isSessionExistWithKey(sessionKey)) {
+        if (!sessionRepository.isSessionExistWithKey(sessionKey)) {
             throw new NotExistingSession(sessionKey);
         }
     }
-
-
 }

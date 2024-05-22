@@ -1,8 +1,8 @@
-package hu.kalmancheysandor.application.dominion.server.game.repository.game;
+package hu.kalmancheysandor.application.dominion.api.game.common.session;
 
-import hu.kalmancheysandor.application.dominion.server.game.exception.IntentionIsAlreadyGivenException;
-import hu.kalmancheysandor.application.dominion.server.game.exception.DuplicatePlayerInstanceSessionException;
-import hu.kalmancheysandor.application.dominion.server.game.exception.NotExistingPlayerSessionException;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.DuplicatePlayerInstanceSessionException;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.IntentionIsAlreadyGivenException;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingPlayerSessionException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -70,9 +70,11 @@ public class PlaySession {
         }
         return count;
     }
+
     public int playerCount() {
         return players.size();
     }
+
     public void eliminateAllIntention() {
         for (PlayerData player : players.values()) {
             player.eliminateIntention();
@@ -80,9 +82,8 @@ public class PlaySession {
     }
 
     public int incrementTurn() {
-            return ++turn;
+        return ++turn;
     }
-
 
 
     public static class PlayerData {
