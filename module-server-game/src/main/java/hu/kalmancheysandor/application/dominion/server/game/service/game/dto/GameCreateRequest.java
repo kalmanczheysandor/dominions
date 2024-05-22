@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameCreateRequest {
-    private Integer playerSize;
+    private String mapCode;
 }

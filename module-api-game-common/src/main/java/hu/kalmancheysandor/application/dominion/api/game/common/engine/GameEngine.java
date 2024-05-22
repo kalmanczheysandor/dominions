@@ -8,9 +8,13 @@ import java.util.*;
 public class GameEngine {
     private GameState gameState;
 
+    public GameEngine() {
+    }
+
     public GameEngine(GameState gameState) {
         this.gameState = gameState;
     }
+
 
     public GameState doAction(Set<Action> plannedActions) {
         //if (!isMoreActionPossible()) {
@@ -30,8 +34,7 @@ public class GameEngine {
                 Set<Action> actions = new HashSet<>();
                 actions.add(observedAction);
                 group.put(observedAction.getTargetCellKey(), actions);
-            }
-            else { // After the first action in the group
+            } else { // After the first action in the group
                 Set<Action> actions = group.get(observedAction.getTargetCellKey());
                 actions.add(observedAction);
             }
@@ -55,11 +58,9 @@ public class GameEngine {
             if (attackedCell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
                 attackedCell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - attackedCell.getDefendingTroopSize());
                 attackedCell.setOccupierKey(processedAction.getPlayerKey());
-            }
-            else if (attackedCell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
+            } else if (attackedCell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
                 attackedCell.setDefendingTroopSize(attackedCell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
-            }
-            else {
+            } else {
                 attackedCell.setDefendingTroopSize(0);
                 attackedCell.setOccupierKey(-1);
             }
@@ -141,8 +142,7 @@ public class GameEngine {
                 if (!isCellAnEmptyNeighbourOfPlayer(action.getPlayerKey(), action.getTargetCellKey())) {
                     throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
                 }
-            }
-            else {
+            } else {
 //                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> no ");
             }
 
@@ -157,8 +157,7 @@ public class GameEngine {
             if (action.getAttackingTroopSize() == highestValue) {
                 count++;
                 a = null;
-            }
-            else if (action.getAttackingTroopSize() > highestValue) {
+            } else if (action.getAttackingTroopSize() > highestValue) {
                 highestValue = action.getAttackingTroopSize();
                 count = 1;
                 a = action;
@@ -219,8 +218,7 @@ public class GameEngine {
                 if (dominionSize == weakestValue) {
                     foundCount++;
                     weakestKey = null;
-                }
-                else if (dominionSize < weakestValue) {
+                } else if (dominionSize < weakestValue) {
                     weakestValue = dominionSize;
                     foundCount = 1;
                     weakestKey = playerKey;
@@ -236,8 +234,8 @@ public class GameEngine {
 
     private boolean isCellANeighbourOfPlayer(int playerKey, int observedCellKey) {
         GameState.Cell observedCell = getCell(observedCellKey);
-        System.out.println("isCellANeighbourOfPlayer("+playerKey+","+observedCellKey+")");
-        System.out.println("observed:"+observedCell);
+        System.out.println("isCellANeighbourOfPlayer(" + playerKey + "," + observedCellKey + ")");
+        System.out.println("observed:" + observedCell);
         // Any cell occupied by player is not a counted as a neighbour of that player
         if (observedCell.getOccupierKey() == playerKey) {
             System.out.println("r1");
@@ -245,7 +243,7 @@ public class GameEngine {
         }
 
         for (GameState.Cell neighbourCell : getNeighboursOfCell(observedCellKey)) {
-            System.out.println("-occup:"+neighbourCell.getOccupierKey());
+            System.out.println("-occup:" + neighbourCell.getOccupierKey());
 
 
             if (neighbourCell.getOccupierKey() == playerKey) { // When the neighbour cell is occupied by the player
@@ -393,6 +391,10 @@ public class GameEngine {
 
     public GameState getGameState() {
         return this.gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public static class Action {

@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.application.dominion.api.game.common.session;
 
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.DuplicatePlayerInstanceSessionException;
@@ -24,12 +25,17 @@ public class PlaySession {
 
     private GameState gameState = null;
     private GameMap gameMap = null;
+    @Getter
+    private Status status;
 
+    private final GameEngine gameEngine;
 
-    public PlaySession(String sessionKey, GameMap gameMap,int maxPlayerSize) {
+    public PlaySession(String sessionKey, GameMap gameMap, GameEngine gameEngine) {
         this.sessionKey = sessionKey;
         this.gameMap = gameMap;
-        this.maxPlayerSize = maxPlayerSize;
+        this.maxPlayerSize = gameMap.playerCount();
+        this.status = Status.RECRUITING;
+        this.gameEngine = gameEngine;
     }
 
     public PlayerData findPlayer(int playerId) {
@@ -44,14 +50,26 @@ public class PlaySession {
     }
 
     public void addPlayer(PlayerData data) {
-        if (players.containsKey(data.getId())) {
-            throw new DuplicatePlayerInstanceSessionException(sessionKey, data.getId());
+        if (players.containsKey(data.getIndex())) {
+            throw new DuplicatePlayerInstanceSessionException(sessionKey, data.getIndex());
         }
-        players.put(data.getId(), data);
+        players.put(data.getIndex(), data);
+
+        // After the final player is added
+        if (!isAnyFreePlayerSlotsAvailable()) {
+            start();
+        }
     }
 
+
+    private void start() {
+        this.status = Status.PLAYING;
+        this.gameState = new GameState(gameMap);
+    }
+
+
     public int freePlayerSlotsCount() {
-        return maxPlayerSize-players.size();
+        return maxPlayerSize - players.size();
     }
 
     public boolean isAnyFreePlayerSlotsAvailable() {
@@ -59,13 +77,11 @@ public class PlaySession {
     }
 
     public int nextAvailablePlayerIndex() {
-        if(!isAnyFreePlayerSlotsAvailable()) {
+        if (!isAnyFreePlayerSlotsAvailable()) {
             throw new NoMoreFreePlayerSlotSessionException(sessionKey);
         }
-        return players.size()+1;
+        return players.size() + 1;
     }
-
-
 
 
     public void saveIntention(int playerId, String intention) {
@@ -113,8 +129,7 @@ public class PlaySession {
         return ++turn;
     }
 
-
-    private enum Status {
+    public enum Status {
         RECRUITING,
         PLAYING,
         ENDED

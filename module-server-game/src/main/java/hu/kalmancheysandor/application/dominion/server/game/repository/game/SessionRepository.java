@@ -1,12 +1,14 @@
 package hu.kalmancheysandor.application.dominion.server.game.repository.game;
 
 
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlayerData;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.DuplicateGamePlaySessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
@@ -15,8 +17,13 @@ import java.util.*;
 @Repository
 public class SessionRepository {
 
+    @Autowired
+    private GameEngine gameEngine;
+
     private static final String SESSION_KEY_PREFIX = "AAA";
     private static Map<String, PlaySession> sessions = new HashMap<>();
+
+
 
     public SessionRepository() {
 //        PlayerData player1 = new HumanPlayer(1);
@@ -30,11 +37,11 @@ public class SessionRepository {
     }
 
 
-    public synchronized PlaySession createSession(int playerSize) {
+    public synchronized PlaySession createSession() {
         String sessionKey = SESSION_KEY_PREFIX + "-" + (sessions.size()+1);
 
-        GameMap map = GameMap.open("D:\\map1.json");
-        PlaySession session = new PlaySession(sessionKey, map, playerSize);
+        GameMap map = GameMap.open("D:\\map2.json");
+        PlaySession session = new PlaySession(sessionKey, map, gameEngine);
 
         addSession(session);
 

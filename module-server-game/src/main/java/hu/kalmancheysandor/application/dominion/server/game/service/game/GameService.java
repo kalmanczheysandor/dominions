@@ -18,6 +18,7 @@ public class GameService {
     @Autowired
     private SessionRepository sessionRepository;
 
+
 //    @Autowired
 //    private AiPlayer1ServerProxy proxy;
 //
@@ -29,15 +30,13 @@ public class GameService {
 
 
     public GameCreateResponse create(GameCreateRequest request) {
-        PlaySession newSession = sessionRepository.createSession(request.getPlayerSize());
-        GameCreateResponse response = new GameCreateResponse(newSession.getSessionKey());
-        return response;
+        PlaySession newSession = sessionRepository.createSession();
+        return new GameCreateResponse(newSession.getSessionKey());
     }
-
 
     public GameJoinResponse join(String sessionKey, GameJoinRequest request) {
         // Find session
-        validateSessionKeyAccess(sessionKey);
+        validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         if (!session.isAnyFreePlayerSlotsAvailable()) {
@@ -53,7 +52,7 @@ public class GameService {
 
 
     public GameStateResponse currentState(String sessionKey) {
-        validateSessionKeyAccess(sessionKey);
+        validateSessionAccess(sessionKey);
         return generateGameStateResponse(sessionKey);
     }
 
@@ -61,7 +60,7 @@ public class GameService {
         int playerId = request.getPlayerId();
 
         // Find session
-        validateSessionKeyAccess(sessionKey);
+        validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         // Save intention
@@ -73,18 +72,32 @@ public class GameService {
         return generateGameStateResponse(sessionKey);
     }
 
-
     private GameStateResponse generateGameStateResponse(String sessionKey) {
         // Find session
-        validateSessionKeyAccess(sessionKey);
+        validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
-        return new GameStateResponse(session.getTurn(), session.pendingCount(), session.playerCount());
+        // Determine status code
+        GameStateResponse.StatusCode statusCode = GameStateResponse.StatusCode.RECRUITING;
+        if (session.getStatus() == PlaySession.Status.PLAYING) {
+            statusCode = GameStateResponse.StatusCode.PLAYING;
+        } else if (session.getStatus() == PlaySession.Status.ENDED) {
+            statusCode = GameStateResponse.StatusCode.ENDED;
+        }
+
+        // Generate response
+        GameStateResponse response = new GameStateResponse();
+        response.setCurrentTurn(session.getTurn());
+        response.setPlayerCount(session.playerCount());
+        response.setPendingCount(session.pendingCount());
+        response.setStatusCode(statusCode);
+
+        return response;
     }
 
     private void doTurnIfPossible(String sessionKey) {
         // Find session
-        validateSessionKeyAccess(sessionKey);
+        validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         if (session.isPending()) {
@@ -95,7 +108,7 @@ public class GameService {
 
     private void goToNextTurn(String sessionKey) {
         // Find session
-        validateSessionKeyAccess(sessionKey);
+        validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         if (session.isPending()) {
@@ -105,7 +118,7 @@ public class GameService {
         session.incrementTurn();
     }
 
-    private void validateSessionKeyAccess(String sessionKey) {
+    private void validateSessionAccess(String sessionKey) {
         if (!sessionRepository.isSessionExistWithKey(sessionKey)) {
             throw new NotExistingInstanceSessionException(sessionKey);
         }

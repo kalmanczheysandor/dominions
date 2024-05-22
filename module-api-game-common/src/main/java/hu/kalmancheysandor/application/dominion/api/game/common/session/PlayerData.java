@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public abstract class PlayerData {
     @Getter
-    private final int id;
+    private final int index;
     private PlayerType playerType;
     @Getter
     private String name;
@@ -18,8 +18,8 @@ public abstract class PlayerData {
     @Setter
     private boolean intentionGiven = false;
 
-    public PlayerData(int id,String name, PlayerType playerType) {
-        this.id = id;
+    public PlayerData(int index, String name, PlayerType playerType) {
+        this.index = index;
         this.name = name;
         this.playerType = playerType;
     }
@@ -45,12 +45,12 @@ public abstract class PlayerData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlayerData that = (PlayerData) o;
-        return id == that.id;
+        return index == that.index;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(index);
     }
 
     protected enum PlayerType {

@@ -4,14 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameStateResponse {
-    private int turn;
+    private int currentTurn;
     private int pendingCount;
     private int playerCount;
+    private StatusCode statusCode;
+
+
+    public enum StatusCode {
+        RECRUITING,
+        PLAYING,
+        ENDED
+    }
 }

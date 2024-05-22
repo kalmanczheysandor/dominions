@@ -25,13 +25,11 @@ public class GameController {
         return gameService.create(request);
     }
 
-
     @PostMapping("/{sessionKey}/join")
     @ResponseStatus(HttpStatus.OK)
     public GameJoinResponse join(@PathVariable String sessionKey,@RequestBody GameJoinRequest request ) {
         return gameService.join(sessionKey,request);
     }
-
 
     @PostMapping("/{sessionKey}/play/step")
     @ResponseStatus(HttpStatus.OK)
