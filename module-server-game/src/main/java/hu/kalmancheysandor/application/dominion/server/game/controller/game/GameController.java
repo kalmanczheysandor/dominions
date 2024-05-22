@@ -2,18 +2,14 @@ package hu.kalmancheysandor.application.dominion.server.game.controller.game;
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameJoinResponse;
+import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.*;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.GameService;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStepRequest;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStateResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
+
 
 @RestController
 @Slf4j
@@ -22,12 +18,29 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    @PostMapping("/play/{sessionKey}/step")
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public GameCreateResponse create(@RequestBody GameCreateRequest request ) {
+        return gameService.create(request);
+    }
+
+
+    @PostMapping("/{sessionKey}/join")
+    @ResponseStatus(HttpStatus.OK)
+    public GameJoinResponse join(@PathVariable String sessionKey,@RequestBody GameJoinRequest request ) {
+        return gameService.join(sessionKey,request);
+    }
+
+
+    @PostMapping("/{sessionKey}/play/step")
+    @ResponseStatus(HttpStatus.OK)
     public GameStateResponse step(@PathVariable String sessionKey, @RequestBody GameStepRequest request ) {
         return gameService.doStep(sessionKey,request);
     }
 
-    @GetMapping("/play/{sessionKey}/state")
+    @GetMapping("/{sessionKey}/play/state")
+    @ResponseStatus(HttpStatus.OK)
     public GameStateResponse currentState(@PathVariable String sessionKey) {
         return gameService.currentState(sessionKey);
     }

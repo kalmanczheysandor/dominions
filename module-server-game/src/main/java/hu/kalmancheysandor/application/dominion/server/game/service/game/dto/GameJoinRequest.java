@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameStepRequest {
-    private Integer gameId;
-    private Integer playerId;
-    private String value;
+public class GameJoinRequest {
+    //private Integer userId;
+    private String name;
 }

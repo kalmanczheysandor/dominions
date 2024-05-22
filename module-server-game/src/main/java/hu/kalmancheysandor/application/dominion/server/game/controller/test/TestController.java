@@ -28,7 +28,8 @@ public class TestController {
 
     @GetMapping("/join/{joinKey}")
     public GameJoinResponse joinToAGame(@PathVariable String joinKey) {
-        return new GameJoinResponse(GameJoinResponse.StatusCode.ACCEPTED, joinKey);
+        //return new GameJoinResponse(GameJoinResponse.AnswerCode.ACCEPTED, joinKey);
+        return null;
     }
 
 

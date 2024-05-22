@@ -2,14 +2,13 @@ package hu.kalmancheysandor.application.dominion.server.game.service.game.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class GameJoinResponse {
-    private StatusCode statusCode;
-    private String joinKey;
-    public enum StatusCode {
-        ACCEPTED,
-        REJECTED
-    }
+    private Integer playerIndex;
+    private String secretKey;
+
 }

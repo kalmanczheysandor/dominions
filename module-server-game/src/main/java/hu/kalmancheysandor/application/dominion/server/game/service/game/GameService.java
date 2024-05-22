@@ -1,12 +1,13 @@
 package hu.kalmancheysandor.application.dominion.server.game.service.game;
 
 
-import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingSession;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.PendingTurnSessionException;
 import hu.kalmancheysandor.application.dominion.server.game.repository.game.SessionRepository;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStepRequest;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStateResponse;
+import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,28 @@ public class GameService {
 //    private AiPlayer2ServerProxy proxyAiPlayer2;
 
 
+    public GameCreateResponse create(GameCreateRequest request) {
+        PlaySession newSession = sessionRepository.createSession(request.getPlayerSize());
+        GameCreateResponse response = new GameCreateResponse(newSession.getSessionKey());
+        return response;
+    }
+
+
+    public GameJoinResponse join(String sessionKey, GameJoinRequest request) {
+        // Find session
+        validateSessionKeyAccess(sessionKey);
+        PlaySession session = sessionRepository.findSession(sessionKey);
+
+        if (!session.isAnyFreePlayerSlotsAvailable()) {
+            throw new NoMoreFreePlayerSlotSessionException(session.getSessionKey());
+        }
+
+        int playerIndex = session.nextAvailablePlayerIndex();
+        HumanPlayer player = new HumanPlayer(playerIndex, request.getName());
+        session.addPlayer(player);
+
+        return new GameJoinResponse(playerIndex, "YourSecretKey");
+    }
 
 
     public GameStateResponse currentState(String sessionKey) {
@@ -34,25 +57,21 @@ public class GameService {
         return generateGameStateResponse(sessionKey);
     }
 
-    public GameStateResponse doStep(String sessionKey, GameStepRequest gameStepRequest) {
-        int playerId = gameStepRequest.getPlayerId();
+    public GameStateResponse doStep(String sessionKey, GameStepRequest request) {
+        int playerId = request.getPlayerId();
 
         // Find session
         validateSessionKeyAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         // Save intention
-        session.saveIntention(playerId, gameStepRequest.getValue());
+        session.saveIntention(playerId, request.getValue());
 
         // Calculations
         doTurnIfPossible(sessionKey);
 
         return generateGameStateResponse(sessionKey);
     }
-
-
-
-
 
 
     private GameStateResponse generateGameStateResponse(String sessionKey) {
@@ -88,7 +107,7 @@ public class GameService {
 
     private void validateSessionKeyAccess(String sessionKey) {
         if (!sessionRepository.isSessionExistWithKey(sessionKey)) {
-            throw new NotExistingSession(sessionKey);
+            throw new NotExistingInstanceSessionException(sessionKey);
         }
     }
 }

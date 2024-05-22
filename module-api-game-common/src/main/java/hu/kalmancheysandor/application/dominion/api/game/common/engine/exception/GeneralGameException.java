@@ -1,9 +1,9 @@
 package hu.kalmancheysandor.application.dominion.api.game.common.engine.exception;
 
 
-public class InvalidStateGameException extends GameException {
+public class GeneralGameException extends GameException {
 
-    public InvalidStateGameException(String message) {
+    public GeneralGameException(String message) {
         super(message);
     }
 }

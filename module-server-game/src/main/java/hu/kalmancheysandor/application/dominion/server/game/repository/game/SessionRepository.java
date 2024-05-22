@@ -1,9 +1,12 @@
 package hu.kalmancheysandor.application.dominion.server.game.repository.game;
 
 
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.PlayerData;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.DuplicateGamePlaySessionException;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingSession;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
 import org.springframework.stereotype.Repository;
 
 
@@ -12,30 +15,35 @@ import java.util.*;
 @Repository
 public class SessionRepository {
 
+    private static final String SESSION_KEY_PREFIX = "AAA";
     private static Map<String, PlaySession> sessions = new HashMap<>();
 
     public SessionRepository() {
-        PlaySession.PlayerData player1 = new PlaySession.PlayerData(1);
-        PlaySession.PlayerData player2 = new PlaySession.PlayerData(2);
-
-        PlaySession session = new PlaySession("aa1");
-        session.addPlayer(player1);
-        session.addPlayer(player2);
-
-        sessions.put("aa1", session);
+//        PlayerData player1 = new HumanPlayer(1);
+//        PlayerData player2 = new HumanPlayer(2);
+//
+//        PlaySession session = new PlaySession("aa1");
+//        session.addPlayer(player1);
+//        session.addPlayer(player2);
+//
+//        sessions.put("aa1", session);
     }
 
 
-    public void addSession(PlaySession newSession) {
-        if (sessions.containsKey(newSession.getSessionKey())) {
-            throw new DuplicateGamePlaySessionException(newSession.getSessionKey());
-        }
-        sessions.put(newSession.getSessionKey(), newSession);
+    public synchronized PlaySession createSession(int playerSize) {
+        String sessionKey = SESSION_KEY_PREFIX + "-" + (sessions.size()+1);
+
+        GameMap map = GameMap.open("D:\\map1.json");
+        PlaySession session = new PlaySession(sessionKey, map, playerSize);
+
+        addSession(session);
+
+        return session;
     }
 
     public PlaySession findSession(String key) {
         if (!sessions.containsKey(key)) {
-            throw new NotExistingSession(key);
+            throw new NotExistingInstanceSessionException(key);
         }
         return sessions.get(key);
     }
@@ -45,20 +53,19 @@ public class SessionRepository {
     }
 
 
-    public void loadFile() {
-
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//            // Path to your JSON file
-//            File jsonFile = new File("path/to/your/file.json");
-//            // Convert JSON file to Object
-//            Person person = objectMapper.readValue(jsonFile, Person.class);
-//            // Output the person object
-//            System.out.println("Name: " + person.getName());
-//            System.out.println("Age: " + person.getAge());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    public void addPlayerToSession(String sessionKey,PlayerData player) {
+        if (!isSessionExistWithKey(sessionKey)) {
+            throw new NotExistingInstanceSessionException(sessionKey);
+        }
+        PlaySession session = findSession(sessionKey);
+        session.addPlayer(player);
     }
 
+
+    private synchronized void addSession(PlaySession newSession) {
+        if (sessions.containsKey(newSession.getSessionKey())) {
+            throw new DuplicateGamePlaySessionException(newSession.getSessionKey());
+        }
+        sessions.put(newSession.getSessionKey(), newSession);
+    }
 }

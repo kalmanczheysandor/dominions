@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.application.dominion.api.game.common.engine.exception;
+package hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action;
 
 public class NotEnoughSupplyPlayerActionException extends PlayerActionException {
     private int expectedSupplySize;
