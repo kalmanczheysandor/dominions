@@ -18,18 +18,22 @@
 
 .Player1 {
     fill: indigo;
+    color:indigo;
 }
 
 .Player2 {
     fill: orange;
+    color:orange;
 }
 
 .Player3 {
     fill: green;
+    color:green;
 }
 
 .Player4 {
     fill: red;
+    color:red;
 }
 
 
