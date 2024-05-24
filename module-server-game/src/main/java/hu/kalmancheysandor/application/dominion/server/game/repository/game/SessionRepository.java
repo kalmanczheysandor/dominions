@@ -24,7 +24,6 @@ public class SessionRepository {
     private static Map<String, PlaySession> sessions = new HashMap<>();
 
 
-
     public SessionRepository() {
 //        PlayerData player1 = new HumanPlayer(1);
 //        PlayerData player2 = new HumanPlayer(2);
@@ -36,9 +35,12 @@ public class SessionRepository {
 //        sessions.put("aa1", session);
     }
 
+    public List<PlaySession> list() {
+        return new ArrayList<>(sessions.values());
+    }
 
     public synchronized PlaySession createSession() {
-        String sessionKey = SESSION_KEY_PREFIX + "-" + (sessions.size()+1);
+        String sessionKey = SESSION_KEY_PREFIX + "-" + (sessions.size() + 1);
 
         GameMap map = GameMap.open("D:\\map2.json");
         PlaySession session = new PlaySession(sessionKey, map, gameEngine);
@@ -60,7 +62,7 @@ public class SessionRepository {
     }
 
 
-    public void addPlayerToSession(String sessionKey,PlayerData player) {
+    public void addPlayerToSession(String sessionKey, PlayerData player) {
         if (!isSessionExistWithKey(sessionKey)) {
             throw new NotExistingInstanceSessionException(sessionKey);
         }

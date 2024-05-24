@@ -4,6 +4,7 @@ package hu.kalmancheysandor.application.dominion.server.game.service.game;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.SessionStatusCode;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.PendingTurnSessionException;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -40,6 +43,18 @@ public class GameService {
         PlaySession newSession = sessionRepository.createSession();
         return new GameCreateResponse(newSession.getSessionKey());
     }
+
+    public List<GameSessionItemResponse> list() {
+        return sessionRepository.list().stream().map(item -> {
+            GameSessionItemResponse response = new GameSessionItemResponse();
+            response.setSessionKey(item.getSessionKey());
+            response.setTitle(item.getSessionKey());
+            response.setStatus(item.getStatus());
+            response.setMapName(item.getGameMap().getMapName());
+            return response;
+        }).collect(Collectors.toList());
+    }
+
 
     public GameJoinResponse join(String sessionKey, GameJoinRequest request) {
         // Find session
@@ -85,12 +100,12 @@ public class GameService {
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         // Determine status code
-        GameStateResponse.StatusCode statusCode = GameStateResponse.StatusCode.RECRUITING;
-        if (session.getStatus() == PlaySession.Status.PLAYING) {
-            statusCode = GameStateResponse.StatusCode.PLAYING;
-        } else if (session.getStatus() == PlaySession.Status.ENDED) {
-            statusCode = GameStateResponse.StatusCode.ENDED;
-        }
+//        SessionStatusCode statusCode = SessionStatusCode.RECRUITING;
+//        if (session.getStatus() == PlaySession.Status.PLAYING) {
+//            statusCode = StatusCode.PLAYING;
+//        } else if (session.getStatus() == PlaySession.Status.ENDED) {
+//            statusCode = StatusCode.ENDED;
+//        }
 
         GameMap gameMap = session.getGameMap();
         Map<Integer, GameMap.MapCell> cells = (Map<Integer, GameMap.MapCell>) SerializationUtils.clone((Serializable) gameMap.getCells());
@@ -102,7 +117,7 @@ public class GameService {
         response.setCurrentTurn(session.getTurn());
         response.setPlayerCount(session.playerCount());
         response.setPendingCount(session.pendingCount());
-        response.setStatusCode(statusCode);
+        response.setStatusCode(session.getStatus());
         response.setCells(cells);
         response.setPlayers(players);
         return response;

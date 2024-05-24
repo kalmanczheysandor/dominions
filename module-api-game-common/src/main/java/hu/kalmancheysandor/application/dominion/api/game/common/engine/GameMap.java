@@ -13,6 +13,9 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class GameMap implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String mapName;
     private Map<Integer, GameMap.MapCell> cells;
     private Map<Integer, GameMap.Opponent> players;
 

@@ -27,7 +27,7 @@ public class PlaySession {
     @Getter
     private GameMap gameMap = null;
     @Getter
-    private Status status;
+    private SessionStatusCode status;
 
     private final GameEngine gameEngine;
 
@@ -35,7 +35,7 @@ public class PlaySession {
         this.sessionKey = sessionKey;
         this.gameMap = gameMap;
         this.maxPlayerSize = gameMap.playerCount();
-        this.status = Status.RECRUITING;
+        this.status = SessionStatusCode.RECRUITING;
         this.gameEngine = gameEngine;
     }
 
@@ -64,7 +64,7 @@ public class PlaySession {
 
 
     private void start() {
-        this.status = Status.PLAYING;
+        this.status = SessionStatusCode.PLAYING;
         this.gameState = new GameState(gameMap);
     }
 
@@ -130,10 +130,5 @@ public class PlaySession {
         return ++turn;
     }
 
-    public enum Status {
-        RECRUITING,
-        PLAYING,
-        ENDED
-    }
 
 }

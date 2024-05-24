@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -24,6 +25,14 @@ public class GameController {
     public GameCreateResponse create(@RequestBody GameCreateRequest request ) {
         return gameService.create(request);
     }
+
+    @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GameSessionItemResponse> list() {
+        return gameService.list();
+    }
+
+
 
     @PostMapping("/{sessionKey}/join")
     @ResponseStatus(HttpStatus.OK)
