@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 
 @Data
 @NoArgsConstructor
-public class GameMap {
-    private Map<Integer,GameMap.MapCell> cells;
-    private Map<Integer,GameMap.Opponent> players;
+public class GameMap implements Serializable {
+    private Map<Integer, GameMap.MapCell> cells;
+    private Map<Integer, GameMap.Opponent> players;
 
 
     public static GameMap open(String path) {
@@ -38,10 +39,6 @@ public class GameMap {
     }
 
 
-
-
-
-
     public int cellCount() {
         return cells.size();
     }
@@ -51,9 +48,10 @@ public class GameMap {
     }
 
     @Data
-    public static class Opponent {
+    public static class Opponent implements Serializable {
         private PlayerType type;
         private Integer reserveSize;
+
         public enum PlayerType {
             HUMAN,
             AI_BASIC,
@@ -62,7 +60,7 @@ public class GameMap {
     }
 
     @Data
-    public static class MapCell {
+    public static class MapCell implements Serializable {
         private Integer playerKey;
         private int armySize;
         private int[] neighbours;

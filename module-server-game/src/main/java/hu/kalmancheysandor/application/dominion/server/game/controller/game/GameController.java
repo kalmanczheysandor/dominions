@@ -37,7 +37,7 @@ public class GameController {
         return gameService.doStep(sessionKey,request);
     }
 
-    @GetMapping("/{sessionKey}/play/state")
+    @GetMapping("/{sessionKey}/play/current")
     @ResponseStatus(HttpStatus.OK)
     public GameStateResponse currentState(@PathVariable String sessionKey) {
         return gameService.currentState(sessionKey);

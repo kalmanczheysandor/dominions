@@ -24,6 +24,7 @@ public class PlaySession {
     private Map<Integer, PlayerData> players = new HashMap<>();
 
     private GameState gameState = null;
+    @Getter
     private GameMap gameMap = null;
     @Getter
     private Status status;

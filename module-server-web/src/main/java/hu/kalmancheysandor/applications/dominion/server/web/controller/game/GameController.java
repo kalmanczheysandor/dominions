@@ -1,6 +1,7 @@
 package hu.kalmancheysandor.applications.dominion.server.web.controller.game;
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
+import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStateResponse;
 import hu.kalmancheysandor.applications.dominion.server.web.configuration.mvc.AllowAjaxRequest;
 import hu.kalmancheysandor.applications.dominion.server.web.configuration.mvc.AllowStandardRequest;
 import hu.kalmancheysandor.applications.dominion.server.web.proxy.ai.Ai1ServiceProxy;
@@ -38,6 +39,24 @@ public class GameController {
   public String showPage() {
     return "game/GameListPage";
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   @MessageMapping("/chat")

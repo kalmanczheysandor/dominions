@@ -1,6 +1,8 @@
 package hu.kalmancheysandor.application.dominion.server.game.service.game;
 
 
+import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
@@ -8,8 +10,13 @@ import hu.kalmancheysandor.application.dominion.api.game.common.session.exceptio
 import hu.kalmancheysandor.application.dominion.server.game.repository.game.SessionRepository;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.SerializationUtils;
+
+import java.io.*;
+import java.util.Map;
 
 
 @Service
@@ -85,13 +92,19 @@ public class GameService {
             statusCode = GameStateResponse.StatusCode.ENDED;
         }
 
+        GameMap gameMap = session.getGameMap();
+        Map<Integer, GameMap.MapCell> cells = (Map<Integer, GameMap.MapCell>) SerializationUtils.clone((Serializable) gameMap.getCells());
+        Map<Integer, GameMap.Opponent> players = (Map<Integer, GameMap.Opponent>) SerializationUtils.clone((Serializable) gameMap.getPlayers());
+
+
         // Generate response
         GameStateResponse response = new GameStateResponse();
         response.setCurrentTurn(session.getTurn());
         response.setPlayerCount(session.playerCount());
         response.setPendingCount(session.pendingCount());
         response.setStatusCode(statusCode);
-
+        response.setCells(cells);
+        response.setPlayers(players);
         return response;
     }
 
