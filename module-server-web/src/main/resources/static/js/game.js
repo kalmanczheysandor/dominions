@@ -172,7 +172,7 @@ $(document).ready(function () {
         console.log("Call");
         $.ajax({
             type: 'GET',
-            url: '/web/map/AAA-1/play/current',
+            url: '/web/map/AAA-1/current',
             dataType: 'json',
             beforeSend: function (xhr) {
             },
@@ -260,6 +260,21 @@ $(document).ready(function () {
         }
     );
 
+    $(document).on('mouseover', '#AttackButton', function (e) {
+            e.preventDefault();
+            let self = this;
+            try {
+                let ffwCountryKey = self.getAttribute("ffw-country-key");
+                if (ffwCountryKey == null) {
+                    throw "The ffw-country-key is not defined!";
+                }
+                self.style.backgroundColor = "green";
+                document.getElementById('PointedCountry').innerHTML = 'Pointed country key:' + ffwCountryKey;
+            } catch (exp) {
+                console.error(exp)
+            }
+        }
+    );
 });
 
 

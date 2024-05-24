@@ -11,15 +11,17 @@ public interface GameServerProxy {
 	@PostMapping("/game/create")
 	public GameCreateResponse create(@RequestBody GameCreateRequest request );
 
+	@PostMapping("/game/{sessionKey}/join")
+	public GameJoinResponse join(@PathVariable String sessionKey,@RequestBody GameJoinRequest request );
+
 	@GetMapping("/game/list")
 	public List<GameSessionItemResponse> listAll();
 
-	@PostMapping("/game/{sessionKey}/join")
-	public GameJoinResponse join(@PathVariable String sessionKey,@RequestBody GameJoinRequest request );
+	@GetMapping("/game/{sessionKey}/current")
+	public GameStateResponse currentState(@PathVariable String sessionKey);
+
 
 	@PostMapping("/game/{sessionKey}/play/step")
 	public GameStateResponse step(@PathVariable String sessionKey, @RequestBody GameStepRequest request );
 
-	@GetMapping("/game/{sessionKey}/play/current")
-	public GameStateResponse currentState(@PathVariable String sessionKey);
 }

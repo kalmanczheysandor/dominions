@@ -40,16 +40,19 @@ public class GameController {
         return gameService.join(sessionKey,request);
     }
 
+    @GetMapping("/{sessionKey}/current")
+    @ResponseStatus(HttpStatus.OK)
+    public GameStateResponse currentState(@PathVariable String sessionKey) {
+        return gameService.currentState(sessionKey);
+    }
+
+
     @PostMapping("/{sessionKey}/play/step")
     @ResponseStatus(HttpStatus.OK)
     public GameStateResponse step(@PathVariable String sessionKey, @RequestBody GameStepRequest request ) {
         return gameService.doStep(sessionKey,request);
     }
 
-    @GetMapping("/{sessionKey}/play/current")
-    @ResponseStatus(HttpStatus.OK)
-    public GameStateResponse currentState(@PathVariable String sessionKey) {
-        return gameService.currentState(sessionKey);
-    }
+
 
 }
