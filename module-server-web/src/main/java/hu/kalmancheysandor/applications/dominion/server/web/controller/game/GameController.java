@@ -1,17 +1,21 @@
 package hu.kalmancheysandor.applications.dominion.server.web.controller.game;
 
 
+import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameCreateResponse;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameSessionItemResponse;
 import hu.kalmancheysandor.applications.dominion.server.web.configuration.mvc.AllowAjaxRequest;
 import hu.kalmancheysandor.applications.dominion.server.web.configuration.mvc.AllowStandardRequest;
+import hu.kalmancheysandor.applications.dominion.server.web.proxy.game.GameServerProxy;
 import hu.kalmancheysandor.applications.dominion.server.web.service.game.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +26,6 @@ import java.util.stream.Collectors;
 //@CrossOrigin(origins = "*")
 
 public class GameController {
-
 
     @Autowired
     private GameService gameService;
@@ -42,5 +45,12 @@ public class GameController {
     @AllowAjaxRequest
     public List<GameSessionItemResponse> listAllSession() {
         return gameService.listAllSession();
+    }
+
+    @GetMapping("/data/create")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
+    public GameCreateResponse create() {
+        return gameService.create();
     }
 }

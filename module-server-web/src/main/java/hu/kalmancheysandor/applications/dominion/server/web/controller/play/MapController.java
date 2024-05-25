@@ -1,9 +1,6 @@
 package hu.kalmancheysandor.applications.dominion.server.web.controller.play;
 
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameJoinRequest;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameJoinResponse;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStateResponse;
-import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.GameStepRequest;
+import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.*;
 import hu.kalmancheysandor.applications.dominion.server.web.configuration.mvc.AllowAjaxRequest;
 import hu.kalmancheysandor.applications.dominion.server.web.configuration.mvc.AllowStandardRequest;
 import hu.kalmancheysandor.applications.dominion.server.web.service.play.PlayService;
@@ -28,6 +25,7 @@ public class MapController {
     public String showPage(@PathVariable String sessionKey,@PathVariable int playerIndex) {
         return "play/PlayPage";
     }
+
 
 
     @PostMapping("/join")

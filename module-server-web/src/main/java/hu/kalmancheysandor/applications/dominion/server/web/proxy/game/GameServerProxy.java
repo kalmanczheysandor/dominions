@@ -8,8 +8,8 @@ import java.util.List;
 
 @FeignClient(name="game")
 public interface GameServerProxy {
-	@PostMapping("/game/create")
-	public GameCreateResponse create(@RequestBody GameCreateRequest request );
+	@GetMapping("/game/create")
+	public GameCreateResponse create();
 
 	@PostMapping("/game/{sessionKey}/join")
 	public GameJoinResponse join(@PathVariable String sessionKey,@RequestBody GameJoinRequest request );

@@ -42,7 +42,7 @@ public class GameService {
 //    private AiPlayer2ServerProxy proxyAiPlayer2;
 
 
-    public GameCreateResponse create(GameCreateRequest request) {
+    public GameCreateResponse create() {
         PlaySession newSession = sessionRepository.createSession();
         return new GameCreateResponse(newSession.getSessionKey());
     }

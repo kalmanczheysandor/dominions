@@ -17,8 +17,8 @@
                         list</strong>
                 </h3>
                 <div class="card-tools">
-                    <button ffw-type="Link" th:ffw-target="${@environment.getProperty('server.servlet.context-path')+'/user/add'}" ffw-request-mode="GET" class="btn btn-sm btn-success">
-                        <i class="fas fa-plus"></i>
+                    <button id="CreateGameButton" class="btn btn-sm btn-success">
+                        <i class="fas fa-plus"></i> Crate new
                     </button>
                     <button ffw-type="DataTable.RefreshButton" ffw-target="GameListPage_table" class="btn btn-sm btn-primary">
                         <i class="fas fa-sync"></i>
@@ -123,6 +123,10 @@
                 
             });
             
+            // $('#CreateGameButton').on('onSuccessResponse', 'button', function (event, data) {
+            //     $('#GameListPage_table').DataTable().ajax.reload();
+            // });
+            
             // Refreshing table after row-menu action
             $('#GameListPage_table').on('onSuccessResponse', 'item', function (event, data) {
                 $('#GameListPage_table').DataTable().ajax.reload();
@@ -143,6 +147,47 @@
                     console.error(exp)
                 }
             });
+            
+            
+            
+            
+            
+            $(document).on('click', '#CreateGameButton', function (e) {
+                        e.preventDefault();
+                        let self = this;
+                        
+                        try {
+                            
+                            $.ajax({
+                                type: 'GET',
+                                url: '/web/game/data/create',
+                                dataType: 'json',
+                                contentType: "application/json; charset=utf-8",
+                                beforeSend: function (xhr) {
+                                    let csrfToken = $("meta[name='_csrf']").attr("content");
+                                    let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                                    xhr.setRequestHeader(csrfHeader, csrfToken); // Include CSRF token in request headers
+                                },
+                                success: function (response) {
+                                    $('#GameListPage_table').DataTable().ajax.reload();
+                                },
+                                error: function (xhr, status, error) {
+                                    $('#GameListPage_table').DataTable().ajax.reload();
+                                    console.error("Error:", error);
+                                }
+                            });
+                            
+                        } catch (exp) {
+                            console.error(exp)
+                        }
+                    }
+            );
+            
+            
+            
+            
+            
+            
             
         </script>
     

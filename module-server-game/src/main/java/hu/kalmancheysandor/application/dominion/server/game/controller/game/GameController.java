@@ -20,10 +20,10 @@ public class GameController {
     private GameService gameService;
 
 
-    @PostMapping("/create")
+    @GetMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public GameCreateResponse create(@RequestBody GameCreateRequest request ) {
-        return gameService.create(request);
+    public GameCreateResponse create() {
+        return gameService.create();
     }
 
     @GetMapping("/list")
