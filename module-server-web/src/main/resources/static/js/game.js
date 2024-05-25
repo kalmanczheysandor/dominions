@@ -213,7 +213,7 @@ $(document).ready(function () {
         countryNode.style.fill = "red";
     };
 
-    for (let i = 1; i <= 42; i++) {
+    for (let i = 0; i <= 41; i++) {
         adjustCountryLabelPosition(i);
     }
     emptyAllCountry();
@@ -252,8 +252,8 @@ $(document).ready(function () {
                 if (ffwCountryKey == null) {
                     throw "The ffw-country-key is not defined!";
                 }
-                self.style.backgroundColor = "green";
-                document.getElementById('PointedCountry').innerHTML = 'Pointed country key:' + ffwCountryKey;
+                //self.style.backgroundColor = "green";
+                document.getElementById('CellIndex').innerHTML = '#' + ffwCountryKey;
             } catch (exp) {
                 console.error(exp)
             }

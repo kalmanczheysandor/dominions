@@ -63,81 +63,81 @@ public class TestService {
     }
 
     public void play(int sizeX, int sizeY) {
-        int cellTopLeft = 0;
-        int cellTopRight = sizeX - 1;
-        int cellBottomLeft = ((sizeX * sizeY) - sizeX);
-        int cellBottomRight = (sizeX * sizeY) - 1;
-
-        boolean[][] mrx = buildNeighbouringMatrix(sizeX, sizeY);
-        GameState gameState = new GameState(3, sizeX * sizeY, mrx);
-
-        gameState.getOpponents()[player0Key].setAlive(false);
-        gameState.getOpponents()[player1Key].setAlive(true);
-        gameState.getOpponents()[player2Key].setAlive(true);
-
-        gameState.getOpponents()[player1Key].setReserveSize(100);
-        gameState.getOpponents()[player2Key].setReserveSize(50);
-
-
-        // Player1
-        gameState.getCells()[cellTopLeft].setOccupierKey(player1Key);
-        gameState.getCells()[cellTopLeft].setDefendingTroopSize(21);
-        gameState.getCells()[cellBottomRight].setOccupierKey(player1Key);
-        gameState.getCells()[cellBottomRight].setDefendingTroopSize(22);
-
-        // Player2
-        gameState.getCells()[cellTopRight].setOccupierKey(player2Key);
-        gameState.getCells()[cellTopRight].setDefendingTroopSize(23);
-        gameState.getCells()[cellBottomLeft].setOccupierKey(player2Key);
-        gameState.getCells()[cellBottomLeft].setDefendingTroopSize(24);
-
-        Set<GameEngine.Action> actionGroup;
-
-        GameEngine engine = new GameEngine(gameState);
-
-        GameState state = engine.getGameState();
-
-        printStateMatrix(state.getCells(), sizeX, sizeY);
-
-        int turn = 0;
-        do {
-            println("-----------<TURN:" + turn + ">----------");
-            if (engine.isEndOfGame()) {
-                println("END OF GAME");
-                println("The winner is:" + engine.getGameState().getWinnerKey());
-                break;
-            }
-
-            actionGroup = new HashSet<>();
-
-            CompletableFuture<AiResponse> future1 = this.callMicroservice1(createRequest(player1Key, state));
-            CompletableFuture<AiResponse> future2 = this.callMicroservice2(createRequest(player2Key, state));
-
-            // Wait for both futures to complete
-            CompletableFuture.allOf(future1, future2).join();
-
-            // Combine the results
-            AiResponse response1 = future1.join();
-            AiResponse response2 = future2.join();
-            println(response1.toString());
-            println(response2.toString());
-
-            GameEngine.Action action1 = new GameEngine.Action(player1Key, response1.getTargetCellKey(), response1.getTroopSize());
-            GameEngine.Action action2 = new GameEngine.Action(player2Key, response2.getTargetCellKey(), response2.getTroopSize());
-
-            actionGroup.add(action1);
-            actionGroup.add(action2);
-
-            engine.doAction(actionGroup);
-            state = engine.getGameState();
-            printStateMatrix(state.getCells(),sizeX,sizeY);
-
-            if (turn >= 100) {
-                println("!!! <TO MUCH LOOP> !!!");
-                break;
-            }
-            turn++;
-        } while (true);
+//        int cellTopLeft = 0;
+//        int cellTopRight = sizeX - 1;
+//        int cellBottomLeft = ((sizeX * sizeY) - sizeX);
+//        int cellBottomRight = (sizeX * sizeY) - 1;
+//
+//        boolean[][] mrx = buildNeighbouringMatrix(sizeX, sizeY);
+//        GameState gameState = new GameState(3, sizeX * sizeY, mrx);
+//
+//        gameState.getOpponents()[player0Key].setAlive(false);
+//        gameState.getOpponents()[player1Key].setAlive(true);
+//        gameState.getOpponents()[player2Key].setAlive(true);
+//
+//        gameState.getOpponents()[player1Key].setReserveSize(100);
+//        gameState.getOpponents()[player2Key].setReserveSize(50);
+//
+//
+//        // Player1
+//        gameState.getCells()[cellTopLeft].setOccupierKey(player1Key);
+//        gameState.getCells()[cellTopLeft].setDefendingTroopSize(21);
+//        gameState.getCells()[cellBottomRight].setOccupierKey(player1Key);
+//        gameState.getCells()[cellBottomRight].setDefendingTroopSize(22);
+//
+//        // Player2
+//        gameState.getCells()[cellTopRight].setOccupierKey(player2Key);
+//        gameState.getCells()[cellTopRight].setDefendingTroopSize(23);
+//        gameState.getCells()[cellBottomLeft].setOccupierKey(player2Key);
+//        gameState.getCells()[cellBottomLeft].setDefendingTroopSize(24);
+//
+//        Set<GameEngine.Action> actionGroup;
+//
+//        GameEngine engine = new GameEngine(gameState);
+//
+//        GameState state = engine.getGameState();
+//
+//        printStateMatrix(state.getCells(), sizeX, sizeY);
+//
+//        int turn = 0;
+//        do {
+//            println("-----------<TURN:" + turn + ">----------");
+//            if (engine.isEndOfGame()) {
+//                println("END OF GAME");
+//                println("The winner is:" + engine.getGameState().getWinnerKey());
+//                break;
+//            }
+//
+//            actionGroup = new HashSet<>();
+//
+//            CompletableFuture<AiResponse> future1 = this.callMicroservice1(createRequest(player1Key, state));
+//            CompletableFuture<AiResponse> future2 = this.callMicroservice2(createRequest(player2Key, state));
+//
+//            // Wait for both futures to complete
+//            CompletableFuture.allOf(future1, future2).join();
+//
+//            // Combine the results
+//            AiResponse response1 = future1.join();
+//            AiResponse response2 = future2.join();
+//            println(response1.toString());
+//            println(response2.toString());
+//
+//            GameEngine.Action action1 = new GameEngine.Action(player1Key, response1.getTargetCellKey(), response1.getTroopSize());
+//            GameEngine.Action action2 = new GameEngine.Action(player2Key, response2.getTargetCellKey(), response2.getTroopSize());
+//
+//            actionGroup.add(action1);
+//            actionGroup.add(action2);
+//
+//            engine.doAction(actionGroup);
+//            state = engine.getGameState();
+//            printStateMatrix(state.getCells(),sizeX,sizeY);
+//
+//            if (turn >= 100) {
+//                println("!!! <TO MUCH LOOP> !!!");
+//                break;
+//            }
+//            turn++;
+//        } while (true);
 
     }
 

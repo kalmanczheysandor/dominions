@@ -2,7 +2,9 @@ package hu.kalmancheysandor.application.dominion.server.game.service.game;
 
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.SessionStatusCode;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
@@ -27,7 +29,8 @@ public class GameService {
 
     @Autowired
     private SessionRepository sessionRepository;
-
+    @Autowired
+    private GameEngine gameEngine;
 
 //    @Autowired
 //    private AiPlayer1ServerProxy proxy;
@@ -78,18 +81,24 @@ public class GameService {
         return generateGameStateResponse(sessionKey);
     }
 
-    public GameStateResponse doStep(String sessionKey, GameStepRequest request) {
-        int playerId = request.getPlayerId();
+    public GameStateResponse doStep(String sessionKey, int playerIndex, GameStepRequest request) {
 
         // Find session
         validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         // Save intention
-        session.saveIntention(playerId, request.getValue());
+        GameEngine.Action action = new GameEngine.Action(playerIndex, request.getTargetCellKey(), request.getAttackingTroopSize());
+        session.saveIntention(playerIndex, action);
 
         // Calculations
-        doTurnIfPossible(sessionKey);
+        if (!session.isPending()) {
+            GameState newState = gameEngine.doAction(session.getAllIntention(), session.getGameState());
+            session.setGameState(newState);
+
+            session.eliminateAllIntention();
+            session.incrementTurn();
+        }
 
         return generateGameStateResponse(sessionKey);
     }
@@ -99,17 +108,36 @@ public class GameService {
         validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
-        // Determine status code
-//        SessionStatusCode statusCode = SessionStatusCode.RECRUITING;
-//        if (session.getStatus() == PlaySession.Status.PLAYING) {
-//            statusCode = StatusCode.PLAYING;
-//        } else if (session.getStatus() == PlaySession.Status.ENDED) {
-//            statusCode = StatusCode.ENDED;
-//        }
-
         GameMap gameMap = session.getGameMap();
-        Map<Integer, GameMap.MapCell> cells = (Map<Integer, GameMap.MapCell>) SerializationUtils.clone((Serializable) gameMap.getCells());
-        Map<Integer, GameMap.Opponent> players = (Map<Integer, GameMap.Opponent>) SerializationUtils.clone((Serializable) gameMap.getPlayers());
+        Map<Integer, GameMap.MapCell> mapCells = (Map<Integer, GameMap.MapCell>) SerializationUtils.clone((Serializable) gameMap.getCells());
+        Map<Integer, GameMap.Opponent> mapPlayers = (Map<Integer, GameMap.Opponent>) SerializationUtils.clone((Serializable) gameMap.getPlayers());
+
+        GameState theGameState = session.getGameState();
+
+        GameState.Opponent[] gameStatePlayers = theGameState.getOpponents();
+
+        //Players
+        for(int playerIndex=0;playerIndex<gameStatePlayers.length;playerIndex++) {
+            GameState.Opponent gameStatePlayer = gameStatePlayers[playerIndex];
+
+            mapPlayers.get(playerIndex).setAlive(gameStatePlayer.isAlive());
+            mapPlayers.get(playerIndex).setReserveSize(gameStatePlayer.getReserveSize());
+        }
+
+
+        // cells
+        for(int cellIndex=0;cellIndex<theGameState.getCells().length;cellIndex++) {
+            GameState.Cell gameStateCell = theGameState.getCells()[cellIndex];
+            GameMap.MapCell mapCell = mapCells.get(cellIndex);
+            mapCell.setArmySize(gameStateCell.getDefendingTroopSize());
+
+            if(gameStateCell.isEmpty()) {
+                mapCell.setPlayerKey(null);
+            }
+            else {
+                mapCell.setPlayerKey(gameStateCell.getOccupierKey());
+            }
+        }
 
 
         // Generate response
@@ -118,8 +146,8 @@ public class GameService {
         response.setPlayerCount(session.playerCount());
         response.setPendingCount(session.pendingCount());
         response.setStatusCode(session.getStatus());
-        response.setCells(cells);
-        response.setPlayers(players);
+        response.setCells(mapCells);
+        response.setPlayers(mapPlayers);
         return response;
     }
 

@@ -47,10 +47,10 @@ public class GameController {
     }
 
 
-    @PostMapping("/{sessionKey}/play/step")
+    @PostMapping("/{sessionKey}/play/{playerIndex}/step")
     @ResponseStatus(HttpStatus.OK)
-    public GameStateResponse step(@PathVariable String sessionKey, @RequestBody GameStepRequest request ) {
-        return gameService.doStep(sessionKey,request);
+    public GameStateResponse step(@PathVariable String sessionKey,@PathVariable int playerIndex, @RequestBody GameStepRequest request ) {
+        return gameService.doStep(sessionKey,playerIndex,request);
     }
 
 

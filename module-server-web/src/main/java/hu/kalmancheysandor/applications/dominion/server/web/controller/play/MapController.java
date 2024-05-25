@@ -26,7 +26,7 @@ public class MapController {
     }
 
 
-    @GetMapping("/play/current")
+    @GetMapping("/current")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public GameStateResponse getGameState(@PathVariable String sessionKey) {

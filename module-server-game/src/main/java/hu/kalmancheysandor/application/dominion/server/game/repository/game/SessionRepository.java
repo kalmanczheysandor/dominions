@@ -17,8 +17,7 @@ import java.util.*;
 @Repository
 public class SessionRepository {
 
-    @Autowired
-    private GameEngine gameEngine;
+
 
     private static final String SESSION_KEY_PREFIX = "AAA";
     private static Map<String, PlaySession> sessions = new HashMap<>();
@@ -43,7 +42,7 @@ public class SessionRepository {
         String sessionKey = SESSION_KEY_PREFIX + "-" + (sessions.size() + 1);
 
         GameMap map = GameMap.open("D:\\map2.json");
-        PlaySession session = new PlaySession(sessionKey, map, gameEngine);
+        PlaySession session = new PlaySession(sessionKey, map);
 
         addSession(session);
 

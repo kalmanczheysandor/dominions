@@ -54,8 +54,9 @@ public class GameMap implements Serializable {
     public static class Opponent implements Serializable {
         private PlayerType type;
         private Integer reserveSize;
+        private boolean alive = true;
 
-        public enum PlayerType {
+        public enum PlayerType implements Serializable{
             HUMAN,
             AI_BASIC,
             AI_NEURAL,

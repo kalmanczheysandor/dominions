@@ -22,11 +22,53 @@ public class GameState {
         int playerCount = gameMap.getPlayers().size();
         boolean[][] neighbouringMatrix = generateNeighbouringMatrix(gameMap);
 
-        initialisation(playerCount,cellCount,neighbouringMatrix);
+        // Convert map cells to game state cells
+        Cell[] cells = new Cell[cellCount];
+        for (Map.Entry<Integer, GameMap.MapCell> mapCellEntry : gameMap.getCells().entrySet()) {
+            int mapCellIndex = mapCellEntry.getKey();
+            GameMap.MapCell mapCell = mapCellEntry.getValue();
+
+            int defendingTroops = -1;
+            if (mapCell.getPlayerKey() != null) {
+                defendingTroops = mapCell.getPlayerKey();
+            }
+            cells[mapCellIndex] = new Cell(defendingTroops, mapCell.getArmySize());
+        }
+
+        // Convert map players to game state players
+        Opponent[] players = new Opponent[playerCount];
+        for (Map.Entry<Integer, GameMap.Opponent> mapPlayerEntry : gameMap.getPlayers().entrySet()) {
+            int mapPlayerIndex = mapPlayerEntry.getKey();
+            GameMap.Opponent mapPlayer = mapPlayerEntry.getValue();
+            players[mapPlayerIndex] = new Opponent(mapPlayer.getReserveSize());
+        }
+        init(cells, players, neighbouringMatrix);
+
     }
 
-    public GameState(int playerCount, int cellCount, boolean[][] neighbouringMatrix) {
-        initialisation(playerCount,cellCount,neighbouringMatrix);
+
+    private void init(Cell[] cells, Opponent[] opponents, boolean[][] neighbouringMatrix) {
+       int playerCount = opponents.length;
+       int cellCount = cells.length;
+
+        // Validations
+        if (playerCount < 2) {
+            throw new GeneralGameException("At leats two player needed!");
+        }
+        validateNeighbouringMatrix(cellCount, neighbouringMatrix);
+
+        this.playerCount = playerCount;
+        this.cellCount = cellCount;
+        this.neighboursMatrix = neighbouringMatrix;
+        this.statusCode = StatusCode.INITIALISED;
+
+        this.opponents = opponents;
+        this.cells = cells;
+    }
+
+
+    private GameState(int playerCount, int cellCount, boolean[][] neighbouringMatrix) {
+        initialisation(playerCount, cellCount, neighbouringMatrix);
     }
 
 
@@ -49,14 +91,15 @@ public class GameState {
 
     private static boolean[][] generateNeighbouringMatrix(GameMap gameMap) {
         int cellCount = gameMap.getCells().size();
+        System.out.println("Cell count:" + cellCount);
         boolean[][] neighbouringMatrix = new boolean[cellCount][cellCount];
 
         for (Map.Entry<Integer, GameMap.MapCell> entry : gameMap.getCells().entrySet()) {
             GameMap.MapCell cell = entry.getValue();
-            int cellIndex = entry.getKey()-1;
+            int cellIndex = entry.getKey();
 
             for (int neighbourIndex : entry.getValue().getNeighbours()) {
-                neighbouringMatrix[cellIndex][neighbourIndex-1] = true;
+                neighbouringMatrix[cellIndex][neighbourIndex] = true;
             }
         }
 
@@ -221,10 +264,7 @@ public class GameState {
 
         @Override
         public String toString() {
-            return "Cell{" +
-                "occupierKey=" + occupierKey +
-                ", defendingTroopSize=" + defendingTroopSize +
-                '}';
+            return "Cell{" + "occupierKey=" + occupierKey + ", defendingTroopSize=" + defendingTroopSize + '}';
         }
 //        public void decrementTroopSize(int decrementWithValue) {
 //            this.troopSize -= decrementWithValue;
@@ -236,9 +276,7 @@ public class GameState {
     }
 
     public enum StatusCode {
-        INITIALISED,
-        PROCEEDED,
-        FINISHED
+        INITIALISED, PROCEEDED, FINISHED
     }
 
 

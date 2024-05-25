@@ -15,6 +15,10 @@ public class GameEngine {
         this.gameState = gameState;
     }
 
+    public GameState doAction(Set<Action> plannedActions,GameState gameState) {
+        this.gameState = gameState;
+        return doAction(plannedActions);
+    }
 
     public GameState doAction(Set<Action> plannedActions) {
         //if (!isMoreActionPossible()) {

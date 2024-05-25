@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.application.dominion.api.game.common.session;
 
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public abstract class PlayerData {
     private String name;
 
     @Getter @Setter
-    private String intention = null;
+    private GameEngine.Action intention = null;
 
     @Setter
     private boolean intentionGiven = false;

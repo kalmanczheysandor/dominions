@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameStepRequest {
-    private Integer gameId;
-    private Integer playerId;
-    private String value;
+    private Integer targetCellKey;
+    private Integer attackingTroopSize;
 }
