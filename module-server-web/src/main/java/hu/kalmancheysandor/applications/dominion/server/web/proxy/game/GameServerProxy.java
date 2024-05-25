@@ -20,8 +20,7 @@ public interface GameServerProxy {
 	@GetMapping("/game/{sessionKey}/current")
 	public GameStateResponse currentState(@PathVariable String sessionKey);
 
-
-	@PostMapping("/game/{sessionKey}/play/step")
-	public GameStateResponse step(@PathVariable String sessionKey, @RequestBody GameStepRequest request );
+	@PostMapping("/game/{sessionKey}/play/{playerIndex}/step")
+	public GameStateResponse action(@PathVariable String sessionKey,@PathVariable int playerIndex, @RequestBody GameStepRequest request );
 
 }

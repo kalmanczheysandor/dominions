@@ -43,7 +43,7 @@
             
         }
         
-        #Target, #Troops {
+        #TargetInput, #TroopsInput {
             
             width: 150px;
             box-sizing: border-box;
@@ -59,7 +59,7 @@
         }
         
         
-        #Target:focus, #Troops:focus {
+        #TargetInput:focus, #TroopsInput:focus {
             outline: none;
         }
         
@@ -128,9 +128,16 @@
             color: white;
             font-size: 25px;
             font-weight: bold;
-            
         }
-    
+        
+        #TurnLabel {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+        }
     
     </style>
 
@@ -143,14 +150,16 @@
                 Reserve
             </button>
             
-            <input id="Target" type="text" placeholder="Target">
-            <input id="Troops" type="text" placeholder="Troops">
+            <input id="TargetInput" type="text" placeholder="Target">
+            <input id="TroopsInput" type="text" placeholder="Troops">
             
             <button id="AttackButton" class="btn btn-basic" type="button">
                 Attack
             </button>
         </div>
         <a id="ExitButton" class="btn btn-basic " style="" href="#">EXIT</a>
+        
+        <div id="TurnLabel"></div>
     </nav>
     
     <div layout:fragment="page" style="border:2px red solid;display:table-row;padding:5px;margin:0px;">
@@ -498,6 +507,119 @@
         
         </div>
         <div id="CellIndex"></div>
+        
+        
+        <script type="text/javascript" th:inline="javascript">
+            function getUrlPathData() {
+                let pathArr = window.location.pathname.split("/");  /// PATH:/web/map/AAA-1/play/1
+                let maxIndex = pathArr.length - 1;
+                let playerIndex = pathArr[maxIndex];
+                let sessionKey = pathArr[maxIndex - 2];
+                
+                return {
+                    playerIndex: playerIndex,
+                    sessionKey: sessionKey
+                }
+            }
+            
+            $(document).ready(function () {
+                'use strict';
+                adjustCountryLabels()
+                
+                $(document).on('mouseover', '[ffw-type="Country"]', function (e) {
+                            e.preventDefault();
+                            let self = this;
+                            try {
+                                let ffwCountryKey = self.getAttribute("ffw-country-key");
+                                if (ffwCountryKey == null) {
+                                    throw "The ffw-country-key is not defined!";
+                                }
+                                //self.style.backgroundColor = "green";
+                                document.getElementById('CellIndex').innerHTML = '@' + ffwCountryKey;
+                            } catch (exp) {
+                                console.error(exp)
+                            }
+                        }
+                );
+                
+                $(document).on('click', '[ffw-type="Country"]', function (e) {
+                            e.preventDefault();
+                            let self = this;
+                            try {
+                                let ffwCountryKey = self.getAttribute("ffw-country-key");
+                                if (ffwCountryKey == null) {
+                                    throw "The ffw-country-key is not defined!";
+                                }
+                                
+                                selectCountryAsTarget(ffwCountryKey);
+                                
+                            } catch (exp) {
+                                console.error(exp)
+                            }
+                        }
+                );
+                
+                $(document).on('click', '#AttackButton', function (e) {
+                            e.preventDefault();
+                            let self = this;
+                            
+                            
+                            let pathData = getUrlPathData();
+                            let playerIndex = pathData.playerIndex;
+                            let sessionKey = pathData.sessionKey;
+                            
+                            try {
+                                
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/web/map/'+sessionKey+'/play/'+playerIndex+'/step',  // Replace with your server endpoint
+                                    dataType: 'json',  // Expected data type from the server
+                                    contentType: "application/json; charset=utf-8",  // Type of data being sent
+                                    data: JSON.stringify({
+                                        targetCellKey: document.getElementById('TargetInput').value,
+                                        attackingTroopSize: document.getElementById('TroopsInput').value
+                                    }),
+                                    beforeSend: function (xhr) {
+                                        let csrfToken = $("meta[name='_csrf']").attr("content");
+                                        let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                                        xhr.setRequestHeader(csrfHeader, csrfToken); // Include CSRF token in request headers
+                                    },
+                                    success: function (response) {
+                                        refreshState(response)
+                                        document.getElementById('TargetInput').value = '';
+                                        document.getElementById('TroopsInput').value = '';
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // Handle error
+                                        console.error("Error:", error);
+                                    }
+                                });
+                                
+                            } catch (exp) {
+                                console.error(exp)
+                            }
+                        }
+                );
+                
+                
+                let pathData = getUrlPathData();
+                let playerIndex = pathData.playerIndex;
+                let sessionKey = pathData.sessionKey;
+                
+                loadState(sessionKey);
+                // console.log("PATH:" + window.location.pathname);
+                // console.log("playerIndex:" + playerIndex);
+                // console.log("sessionKey:" + sessionKey);
+                
+                setInterval(function() {
+                    console.log("reload");
+                    loadState(sessionKey)
+                }, 1000);
+            });
+        
+        
+        </script>
+    
     </div>
 
 </body>

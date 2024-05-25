@@ -138,11 +138,7 @@
                     if (ffwSessionKey == null) {
                         throw "The ffw-session-key is not defined!";
                     }
-                    
-                    let url = 'http://localhost:7002/web/map/' + ffwSessionKey + '/play';
-                    //console.log('url:' + url);
-                    window.location.href = url;
-                    
+                    joinToAGameAndLoad(ffwSessionKey);
                 } catch (exp) {
                     console.error(exp)
                 }
