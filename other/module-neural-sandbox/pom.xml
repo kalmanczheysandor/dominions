@@ -13,21 +13,26 @@
     <artifactId>dominions-neural-sandbox</artifactId>
 
     <properties>
-        <dl4j.version>0.9.1</dl4j.version>
+        <stanford-corenlp.version>4.5.3</stanford-corenlp.version>
+        <opennlp-tools.version>2.1.1</opennlp-tools.version>
+        <neuroph.version>2.92</neuroph.version>
     </properties>
 
     <dependencies>
-
         <dependency>
-            <groupId>org.nd4j</groupId>
-            <artifactId>nd4j-native-platform</artifactId>
-            <version>${dl4j.version}</version>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>${stanford-corenlp.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>org.deeplearning4j</groupId>
-            <artifactId>deeplearning4j-core</artifactId>
-            <version>${dl4j.version}</version>
+            <groupId>org.apache.opennlp</groupId>
+            <artifactId>opennlp-tools</artifactId>
+            <version>${opennlp-tools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.beykery</groupId>
+            <artifactId>neuroph</artifactId>
+            <version>${neuroph.version}</version>
         </dependency>
     </dependencies>
 
