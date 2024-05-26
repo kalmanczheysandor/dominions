@@ -61,12 +61,12 @@ public class SessionRepository {
     }
 
 
-    public void addPlayerToSession(String sessionKey, PlayerData player) {
+    public void addPlayerToSession(String sessionKey, HumanPlayer player) {
         if (!isSessionExistWithKey(sessionKey)) {
             throw new NotExistingInstanceSessionException(sessionKey);
         }
         PlaySession session = findSession(sessionKey);
-        session.addPlayer(player);
+        session.addHumanPlayer(player);
     }
 
 

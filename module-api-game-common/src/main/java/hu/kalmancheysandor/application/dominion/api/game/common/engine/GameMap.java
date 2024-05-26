@@ -56,7 +56,7 @@ public class GameMap implements Serializable {
         private Integer reserveSize;
         private boolean alive = true;
 
-        public enum PlayerType implements Serializable{
+        public enum PlayerType implements Serializable {
             HUMAN,
             AI_BASIC,
             AI_NEURAL,

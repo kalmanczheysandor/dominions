@@ -18,7 +18,6 @@ public class AiRequest {
     private Map<Integer, LandCell> landCells = new HashMap<>();
 
     @Data
-
     public static class LandCell {
         private Integer playerKey;
         private Integer troopSize = 0;

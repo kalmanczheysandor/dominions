@@ -9,6 +9,7 @@ import java.util.Objects;
 public abstract class PlayerData {
     @Getter
     private final int index;
+    @Getter
     private PlayerType playerType;
     @Getter
     private String name;

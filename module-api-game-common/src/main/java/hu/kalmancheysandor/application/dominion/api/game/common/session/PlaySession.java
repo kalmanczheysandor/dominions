@@ -4,46 +4,58 @@ import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngin
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GeneralGameException;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.DuplicatePlayerInstanceSessionException;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.IntentionIsAlreadyGivenException;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingPlayerSessionException;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.util.SerializationUtils;
 
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class PlaySession {
     @Getter
     private final String sessionKey;
-    private final int maxPlayerSize;
+    private final int playerSlotSize;
     @Getter
     @Setter
     private int turn = 0;
+    @Getter
     private Map<Integer, PlayerData> players = new HashMap<>();
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private GameState gameState = null;
     @Getter
     private GameMap gameMap;
     @Getter
     private SessionStatusCode status;
 
-    //private final GameEngine gameEngine;
+    @Getter
+    private int humanPlayerMaxSlotSize = 0;
+    @Getter
+    private int aiPlayerMaxSlotSize = 0;
+    private Set<Integer> humanPlayerSlot = new LinkedHashSet<>();
+    private Set<Integer> aiPlayerSlot = new LinkedHashSet<>();
+
+    // private final GameEngine gameEngine;
 
     public PlaySession(String sessionKey, GameMap gameMap) {
         this.sessionKey = sessionKey;
         this.gameMap = gameMap;
-        this.maxPlayerSize = gameMap.playerCount();
+        this.playerSlotSize = gameMap.playerCount();
+
         this.status = SessionStatusCode.RECRUITING;
         //this.gameEngine = gameEngine;
+
+        for (Map.Entry<Integer, GameMap.Opponent> playerEntry : gameMap.getPlayers().entrySet()) {
+            if (playerEntry.getValue().getType() == GameMap.Opponent.PlayerType.HUMAN) {
+                humanPlayerSlot.add(playerEntry.getKey());
+                this.humanPlayerMaxSlotSize++;
+            } else {
+                aiPlayerSlot.add(playerEntry.getKey());
+                this.aiPlayerMaxSlotSize++;
+            }
+        }
     }
 
     public PlayerData findPlayer(int playerId) {
@@ -57,39 +69,85 @@ public class PlaySession {
         return players.containsKey(id);
     }
 
-    public void addPlayer(PlayerData data) {
-        if (players.containsKey(data.getIndex())) {
-            throw new DuplicatePlayerInstanceSessionException(sessionKey, data.getIndex());
-        }
-        players.put(data.getIndex(), data);
+    public void addHumanPlayer(HumanPlayer player) {
+        addPlayer(player);
 
         // After the final player is added
-        if (!isAnyFreePlayerSlotsAvailable()) {
+        if (!isAnyFreeHumanPlayerSlotsAvailable()) {
             start();
         }
     }
 
+    private void addPlayer(PlayerData data) {
+        int playerIndex =data.getIndex();
+        if (players.containsKey(playerIndex)) {
+            throw new PlayerKeyAlreadyIssuedSessionException(sessionKey, playerIndex);
+        }
+
+        if(data.getPlayerType()== PlayerData.PlayerType.HUMAN) {
+            if(!humanPlayerSlot.contains(playerIndex)) {
+                throw new PlayerKeyNotNotMemberOfHumanPlayerSlotSessionException(sessionKey, playerIndex);
+            }
+            humanPlayerSlot.remove(data.getIndex());
+        }
+        else {
+            if(!aiPlayerSlot.contains(playerIndex)) {
+                throw new PlayerKeyNotNotMemberOfAiPlayerSlotSessionException(sessionKey, playerIndex);
+            }
+            aiPlayerSlot.remove(playerIndex);
+        }
+        players.put(data.getIndex(), data);
+    }
+
+    public int nextAvailableHumanPlayerIndex() {
+        if (!isAnyFreeHumanPlayerSlotsAvailable()) {
+            throw new NoMoreFreePlayerSlotSessionException(sessionKey);
+        }
+
+        Iterator<Integer> iterator = humanPlayerSlot.iterator();
+        if (iterator.hasNext()) {
+            return iterator.next();
+        }
+        throw new NoMoreFreePlayerSlotSessionException(sessionKey);
+    }
+
+    private void addMissingAiPlayers() {
+        for(int aiIndex:aiPlayerSlot) {
+            ArtificialPlayer player =new ArtificialPlayer(aiIndex,"Mr AI-"+aiIndex);
+            addPlayer(player);
+        }
+    }
 
     private void start() {
+        addMissingAiPlayers();
+
         this.status = SessionStatusCode.PLAYING;
         this.gameState = new GameState(gameMap);
     }
 
-
-    public int freePlayerSlotsCount() {
-        return maxPlayerSize - players.size();
+    public int freeHumanPlayerSlotCount() {
+        return humanPlayerSlot.size();
     }
 
-    public boolean isAnyFreePlayerSlotsAvailable() {
-        return freePlayerSlotsCount() > 0;
+    public int freeAiPlayerSlotCount() {
+        return aiPlayerSlot.size();
     }
 
-    public int nextAvailablePlayerIndex() {
-        if (!isAnyFreePlayerSlotsAvailable()) {
-            throw new NoMoreFreePlayerSlotSessionException(sessionKey);
-        }
-        return players.size();
+    public boolean isAnyFreeHumanPlayerSlotsAvailable() {
+        return freeHumanPlayerSlotCount() > 0;
     }
+
+    public boolean isAnyFreeAiPlayerSlotsAvailable() {
+        return freeAiPlayerSlotCount() > 0;
+    }
+
+
+//    public int nextAvailablePlayerIndex() {
+//        if (!isAnyFreeHumanPlayerSlotsAvailable()||!isAnyFreeAiPlayerSlotsAvailable()) {
+//            throw new NoMoreFreePlayerSlotSessionException(sessionKey);
+//        }
+//        return players.size();
+//    }
 
 
     public void saveIntention(int playerIndex, GameEngine.Action intention) {
@@ -110,7 +168,7 @@ public class PlaySession {
 
         for (PlayerData player : players.values()) {
             if (!player.isIntentionAlreadyGiven()) {
-                throw new GeneralGameException("No intention is present for player! Player index:"+player.getIndex());
+                throw new GeneralGameException("No intention is present for player! Player index:" + player.getIndex());
             }
             intentions.add(player.getIntention());
         }
@@ -150,73 +208,4 @@ public class PlaySession {
     public int incrementTurn() {
         return ++turn;
     }
-
-
-//    public GameMap getCurrentStateAsGameMap() {
-//        GameMap newGameMap = (GameMap) SerializationUtils.clone((Serializable) getGameMap());
-//
-//        Map<Integer, GameMap.MapCell> mapCells = (Map<Integer, GameMap.MapCell>) SerializationUtils.clone((Serializable) gameMap.getCells());
-//Map<Integer, GameMap.Opponent> mapPlayers = (Map<Integer, GameMap.Opponent>) SerializationUtils.clone((Serializable) gameMap.getPlayers());
-//
-//        GameState gameState = getGameState();
-//
-//        // Players
-//        for(int playerIndex=0;playerIndex<gameState.getOpponents().length;playerIndex++) {
-//            GameState.Opponent gameStatePlayer = gameState.getOpponents()[playerIndex];
-//            GameMap.Opponent mapPlayer = mapPlayers.get(playerIndex);
-//            mapPlayer.setAlive(gameStatePlayer.isAlive());
-//            mapPlayer.setReserveSize(gameStatePlayer.getReserveSize());
-//        }
-//
-//
-//        // cells
-//        for(int cellIndex=0;cellIndex<gameState.getCells().length;cellIndex++) {
-//            GameState.Cell gameStateCell = gameState.getCells()[cellIndex];
-//            GameMap.MapCell mapCell = mapCells.get(cellIndex);
-//            mapCell.setArmySize(gameStateCell.getDefendingTroopSize());
-//
-//            if(gameStateCell.isEmpty()) {
-//                mapCell.setPlayerKey(null);
-//            }
-//            else {
-//                mapCell.setPlayerKey(gameStateCell.getOccupierKey();
-//            }
-//        }
-//    }
-//
-
-
-//    public GameMap getCurrentStateAsGameMap() {
-//        System.out.println("GameMap:"+this.gameMap);
-//        GameMap newGameMap = SerializationUtils.clone(this.gameMap);
-//
-//        Map<Integer, GameMap.MapCell> mapCells = newGameMap.getCells();
-//        Map<Integer, GameMap.Opponent> mapPlayers = newGameMap.getPlayers();
-//
-//        GameState gameState = getGameState();
-//
-//        // Players
-//        for (int playerIndex = 0; playerIndex < gameState.getOpponents().length; playerIndex++) {
-//            GameState.Opponent gameStatePlayer = gameState.getOpponents()[playerIndex];
-//            GameMap.Opponent mapPlayer = mapPlayers.get(playerIndex);
-//            mapPlayer.setAlive(gameStatePlayer.isAlive());
-//            mapPlayer.setReserveSize(gameStatePlayer.getReserveSize());
-//        }
-//
-//
-//        // cells
-//        for (int cellIndex = 0; cellIndex < gameState.getCells().length; cellIndex++) {
-//            GameState.Cell gameStateCell = gameState.getCells()[cellIndex];
-//            GameMap.MapCell mapCell = mapCells.get(cellIndex);
-//            mapCell.setArmySize(gameStateCell.getDefendingTroopSize());
-//
-//            if (gameStateCell.isEmpty()) {
-//                mapCell.setPlayerKey(null);
-//            } else {
-//                mapCell.setPlayerKey(gameStateCell.getOccupierKey());
-//            }
-//        }
-//        return newGameMap;
-//
-//    }
 }
