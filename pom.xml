@@ -117,6 +117,7 @@
         <module>module-api-game-common</module>
         <module>module-server-ai-player1</module>
         <module>module-server-ai-player2</module>
+        <module>module-neural-test</module>
     </modules>
 
     <dependencyManagement>
