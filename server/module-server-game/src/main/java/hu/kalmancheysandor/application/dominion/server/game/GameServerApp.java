@@ -1,6 +1,7 @@
 package hu.kalmancheysandor.application.dominion.server.game;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,5 +20,10 @@ public class GameServerApp {
     @Bean
     public GameEngine gameEngine() {
         return new GameEngine();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

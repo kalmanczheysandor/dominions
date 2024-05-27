@@ -1,21 +1,28 @@
 package hu.kalmancheysandor.application.dominion.server.game.service.game;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GeneralGameException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlayerData;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.PendingTurnSessionException;
+import hu.kalmancheysandor.application.dominion.server.game.domain.History;
 import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer1ServerProxy;
+import hu.kalmancheysandor.application.dominion.server.game.repository.game.HistoryRepository;
 import hu.kalmancheysandor.application.dominion.server.game.repository.game.SessionRepository;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
@@ -28,19 +35,21 @@ import java.util.stream.Collectors;
 @Service
 public class GameService {
 
+    private static final Logger log = LoggerFactory.getLogger(GameService.class);
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private HistoryRepository historyRepository;
+
     @Autowired
     private GameEngine gameEngine;
 
-    //    @Autowired
-//    private AiPlayer1ServerProxy proxy;
-//
     @Autowired
     private AiPlayer1ServerProxy proxyAiPlayer1;
 
-//    @Autowired
-//    private AiPlayer2ServerProxy proxyAiPlayer2;
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     public GameCreateResponse create() {
@@ -108,8 +117,27 @@ public class GameService {
             }
         }
 
-
         if (!session.isPending()) {
+
+            for(GameEngine.Action intention:session.getAllIntention()) {
+                int reserveSize = session.getGameState().getOpponents()[intention.getPlayerKey()].getReserveSize();
+                int enemiesCount = session.getGameState().getOpponents().length-1;
+
+                String playerType = session.findPlayer(intention.getPlayerKey()).getPlayerType().name();
+                PlayerDecision playerDecision = PlayerDecision.create(intention.getTargetCellKey(), intention.getAttackingTroopSize(), reserveSize,enemiesCount,session.getGameState());
+
+                String playerDecisionString;
+                try {
+                    playerDecisionString = objectMapper.writeValueAsString(playerDecision);
+                } catch (JsonProcessingException e) {
+                    throw new GeneralGameException("Error at parsing");
+                }
+
+                History history = new History();
+                history.setPlayer(playerType);
+                history.setDecision(playerDecisionString);
+                historyRepository.save(history);
+            }
 
             GameState newState = gameEngine.doAction(session.getAllIntention(), session.getGameState());
             session.setGameState(newState);
@@ -120,6 +148,14 @@ public class GameService {
 
         return generateGameStateResponse(sessionKey);
     }
+
+    private void saveAllIntention() {
+
+    }
+
+
+
+
 
     private static AiRequest createRequest(int yourKey, GameState gameState) {
         Map<Integer, AiRequest.LandCell> landCells = new HashMap<>();

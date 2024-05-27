@@ -55,7 +55,7 @@ public abstract class PlayerData {
         return Objects.hashCode(index);
     }
 
-    protected enum PlayerType {
+    public enum PlayerType {
         HUMAN, ARTIFICIAL
     }
 }
