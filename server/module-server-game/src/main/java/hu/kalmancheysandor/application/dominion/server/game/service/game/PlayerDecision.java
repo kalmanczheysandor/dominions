@@ -37,7 +37,9 @@ public class PlayerDecision {
             GameState.Cell cell = gameState.getCells()[cellIndex];
             fields.put(cellIndex, new Field(cell.getOccupierKey(), cell.getDefendingTroopSize()));
         }
-
+        if (target == null) {
+            target = -1;
+        }
         //Move
         Move move = new Move(target, troopSize);
 

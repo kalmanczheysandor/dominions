@@ -591,15 +591,48 @@
                                     },
                                     error: function (response) {
                                         handleErrorResponses(response.responseJSON)
-                                        // console.log("Hello"+response.responseJSON.type);
-                                        // console.log(response);
-                                        //
-                                        
-                                        // const errorResponse = JSON.parse(response);
-                                        // // Handle error
-                                        // console.error("Error:", errorResponse);
-                                        // console.error(errorResponse);
-                                        // alert("PlayerKey:"+errorResponse.playerKey);
+                                    }
+                                });
+                                
+                            } catch (exp) {
+                                console.error(exp)
+                            }
+                        }
+                );
+                
+                
+                $(document).on('click', '#ReserveButton', function (e) {
+                            e.preventDefault();
+                            let self = this;
+                            
+                            
+                            let pathData = getUrlPathData();
+                            let playerIndex = pathData.playerIndex;
+                            let sessionKey = pathData.sessionKey;
+                            
+                            try {
+                                
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/web/map/'+sessionKey+'/play/'+playerIndex+'/step',  // Replace with your server endpoint
+                                    dataType: 'json',  // Expected data type from the server
+                                    contentType: "application/json; charset=utf-8",  // Type of data being sent
+                                    data: JSON.stringify({
+                                        targetCellKey: null,
+                                        attackingTroopSize: 0
+                                    }),
+                                    beforeSend: function (xhr) {
+                                        let csrfToken = $("meta[name='_csrf']").attr("content");
+                                        let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                                        xhr.setRequestHeader(csrfHeader, csrfToken); // Include CSRF token in request headers
+                                    },
+                                    success: function (response) {
+                                        refreshState(response)
+                                        document.getElementById('TargetInput').value = '';
+                                        document.getElementById('TroopsInput').value = '';
+                                    },
+                                    error: function (response) {
+                                        handleErrorResponses(response.responseJSON)
                                     }
                                 });
                                 

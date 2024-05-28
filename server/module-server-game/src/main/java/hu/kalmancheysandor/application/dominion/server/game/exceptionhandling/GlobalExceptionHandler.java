@@ -50,6 +50,22 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(TooMuchTroopsWereSentPlayerActionException.class)
+    public ResponseEntity<?> handle(TooMuchTroopsWereSentPlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoTroopsPermittedToSendPlayerActionException.class)
+    public ResponseEntity<?> handle(NoTroopsPermittedToSendPlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(NotEnoughSupplyPlayerActionException.class)
     public ResponseEntity<?> handle(NotEnoughSupplyPlayerActionException exception) {
         ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());

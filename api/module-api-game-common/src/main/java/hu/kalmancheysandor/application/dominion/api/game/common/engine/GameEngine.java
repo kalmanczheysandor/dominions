@@ -31,42 +31,46 @@ public class GameEngine {
         validatePlayersAction(plannedActions);
 
         // Grouping and resolving conflicting actions
-        Map<Integer, Set<Action>> group = new HashMap<>();
+        Map<Integer, Set<Action>> conflictGroups = new HashMap<>();
         for (Action observedAction : plannedActions) {
 
-            if (!group.containsKey(observedAction.getTargetCellKey())) {// The first action in the group
+            if (!conflictGroups.containsKey(observedAction.getTargetCellKey())) {// The first action in the group
                 Set<Action> actions = new HashSet<>();
                 actions.add(observedAction);
-                group.put(observedAction.getTargetCellKey(), actions);
+                conflictGroups.put(observedAction.getTargetCellKey(), actions);
             } else { // After the first action in the group
-                Set<Action> actions = group.get(observedAction.getTargetCellKey());
+                Set<Action> actions = conflictGroups.get(observedAction.getTargetCellKey());
                 actions.add(observedAction);
             }
         }
         //  System.out.println(group);
 
-        // find the highest offer
+        // Resolving conflict groups. Find the highest offer in each group
+        // Under each index where more than one action are stored, conflict resolution has to be performed.
         Set<Action> actionsToProcess = new HashSet<>();
-        for (Set<Action> actions : group.values()) {
-            Action a = chooseTheHighestOffer(actions);
+        for (Set<Action> actions : conflictGroups.values()) {
+            Action a = resolveTheConflict(actions);
             if (a != null) {
                 actionsToProcess.add(a);
             }
         }
 
-        // Calculate the outcome of battles
+        // Calculate the outcome of steps
         for (Action processedAction : actionsToProcess) {
             GameState.Cell attackedCell = getCell(processedAction.getTargetCellKey());
 
+            if (processedAction.getTargetCellKey() != null) {
+                if (attackedCell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
+                    attackedCell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - attackedCell.getDefendingTroopSize());
+                    attackedCell.setOccupierKey(processedAction.getPlayerKey());
+                } else if (attackedCell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
+                    attackedCell.setDefendingTroopSize(attackedCell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
+                } else {
+                    attackedCell.setDefendingTroopSize(0);
+                    attackedCell.setOccupierKey(-1);
+                }
+            } else if (processedAction.getTargetCellKey() == null) {
 
-            if (attackedCell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
-                attackedCell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - attackedCell.getDefendingTroopSize());
-                attackedCell.setOccupierKey(processedAction.getPlayerKey());
-            } else if (attackedCell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
-                attackedCell.setDefendingTroopSize(attackedCell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
-            } else {
-                attackedCell.setDefendingTroopSize(0);
-                attackedCell.setOccupierKey(-1);
             }
         }
 
@@ -109,37 +113,52 @@ public class GameEngine {
 
     public static void validatePlayerAction(GameState state, Action action) {
         int playerKey = action.getPlayerKey();
-        int targetCellKey = action.getTargetCellKey();
-        GameState.Cell targetCell = state.getCell(targetCellKey);
-        GameState.Opponent player = state.getOpponent(playerKey);
+        Integer targetCellKey = action.getTargetCellKey();
+        System.out.print("VALIDATE");
+        System.out.print("-targerCellKey:" + targetCellKey);
+        System.out.print("-attackingTroopSize:" + action.getAttackingTroopSize());
+        if (targetCellKey != null) {       // When itt is an attack action
+            GameState.Cell targetCell = state.getCell(targetCellKey);
+            GameState.Opponent player = state.getOpponent(playerKey);
 
-        // When it is an attack without troops
-        if (action.getAttackingTroopSize() == 0) {
-            throw new NoTroopsWereSentPlayerActionException(playerKey);
-        }
-
-        // When it is an attack but the army size is overcalculated
-        if (player.getReserveSize() < action.getAttackingTroopSize()) {
-            throw new NotEnoughSupplyPlayerActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
-        }
-
-        // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
-        if (targetCell.getOccupierKey() == action.getPlayerKey()) {
-            throw new SelfAttackPlayerActionException(playerKey, targetCellKey);
-        }
-
-        if (!isCellANeighbourOfPlayer(state, action.getPlayerKey(), action.getTargetCellKey())) {
-            throw new OutOfAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
-        }
-
-        if (isPlayerCausingDoughnutEffect(state, action.getPlayerKey())) {
-//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
-            if (!isCellAnEmptyNeighbourOfPlayer(state, action.getPlayerKey(), action.getTargetCellKey())) {
-                //throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
+            // When it is an attack without troops
+            if (action.getAttackingTroopSize() <= 0) {
+                throw new NoTroopsWereSentPlayerActionException(playerKey);
             }
+
+            // When it is an attack without troops
+            if (action.getAttackingTroopSize() > 100) {
+                throw new TooMuchTroopsWereSentPlayerActionException(playerKey);
+            }
+
+            // When it is an attack but the army size is over calculated
+            if (player.getReserveSize() < action.getAttackingTroopSize()) {
+                throw new NotEnoughSupplyPlayerActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
+            }
+
+            // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
+            if (targetCell.getOccupierKey() == action.getPlayerKey()) {
+                throw new SelfAttackPlayerActionException(playerKey, targetCellKey);
+            }
+
+            if (!isCellANeighbourOfPlayer(state, action.getPlayerKey(), action.getTargetCellKey())) {
+                throw new OutOfAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
+            }
+
+            if (isPlayerCausingDoughnutEffect(state, action.getPlayerKey())) {
+//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
+                if (!isCellAnEmptyNeighbourOfPlayer(state, action.getPlayerKey(), action.getTargetCellKey())) {
+                    //throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
+                }
+            }
+
         } else {
-//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> no ");
+
+            if (action.getAttackingTroopSize() != 0) {
+                throw new NoTroopsPermittedToSendPlayerActionException(playerKey);
+            }
         }
+
     }
 
     private void validatePlayersAction(Set<Action> actions) {
@@ -150,7 +169,7 @@ public class GameEngine {
 
 
         for (Action action : actions) {
-            validatePlayerAction(gameState,action);
+            validatePlayerAction(gameState, action);
 
 //            playerKey = action.getPlayerKey();
 //            targetCellKey = action.getTargetCellKey();
@@ -191,7 +210,7 @@ public class GameEngine {
         }
     }
 
-    private Action chooseTheHighestOffer(Set<Action> actions) {
+    private Action resolveTheConflict(Set<Action> actions) {
         int highestValue = 0;
         int count = 0;
         Action a = null;
@@ -371,8 +390,6 @@ public class GameEngine {
     }
 
 
-
-
     private static boolean isCellANeighbourOfPlayer(GameState state, int playerKey, int observedCellKey) {
         GameState.Cell observedCell = state.getCell(observedCellKey);
 
@@ -430,14 +447,12 @@ public class GameEngine {
     }
 
 
-
-
     public static class Action {
         private int playerKey;
-        private int targetCellKey;
+        private Integer targetCellKey;
         private int attackingTroopSize;
 
-        public Action(int playerKey, int targetCellKey, int attackingTroopSize) {
+        public Action(int playerKey, Integer targetCellKey, int attackingTroopSize) {
             this.playerKey = playerKey;
             this.targetCellKey = targetCellKey;
             this.attackingTroopSize = attackingTroopSize;
@@ -448,7 +463,7 @@ public class GameEngine {
         }
 
 
-        public int getTargetCellKey() {
+        public Integer getTargetCellKey() {
             return targetCellKey;
         }
 
