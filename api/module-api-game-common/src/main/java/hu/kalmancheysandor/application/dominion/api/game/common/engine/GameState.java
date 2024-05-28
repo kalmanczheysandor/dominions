@@ -4,7 +4,9 @@ package hu.kalmancheysandor.application.dominion.api.game.common.engine;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GeneralGameException;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.UnexpectedCaseFoundGameException;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class GameState {
     private StatusCode statusCode;
@@ -143,10 +145,29 @@ public class GameState {
     public Cell[] getCells() {
         return cells;
     }
-
+    public Cell getCell(int cellKey) {
+        return cells[cellKey];
+    }
     public Opponent[] getOpponents() {
         return opponents;
     }
+    public Opponent getOpponent(int playerKey) {
+        return opponents[playerKey];
+    }
+
+
+    public Set<Integer> getEmptyCellKeys() {
+        Set<Integer> emptyCellKeys = new HashSet<>();
+        GameState.Cell[] cells = getCells();
+
+        for (int cellKey = 0; cellKey < cells.length; cellKey++) {
+            if (cells[cellKey].isEmpty()) {
+                emptyCellKeys.add(cellKey);
+            }
+        }
+        return emptyCellKeys;
+    }
+
 
     public Integer getWinnerKey() {
         return winnerKey;

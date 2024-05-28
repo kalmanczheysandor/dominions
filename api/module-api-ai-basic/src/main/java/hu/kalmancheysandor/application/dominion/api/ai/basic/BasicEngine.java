@@ -25,6 +25,7 @@ public abstract class BasicEngine extends AiEngine {
                 if (neighbourCell.isEmpty()) {
                     attackZone.add(neighbourKey);
                 }
+//                else if (neighbourCell.getPlayerKey() != yourKey && !isCausingDoughnutEffect) {
                 else if (neighbourCell.getPlayerKey() != yourKey && !isCausingDoughnutEffect) {
                     attackZone.add(neighbourKey);
                 }

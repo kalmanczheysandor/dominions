@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action;
 
+
 public class AttackingOwnCellPlayerActionException extends PlayerActionException {
     private int cellKey;
 

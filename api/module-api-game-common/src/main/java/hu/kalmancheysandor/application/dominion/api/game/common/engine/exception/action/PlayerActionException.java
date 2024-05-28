@@ -2,7 +2,7 @@ package hu.kalmancheysandor.application.dominion.api.game.common.engine.exceptio
 
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GameException;
 
-public class PlayerActionException extends GameException {
+public abstract class PlayerActionException extends GameException {
     protected int playerKey;
 
     public PlayerActionException(int playerKey) {
@@ -14,5 +14,9 @@ public class PlayerActionException extends GameException {
         return "PlayerActionException{" +
             "playerKey=" + playerKey +
             '}';
+    }
+
+    public int getPlayerKey() {
+        return playerKey;
     }
 }

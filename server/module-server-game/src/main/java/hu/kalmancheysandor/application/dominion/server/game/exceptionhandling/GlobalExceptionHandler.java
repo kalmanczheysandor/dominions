@@ -1,8 +1,8 @@
-package hu.kalmancheysandor.applications.dominion.server.web.exceptionhandling;
+package hu.kalmancheysandor.application.dominion.server.game.exceptionhandling;
 
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action.AttackingOwnCellPlayerActionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action.OutOfAttackRangePlayerActionException;
-import hu.kalmancheysandor.application.dominion.server.game.exceptionhandling.ErrorDetails;
-import hu.kalmancheysandor.applications.dominion.server.web.proxy.ProxyException;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action.SelfAttackPlayerActionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,37 +14,27 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(ProxyException.class)
-    public ResponseEntity<?> handle(ProxyException exception) {
-        return new ResponseEntity<>(exception.getErrorDetails(), HttpStatus.INTERNAL_SERVER_ERROR);
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ExceptionBox> handle(Exception exception) {
+//        System.out.println("ADVICER: " + exception.getClass().getSimpleName());
+//        ExceptionBox exceptionBox = new ExceptionBox(exception.getClass().getCanonicalName().toString(),exception);
+//        return new ResponseEntity<>(exceptionBox, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+
+    @ExceptionHandler(OutOfAttackRangePlayerActionException.class)
+    public ResponseEntity<?> handle(OutOfAttackRangePlayerActionException exception) {
+        System.out.println("ADVICER: " + exception.getClass().getSimpleName());
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+        errorDetails.getParameters().put("cellKey", exception.getTargetedCellKey());
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
-//
-//    public static void main(String[] args) {
-//        try {
-//            // Example object and class name string
-//            Object obj = "This is a string object";
-//            String className = "java.lang.String";
-//
-//            // Step 1: Get the Class object
-//            Class<?> clazz = Class.forName(className);
-//
-//            // Step 2: Check if the object is an instance of the class
-//            if (clazz.isInstance(obj)) {
-//                // Step 3: Perform the cast
-//                Object castedObj = clazz.cast(obj);
-//
-//                // Now you can use castedObj as an instance of the class
-//                // For example, if it's a String, you can call String methods
-//                String str = (String) castedObj;
-//                System.out.println(str.toUpperCase());
-//            } else {
-//                System.out.println("The object is not an instance of " + className);
-//            }
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+    @ExceptionHandler(SelfAttackPlayerActionException.class)
+    public ResponseEntity<SelfAttackPlayerActionException> handle(SelfAttackPlayerActionException exception) {
+        System.out.println("ADVICER: " + exception.getClass().getSimpleName());
+        return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 
 //

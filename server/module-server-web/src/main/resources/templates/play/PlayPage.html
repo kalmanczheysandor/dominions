@@ -589,9 +589,12 @@
                                         document.getElementById('TargetInput').value = '';
                                         document.getElementById('TroopsInput').value = '';
                                     },
-                                    error: function (xhr, status, error) {
+                                    error: function (response) {
+                                        const errorResponse = JSON.parse(response);
                                         // Handle error
-                                        console.error("Error:", error);
+                                        console.error("Error:", errorResponse);
+                                        console.error(errorResponse);
+                                        alert("PlayerKey:"+errorResponse.playerKey);
                                     }
                                 });
                                 

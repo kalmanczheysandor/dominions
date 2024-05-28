@@ -158,6 +158,7 @@ public class PlaySession {
         if (players.get(playerIndex).isIntentionAlreadyGiven()) {
             throw new IntentionIsAlreadyGivenException(sessionKey);
         }
+
         players.get(playerIndex).setIntention(intention);
         players.get(playerIndex).setIntentionGiven(true);
     }

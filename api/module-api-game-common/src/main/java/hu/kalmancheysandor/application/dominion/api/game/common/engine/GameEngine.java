@@ -15,7 +15,7 @@ public class GameEngine {
         this.gameState = gameState;
     }
 
-    public GameState doAction(Set<Action> plannedActions,GameState gameState) {
+    public GameState doAction(Set<Action> plannedActions, GameState gameState) {
         this.gameState = gameState;
         return doAction(plannedActions);
     }
@@ -107,48 +107,86 @@ public class GameEngine {
         return gameState;
     }
 
+    public static void validatePlayerAction(GameState state, Action action) {
+        int playerKey = action.getPlayerKey();
+        int targetCellKey = action.getTargetCellKey();
+        GameState.Cell targetCell = state.getCell(targetCellKey);
+        GameState.Opponent player = state.getOpponent(playerKey);
+
+        // When it is an attack without troops
+        if (action.getAttackingTroopSize() == 0) {
+            throw new NoTroopsWereSentPlayerActionException(playerKey);
+        }
+
+        // When it is an attack but the army size is overcalculated
+        if (player.getReserveSize() < action.getAttackingTroopSize()) {
+            throw new NotEnoughSupplyPlayerActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
+        }
+
+        // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
+        if (targetCell.getOccupierKey() == action.getPlayerKey()) {
+            throw new SelfAttackPlayerActionException(playerKey, targetCellKey);
+        }
+
+        if (!isCellANeighbourOfPlayer(state, action.getPlayerKey(), action.getTargetCellKey())) {
+            throw new OutOfAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
+        }
+
+        if (isPlayerCausingDoughnutEffect(state, action.getPlayerKey())) {
+//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
+            if (!isCellAnEmptyNeighbourOfPlayer(state, action.getPlayerKey(), action.getTargetCellKey())) {
+                //throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
+            }
+        } else {
+//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> no ");
+        }
+    }
+
     private void validatePlayersAction(Set<Action> actions) {
         GameState.Cell targetCell;
         GameState.Opponent player;
         int playerKey;
         int targetCellKey;
 
+
         for (Action action : actions) {
-            playerKey = action.getPlayerKey();
-            targetCellKey = action.getTargetCellKey();
+            validatePlayerAction(gameState,action);
 
-            targetCell = getCell(targetCellKey);
-            player = getPlayer(playerKey);
-
-            // When it is an attack without troops
-            if (action.getAttackingTroopSize() == 0) {
-                throw new NoTroopsWereSentPlayerActionException(playerKey);
-            }
-
-            // When it is an attack but the army size is overcalculated
-            if (player.getReserveSize() < action.getAttackingTroopSize()) {
-                throw new NotEnoughSupplyPlayerActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
-            }
-
-            // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
-            if (targetCell.getOccupierKey() == action.getPlayerKey()) {
-//                System.out.println("SElf attack: cellKey:" + targetCellKey + " " + targetCell.getOccupierKey() + " - " + action.getPlayerKey());
-                throw new SelfAttackPlayerActionException(playerKey, targetCellKey);
-            }
-
-            if (!isCellANeighbourOfPlayer(action.getPlayerKey(), action.getTargetCellKey())) {
-                throw new OutOfAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
-            }
-
-
-            if (isPlayerCausingDoughnutEffect(action.getPlayerKey())) {
-//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
-                if (!isCellAnEmptyNeighbourOfPlayer(action.getPlayerKey(), action.getTargetCellKey())) {
-                    throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
-                }
-            } else {
-//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> no ");
-            }
+//            playerKey = action.getPlayerKey();
+//            targetCellKey = action.getTargetCellKey();
+//
+//            targetCell = getCell(targetCellKey);
+//            player = getPlayer(playerKey);
+//
+//            // When it is an attack without troops
+//            if (action.getAttackingTroopSize() == 0) {
+//                throw new NoTroopsWereSentPlayerActionException(playerKey);
+//            }
+//
+//            // When it is an attack but the army size is overcalculated
+//            if (player.getReserveSize() < action.getAttackingTroopSize()) {
+//                throw new NotEnoughSupplyPlayerActionException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
+//            }
+//
+//            // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
+//            if (targetCell.getOccupierKey() == action.getPlayerKey()) {
+////                System.out.println("SElf attack: cellKey:" + targetCellKey + " " + targetCell.getOccupierKey() + " - " + action.getPlayerKey());
+//                throw new SelfAttackPlayerActionException(playerKey, targetCellKey);
+//            }
+//
+//            if (!isCellANeighbourOfPlayer(action.getPlayerKey(), action.getTargetCellKey())) {
+//                throw new OutOfAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
+//            }
+//
+//
+//            if (isPlayerCausingDoughnutEffect(action.getPlayerKey())) {
+////                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
+//                if (!isCellAnEmptyNeighbourOfPlayer(action.getPlayerKey(), action.getTargetCellKey())) {
+//                    throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
+//                }
+//            } else {
+////                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> no ");
+//            }
 
         }
     }
@@ -236,75 +274,6 @@ public class GameEngine {
         return null;
     }
 
-    private boolean isCellANeighbourOfPlayer(int playerKey, int observedCellKey) {
-        GameState.Cell observedCell = getCell(observedCellKey);
-        System.out.println("isCellANeighbourOfPlayer(" + playerKey + "," + observedCellKey + ")");
-        System.out.println("observed:" + observedCell);
-        // Any cell occupied by player is not a counted as a neighbour of that player
-        if (observedCell.getOccupierKey() == playerKey) {
-            System.out.println("r1");
-            return false;
-        }
-
-        for (GameState.Cell neighbourCell : getNeighboursOfCell(observedCellKey)) {
-            System.out.println("-occup:" + neighbourCell.getOccupierKey());
-
-
-            if (neighbourCell.getOccupierKey() == playerKey) { // When the neighbour cell is occupied by the player
-                System.out.println("r2");
-                return true;
-            }
-        }
-
-        System.out.println("r3");
-        return false;
-    }
-
-    private boolean isCellAnEmptyNeighbourOfPlayer(int playerKey, int cellKey) {
-        GameState.Cell observedCell = getCell(cellKey);
-
-        // Any cell occupied by the player is not a counted as a neighbour of that player
-        if (observedCell.getOccupierKey() == playerKey) {
-            return false;
-        }
-
-        // Cell must be empty
-        if (!observedCell.isEmpty()) {
-            return false;
-        }
-
-
-        for (GameState.Cell neighbourCell : getNeighboursOfCell(cellKey)) {
-            if (neighbourCell.getOccupierKey() == playerKey) { // When the neighbour cell is occupied by the player
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isPlayerCausingDoughnutEffect(int playerKey) {
-        for (int emptyCellKey : getEmptyCellKeys()) {
-            if (isCellBlockedByPlayer(emptyCellKey, playerKey)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isCellBlockedByPlayer(int cellKey, int playerKey) {
-//        System.out.println("isCellBlockedByPlayer(C:"+cellKey+",P:"+playerKey+")");
-
-
-        for (GameState.Cell neighbourCell : getNeighboursOfCell(cellKey)) {
-//            System.out.println("-neighbourCell(Defenders:"+neighbourCell.getDefendingTroopSize()+",P:"+neighbourCell.getOccupierKey()+")");
-
-            if (neighbourCell.getOccupierKey() != playerKey) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     private boolean isNoMoreEmptyCell() {
         for (GameState.Cell cell : gameState.getCells()) {
@@ -360,29 +329,29 @@ public class GameEngine {
         return cells[cellKey];
     }
 
-    private Set<GameState.Cell> getNeighboursOfCell(int cellKey) {
+    private static Set<GameState.Cell> getNeighboursOfCell(GameState state, int cellKey) {
         Set<GameState.Cell> realNeighbours = new HashSet<>();
 
-        boolean[] neighboursRow = gameState.getNeighboursMatrix()[cellKey];
+        boolean[] neighboursRow = state.getNeighboursMatrix()[cellKey];
         for (int neighbourKey = 0; neighbourKey < neighboursRow.length; neighbourKey++) {
             if (neighboursRow[neighbourKey] == true) {
-                realNeighbours.add(getCell(neighbourKey));
+                realNeighbours.add(state.getCell(neighbourKey));
             }
         }
         return realNeighbours;
     }
 
-    private Set<Integer> getEmptyCellKeys() {
-        Set<Integer> emptyCellKeys = new HashSet<>();
-        GameState.Cell[] cells = gameState.getCells();
-
-        for (int cellKey = 0; cellKey < cells.length; cellKey++) {
-            if (cells[cellKey].isEmpty()) {
-                emptyCellKeys.add(cellKey);
-            }
-        }
-        return emptyCellKeys;
-    }
+//    private Set<Integer> getEmptyCellKeys() {
+//        Set<Integer> emptyCellKeys = new HashSet<>();
+//        GameState.Cell[] cells = gameState.getCells();
+//
+//        for (int cellKey = 0; cellKey < cells.length; cellKey++) {
+//            if (cells[cellKey].isEmpty()) {
+//                emptyCellKeys.add(cellKey);
+//            }
+//        }
+//        return emptyCellKeys;
+//    }
 
     private GameState.Opponent getPlayer(int playerKey) {
         GameState.Opponent[] opponents = gameState.getOpponents();
@@ -400,6 +369,68 @@ public class GameEngine {
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
+
+
+
+
+    private static boolean isCellANeighbourOfPlayer(GameState state, int playerKey, int observedCellKey) {
+        GameState.Cell observedCell = state.getCell(observedCellKey);
+
+        // Any cell occupied by player is not a counted as a neighbour of that player
+        if (observedCell.getOccupierKey() == playerKey) {
+            return false;
+        }
+
+        for (GameState.Cell neighbourCell : getNeighboursOfCell(state, observedCellKey)) {
+            if (neighbourCell.getOccupierKey() == playerKey) { // When the neighbour cell is occupied by the player
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isCellAnEmptyNeighbourOfPlayer(GameState state, int playerKey, int cellKey) {
+        GameState.Cell observedCell = state.getCell(cellKey);
+
+        // Any cell occupied by the player is not a counted as a neighbour of that player
+        if (observedCell.getOccupierKey() == playerKey) {
+            return false;
+        }
+
+        // Cell must be empty
+        if (!observedCell.isEmpty()) {
+            return false;
+        }
+
+
+        for (GameState.Cell neighbourCell : getNeighboursOfCell(state, cellKey)) {
+            if (neighbourCell.getOccupierKey() == playerKey) { // When the neighbour cell is occupied by the player
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isPlayerCausingDoughnutEffect(GameState state, int playerKey) {
+        for (int emptyCellKey : state.getEmptyCellKeys()) {
+            if (isCellBlockedByPlayer(state, emptyCellKey, playerKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isCellBlockedByPlayer(GameState state, int cellKey, int playerKey) {
+        for (GameState.Cell neighbourCell : getNeighboursOfCell(state, cellKey)) {
+            if (neighbourCell.getOccupierKey() != playerKey) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
 
     public static class Action {
         private int playerKey;

@@ -100,31 +100,31 @@ public class GameService {
 
         // Save intention
         GameEngine.Action action = new GameEngine.Action(playerIndex, request.getTargetCellKey(), request.getAttackingTroopSize());
-        session.saveIntention(playerIndex, action);
+        saveIntention(sessionKey,playerIndex, action);
 
 
         // Ai calls after all human send their actions
         if (session.pendingCount() == session.getAiPlayerMaxSlotSize()) {
             for (Map.Entry<Integer, PlayerData> playerEntry : session.getPlayers().entrySet()) {
                 int aiPlayerIndex = playerEntry.getKey();
-                PlayerData  player = playerEntry.getValue();
-                if(player.isArtificial()) {
+                PlayerData player = playerEntry.getValue();
+                if (player.isArtificial()) {
                     AiResponse aiResponse = proxyAiPlayer1.generateResponse(createRequest(aiPlayerIndex, session.getGameState()));
                     System.out.println("AIIII(" + aiPlayerIndex + "):" + aiResponse);
                     GameEngine.Action aiAction = new GameEngine.Action(aiPlayerIndex, aiResponse.getTargetCellKey(), aiResponse.getTroopSize());
-                    session.saveIntention(aiPlayerIndex, aiAction);
+                    saveIntention(sessionKey,aiPlayerIndex, aiAction);
                 }
             }
         }
 
         if (!session.isPending()) {
 
-            for(GameEngine.Action intention:session.getAllIntention()) {
+            for (GameEngine.Action intention : session.getAllIntention()) {
                 int reserveSize = session.getGameState().getOpponents()[intention.getPlayerKey()].getReserveSize();
-                int enemiesCount = session.getGameState().getOpponents().length-1;
+                int enemiesCount = session.getGameState().getOpponents().length - 1;
 
                 String playerType = session.findPlayer(intention.getPlayerKey()).getPlayerType().name();
-                PlayerDecision playerDecision = PlayerDecision.create(intention.getTargetCellKey(), intention.getAttackingTroopSize(), reserveSize,enemiesCount,session.getGameState());
+                PlayerDecision playerDecision = PlayerDecision.create(intention.getTargetCellKey(), intention.getAttackingTroopSize(), reserveSize, enemiesCount, session.getGameState());
 
                 String playerDecisionString;
                 try {
@@ -149,12 +149,14 @@ public class GameService {
         return generateGameStateResponse(sessionKey);
     }
 
-    private void saveAllIntention() {
+    private void saveIntention(String sessionKey, int playerIndex, GameEngine.Action intention) {
+        // Find session
+        validateSessionAccess(sessionKey);
+        PlaySession session = sessionRepository.findSession(sessionKey);
 
+        GameEngine.validatePlayerAction(session.getGameState(),intention);
+        session.saveIntention(playerIndex, intention);
     }
-
-
-
 
 
     private static AiRequest createRequest(int yourKey, GameState gameState) {

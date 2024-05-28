@@ -27,6 +27,11 @@ public class PlayService {
 
 
     public GameStateResponse action(String sessionKey, int playerIndex, GameStepRequest request ) {
-        return gameServerProxy.action(sessionKey, playerIndex, request);
+        try {
+            return gameServerProxy.action(sessionKey, playerIndex, request);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        }
     }
 }

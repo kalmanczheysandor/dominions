@@ -6,6 +6,11 @@ public class OutOfAttackRangePlayerActionException extends PlayerActionException
     public OutOfAttackRangePlayerActionException(int playerKey, int targetedCellKey) {
         super(playerKey);
         this.targetedCellKey = targetedCellKey;
+
+    }
+
+    public int getTargetedCellKey() {
+        return targetedCellKey;
     }
 
     @Override
@@ -15,4 +20,5 @@ public class OutOfAttackRangePlayerActionException extends PlayerActionException
             ", playerKey=" + playerKey +
             '}';
     }
+
 }
