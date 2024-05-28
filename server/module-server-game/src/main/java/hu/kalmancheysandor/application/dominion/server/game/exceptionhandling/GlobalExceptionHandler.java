@@ -1,8 +1,8 @@
 package hu.kalmancheysandor.application.dominion.server.game.exceptionhandling;
 
-import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action.AttackingOwnCellPlayerActionException;
-import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action.OutOfAttackRangePlayerActionException;
-import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action.SelfAttackPlayerActionException;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.*;
+import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.action.*;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,28 +13,200 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class GlobalExceptionHandler {
 
-
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ExceptionBox> handle(Exception exception) {
-//        System.out.println("ADVICER: " + exception.getClass().getSimpleName());
-//        ExceptionBox exceptionBox = new ExceptionBox(exception.getClass().getCanonicalName().toString(),exception);
-//        return new ResponseEntity<>(exceptionBox, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////// GAME - ACTION EXCEPTIONS ////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ExceptionHandler(OutOfAttackRangePlayerActionException.class)
     public ResponseEntity<?> handle(OutOfAttackRangePlayerActionException exception) {
-        System.out.println("ADVICER: " + exception.getClass().getSimpleName());
         ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
         errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
         errorDetails.getParameters().put("cellKey", exception.getTargetedCellKey());
+
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(SelfAttackPlayerActionException.class)
-    public ResponseEntity<SelfAttackPlayerActionException> handle(SelfAttackPlayerActionException exception) {
-        System.out.println("ADVICER: " + exception.getClass().getSimpleName());
-        return new ResponseEntity<>(exception, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> handle(SelfAttackPlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(OutOfDoughnutAttackRangePlayerActionException.class)
+    public ResponseEntity<?> handle(OutOfDoughnutAttackRangePlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoTroopsWereSentPlayerActionException.class)
+    public ResponseEntity<?> handle(NoTroopsWereSentPlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NotEnoughSupplyPlayerActionException.class)
+    public ResponseEntity<?> handle(NotEnoughSupplyPlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AttackingOwnCellPlayerActionException.class)
+    public ResponseEntity<?> handle(AttackingOwnCellPlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(PlayerActionException.class)
+    public ResponseEntity<?> handle(PlayerActionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////// GAME EXCEPTIONS /////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @ExceptionHandler(UnexpectedCaseFoundGameException.class)
+    public ResponseEntity<?> handle(UnexpectedCaseFoundGameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UnableToOpenMapFileGameException.class)
+    public ResponseEntity<?> handle(UnableToOpenMapFileGameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("path", exception.getPath());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoWinnerDeterminedYetGameException.class)
+    public ResponseEntity<?> handle(NoWinnerDeterminedYetGameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(GeneralGameException.class)
+    public ResponseEntity<?> handle(GeneralGameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(GameException.class)
+    public ResponseEntity<?> handle(GameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(EndOfGameException.class)
+    public ResponseEntity<?> handle(EndOfGameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////// SESSION EXCEPTIONS //////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @ExceptionHandler(PlayerKeyNotNotMemberOfHumanPlayerSlotSessionException.class)
+    public ResponseEntity<?> handle(PlayerKeyNotNotMemberOfHumanPlayerSlotSessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+        errorDetails.getParameters().put("playerId", exception.getPlayerId());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(PlayerKeyNotNotMemberOfAiPlayerSlotSessionException.class)
+    public ResponseEntity<?> handle(PlayerKeyNotNotMemberOfAiPlayerSlotSessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+        errorDetails.getParameters().put("playerId", exception.getPlayerId());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(PlayerKeyAlreadyIssuedSessionException.class)
+    public ResponseEntity<?> handle(PlayerKeyAlreadyIssuedSessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+        errorDetails.getParameters().put("playerId", exception.getPlayerId());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(PendingTurnSessionException.class)
+    public ResponseEntity<?> handle(PendingTurnSessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NotExistingPlayerSessionException.class)
+    public ResponseEntity<?> handle(NotExistingPlayerSessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NotExistingInstanceSessionException.class)
+    public ResponseEntity<?> handle(NotExistingInstanceSessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoMoreFreePlayerSlotSessionException.class)
+    public ResponseEntity<?> handle(NoMoreFreePlayerSlotSessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(IntentionIsAlreadyGivenException.class)
+    public ResponseEntity<?> handle(IntentionIsAlreadyGivenException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DuplicateGamePlaySessionException.class)
+    public ResponseEntity<?> handle(DuplicateGamePlaySessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(SessionException.class)
+    public ResponseEntity<?> handle(SessionException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("sessionKey", exception.getSessionKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 
 //

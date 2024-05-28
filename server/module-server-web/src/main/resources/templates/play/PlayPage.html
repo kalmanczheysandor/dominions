@@ -590,11 +590,16 @@
                                         document.getElementById('TroopsInput').value = '';
                                     },
                                     error: function (response) {
-                                        const errorResponse = JSON.parse(response);
-                                        // Handle error
-                                        console.error("Error:", errorResponse);
-                                        console.error(errorResponse);
-                                        alert("PlayerKey:"+errorResponse.playerKey);
+                                        handleErrorResponses(response.responseJSON)
+                                        // console.log("Hello"+response.responseJSON.type);
+                                        // console.log(response);
+                                        //
+                                        
+                                        // const errorResponse = JSON.parse(response);
+                                        // // Handle error
+                                        // console.error("Error:", errorResponse);
+                                        // console.error(errorResponse);
+                                        // alert("PlayerKey:"+errorResponse.playerKey);
                                     }
                                 });
                                 

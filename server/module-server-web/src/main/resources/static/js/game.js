@@ -182,7 +182,6 @@ function refreshState(response) {
 }
 
 
-
 const emptyCellData = {
     color: "grey"
 }
@@ -202,13 +201,10 @@ const playerDataList = {
 }
 
 
-
-
-
 function loadState(sessionKey) {
     $.ajax({
         type: 'GET',
-        url: '/web/map/'+sessionKey+'/current',
+        url: '/web/map/' + sessionKey + '/current',
         dataType: 'json',
         beforeSend: function (xhr) {
         },
@@ -249,6 +245,127 @@ function occupyACountry(countryIndex) {
 function selectCountryAsTarget(countryIndex) {
     document.getElementById('TargetInput').value = countryIndex;
 }
+
+
+function handleErrorResponses(response) {
+    let message = null;
+    if (response.type == "SelfAttackPlayerActionException") {
+        message = "You tried to attack yourself!";
+    } else if (response.type == "OutOfAttackRangePlayerActionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
+        message += "; $cellKey:" + response.targetedCellKey;
+    } else if (response.type == "SelfAttackPlayerActionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
+    } else if (response.type == "OutOfDoughnutAttackRangePlayerActionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
+    } else if (response.type == "NoTroopsWereSentPlayerActionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
+    } else if (response.type == "NotEnoughSupplyPlayerActionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
+    } else if (response.type == "AttackingOwnCellPlayerActionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
+    } else if (response.type == "PlayerActionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
+    } else if (response.type == "UnexpectedCaseFoundGameException") {
+        message = "Exception:" + response.type;
+    } else if (response.type == "UnableToOpenMapFileGameException") {
+        message = "Exception:" + response.type;
+        // Parameters
+        message += "; $path:" + response.Path;
+    } else if (response.type == "NoWinnerDeterminedYetGameException") {
+        message = "Exception:" + response.type;
+    } else if (response.type == "GeneralGameException") {
+        message = "Exception:" + response.type;
+    } else if (response.type == "GameException") {
+        message = "Exception:" + response.type;
+    } else if (response.type == "EndOfGameException") {
+        message = "Exception:" + response.type;
+    } else if (response.type == "PlayerKeyNotNotMemberOfHumanPlayerSlotSessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+        message += "; $playerId:" + response.playerId;
+    } else if (response.type == "PlayerKeyNotNotMemberOfAiPlayerSlotSessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+        message += "; $playerId:" + response.playerId;
+    } else if (response.type == "PlayerKeyAlreadyIssuedSessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+        message += "; $playerId:" + response.playerId;
+    } else if (response.type == "PendingTurnSessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+    } else if (response.type == "NotExistingPlayerSessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+    } else if (response.type == "NotExistingInstanceSessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+    } else if (response.type == "NoMoreFreePlayerSlotSessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+    } else if (response.type == "IntentionIsAlreadyGivenException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+    } else if (response.type == "DuplicateGamePlaySessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+    } else if (response.type == "SessionException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $sessionKey:" + response.sessionKey;
+    } else {
+        message = "Exception has no attached response handler! Exception:" + response.type;
+    }
+
+    if (message == null) {
+        message = "Undefined";
+    }
+
+    alert(message);
+}
+
+
 
 
 
