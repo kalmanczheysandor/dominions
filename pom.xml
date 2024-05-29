@@ -115,6 +115,7 @@
         <module>server/module-server-gateway</module>
         <module>server/module-server-game</module>
         <module>server/module-server-ai-otto</module>
+        <module>server/module-server-ai-liz</module>
         <module>server/module-server-ai-player2</module>
 
         <!--others-->
