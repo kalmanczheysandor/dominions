@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>hu.kalmancheysandor.application.dominion</groupId>
-    <artifactId>dominions-server-ai-player1</artifactId>
+    <artifactId>dominions-server-ai-otto</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

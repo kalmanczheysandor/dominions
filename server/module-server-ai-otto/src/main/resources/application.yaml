@@ -1,11 +1,11 @@
 server:
   port: 7021
   servlet:
-    context-path: '/ai-1'
+    context-path: '/ai-otto'
 
 spring:
   application:
-    name: 'ai-1'
+    name: 'ai-otto'
   config:
     import: 'optional:configserver:'
 

@@ -114,7 +114,7 @@
         <module>server/module-server-eureka</module>
         <module>server/module-server-gateway</module>
         <module>server/module-server-game</module>
-        <module>server/module-server-ai-player1</module>
+        <module>server/module-server-ai-otto</module>
         <module>server/module-server-ai-player2</module>
 
         <!--others-->
