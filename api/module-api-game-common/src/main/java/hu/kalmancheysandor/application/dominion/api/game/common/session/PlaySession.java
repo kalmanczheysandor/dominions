@@ -28,6 +28,7 @@ public class PlaySession {
     @Getter
     private GameMap gameMap;
     @Getter
+    @Setter
     private SessionStatusCode status;
 
     @Getter
@@ -166,35 +167,56 @@ public class PlaySession {
 
     public Set<GameEngine.Action> getAllIntention() {
         Set<GameEngine.Action> intentions = new HashSet<>();
-
         for (PlayerData player : players.values()) {
-            if (!player.isIntentionAlreadyGiven()) {
-                throw new GeneralGameException("No intention is present for player! Player index:" + player.getIndex());
+            int playerIndex = player.getIndex();
+
+            if(getGameState().getOpponent(playerIndex).isAlive()) {
+                if (!player.isIntentionAlreadyGiven()) {
+                    throw new GeneralGameException("No intention is present for player! Player index:" + player.getIndex());
+                }
+                intentions.add(player.getIntention());
             }
-            intentions.add(player.getIntention());
         }
         return intentions;
     }
 
 
     public boolean isPending() {
-        for (PlayerData player : players.values()) {
-            if (!player.isIntentionAlreadyGiven()) {
-                return true;
-            }
-        }
-        return false;
+//        for (PlayerData player : players.values()) {
+//            int playerIndex = player.getIndex();
+//            if (!player.isIntentionAlreadyGiven() && getGameState().getOpponent(playerIndex).isAlive()) {
+//                return true;
+//            }
+//        }
+//        return false;
+
+        return pendingCount()>0;
     }
 
     public int pendingCount() {
         int count = 0;
         for (PlayerData player : players.values()) {
-            if (!player.isIntentionAlreadyGiven()) {
+            int playerIndex = player.getIndex();
+
+            if (!player.isIntentionAlreadyGiven() && getGameState().getOpponent(playerIndex).isAlive()) {
                 count++;
             }
         }
         return count;
     }
+
+    public int humanPendingCount() {
+        int count = 0;
+        for (PlayerData player : players.values()) {
+            int playerIndex = player.getIndex();
+            if (!player.isIntentionAlreadyGiven() && getGameState().getOpponent(playerIndex).isAlive() && !player.isArtificial()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
 
     public int playerCount() {
         return players.size();

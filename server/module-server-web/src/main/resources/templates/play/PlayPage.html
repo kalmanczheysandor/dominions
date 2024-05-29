@@ -562,8 +562,7 @@
                 $(document).on('click', '#AttackButton', function (e) {
                             e.preventDefault();
                             let self = this;
-                            
-                            
+                    
                             let pathData = getUrlPathData();
                             let playerIndex = pathData.playerIndex;
                             let sessionKey = pathData.sessionKey;
@@ -585,12 +584,13 @@
                                         xhr.setRequestHeader(csrfHeader, csrfToken); // Include CSRF token in request headers
                                     },
                                     success: function (response) {
-                                        refreshState(response)
                                         document.getElementById('TargetInput').value = '';
                                         document.getElementById('TroopsInput').value = '';
+                                        refreshState(response);
+                                        handleActionSuccessResponse(response,playerIndex);
                                     },
                                     error: function (response) {
-                                        handleErrorResponses(response.responseJSON)
+                                        handleActionErrorResponse(response.responseJSON)
                                     }
                                 });
                                 
@@ -627,12 +627,13 @@
                                         xhr.setRequestHeader(csrfHeader, csrfToken); // Include CSRF token in request headers
                                     },
                                     success: function (response) {
-                                        refreshState(response)
                                         document.getElementById('TargetInput').value = '';
                                         document.getElementById('TroopsInput').value = '';
+                                        refreshState(response)
+                                        handleActionSuccessResponse(response,playerIndex);
                                     },
                                     error: function (response) {
-                                        handleErrorResponses(response.responseJSON)
+                                        handleActionErrorResponse(response.responseJSON)
                                     }
                                 });
                                 
@@ -653,7 +654,7 @@
                 // console.log("sessionKey:" + sessionKey);
                 
                 setInterval(function() {
-                    console.log("reload");
+                    // console.log("reload");
                     loadState(sessionKey)
                 }, 1000);
             });

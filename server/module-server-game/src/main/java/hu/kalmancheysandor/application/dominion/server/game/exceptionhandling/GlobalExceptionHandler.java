@@ -116,6 +116,21 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(GameAlreadyEndedGameException.class)
+    public ResponseEntity<?> handle(GameAlreadyEndedGameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(PlayerAlreadyDeadGameException.class)
+    public ResponseEntity<?> handle(PlayerAlreadyDeadGameException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
+        errorDetails.getParameters().put("playerKey", exception.getPlayerKey());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(GeneralGameException.class)
     public ResponseEntity<?> handle(GeneralGameException exception) {
         ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
@@ -129,14 +144,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @ExceptionHandler(EndOfGameException.class)
-    public ResponseEntity<?> handle(EndOfGameException exception) {
-        ErrorDetails errorDetails = new ErrorDetails(exception.getClass().getSimpleName());
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////// SESSION EXCEPTIONS //////////////////////////////////////////

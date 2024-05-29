@@ -4,9 +4,7 @@ package hu.kalmancheysandor.application.dominion.api.game.common.engine;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GeneralGameException;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.UnexpectedCaseFoundGameException;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class GameState {
     private StatusCode statusCode;
@@ -122,20 +120,39 @@ public class GameState {
         }
     }
 
-    public StatusCode getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(StatusCode statusCode) {
-        this.statusCode = statusCode;
-    }
 
     public int getCellCount() {
         return cellCount;
     }
 
+    public int getCellCountOfPlayer(int playerIndex) {
+        int count = 0;
+        GameState.Cell[] cells = getCells();
+
+        for (int cellKey = 0; cellKey < cells.length; cellKey++) {
+
+            if (cells[cellKey].getOccupierKey()==playerIndex) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
     public int getPlayerCount() {
         return playerCount;
+    }
+
+    public int[] getAlivePlayers() {
+        List<Integer> alivePlayers = new ArrayList<>();
+
+        for(int playerIndex=0;playerIndex<opponents.length;playerIndex++) {
+            GameState.Opponent player = opponents[playerIndex];
+            if (player.isAlive()) {
+                alivePlayers.add(playerIndex);
+            }
+        }
+        return alivePlayers.stream().mapToInt(i -> i).toArray();
     }
 
     public boolean[][] getNeighboursMatrix() {
@@ -168,6 +185,13 @@ public class GameState {
         return emptyCellKeys;
     }
 
+    public StatusCode getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(StatusCode statusCode) {
+        this.statusCode = statusCode;
+    }
 
     public Integer getWinnerKey() {
         return winnerKey;
@@ -297,7 +321,9 @@ public class GameState {
     }
 
     public enum StatusCode {
-        INITIALISED, PROCEEDED, FINISHED
+        INITIALISED,
+        PROCEEDED,
+        FINISHED
     }
 
 

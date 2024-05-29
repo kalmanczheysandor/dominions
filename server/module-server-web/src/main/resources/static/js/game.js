@@ -135,26 +135,15 @@ function setCountryState(countryIndex, playerIndex, troopsSize) {
     }
 }
 
-function refreshState(response) {
-    console.log("refreshState:" + response.currentTurn);
-    let players = response.players;
-    for (const playerIndex in players) {
-        players[playerIndex].occupiedCellCount = 0;
-    }
 
-    let cells = response.cells;
-    let cellCount = Object.keys(cells).length
-
+function refreshAllCountryState(cells) {
     for (const countryIndex in cells) {
         let cell = cells[countryIndex];
-        if (cell.playerKey != null) {
-            players[cell.playerKey].occupiedCellCount++;
-        }
-
         setCountryState(countryIndex, cell.playerKey, cell.armySize);
     }
+}
 
-    // Draw players panel
+function refreshPlayersTable(players, totalCellCount) {
     let playersTableStr = '';
     let rowsStr = '';
     for (const playerIndex in players) {
@@ -164,12 +153,18 @@ function refreshState(response) {
             occupiedCellCount = 0;
         }
 
+        let style1Str = 'border-left: 5px solid ' + playerDataList[playerIndex].color + ';';
+        if (player.alive === false) {
+            style1Str += 'text-decoration:line-through;';
+        }
+
+
         rowsStr += '' +
             '<tr>' +
-            '   <td style="border-left: 5px solid ' + playerDataList[playerIndex].color + ';">Player' + (parseInt(playerIndex) + 1) + '</td>' +
+            '   <td style="' + style1Str + '">Player' + (parseInt(playerIndex) + 1) + '</td>' +
             '   <td>' + player.type + '</td>' +
             '   <td>' + player.reserveSize + '</td>' +
-            '   <td>' + parseFloat(((occupiedCellCount / cellCount) * 100).toFixed()) + '%</td>' +
+            '   <td>' + parseFloat(((occupiedCellCount / totalCellCount) * 100).toFixed()) + '%</td>' +
             '</tr>';
     }
     if (rowsStr.length > 0) {
@@ -179,7 +174,34 @@ function refreshState(response) {
             '</table>';
     }
     document.getElementById('PlayersPanel').innerHTML = playersTableStr;
+}
 
+
+function refreshState(response) {
+    //console.log("refreshState:" + response.currentTurn);
+
+    // Adding an extra property
+    let players = response.players;
+    for (const playerIndex in players) {
+        players[playerIndex].occupiedCellCount = 0;
+    }
+
+    // Counting occupied cells
+    for (const countryIndex in response.cells) {
+        let cell = response.cells[countryIndex];
+        if (cell.playerKey != null) {
+            players[cell.playerKey].occupiedCellCount++;
+        }
+    }
+
+    //
+    refreshAllCountryState(response.cells);
+
+    // Draw players panel
+    let totalCellCount = Object.keys(response.cells).length
+    refreshPlayersTable(players, totalCellCount)
+
+    // Refresh turn label
     document.getElementById('TurnLabel').innerHTML = '#' + response.currentTurn;
 
 }
@@ -249,8 +271,41 @@ function selectCountryAsTarget(countryIndex) {
     document.getElementById('TargetInput').value = countryIndex;
 }
 
+function handleActionSuccessResponse(response, yourPlayerIndex) {
+    console.log("hello:"+yourPlayerIndex);
+    console.log(response);
 
-function handleErrorResponses(response) {
+    let message = '';
+    let alivePlayers = response.alivePlayers.map(value => parseInt(value,10));
+    let winnerKey = response.winnerKey;
+    let gameStatus = response.gameStatus;   //INITIALISED, PROCEEDED, FINISHED
+
+    if (gameStatus == 'PROCEEDED') {
+        let areYouAlive = (alivePlayers.indexOf(parseInt(yourPlayerIndex,10)) !== -1);
+
+        if (areYouAlive == false) {
+            message += "You gone dead :(\n";
+            message += "So, you lost the game!\n";
+            message += "Stay and watch the others!\n";
+        }
+    }
+    else if (gameStatus == 'FINISHED') {
+        if (winnerKey == yourPlayerIndex) {
+            message += "Congratulation!!!\n";
+            message += "You won the game!\n";
+        }
+        else if (winnerKey != yourPlayerIndex) {
+            message += "Sorry!!!\n";
+            message += "You lost the game!\n";
+        }
+    }
+
+    if(message.length>0) {
+        alert(message);
+    }
+}
+
+function handleActionErrorResponse(response) {
     let message = null;
     if (response.type == "SelfAttackPlayerActionException") {
         message = "You tried to attack yourself!";
@@ -327,8 +382,15 @@ function handleErrorResponses(response) {
     else if (response.type == "GameException") {
         message = "Exception:" + response.type;
     }
-    else if (response.type == "EndOfGameException") {
+    else if (response.type == "GameAlreadyEndedGameException") {
         message = "Exception:" + response.type;
+    }
+
+    else if (response.type == "PlayerAlreadyDeadGameException") {
+        message = "Exception:" + response.type;
+
+        // Parameters
+        message += "; $playerKey:" + response.playerKey;
     }
     else if (response.type == "PlayerKeyNotNotMemberOfHumanPlayerSlotSessionException") {
         message = "Exception:" + response.type;

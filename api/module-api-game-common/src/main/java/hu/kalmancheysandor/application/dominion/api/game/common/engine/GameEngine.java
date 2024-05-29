@@ -23,8 +23,7 @@ public class GameEngine {
     public GameState doAction(Set<Action> plannedActions) {
         //if (!isMoreActionPossible()) {
         if (isEndOfGame()) {
-            throw new EndOfGameException();
-
+            throw new GameAlreadyEndedGameException();
         }
 
         // Validations
@@ -59,13 +58,14 @@ public class GameEngine {
         for (Action processedAction : actionsToProcess) {
             GameState.Cell attackedCell = getCell(processedAction.getTargetCellKey());
 
-            if (processedAction.getTargetCellKey() != null) {
-                if (attackedCell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) {
+            if (processedAction.getTargetCellKey() != null) {   // When it was an attack and not reserve move
+
+                if (attackedCell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) { // Defender are weaker
                     attackedCell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - attackedCell.getDefendingTroopSize());
                     attackedCell.setOccupierKey(processedAction.getPlayerKey());
-                } else if (attackedCell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {
+                } else if (attackedCell.getDefendingTroopSize() > processedAction.getAttackingTroopSize()) {    // Stronger defenders
                     attackedCell.setDefendingTroopSize(attackedCell.getDefendingTroopSize() - processedAction.getAttackingTroopSize());
-                } else {
+                } else {// Attacker and defenders were equally strong
                     attackedCell.setDefendingTroopSize(0);
                     attackedCell.setOccupierKey(-1);
                 }
@@ -74,11 +74,22 @@ public class GameEngine {
             }
         }
 
-        // Decreasing reserve
+        // Decreasing reserve of each attacker
         for (Action observedAction : plannedActions) {
             GameState.Opponent attackingPlayer = getPlayer(observedAction.getPlayerKey());
             attackingPlayer.setReserveSize(attackingPlayer.getReserveSize() - observedAction.getAttackingTroopSize());
         }
+
+
+        // Finding players who lost their last cell
+        GameState.Opponent[] opponents = gameState.getOpponents();
+        for (int playerKey = 0; playerKey < opponents.length; playerKey++) {
+            if (gameState.getCellCountOfPlayer(playerKey) <= 0) {
+                opponents[playerKey].setAlive(false);
+                opponents[playerKey].setReserveSize(0);
+            }
+        }
+
 
         // Removal of the weakest player in case of no more empty cell
         if (isNoMoreEmptyCell() && countAlivePlayers() > 1) {
@@ -86,13 +97,14 @@ public class GameEngine {
             if (weakestPlayerKey != null) {
                 demolishPlayerDominion(weakestPlayerKey);
                 getPlayer(weakestPlayerKey).setAlive(false);
+                getPlayer(weakestPlayerKey).setReserveSize(0);
             }
 
             if (countAlivePlayers() == 1) {
                 Integer winnerKey = null;
-                GameState.Opponent[] opponents = gameState.getOpponents();
+                opponents = gameState.getOpponents();
                 for (int playerKey = 0; playerKey < opponents.length; playerKey++) {
-                    if (opponents[playerKey].isAlive()) {
+                    if (opponents[playerKey].isAlive()) {// The only remaining
                         winnerKey = playerKey;
                     }
                 }
@@ -104,7 +116,7 @@ public class GameEngine {
         }
 
         if (!isEndOfGame()) {
-            incrementAllReserve();
+            incrementAllAliveReserve();
             gameState.setStatusCode(GameState.StatusCode.PROCEEDED);
         }
 
@@ -114,12 +126,21 @@ public class GameEngine {
     public static void validatePlayerAction(GameState state, Action action) {
         int playerKey = action.getPlayerKey();
         Integer targetCellKey = action.getTargetCellKey();
-        System.out.print("VALIDATE");
-        System.out.print("-targerCellKey:" + targetCellKey);
-        System.out.print("-attackingTroopSize:" + action.getAttackingTroopSize());
+        GameState.Opponent player = state.getOpponent(playerKey);
+
+        // No mor action is allowed when game is finished
+        if (state.getStatusCode() == GameState.StatusCode.FINISHED) {
+            throw new GameAlreadyEndedGameException();
+        }
+
+        // Player must be alive
+        if (!player.isAlive()) {
+            throw new PlayerAlreadyDeadGameException(playerKey);
+        }
+
+
         if (targetCellKey != null) {       // When itt is an attack action
             GameState.Cell targetCell = state.getCell(targetCellKey);
-            GameState.Opponent player = state.getOpponent(playerKey);
 
             // When it is an attack without troops
             if (action.getAttackingTroopSize() <= 0) {
@@ -231,10 +252,11 @@ public class GameEngine {
         return null;
     }
 
-    private void incrementAllReserve() {
+    private void incrementAllAliveReserve() {
         for (GameState.Opponent player : gameState.getOpponents()) {
-
-            player.incrementReserveSize(1);
+            if (player.isAlive()) {
+                player.incrementReserveSize(1);
+            }
         }
         gameState.getOpponents()[1].incrementReserveSize(0);
     }
@@ -487,11 +509,7 @@ public class GameEngine {
 
         @Override
         public String toString() {
-            return "Action{" +
-                "playerKey=" + playerKey +
-                ", targetCellKey=" + targetCellKey +
-                ", attackingTroopSize=" + attackingTroopSize +
-                '}';
+            return "Action{" + "playerKey=" + playerKey + ", targetCellKey=" + targetCellKey + ", attackingTroopSize=" + attackingTroopSize + '}';
         }
     }
 

@@ -11,6 +11,7 @@ import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GeneralGameException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlayerData;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.SessionStatusCode;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.PendingTurnSessionException;
@@ -21,6 +22,7 @@ import hu.kalmancheysandor.application.dominion.server.game.repository.game.Sess
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.*;
 
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class GameService {
 
     private static final Logger log = LoggerFactory.getLogger(GameService.class);
@@ -100,11 +103,11 @@ public class GameService {
 
         // Save intention
         GameEngine.Action action = new GameEngine.Action(playerIndex, request.getTargetCellKey(), request.getAttackingTroopSize());
-        saveIntention(sessionKey,playerIndex, action);
-
+        saveIntention(sessionKey, playerIndex, action);
+System.out.println("session.humanPendingCount():"+session.humanPendingCount()+" AISlot:"+session.getAiPlayerMaxSlotSize());
 
         // Ai calls after all human send their actions
-        if (session.pendingCount() == session.getAiPlayerMaxSlotSize()) {
+        if (session.humanPendingCount() == 0 && session.getAiPlayerMaxSlotSize()>0) {
             for (Map.Entry<Integer, PlayerData> playerEntry : session.getPlayers().entrySet()) {
                 int aiPlayerIndex = playerEntry.getKey();
                 PlayerData player = playerEntry.getValue();
@@ -112,38 +115,58 @@ public class GameService {
                     AiResponse aiResponse = proxyAiPlayer1.generateResponse(createRequest(aiPlayerIndex, session.getGameState()));
                     System.out.println("AIIII(" + aiPlayerIndex + "):" + aiResponse);
                     GameEngine.Action aiAction = new GameEngine.Action(aiPlayerIndex, aiResponse.getTargetCellKey(), aiResponse.getTroopSize());
-                    saveIntention(sessionKey,aiPlayerIndex, aiAction);
+                    saveIntention(sessionKey, aiPlayerIndex, aiAction);
+                    System.out.println("Ai saved intention");
+
                 }
             }
         }
+        System.out.println("A1");
 
         if (!session.isPending()) {
+            try {
+                System.out.println("A2");
+                for (GameEngine.Action intention : session.getAllIntention()) {
+                    int reserveSize = session.getGameState().getOpponents()[intention.getPlayerKey()].getReserveSize();
+                    int enemiesCount = session.getGameState().getOpponents().length - 1;
+                    System.out.println("A3");
+                    String playerType = session.findPlayer(intention.getPlayerKey()).getPlayerType().name();
+                    PlayerDecision playerDecision = PlayerDecision.create(intention.getTargetCellKey(), intention.getAttackingTroopSize(), reserveSize, enemiesCount, session.getGameState());
 
-            for (GameEngine.Action intention : session.getAllIntention()) {
-                int reserveSize = session.getGameState().getOpponents()[intention.getPlayerKey()].getReserveSize();
-                int enemiesCount = session.getGameState().getOpponents().length - 1;
-
-                String playerType = session.findPlayer(intention.getPlayerKey()).getPlayerType().name();
-                PlayerDecision playerDecision = PlayerDecision.create(intention.getTargetCellKey(), intention.getAttackingTroopSize(), reserveSize, enemiesCount, session.getGameState());
-
-                String playerDecisionString;
-                try {
-                    playerDecisionString = objectMapper.writeValueAsString(playerDecision);
-                } catch (JsonProcessingException e) {
-                    throw new GeneralGameException("Error at parsing");
+                    String playerDecisionString;
+                    try {
+                        System.out.println("A4");
+                        playerDecisionString = objectMapper.writeValueAsString(playerDecision);
+                    } catch (JsonProcessingException e) {
+                        System.out.println("A5");
+                        throw new GeneralGameException("Error at parsing");
+                    }
+                    System.out.println("A6");
+                    History history = new History();
+                    history.setPlayer(playerType);
+                    history.setDecision(playerDecisionString);
+                    historyRepository.save(history);
+                    System.out.println("A7");
+                }
+                System.out.println("A8");
+                GameState newState = gameEngine.doAction(session.getAllIntention(), session.getGameState());
+                session.setGameState(newState);
+                if (newState.getStatusCode() == GameState.StatusCode.FINISHED) {
+                    System.out.println("A9");
+                    session.setStatus(SessionStatusCode.ENDED);
                 }
 
-                History history = new History();
-                history.setPlayer(playerType);
-                history.setDecision(playerDecisionString);
-                historyRepository.save(history);
+                System.out.println("A10");
+
+                session.eliminateAllIntention();
+                System.out.println("A11");
+                session.incrementTurn();
+                System.out.println("A12");
+            }catch(Exception e) {
+                System.out.println("A13");
+                e.printStackTrace();
+                throw e;
             }
-
-            GameState newState = gameEngine.doAction(session.getAllIntention(), session.getGameState());
-            session.setGameState(newState);
-
-            session.eliminateAllIntention();
-            session.incrementTurn();
         }
 
         return generateGameStateResponse(sessionKey);
@@ -154,7 +177,7 @@ public class GameService {
         validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
-        GameEngine.validatePlayerAction(session.getGameState(),intention);
+        GameEngine.validatePlayerAction(session.getGameState(), intention);
         session.saveIntention(playerIndex, intention);
     }
 
@@ -199,15 +222,12 @@ public class GameService {
         validateSessionAccess(sessionKey);
         PlaySession session = sessionRepository.findSession(sessionKey);
 
-        GameMap gameMap = session.getGameMap();
-        Map<Integer, GameMap.MapCell> mapCells = (Map<Integer, GameMap.MapCell>) SerializationUtils.clone((Serializable) gameMap.getCells());
-        Map<Integer, GameMap.Opponent> mapPlayers = (Map<Integer, GameMap.Opponent>) SerializationUtils.clone((Serializable) gameMap.getPlayers());
-
         GameState theGameState = session.getGameState();
+        GameMap gameMap = session.getGameMap();
 
+        // Players
+        Map<Integer, GameMap.Opponent> mapPlayers = (Map<Integer, GameMap.Opponent>) SerializationUtils.clone((Serializable) gameMap.getPlayers());
         GameState.Opponent[] gameStatePlayers = theGameState.getOpponents();
-
-        //Players
         for (int playerIndex = 0; playerIndex < gameStatePlayers.length; playerIndex++) {
             GameState.Opponent gameStatePlayer = gameStatePlayers[playerIndex];
 
@@ -215,8 +235,8 @@ public class GameService {
             mapPlayers.get(playerIndex).setReserveSize(gameStatePlayer.getReserveSize());
         }
 
-
-        // cells
+        // Cells
+        Map<Integer, GameMap.MapCell> mapCells = (Map<Integer, GameMap.MapCell>) SerializationUtils.clone((Serializable) gameMap.getCells());
         for (int cellIndex = 0; cellIndex < theGameState.getCells().length; cellIndex++) {
             GameState.Cell gameStateCell = theGameState.getCells()[cellIndex];
             GameMap.MapCell mapCell = mapCells.get(cellIndex);
@@ -229,15 +249,18 @@ public class GameService {
             }
         }
 
-
         // Generate response
         GameStateResponse response = new GameStateResponse();
         response.setCurrentTurn(session.getTurn());
-        response.setPlayerCount(session.playerCount());
         response.setPendingCount(session.pendingCount());
-        response.setStatusCode(session.getStatus());
+        response.setPlayerCount(session.playerCount());
+        response.setSessionStatus(session.getStatus());
+        response.setGameStatus(theGameState.getStatusCode());
+        response.setWinnerKey(theGameState.getWinnerKey());
+        response.setAlivePlayers(theGameState.getAlivePlayers());
         response.setCells(mapCells);
         response.setPlayers(mapPlayers);
+
         return response;
     }
 
