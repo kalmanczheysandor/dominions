@@ -16,7 +16,7 @@ import hu.kalmancheysandor.application.dominion.api.game.common.session.exceptio
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.PendingTurnSessionException;
 import hu.kalmancheysandor.application.dominion.server.game.domain.History;
-import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer1ServerProxy;
+import hu.kalmancheysandor.application.dominion.server.game.proxy.AiOttoServerProxy;
 import hu.kalmancheysandor.application.dominion.server.game.repository.game.HistoryRepository;
 import hu.kalmancheysandor.application.dominion.server.game.repository.game.SessionRepository;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
@@ -49,7 +49,7 @@ public class GameService {
     private GameEngine gameEngine;
 
     @Autowired
-    private AiPlayer1ServerProxy proxyAiPlayer1;
+    private AiOttoServerProxy proxyAiPlayer1;
 
     @Autowired
     private ObjectMapper objectMapper;

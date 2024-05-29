@@ -5,8 +5,8 @@ import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name="ai-1")
-public interface AiPlayer1ServerProxy {
-	@PostMapping("/ai-1/call")
+@FeignClient(name="ai-otto")
+public interface AiOttoServerProxy {
+	@PostMapping("/ai-otto/call")
 	public AiResponse generateResponse(@RequestBody AiRequest request);
 }
