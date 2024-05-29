@@ -15,11 +15,12 @@ public class GatewayConfiguration {
     @Bean
     public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {
         return builder.routes()
-                      .route("ai-otto", r -> r.path("/ai-otto/**").uri("lb://ai-otto"))
-                      .route("ai-2", r -> r.path("/ai-2/**").uri("lb://ai-2"))
-                      .route("game", r -> r.path("/game/**").uri("lb://game"))
-                      .route("web", r -> r.path("/web/**").uri("lb://web"))
-                      .build();
+            .route("ai-otto", r -> r.path("/ai-otto/**").uri("lb://ai-otto"))
+            .route("ai-liz", r -> r.path("/ai-liz/**").uri("lb://ai-liz"))
+            .route("ai-2", r -> r.path("/ai-2/**").uri("lb://ai-2"))
+            .route("game", r -> r.path("/game/**").uri("lb://game"))
+            .route("web", r -> r.path("/web/**").uri("lb://web"))
+            .build();
     }
 
 
