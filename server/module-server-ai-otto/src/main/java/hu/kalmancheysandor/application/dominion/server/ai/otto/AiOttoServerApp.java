@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.application.dominion.server.ai.player1;
+package hu.kalmancheysandor.application.dominion.server.ai.otto;
 
 import hu.kalmancheysandor.application.dominion.api.ai.otto.OttoAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;

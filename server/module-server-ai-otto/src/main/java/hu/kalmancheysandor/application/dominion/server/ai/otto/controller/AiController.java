@@ -1,9 +1,9 @@
-package hu.kalmancheysandor.application.dominion.server.ai.player1.controller;
+package hu.kalmancheysandor.application.dominion.server.ai.otto.controller;
 
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
-import hu.kalmancheysandor.application.dominion.server.ai.player1.service.AiService;
+import hu.kalmancheysandor.application.dominion.server.ai.otto.service.AiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
