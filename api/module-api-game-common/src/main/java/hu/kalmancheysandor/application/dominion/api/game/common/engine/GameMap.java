@@ -58,8 +58,8 @@ public class GameMap implements Serializable {
 
         public enum PlayerType implements Serializable {
             HUMAN,
-            AI_BASIC,
-            AI_NEURAL,
+            AI_OTTO,
+            AI_LIZ,
         }
     }
 
