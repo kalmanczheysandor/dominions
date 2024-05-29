@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.application.dominion.api.ai.basic;
+package hu.kalmancheysandor.application.dominion.api.ai.otto;
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
@@ -6,7 +6,7 @@ import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
 import java.util.Map;
 import java.util.Set;
 
-public class Basic2Engine extends BasicEngine {
+public class PseudoAi2Engine extends PseudoAiEngine {
     @Override
     public AiResponse generateResponse(AiRequest request) {
         Integer yourKey = request.getYourKey();

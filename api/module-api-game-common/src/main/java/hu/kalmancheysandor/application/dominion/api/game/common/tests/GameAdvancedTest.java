@@ -1,11 +1,6 @@
 package hu.kalmancheysandor.application.dominion.api.game.common.tests;
 
-import hu.kalmancheysandor.application.dominion.api.ai.basic.Basic1Engine;
-import hu.kalmancheysandor.application.dominion.api.ai.basic.Basic2Engine;
-import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
-import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
-import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngine;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 
 import java.util.HashMap;

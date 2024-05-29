@@ -1,6 +1,6 @@
 package hu.kalmancheysandor.application.dominion.server.ai.player1;
 
-import hu.kalmancheysandor.application.dominion.api.ai.basic.Basic1Engine;
+import hu.kalmancheysandor.application.dominion.api.ai.otto.OttoAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +14,6 @@ public class AiPlayer1ServerApp {
 
     @Bean
     public AiEngine getBasicEngine() {
-        return new Basic1Engine();
+        return new OttoAiEngine();
     }
 }

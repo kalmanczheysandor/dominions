@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.application.dominion.api.ai.basic;
+package hu.kalmancheysandor.application.dominion.api.ai.otto;
 
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class BasicEngine extends AiEngine {
+public abstract class PseudoAiEngine extends AiEngine {
 
 
     protected static Set<Integer> collectCellKeysOfCurrentAttackZone(Map<Integer, AiRequest.LandCell> landCells, Integer yourKey) {
