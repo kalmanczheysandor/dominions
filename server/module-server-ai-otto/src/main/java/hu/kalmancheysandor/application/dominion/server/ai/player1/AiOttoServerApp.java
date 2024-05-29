@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class AiPlayer1ServerApp {
+public class AiOttoServerApp {
     public static void main(String[] args) {
-        SpringApplication.run(AiPlayer1ServerApp.class, args);
+        SpringApplication.run(AiOttoServerApp.class, args);
     }
 
     @Bean
