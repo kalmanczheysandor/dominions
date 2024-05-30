@@ -22,7 +22,14 @@ public class LizController {
 
     @GetMapping("/train")
     @ResponseStatus(HttpStatus.OK)
-    public void learn() {
+    public void train() {
         lizService.train();
     }
+
+    @GetMapping("/check")
+    @ResponseStatus(HttpStatus.OK)
+    public void learn() {
+        lizService.check();
+    }
+
 }

@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.application.dominion.server.ai.liz;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.kalmancheysandor.application.dominion.api.ai.common.neural.INeuralAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.liz.LizAiEngine;
 import org.springframework.boot.SpringApplication;
@@ -15,5 +16,10 @@ public class LizAiServerApp {
     @Bean
     public INeuralAiEngine getBasicEngine() {
         return new LizAiEngine();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

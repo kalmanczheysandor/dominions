@@ -7,5 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class LizAiEngine extends NeuralAiEngine {
-    
+    @Override
+    public AiResponse generateResponse(AiRequest request) {
+        return new AiResponse(0, 0);
+    }
 }
