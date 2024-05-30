@@ -1,9 +1,7 @@
 package hu.kalmancheysandor.application.dominion.server.ai.liz;
 
-import hu.kalmancheysandor.application.dominion.api.ai.common.INeuralAiEngine;
+import hu.kalmancheysandor.application.dominion.api.ai.common.neural.INeuralAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.liz.LizAiEngine;
-import hu.kalmancheysandor.application.dominion.api.ai.otto.OttoAiEngine;
-import hu.kalmancheysandor.application.dominion.api.ai.common.IAiEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

@@ -1,5 +1,5 @@
 server:
-  port: 7021
+  port: 7025
   servlet:
     context-path: '/ai-liz'
 
@@ -8,6 +8,27 @@ spring:
     name: 'ai-liz'
   config:
     import: 'optional:configserver:'
+
+  datasource:
+
+    # Case-1: No container in use
+    url: jdbc:mysql://127.0.0.1:3306/dominions?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+
+    # Case-2: Only database is in container
+    #url: jdbc:mysql://127.0.0.1:3310/dominions?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+
+    # Case-3: containers are in use
+    #url: jdbc:mysql://dominion_db_container/dominions?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+    username: root
+    password: CHANGE_ME
+  jpa:
+    show: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: on
 
 eureka:
   client:
