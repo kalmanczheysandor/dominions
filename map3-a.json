@@ -6,7 +6,7 @@
             "reserveSize": 18
         },
         "1": {
-            "type": "AI_BASIC",
+            "type": "AI_OTTO",
             "reserveSize": 10
         },
         "2": {

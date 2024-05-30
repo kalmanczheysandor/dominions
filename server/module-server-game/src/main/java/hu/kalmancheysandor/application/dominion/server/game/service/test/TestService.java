@@ -4,7 +4,7 @@ package hu.kalmancheysandor.application.dominion.server.game.service.test;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
-import hu.kalmancheysandor.application.dominion.server.game.proxy.AiOttoServerProxy;
+import hu.kalmancheysandor.application.dominion.server.game.proxy.OttoAiServerProxy;
 import hu.kalmancheysandor.application.dominion.server.game.proxy.AiPlayer2ServerProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -21,11 +21,11 @@ import java.util.concurrent.CompletableFuture;
 public class TestService {
 
     @Autowired
-    private AiOttoServerProxy proxy;
+    private OttoAiServerProxy proxy;
 
 
     @Autowired
-    private AiOttoServerProxy proxyAiPlayer1;
+    private OttoAiServerProxy proxyAiPlayer1;
 
     @Autowired
     private AiPlayer2ServerProxy proxyAiPlayer2;

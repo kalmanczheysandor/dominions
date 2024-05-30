@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name="ai-otto")
-public interface AiOttoServerProxy {
+public interface OttoAiServerProxy {
 	@PostMapping("/ai-otto/call")
 	public AiResponse generateResponse(@RequestBody AiRequest request);
 }

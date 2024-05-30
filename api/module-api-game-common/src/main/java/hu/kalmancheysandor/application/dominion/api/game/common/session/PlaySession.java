@@ -5,6 +5,7 @@ import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GeneralGameException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.*;
+import hu.kalmancheysandor.application.dominion.api.general.IllegalPointOfExecution;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -80,19 +81,18 @@ public class PlaySession {
     }
 
     private void addPlayer(PlayerData data) {
-        int playerIndex =data.getIndex();
+        int playerIndex = data.getIndex();
         if (players.containsKey(playerIndex)) {
             throw new PlayerKeyAlreadyIssuedSessionException(sessionKey, playerIndex);
         }
 
-        if(data.getPlayerType()== PlayerData.PlayerType.HUMAN) {
-            if(!humanPlayerSlot.contains(playerIndex)) {
+        if (data.getPlayerType() == PlayerData.PlayerType.HUMAN) {
+            if (!humanPlayerSlot.contains(playerIndex)) {
                 throw new PlayerKeyNotNotMemberOfHumanPlayerSlotSessionException(sessionKey, playerIndex);
             }
             humanPlayerSlot.remove(data.getIndex());
-        }
-        else {
-            if(!aiPlayerSlot.contains(playerIndex)) {
+        } else {
+            if (!aiPlayerSlot.contains(playerIndex)) {
                 throw new PlayerKeyNotNotMemberOfAiPlayerSlotSessionException(sessionKey, playerIndex);
             }
             aiPlayerSlot.remove(playerIndex);
@@ -113,9 +113,22 @@ public class PlaySession {
     }
 
     private void addMissingAiPlayers() {
-        for(int aiIndex:aiPlayerSlot) {
-            ArtificialPlayer player =new ArtificialPlayer(aiIndex,"Mr AI-"+aiIndex);
-            addPlayer(player);
+        for (int aiPlayerIndex : aiPlayerSlot) {
+            ArtificialPlayer player = null;
+            GameMap.Opponent mapPlayerData = gameMap.getPlayers().get(aiPlayerIndex);
+            if(mapPlayerData.getType()== GameMap.Opponent.PlayerType.AI_OTTO) {
+                player = new ArtificialPlayer(aiPlayerIndex, "Mr Otto Ai " + aiPlayerIndex,ArtificialPlayer.EngineType.OTTO);
+            }
+            else if(mapPlayerData.getType()== GameMap.Opponent.PlayerType.AI_LIZ) {
+                player = new ArtificialPlayer(aiPlayerIndex, "Miss Liz Ai " + aiPlayerIndex,ArtificialPlayer.EngineType.LIZ);
+            }
+            else {
+                throw new IllegalPointOfExecution("Unknown ai engine type is found:"+mapPlayerData.getType().name());
+            }
+
+            if(player!=null) {
+                addPlayer(player);
+            }
         }
     }
 
@@ -170,7 +183,7 @@ public class PlaySession {
         for (PlayerData player : players.values()) {
             int playerIndex = player.getIndex();
 
-            if(getGameState().getOpponent(playerIndex).isAlive()) {
+            if (getGameState().getOpponent(playerIndex).isAlive()) {
                 if (!player.isIntentionAlreadyGiven()) {
                     throw new GeneralGameException("No intention is present for player! Player index:" + player.getIndex());
                 }
@@ -190,7 +203,7 @@ public class PlaySession {
 //        }
 //        return false;
 
-        return pendingCount()>0;
+        return pendingCount() > 0;
     }
 
     public int pendingCount() {
@@ -209,13 +222,13 @@ public class PlaySession {
         int count = 0;
         for (PlayerData player : players.values()) {
             int playerIndex = player.getIndex();
-            if (!player.isIntentionAlreadyGiven() && getGameState().getOpponent(playerIndex).isAlive() && !player.isArtificial()) {
+            if (!player.isIntentionAlreadyGiven() && getGameState().getOpponent(playerIndex)
+                .isAlive() && !player.isArtificial()) {
                 count++;
             }
         }
         return count;
     }
-
 
 
     public int playerCount() {

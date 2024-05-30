@@ -9,17 +9,16 @@ import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameEngin
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameMap;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.GameState;
 import hu.kalmancheysandor.application.dominion.api.game.common.engine.exception.GeneralGameException;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.HumanPlayer;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.PlayerData;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.SessionStatusCode;
+import hu.kalmancheysandor.application.dominion.api.game.common.session.*;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NoMoreFreePlayerSlotSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.NotExistingInstanceSessionException;
 import hu.kalmancheysandor.application.dominion.api.game.common.session.exception.PendingTurnSessionException;
+import hu.kalmancheysandor.application.dominion.api.general.IllegalPointOfExecution;
 import hu.kalmancheysandor.application.dominion.server.game.domain.History;
-import hu.kalmancheysandor.application.dominion.server.game.proxy.AiOttoServerProxy;
+import hu.kalmancheysandor.application.dominion.server.game.proxy.OttoAiServerProxy;
+import hu.kalmancheysandor.application.dominion.server.game.proxy.LizAiServerProxy;
 import hu.kalmancheysandor.application.dominion.server.game.repository.game.HistoryRepository;
 import hu.kalmancheysandor.application.dominion.server.game.repository.game.SessionRepository;
-import hu.kalmancheysandor.application.dominion.api.game.common.session.PlaySession;
 import hu.kalmancheysandor.application.dominion.server.game.service.game.dto.*;
 
 import jakarta.transaction.Transactional;
@@ -49,7 +48,10 @@ public class GameService {
     private GameEngine gameEngine;
 
     @Autowired
-    private AiOttoServerProxy proxyAiPlayer1;
+    private OttoAiServerProxy ottoAiServerProxy;
+
+    @Autowired
+    private LizAiServerProxy lizAiServerProxy;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -104,66 +106,72 @@ public class GameService {
         // Save intention
         GameEngine.Action action = new GameEngine.Action(playerIndex, request.getTargetCellKey(), request.getAttackingTroopSize());
         saveIntention(sessionKey, playerIndex, action);
-System.out.println("session.humanPendingCount():"+session.humanPendingCount()+" AISlot:"+session.getAiPlayerMaxSlotSize());
 
         // Ai calls after all human send their actions
-        if (session.humanPendingCount() == 0 && session.getAiPlayerMaxSlotSize()>0) {
+        if (session.humanPendingCount() == 0 && session.getAiPlayerMaxSlotSize() > 0) {
             for (Map.Entry<Integer, PlayerData> playerEntry : session.getPlayers().entrySet()) {
                 int aiPlayerIndex = playerEntry.getKey();
                 PlayerData player = playerEntry.getValue();
                 if (player.isArtificial()) {
-                    AiResponse aiResponse = proxyAiPlayer1.generateResponse(createRequest(aiPlayerIndex, session.getGameState()));
-                    System.out.println("AIIII(" + aiPlayerIndex + "):" + aiResponse);
+                    ArtificialPlayer.EngineType engineType = ((ArtificialPlayer) player).getEngineType();
+                    AiResponse aiResponse;
+                    if (engineType == ArtificialPlayer.EngineType.OTTO) {
+                        aiResponse = ottoAiServerProxy.generateResponse(createRequest(aiPlayerIndex, session.getGameState()));
+                    } else if (engineType == ArtificialPlayer.EngineType.LIZ) {
+                        aiResponse = lizAiServerProxy.generateResponse(createRequest(aiPlayerIndex, session.getGameState()));
+                    } else {
+                        throw new IllegalPointOfExecution("Unknown ai engin:" + engineType.name());
+                    }
+
+                    System.out.println("AIIII(" + engineType.name() + ";" + aiPlayerIndex + "):" + aiResponse);
                     GameEngine.Action aiAction = new GameEngine.Action(aiPlayerIndex, aiResponse.getTargetCellKey(), aiResponse.getTroopSize());
                     saveIntention(sessionKey, aiPlayerIndex, aiAction);
                     System.out.println("Ai saved intention");
 
+
                 }
             }
         }
-        System.out.println("A1");
 
         if (!session.isPending()) {
             try {
-                System.out.println("A2");
                 for (GameEngine.Action intention : session.getAllIntention()) {
                     int reserveSize = session.getGameState().getOpponents()[intention.getPlayerKey()].getReserveSize();
                     int enemiesCount = session.getGameState().getOpponents().length - 1;
-                    System.out.println("A3");
-                    String playerType = session.findPlayer(intention.getPlayerKey()).getPlayerType().name();
+
+                    //GameMap.Opponent mapPlayer = session.getGameMap().getPlayers().get(intention.getPlayerKey());
+
+                    String playerNameCode = "HUMAN_KALMANCZHEYSANDOR@GAMIL-COM";
+                    PlayerData playerData = session.findPlayer(intention.getPlayerKey());
+                    if (playerData.isArtificial()) {
+                        playerNameCode = "ARTIFICIAL_" + ((ArtificialPlayer) playerData).getEngineType();
+                    }
+
+
                     PlayerDecision playerDecision = PlayerDecision.create(intention.getTargetCellKey(), intention.getAttackingTroopSize(), reserveSize, enemiesCount, session.getGameState());
 
                     String playerDecisionString;
                     try {
-                        System.out.println("A4");
                         playerDecisionString = objectMapper.writeValueAsString(playerDecision);
                     } catch (JsonProcessingException e) {
-                        System.out.println("A5");
                         throw new GeneralGameException("Error at parsing");
                     }
-                    System.out.println("A6");
+
                     History history = new History();
-                    history.setPlayer(playerType);
+                    history.setPlayer(playerNameCode);
                     history.setDecision(playerDecisionString);
                     historyRepository.save(history);
-                    System.out.println("A7");
                 }
-                System.out.println("A8");
+
                 GameState newState = gameEngine.doAction(session.getAllIntention(), session.getGameState());
                 session.setGameState(newState);
                 if (newState.getStatusCode() == GameState.StatusCode.FINISHED) {
-                    System.out.println("A9");
                     session.setStatus(SessionStatusCode.ENDED);
                 }
 
-                System.out.println("A10");
-
                 session.eliminateAllIntention();
-                System.out.println("A11");
                 session.incrementTurn();
-                System.out.println("A12");
-            }catch(Exception e) {
-                System.out.println("A13");
+            } catch (Exception e) {
                 e.printStackTrace();
                 throw e;
             }
