@@ -1,17 +1,21 @@
 package hu.kalmancheysandor.application.dominion.server.ai.liz.service;
 
-import hu.kalmancheysandor.application.dominion.api.ai.common.IAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
+import hu.kalmancheysandor.application.dominion.api.ai.common.INeuralAiEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AiService {
+public class LizService {
     @Autowired
-    private IAiEngine IAiEngine;
+    private INeuralAiEngine engine;
 
     public AiResponse generateResponse(AiRequest request) {
-        return IAiEngine.generateResponse(request);
+        return engine.generateResponse(request);
+    }
+
+    public void learn() {
+        engine.learn();
     }
 }

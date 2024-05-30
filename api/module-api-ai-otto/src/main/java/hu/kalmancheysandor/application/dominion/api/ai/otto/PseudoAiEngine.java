@@ -1,6 +1,6 @@
 package hu.kalmancheysandor.application.dominion.api.ai.otto;
 
-import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
+import hu.kalmancheysandor.application.dominion.api.ai.common.IAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.exception.LandKeyNotExistAiException;
 
@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class PseudoAiEngine extends AiEngine {
+public abstract class PseudoAiEngine implements IAiEngine {
 
 
     protected static Set<Integer> collectCellKeysOfCurrentAttackZone(Map<Integer, AiRequest.LandCell> landCells, Integer yourKey) {

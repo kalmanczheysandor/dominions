@@ -107,6 +107,7 @@
         <!--Apis-->
         <module>api/module-api-ai-common</module>
         <module>api/module-api-ai-otto</module>
+        <module>api/module-api-ai-liz</module>
         <module>api/module-api-game-common</module>
 
         <!--Servers-->

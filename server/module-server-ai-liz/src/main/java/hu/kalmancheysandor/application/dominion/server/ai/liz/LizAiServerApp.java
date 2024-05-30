@@ -1,5 +1,7 @@
 package hu.kalmancheysandor.application.dominion.server.ai.liz;
 
+import hu.kalmancheysandor.application.dominion.api.ai.common.INeuralAiEngine;
+import hu.kalmancheysandor.application.dominion.api.ai.liz.LizAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.otto.OttoAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.IAiEngine;
 import org.springframework.boot.SpringApplication;
@@ -7,13 +9,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class AiLizServerApp {
+public class LizAiServerApp {
     public static void main(String[] args) {
-        SpringApplication.run(AiLizServerApp.class, args);
+        SpringApplication.run(LizAiServerApp.class, args);
     }
 
     @Bean
-    public IAiEngine getBasicEngine() {
-        return new OttoAiEngine();
+    public INeuralAiEngine getBasicEngine() {
+        return new LizAiEngine();
     }
 }

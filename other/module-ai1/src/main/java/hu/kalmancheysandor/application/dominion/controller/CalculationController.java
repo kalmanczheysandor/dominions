@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.application.dominion.controller;
 
 
-import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
+import hu.kalmancheysandor.application.dominion.api.ai.common.IAiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
 import hu.kalmancheysandor.application.dominion.service.CalculationResponse;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class CalculationController {
 
     @Autowired
-    private AiEngine engine;
+    private IAiEngine engine;
 
     @GetMapping("/calculate")
     @ResponseStatus(HttpStatus.OK)

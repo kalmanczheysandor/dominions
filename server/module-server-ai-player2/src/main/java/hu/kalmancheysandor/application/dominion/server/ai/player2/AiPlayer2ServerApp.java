@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.application.dominion.server.ai.player2;
 
 import hu.kalmancheysandor.application.dominion.api.ai.otto.PseudoAi2Engine;
-import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
+import hu.kalmancheysandor.application.dominion.api.ai.common.IAiEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,7 @@ public class AiPlayer2ServerApp {
     }
 
     @Bean
-    public AiEngine getBasicEngine() {
+    public IAiEngine getBasicEngine() {
         return new PseudoAi2Engine();
     }
 }
