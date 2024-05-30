@@ -105,6 +105,7 @@
     </dependencies>
     <modules>
         <!--Apis-->
+        <module>api/module-api-general</module>
         <module>api/module-api-ai-common</module>
         <module>api/module-api-ai-otto</module>
         <module>api/module-api-ai-liz</module>
