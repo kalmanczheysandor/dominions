@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.application.dominion.api.ai.liz;
 
+import hu.kalmancheysandor.application.dominion.api.ai.common.AiEngine;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiRequest;
 import hu.kalmancheysandor.application.dominion.api.ai.common.AiResponse;
 import hu.kalmancheysandor.application.dominion.api.ai.common.neural.INeuralAiEngine;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class NeuralAiEngine implements INeuralAiEngine {
+public abstract class NeuralAiEngine extends AiEngine implements INeuralAiEngine {
 
     private final static String FILENAME_PREFIX = "LizAi";
     private final static String FILENAME_FORMAT = "nnet";
@@ -37,8 +38,6 @@ public abstract class NeuralAiEngine implements INeuralAiEngine {
 
     private final static int TROOPS_SIZE_MIN = 0;
     private final static int TROOPS_SIZE_MAX = 100;
-
-
 
 
     @Override
@@ -68,7 +67,7 @@ public abstract class NeuralAiEngine implements INeuralAiEngine {
 
 
     @Override
-    public void check(String playerCode, List<NeuralTrainingData> trainingDataList) {
+    public void check(String playerCode, List<NeuralTrainingData> testingDataList) {
         System.out.println("LIZ AI Start checking...");
         System.out.println("Player code: " + playerCode);
 
@@ -76,7 +75,7 @@ public abstract class NeuralAiEngine implements INeuralAiEngine {
         int outputSize = 42 + 1;
 
         // Build data set
-        DataSet testingSet = buildDataSet(trainingDataList, inputSize, outputSize);
+        DataSet testingSet = buildDataSet(testingDataList, inputSize, outputSize);
         printDataSet(testingSet);
 
 
@@ -107,55 +106,87 @@ public abstract class NeuralAiEngine implements INeuralAiEngine {
     }
 
 
-    private void calculate() {
+    protected double[] calculate(String playerCode,DataSetRow inputData) {
+        System.out.println("\n <<<<<<  LIZ AI calculate: begin   >>>>>>");
+        System.out.println("Player code: " + playerCode);
 
+        int inputSize = 2 + 42 + 42;
+        int outputSize = 42 + 1;
+
+        // Load file
+        String filename = generateFilePath(playerCode);
+        NeuralNetwork<?> network = NeuralNetwork.createFromFile(filename);
+        System.out.println("Neural network load from:" + filename);
+
+        // Test the trained neural network
+        System.out.println("Testing trained neural network:");
+
+        network.setInput(inputData.getInput());
+        network.calculate();
+
+        // Denormalisation
+        double[] denormalised = new double[network.getOutput().length];
+        for(int i=0;i<network.getOutput().length-1-1;i++) {
+            denormalised[i]=denormaliseValue(network.getOutput()[i],0,100);
+        }
+        denormalised[network.getOutput().length-1]=denormaliseValue(network.getOutput()[network.getOutput().length-1],TROOPS_SIZE_MIN,TROOPS_SIZE_MAX);
+System.out.println("Denormalised:"+arrayToString(denormalised));
+        return denormalised;
     }
 
-
-
-    private static DataSet buildDataSet(List<NeuralTrainingData> trainingDataList, int inputSize, int outputSize) {
+    protected final static DataSet buildDataSet(List<NeuralTrainingData> trainingDataList, int inputSize, int outputSize) {
         DataSet trainingSet = new DataSet(inputSize, outputSize);
-        ArrayList<Double> inputNodeValuesList;
-
         for (NeuralTrainingData trainingData : trainingDataList) {
-            inputNodeValuesList = new ArrayList<>();
-
-            // Input nodes - Reserve size
-            inputNodeValuesList.add(normaliseValue(trainingData.getReserveSize(), RESERVE_SIZE_MIN, RESERVE_SIZE_MAX));
-
-            // Input nodes - Enemies count
-            inputNodeValuesList.add(normaliseValue(trainingData.getEnemiesCount(), ENEMIES_COUNT_MIN, ENEMIES_COUNT_MAX));
-
-            // Input nodes - Owners
-            int cellCount = trainingData.getCellOwners().length;
-            for (int ownerKey : trainingData.getCellOwners()) {
-                int swappedKey = ownerKey + 1; // so -1 will be 0 and o will means empty.
-                double normalisedKey = normaliseValue(swappedKey, OWNERS_COUNT_MIN, OWNERS_COUNT_MAX);
-                inputNodeValuesList.add(normalisedKey);
-            }
-
-            // Input nodes - Defenders size
-            for (int defenderSize : trainingData.getCellDefendersSize()) {
-                inputNodeValuesList.add(normaliseValue(defenderSize, DEFENDERS_SIZE_MIN, DEFENDERS_SIZE_MAX));
-            }
-
-            // Output nodes - Targeted cell percentage
-            double[] outputNodeValuesArray = new double[cellCount + 1];
-            if (trainingData.getChosenTarget() != -1) {        // When attack action happened and not reserve action
-                outputNodeValuesArray[trainingData.getChosenTarget()] = normaliseValue(100,0,100);        // The potentiality id 100%, others 0%
-            }
-
-            // Output nodes - Troop size
-            outputNodeValuesArray[outputNodeValuesArray.length - 1] = normaliseValue(trainingData.getChosenTroopSize(), TROOPS_SIZE_MIN, TROOPS_SIZE_MAX);
-
-            double[] inputNodeValuesArray = inputNodeValuesList.stream().mapToDouble(i -> i).toArray();
-
-            if (inputNodeValuesArray.length == inputSize && outputNodeValuesArray.length == outputSize) {
-                trainingSet.addRow(new DataSetRow(inputNodeValuesArray, outputNodeValuesArray));
-            }
+            trainingSet.addRow(buildDataSetRow(trainingData));
         }
         return trainingSet;
     }
+
+    protected final static DataSetRow buildDataSetRow(NeuralTrainingData trainingData) {
+        double[] inputNodeValuesArray = buildInputNodeValuesArray(trainingData);
+        double[] outputNodeValuesArray = buildOutputNodeValuesArray(trainingData);
+        return new DataSetRow(inputNodeValuesArray, outputNodeValuesArray);
+    }
+
+    protected final static double[] buildInputNodeValuesArray(NeuralTrainingData trainingData) {
+        ArrayList<Double> inputNodeValuesList = new ArrayList<>();
+
+        // Input nodes - Reserve size
+        inputNodeValuesList.add(normaliseValue(trainingData.getReserveSize(), RESERVE_SIZE_MIN, RESERVE_SIZE_MAX));
+
+        // Input nodes - Enemies count
+        inputNodeValuesList.add(normaliseValue(trainingData.getEnemiesCount(), ENEMIES_COUNT_MIN, ENEMIES_COUNT_MAX));
+
+        // Input nodes - Owners
+        int cellCount = trainingData.getCellOwners().length;
+        for (int ownerKey : trainingData.getCellOwners()) {
+            int swappedKey = ownerKey + 1; // so -1 will be 0 and o will means empty.
+            double normalisedKey = normaliseValue(swappedKey, OWNERS_COUNT_MIN, OWNERS_COUNT_MAX);
+            inputNodeValuesList.add(normalisedKey);
+        }
+
+        // Input nodes - Defenders size
+        for (int defenderSize : trainingData.getCellDefendersSize()) {
+            inputNodeValuesList.add(normaliseValue(defenderSize, DEFENDERS_SIZE_MIN, DEFENDERS_SIZE_MAX));
+        }
+
+        return inputNodeValuesList.stream().mapToDouble(i -> i).toArray();
+    }
+
+    protected final static double[] buildOutputNodeValuesArray(NeuralTrainingData trainingData) {
+        // Output nodes - Targeted cell percentage
+        int cellCount = trainingData.getCellOwners().length;
+        double[] outputNodeValuesArray = new double[cellCount + 1];
+        if (trainingData.getChosenTarget() != -1) {        // When attack action happened and not reserve action
+            outputNodeValuesArray[trainingData.getChosenTarget()] = normaliseValue(100, 0, 100);        // The potentiality id 100%, others 0%
+        }
+
+        // Output nodes - Troop size
+        outputNodeValuesArray[outputNodeValuesArray.length - 1] = normaliseValue(trainingData.getChosenTroopSize(), TROOPS_SIZE_MIN, TROOPS_SIZE_MAX);
+
+        return outputNodeValuesArray;
+    }
+
 
 //    private static DataSet normaliseDataSet(DataSet dataSet) {
 //        for(DataSetRow row:dataSet.getRows()) {

@@ -80,7 +80,6 @@ public class GameService {
         PlaySession session = sessionRepository.findSession(sessionKey);
 
         if (!session.isAnyFreeHumanPlayerSlotsAvailable()) {
-
             throw new NoMoreFreePlayerSlotSessionException(session.getSessionKey());
         }
 
@@ -115,10 +114,20 @@ public class GameService {
                 if (player.isArtificial()) {
                     ArtificialPlayer.EngineType engineType = ((ArtificialPlayer) player).getEngineType();
                     AiResponse aiResponse;
+                    AiRequest aiRequest = createRequest(aiPlayerIndex, session.getGameState());
+
+
+//                    try {
+//                        System.out.println("AI-json:"+objectMapper.writeValueAsString(aiRequest));
+//                    } catch (JsonProcessingException e) {
+//                        throw new RuntimeException(e);
+//                    }
+
+
                     if (engineType == ArtificialPlayer.EngineType.OTTO) {
-                        aiResponse = ottoAiServerProxy.generateResponse(createRequest(aiPlayerIndex, session.getGameState()));
+                        aiResponse = ottoAiServerProxy.generateResponse(aiRequest);
                     } else if (engineType == ArtificialPlayer.EngineType.LIZ) {
-                        aiResponse = lizAiServerProxy.generateResponse(createRequest(aiPlayerIndex, session.getGameState()));
+                        aiResponse = lizAiServerProxy.generateResponse(aiRequest);
                     } else {
                         throw new IllegalPointOfExecution("Unknown ai engin:" + engineType.name());
                     }

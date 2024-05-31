@@ -113,7 +113,7 @@ public class PlaySession {
     }
 
     private void addMissingAiPlayers() {
-        for (int aiPlayerIndex : aiPlayerSlot) {
+        for (int aiPlayerIndex : new HashSet<>(aiPlayerSlot)) {
             ArtificialPlayer player = null;
             GameMap.Opponent mapPlayerData = gameMap.getPlayers().get(aiPlayerIndex);
             if(mapPlayerData.getType()== GameMap.Opponent.PlayerType.AI_OTTO) {

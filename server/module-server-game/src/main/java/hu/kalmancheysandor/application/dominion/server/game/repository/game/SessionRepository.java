@@ -41,7 +41,7 @@ public class SessionRepository {
     public synchronized PlaySession createSession() {
         String sessionKey = SESSION_KEY_PREFIX + "-" + (sessions.size() + 1);
 
-        GameMap map = GameMap.open("map3-a.json");
+        GameMap map = GameMap.open("map4-a.json");
         PlaySession session = new PlaySession(sessionKey, map);
 
         addSession(session);

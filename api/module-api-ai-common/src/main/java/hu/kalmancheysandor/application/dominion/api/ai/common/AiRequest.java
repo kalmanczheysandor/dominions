@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.application.dominion.api.ai.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class AiRequest {
     private Map<Integer, LandCell> landCells = new HashMap<>();
 
     @Data
+    @NoArgsConstructor
     public static class LandCell {
         private Integer playerKey;
         private Integer troopSize = 0;
@@ -29,6 +31,7 @@ public class AiRequest {
             this.neighbours = neighbours;
         }
 
+        @JsonIgnore
         public boolean isEmpty() {
             if(playerKey==null) {
                 return true;
