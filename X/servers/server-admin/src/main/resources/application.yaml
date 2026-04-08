@@ -1,8 +1,0 @@
-server:
-  port: 15010
-
-spring:
-  application:
-    name: 'server-admin'
-  config:
-    import: configserver:http://localhost:8888
