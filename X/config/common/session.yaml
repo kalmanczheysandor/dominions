@@ -1,0 +1,16 @@
+server:
+  session:
+    timeout: 30m  # Set session timeout to 30 minutes
+
+spring:
+#  session:
+#    store-type: jdbc
+#    jdbc:
+#      initialize-schema: always     # Automatic creation of session related tables
+#
+  session:
+    store-type: jdbc
+    timeout: 30m
+    jdbc:
+      table-name: SPRING_SESSION  # Default name of session related tables
+      initialize-schema: always  # Automatic creation of session related tables

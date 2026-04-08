@@ -1,0 +1,26 @@
+A liz server VM options :
+-Xmx2048m -Xms512m -Xss4m
+
+
+A spring cloud s fm routing alkalmazásakor oda kell figyelni mert a host fájlba be kell írni ilyen jellegű átalakítást
+127.0.0.1 DESKTOP-PLB4KA3.mshome.net
+Majd pedig így kell flusholni a bekesselt dnseket
+ipconfig /flushdns
+
+
+# CORS probema a servicek kozott
+Emlékeim szerint a gateway és a többi service között a corse duplán fűződött össze. Ezért az origin nem volt engedélyezve. Ezt a problémát valamivel sikerült megoldanom. Azt hiszem valami konfigurációs megadással ami a két service között kiürítette az érkező adatot. Ha jól emlékszem nem úgy lett megoldva hogy vagy a két vében vagy az adott szervizben kikapcsoltam volna a cors figyelést
+
+
+#Rabbit MQ
+>>Hozzáférés
+    AMQP port: 5672
+    Management UI: http://localhost:15672
+    default siteUser: guest
+    default password: guest
+    (fontos: a guest/guest login csak localhostról működik, távoli belépéshez külön usert kell csinálni).
+
+>>engedelyezni a web lapot (management UI)
+    rabbitmq-plugins enable rabbitmq_management
+    net stop RabbitMQ
+    net start RabbitMQ

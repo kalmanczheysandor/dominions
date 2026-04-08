@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ---------------------------
+  # API BLOKKOLÁS BÖNGÉSZŐ NAVIGÁCIÓRA
+  # (de fetch/XHR számára engedélyezve)
+  # ---------------------------
+
+  # Ha /api-val kezdődik...
+  RewriteCond %{REQUEST_URI} ^/api [NC]
+
+  # ...ÉS a böngésző HTML-t vár (=> navigáció címsorból)
+  RewriteCond %{HTTP_ACCEPT} text/html [NC]
+
+  # ...akkor adjuk át a Vue-nak (index.html)
+  RewriteRule ^ index.html [L]
+
+  # ---------------------------
+  # Létező fájl vagy könyvtár? → engedjük
+  # ---------------------------
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # ---------------------------
+  # Minden más → Vue Router fallback
+  # ---------------------------
+  RewriteRule ^ index.html [L]
+
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</IfModule>

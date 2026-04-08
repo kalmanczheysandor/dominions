@@ -1,0 +1,102 @@
+package hu.kalmancheysandor.applications.dominions.servers.site.configuration.security;
+
+
+import hu.kalmancheysandor.applications.dominions.apis.server.user.site.service.SiteUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+@EnableWebSecurity(debug = true)
+public class SecurityConfiguration {
+    @Autowired
+    private SiteUserDetailsService siteUserDetailsService;
+
+    @Autowired
+    @Lazy
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    @Lazy
+    private SecurityContextRepository contextRepository;
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable()) // CSRF-t kikapcsolod, ami rendben van REST-nél
+                .cors(cors -> cors.disable())
+                .securityContext(context -> context
+                        .securityContextRepository(contextRepository)) // Biztosítja a `SecurityContext` mentését/visszaállítását
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Használj mindig új session-t
+                )
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/spring-boot-chat/**").permitAll()    // websocket
+                        .requestMatchers("/site/spring-boot-chat/**").permitAll()    // websocket
+                        .requestMatchers("/app/**").permitAll()//websocket
+                        .requestMatchers("/site/app/**").permitAll()//websocket
+                        .requestMatchers("/site/**").permitAll()
+                        .requestMatchers("/data/**").permitAll()
+
+                )
+                .formLogin(f -> f.disable())
+        ;
+
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        System.out.println("-----AuthenticationManager-------");
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(siteUserDetailsService).passwordEncoder(passwordEncoder());
+        AuthenticationManager am = authenticationManagerBuilder.build();
+
+        System.out.println(">AM:" + am.toString());
+        return am;
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins(
+                                "http://localhost:8080",
+                                "https://localhost:8080",
+                                "https://game.dominions.hu"
+                        ) // A frontend URL
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // Engedélyezi a session cookie-kat
+            }
+        };
+    }
+
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        return new HttpSessionSecurityContextRepository();
+    }
+
+    @Bean
+    BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+}

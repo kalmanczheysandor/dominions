@@ -1,0 +1,63 @@
+#spring.web.resources.static-locations=classpath:/files/,classpath:/static-files
+
+server:
+  port: 7002
+  servlet:
+    context-path: '/web'
+
+spring:
+  application:
+    name: 'web'
+  config:
+    import: 'optional:configserver:'
+
+  datasource:
+
+    # Case-1: No container in use
+    url: jdbc:mysql://127.0.0.1:3306/dominions?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+
+    # Case-2: Only database is in container
+    #url: jdbc:mysql://127.0.0.1:3310/dominions?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+
+    # Case-3: containers are in use
+    #url: jdbc:mysql://dominion_db_container/dominions?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+    username: root
+    password: CHANGE_ME
+  jpa:
+    show: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: on
+
+  debug: true
+
+  thymeleaf:
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    dialects:
+      enabled:
+        - org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect
+        - nz.net.ultraq.thymeleaf.LayoutDialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:7001/eureka'
+
+management:
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'

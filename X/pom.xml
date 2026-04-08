@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>hu.kalmancheysandor.applications.dominions</groupId>
+    <artifactId>dominions-root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <!--  APIS  -->
+        <module>apis/monitoring/api-monitoring-client</module>
+
+        <module>apis/server/api-server-all</module>
+        <module>apis/server/api-server-common</module>
+        <module>apis/server/api-server-game-common</module>
+        <module>apis/server/api-server-user-site</module>
+        <module>apis/server/api-server-user-admin</module>
+        <module>apis/server/api-server-user-common</module>
+        <module>apis/server/api-server-authentication-common</module>
+        <module>apis/server/api-server-ai-common</module>
+        <module>apis/server/api-server-mailing-shared</module>
+
+
+        <module>apis/ai/api-ai-common</module>
+        <module>apis/ai/api-ai-otto</module>
+        <module>apis/ai/api-ai-liz</module>
+        <module>apis/ai/api-ai-neural</module>
+        <module>apis/ai/api-ai-egon</module>
+        <module>apis/ai/api-ai-hugo</module>
+        <module>apis/ai/api-ai-helga</module>
+        <module>apis/game/api-game-common</module>
+
+        <module>apis/util/api-util-uuid</module>
+        <module>apis/util/api-util-configuration</module>
+
+        <module>apis/etc/api-general</module>
+
+
+        <!--  SERVERS  -->
+        <module>servers/server-eureka</module>
+        <module>servers/server-gateway</module>
+        <module>servers/server-auth</module>
+        <module>servers/server-admin</module>
+        <!--        <module>servers/server-admin-old</module>-->
+        <module>servers/server-site</module>
+        <!--        <module>servers/server-test</module>-->
+        <module>servers/server-game</module>
+        <module>servers/server-mailing</module>
+
+        <module>servers/server-ai-otto</module>
+        <module>servers/server-ai-egon</module>
+        <module>servers/server-ai-liz</module>
+        <module>servers/server-ai-hugo</module>
+        <module>servers/server-ai-helga</module>
+        <module>servers/server-config</module>
+        <module>servers/server-monitoring</module>
+        <module>apis/util/api-util-file</module>
+        <module>apis/util/api-util-validate</module>
+        <module>apis/configuration/api-configuration-client</module>
+
+
+    </modules>
+
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+
+    <name>Dominions</name>
+
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2023.0.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

@@ -1,0 +1,51 @@
+
+
+global:
+  paths:
+    config-repo: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
+  monitoring:
+    rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+      virtual-host: /
+app:
+  test:
+    x: 545
+  global:
+    images-folder: "c:/@/@Szakdolgozat1/_apps/Dominions/DominionsBackend/.data/images"
+
+  game-server:
+    session-management:
+      expirationHours: 1
+
+  liz-server:
+    neural-network:
+      base-folder: "c:/@/@Szakdolgozat1/_apps/Dominions/DominionsBackend/.data/ai/liz"
+
+  site-server:
+    account:
+      sign-up:
+        verificationExpirationMinutes: 60
+      recovery:
+        verificationExpirationMinutes: 5
+      settings:
+        profile:
+          photo-path: "${app.global.images-folder}/site-user/profile"
+    game-scenario:
+      main-image-path: "${app.global.images-folder}/game/scenario"
+
+  admin-server:
+      account:
+        site:
+          user:
+            photo-path: "${app.global.images-folder}/site-user/profile"
+        admin:
+          user:
+            photo-path: "${app.global.images-folder}/admin-user/profile"
+          settings:
+            profile:
+              photo-path: "${app.global.images-folder}/admin-user/profile"
+      game-scenario:
+        main-image-path: "${app.global.images-folder}/game/scenario"

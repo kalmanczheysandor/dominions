@@ -1,0 +1,10 @@
+server:
+  port: 15500
+
+spring:
+  application:
+    name: 'server-monitoring'
+  config:
+    import: configserver:http://localhost:8888
+
+debug: true

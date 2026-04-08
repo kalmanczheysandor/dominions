@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-egon/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-helga/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-hugo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-liz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-neural/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-otto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/configuration/api-configuration-client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/configuration/api-configuration-client/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/etc/api-general/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/game/api-game-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/mailing/api-mailing-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/monitoring/api-monitoring-client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/monitoring/api-monitoring-client/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-all/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-authentication-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-game-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-mailing-shared/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-user-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/util/api-util-configuration/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/util/api-util-file/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/util/api-util-uuid/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/util/api-util-validate/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/egon/server-ai-egon-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/helga/server-ai-helga-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/otto/server-ai-otto-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/server-ai-egon/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/server-ai-helga/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/server-ai-hugo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/server-ai-liz-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/server-ai-liz-training/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/server-ai-otto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-config/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-game/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-mailing/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-monitoring/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/server-site/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$APPLICATION_HOME_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$USER_HOME$/src/main/java" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,8 @@
+server:
+  port: 15001
+
+spring:
+  application:
+    name: 'server-eureka'
+  config:
+    import: configserver:http://localhost:8888

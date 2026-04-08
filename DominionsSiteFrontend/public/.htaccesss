@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # A /api proxizasi es fallback esetei a host configban van allitva
+
+  # Ha a kérés egy létező fájlra mutat, ne módosíts semmit
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Egyébként irányítsd át az index.html-re (Vue router kezeli)
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Biztonsági fejlécek (opcionális, de hasznos)
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</IfModule>

@@ -1,0 +1,13 @@
+server:
+  session:
+    timeout: 30m  # Set session timeout to 30 minutes
+
+spring:
+  session:
+    store-type: jdbc
+    timeout: 30m
+    jdbc:
+      table-name: SPRING_SESSION      # Ez figyelemn kivul van hagyva az "always" sechema letrehozaskor, csak akkor figyeli, ha mi hoztuk letre a tablat manualisan
+      attributes-table-name: SPRING_SESSION_ATTRIBUTES # Ez figyelemn kivul van hagyva az "always" sechema letrehozaskor, csak akkor figyeli, ha mi hoztuk letre a tablat manualisan
+      initialize-schema: always  # Automatic creation of session related tables
+
