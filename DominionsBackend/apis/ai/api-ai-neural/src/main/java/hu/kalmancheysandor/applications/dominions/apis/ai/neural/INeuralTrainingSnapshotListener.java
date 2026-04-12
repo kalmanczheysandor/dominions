@@ -1,6 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.apis.ai.neural;
 
 @FunctionalInterface
-public interface INeuralSnapshotListener {
+public interface INeuralTrainingSnapshotListener {
     void onListen(NeuralNetworkTrainingSnapshot snapshot);
 }

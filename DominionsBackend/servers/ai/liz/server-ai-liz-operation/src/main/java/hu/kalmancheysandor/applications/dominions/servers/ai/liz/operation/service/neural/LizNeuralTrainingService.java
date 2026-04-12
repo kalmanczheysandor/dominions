@@ -86,12 +86,12 @@ public class LizNeuralTrainingService extends TLizService {
 
             // Initialisation of neural engine
             INeuralNetwork neuralNetwork = new LizNeuralNetwork(generateNetworkConfiguration(), filePath);
-            neuralNetwork.setSnapshotListener(snapshot -> {
+            neuralNetwork.setTrainingSnapshotListener(snapshot -> {
                 transactionTemplate.executeWithoutResult(status -> {
                     saveTrainingSnapshot(conceptId, executionId, scenarioId, playerId, snapshot);
                 });
             });
-            neuralNetwork.setInterruptListener(() -> {
+            neuralNetwork.setTrainingInterruptListener(() -> {
                 Boolean isInterrupt = transactionTemplate.execute(status -> {
                     LizNeuralExecution executionToCheck = lizNeuralExecutionRepository.findById(executionId);
                     if (executionToCheck == null) { // INTERRUPT:OK - due: no record found
