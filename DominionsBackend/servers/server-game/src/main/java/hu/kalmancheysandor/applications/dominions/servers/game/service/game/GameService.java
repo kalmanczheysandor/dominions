@@ -23,8 +23,9 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.queu
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.egon.EgonAiAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.helga.HelgaAiAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.hugo.HugoAiAgentServerProxy;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.liz.LizAgentServerProxy;
+
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.otto.OttoAiAgenServerProxy;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy.LizAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.game.GameScenario;
@@ -86,20 +87,20 @@ public class GameService {
 //    @Autowired
 //    private PlayOrchestrator playOrchestrator;
 
-    @Autowired
-    private OttoAiAgenServerProxy ottoAiAgenServerProxy;
-
-    @Autowired
-    private EgonAiAgentServerProxy egonAiServerProxy;
+//    @Autowired
+//    private OttoAiAgenServerProxy ottoAiAgenServerProxy;
+//
+//    @Autowired
+//    private EgonAiAgentServerProxy egonAiServerProxy;
 
     @Autowired
     private LizAgentServerProxy lizAgentServerProxy;
-
-    @Autowired
-    private HugoAiAgentServerProxy hugoAiAgentServerProxy;
-
-    @Autowired
-    private HelgaAiAgentServerProxy helgaAiAgentServerProxy;
+//
+//    @Autowired
+//    private HugoAiAgentServerProxy hugoAiAgentServerProxy;
+//
+//    @Autowired
+//    private HelgaAiAgentServerProxy helgaAiAgentServerProxy;
 
     @Autowired
     private SiteUserRepository siteUserRepository;
@@ -729,21 +730,22 @@ public class GameService {
         // Create an Ai request object
         AiDecisionResponse aiDecisionResponseObj;
 
-        // Wait for ai response
-        if (engineType == GameMapEngineType.AI_OTTO) {
-            aiDecisionResponseObj = ottoAiAgenServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_EGON == engineType) {
-            aiDecisionResponseObj = egonAiServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_LIZ == engineType) {
-            aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_HUGO == engineType) {
-            aiDecisionResponseObj = hugoAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_HELGA == engineType) {
-            aiDecisionResponseObj = helgaAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
-        } else {
-            throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
-        }
-
+//        // Wait for ai response
+//        if (engineType == GameMapEngineType.AI_OTTO) {
+//        //    aiDecisionResponseObj = ottoAiAgenServerProxy.generateResponse(aiDecisionRequestObj);
+//        } else if (GameMapEngineType.AI_EGON == engineType) {
+//          //  aiDecisionResponseObj = egonAiServerProxy.generateResponse(aiDecisionRequestObj);
+//        } else if (GameMapEngineType.AI_LIZ == engineType) {
+//            aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
+//        }
+////        } else if (GameMapEngineType.AI_HUGO == engineType) {
+////            aiDecisionResponseObj = hugoAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
+////        } else if (GameMapEngineType.AI_HELGA == engineType) {
+//////            aiDecisionResponseObj = helgaAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
+//         else {
+//            throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
+//        }
+        aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
         return aiDecisionResponseObj;
     }
 

@@ -13,7 +13,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDe
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryPlayer;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryPlayerRepository;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.LizTrainingResultLatestRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service.TLizService;
 import hu.kalmancheysandor.applications.dominions.apis.util.file.filehandler.FileHandler;
 
@@ -32,8 +31,6 @@ public class LizAgentService extends TLizService {
     @Autowired
     private LizHistoryPlayerRepository lizHistoryPlayerRepository;
 
-    @Autowired
-    private LizTrainingResultLatestRepository lizTrainingResultLatestRepository;
 
 
     public AiDecisionResponse generateResponse(AiDecisionRequest request) {
@@ -51,8 +48,8 @@ public class LizAgentService extends TLizService {
         }
 
         // Make a decision
-        AiDecisionContext context = convertRequestToDecisionContext(request);
-        AiDecisionResult result = aiDecisionEngine.makeDecision(context);
+        AiDecisionContext decisionContext = convertRequestToDecisionContext(request);
+        AiDecisionResult result = aiDecisionEngine.makeDecision(decisionContext);
 
         // Generate response
         return convertDecisionResultToResponse(result);
