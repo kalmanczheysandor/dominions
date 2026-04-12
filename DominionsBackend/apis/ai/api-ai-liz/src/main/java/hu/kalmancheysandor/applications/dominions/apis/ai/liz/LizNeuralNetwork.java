@@ -25,17 +25,17 @@ public class LizNeuralNetwork extends TNeuralNetwork {
     private Configuration configuration;
     private NeuralNetwork network;
     private String networkFilePath;
-    private INeuralSnapshotListener snapshotListener;
-    private INeuralInterruptListener interruptListener;
+    private INeuralTrainingSnapshotListener trainingSnapshotListener;
+    private INeuralTrainingInterruptListener trainingInterruptListener;
 
     @Override
-    public void setSnapshotListener(INeuralSnapshotListener snapshotListener) {
-        this.snapshotListener = snapshotListener;
+    public void setTrainingSnapshotListener(INeuralTrainingSnapshotListener trainingSnapshotListener) {
+        this.trainingSnapshotListener = trainingSnapshotListener;
     }
 
     @Override
-    public void setInterruptListener(INeuralInterruptListener interruptListener) {
-        this.interruptListener = interruptListener;
+    public void setTrainingInterruptListener(INeuralTrainingInterruptListener trainingInterruptListener) {
+        this.trainingInterruptListener = trainingInterruptListener;
     }
 
 
@@ -103,7 +103,7 @@ public class LizNeuralNetwork extends TNeuralNetwork {
             System.out.println("++++++++TURN:" + turn + "+++++++++++++++++++++++++++++++++++++++++++");
 
             // Checking: Whether to interrupt the long-running process;
-            if (interruptListener.onListen()) {
+            if (trainingInterruptListener.onListen()) {
                 isInterrupted = true;
                 break;
             }
@@ -123,8 +123,8 @@ public class LizNeuralNetwork extends TNeuralNetwork {
             }
 
             // Send snapshot data to listener
-            if (snapshotListener != null) {
-                snapshotListener.onListen(NeuralNetworkTrainingSnapshot.builder()
+            if (trainingSnapshotListener != null) {
+                trainingSnapshotListener.onListen(NeuralNetworkTrainingSnapshot.builder()
                         .turn(turn)
                         .currentBestTurn(bestTurn)
                         .evaluationResult(evaluationResult)
