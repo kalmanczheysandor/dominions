@@ -3,6 +3,7 @@ package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.ser
 import hu.kalmancheysandor.applications.dominions.apis.ai.common.TAiEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.service.TAiService;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingResult;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingTask;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,29 @@ public abstract class TLizService extends TAiService {
                 .build();
     }
 
-    protected String generateNetworkFileDirectoryString(LizNeuralTrainingTask task) {
-        return applicationConfig.getLizServer().getNeuralNetwork().getBaseFolder() + "/trainings/concept-" + task.getConceptId() + "/scenario-" + task.getScenarioId() + "/player-" + task.getPlayerId();
+    protected String generateNetworkFileDirectoryStringByTrainingTask(LizNeuralTrainingTask task) {
+        return generateNetworkFileDirectoryString(task.getConceptId(), task.getScenarioId(), task.getPlayerId());
+    }
+
+    protected String generateNetworkFileDirectoryStringByTrainingResult(LizNeuralTrainingResult trainingResult) {
+        return generateNetworkFileDirectoryString(trainingResult.getConceptId(), trainingResult.getScenarioId(), trainingResult.getPlayerId());
+    }
+
+    protected String generateNetworkFileDirectoryString(int conceptId, int scenarioId, int playerId) {
+        return applicationConfig.getLizServer().getNeuralNetwork().getBaseFolder() + "/trainings/concept-" + conceptId + "/scenario-" + scenarioId + "/player-" +playerId;
+    }
+
+    protected static String generateNetworkFileNameByTrainingTask(LizNeuralTrainingTask task) {
+        return generateNetworkFileName(task.getConceptId(), task.getScenarioId(), task.getPlayerId(), task.getExecutionId());
+    }
+
+    protected static String generateNetworkFileNameByTrainingResult(LizNeuralTrainingResult trainingResult) {
+        return generateNetworkFileName(trainingResult.getConceptId(), trainingResult.getScenarioId(), trainingResult.getPlayerId(), trainingResult.getExecutionId());
+    }
+
+    protected static String generateNetworkFileName(int conceptId, int scenarioId, int playerId, int executionId) {
+        return "LizAi_Concept" + conceptId + "_Scenario" + scenarioId + "_Player" + playerId + "_Build" + executionId + ".nnet";
     }
 
 
-
-    protected static String generateNetworkFileName(LizNeuralTrainingTask task) {
-        return "LizAi_Concept" + task.getConceptId() + "_Scenario" + task.getScenarioId() + "_Player" + task.getPlayerId() + "_Build" + task.getExecutionId() + ".nnet";
-    }
 }
