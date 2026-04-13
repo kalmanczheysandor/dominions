@@ -66,11 +66,11 @@ public class LizNeuralTrainingService extends TLizService {
         try {
 
             // Prepare destination folder
-            String directoryToStore = generateNetworkFileDirectoryString(trainingTask);
+            String directoryToStore = generateNetworkFileDirectoryStringByTrainingTask(trainingTask);
             FileHandler.createDirectoryIfNotExist(directoryToStore);
 
             // Generate network filepath
-            String fileName = generateNetworkFileName(trainingTask);
+            String fileName = generateNetworkFileNameByTrainingTask(trainingTask);
             String filePath = directoryToStore + "/" + fileName;
 
             // Collecting input data for training and testing

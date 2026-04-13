@@ -274,7 +274,6 @@ public class LizNeuralNetwork extends TNeuralNetwork {
         // Convert
         LizInputData lizInputData = LizInputData.generateInstance(inputData);
         double[] inputVector = generateInputVectorByTrainingData(lizInputData);
-//        DataSetRow networkModelInput = new DataSetRow(inputVector)
 
 
         // Get result from the model
