@@ -25,11 +25,13 @@ public class GameMapConfigurationPlayer implements Serializable {
     private GameMapPlayerType type;
     @JsonProperty("engine")
     private GameMapEngineType engine;
+//    @JsonProperty("character")
+//    private GameMapCharacterCode character;
+
     @JsonProperty("character")
-    private GameMapCharacterCode character;
+    private String character;
 
-
-    public GameMapConfigurationPlayer(GameMapPlayerType type, GameMapEngineType engine, GameMapCharacterCode character) {
+    public GameMapConfigurationPlayer(GameMapPlayerType type, GameMapEngineType engine, String character) {
         this.type = type;
         this.engine = engine;
         this.character = character;
@@ -38,16 +40,16 @@ public class GameMapConfigurationPlayer implements Serializable {
             if (GameMapEngineType.HUMAN != engine) {
                 throw new IncompatibleEngineTypeGameMapException();
             }
-            if (GameMapCharacterCode.HUMAN != character) {
-                throw new IncompatibleCharacterCodeGameMapException();
-            }
+//            if (GameMapCharacterCode.HUMAN != character) {
+//                throw new IncompatibleCharacterCodeGameMapException();
+//            }
         } else if (GameMapPlayerType.ARTIFICIAL == type) {
             if (GameMapEngineType.HUMAN == engine) {
                 throw new IncompatibleEngineTypeGameMapException();
             }
-            if (GameMapCharacterCode.HUMAN == character) {
-                throw new IncompatibleCharacterCodeGameMapException();
-            }
+//            if (GameMapCharacterCode.HUMAN == character) {
+//                throw new IncompatibleCharacterCodeGameMapException();
+//            }
         }
     }
 }

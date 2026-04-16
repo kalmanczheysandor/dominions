@@ -12,10 +12,20 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourcesConfig {
 
+
+//    @Bean
+//    @Primary
+//    @ConfigurationProperties("app.datasource.main")
+//    public DataSource mainDataSource() {
+//        HikariDataSource ds = DataSourceBuilder.create().type(HikariDataSource.class).build();
+//        //  ds.setTransactionIsolation("TRANSACTION_REPEATABLE_READ");
+//        return ds;
+//    }
+
     @Bean
     @Primary
     @ConfigurationProperties("app.datasource.ai-liz")
-    public DataSource mainDataSource() {
+    public DataSource operationDataSource() {
         HikariDataSource ds = DataSourceBuilder.create().type(HikariDataSource.class).build();
         return ds;
     }

@@ -18,6 +18,8 @@ public interface LizCharacterRepository extends JpaRepository<LizCharacter, Stri
 
     public LizCharacter findByUuid(String lizCharacterUuid);
 
+    public LizCharacter findByCode(String code);
+
     public List<LizCharacter> findAll();
 
     public void deleteById(int lizCharacterId);
