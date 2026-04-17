@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @FeignClient(
-        name = "server-ai-liz-operation",
+        name = "server-ai-liz-agent",
         contextId = "LizAgentServerProxy"
 //        path = "/concept"
 )
