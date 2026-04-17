@@ -26,6 +26,7 @@ public class DataSourcesConfig {
     @SpringSessionDataSource
     @ConfigurationProperties("app.datasource.session")
     public DataSource sessionDataSource() {
+        System.out.println("sessionDataSource - bean");
         HikariDataSource ds = DataSourceBuilder.create().type(HikariDataSource.class).build();
         //  ds.setTransactionIsolation("TRANSACTION_REPEATABLE_READ");
         return ds;

@@ -19,17 +19,22 @@ import hu.kalmancheysandor.applications.dominions.apis.game.common.map.GameMapEn
 )
 public class ArtificialPlayer extends PlayerData {
     private GameMapEngineType engineType;
+    private String characterCode;
 
-    public ArtificialPlayer(int id, @NotBlank String userUuid, @NotNull String name, @NotNull GameMapEngineType gameMapEngineType, @NotBlank String secretKey) {
+    public ArtificialPlayer(int id, String userUuid, String name,  GameMapEngineType gameMapEngineType,String characterCode, String secretKey) {
         super(id, userUuid, name, GameMapPlayerType.ARTIFICIAL, secretKey);
         if (GameMapEngineType.HUMAN == gameMapEngineType) {
             throw new IncorrectPlayerConfigurationException();
         }
         this.engineType = gameMapEngineType;
+        this.characterCode = characterCode;
     }
 
     public GameMapEngineType getEngineType() {
         return engineType;
     }
 
+    public String getCharacterCode() {
+        return characterCode;
+    }
 }

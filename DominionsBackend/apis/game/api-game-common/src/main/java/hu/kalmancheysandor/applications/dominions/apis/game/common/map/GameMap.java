@@ -27,8 +27,10 @@ public class GameMap implements Serializable {
     private static final long serialVersionUID = 1L;
     @JsonProperty("mapName")
     private String mapName;
+
     @JsonProperty("configuration")
     private GameMapConfiguration configuration;
+
     @JsonProperty("initialState")
     private GameMapState initialState;
 

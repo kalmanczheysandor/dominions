@@ -18,11 +18,13 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
         "hu.kalmancheysandor.applications.dominions.apis.server.user.common",
         "hu.kalmancheysandor.applications.dominions.apis.server.user.site",
-        "hu.kalmancheysandor.applications.dominions.servers.game"
+        "hu.kalmancheysandor.applications.dominions.servers.game",
+
 })
 @EnableAsync
 @EnableFeignClients(basePackages = {
-        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.proxy"
+        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.proxy",
+        "hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy",
 })
 @EnableJpaRepositories(basePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.user.common.repository",
@@ -34,6 +36,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "hu.kalmancheysandor.applications.dominions.apis.server.user.common.entity",
         "hu.kalmancheysandor.applications.dominions.apis.server.user.site.entity",
         "hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity",
+
         "hu.kalmancheysandor.applications.dominions.servers.game"
 })
 public class GameServer {

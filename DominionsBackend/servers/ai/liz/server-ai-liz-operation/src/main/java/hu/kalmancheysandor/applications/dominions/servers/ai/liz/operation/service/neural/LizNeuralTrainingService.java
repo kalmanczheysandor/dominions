@@ -66,11 +66,11 @@ public class LizNeuralTrainingService extends TLizService {
         try {
 
             // Prepare destination folder
-            String directoryToStore = generateNetworkFileDirectoryString(trainingTask);
+            String directoryToStore = generateNetworkFileDirectoryStringByTrainingTask(trainingTask);
             FileHandler.createDirectoryIfNotExist(directoryToStore);
 
             // Generate network filepath
-            String fileName = generateNetworkFileName(trainingTask);
+            String fileName = generateNetworkFileNameByTrainingTask(trainingTask);
             String filePath = directoryToStore + "/" + fileName;
 
             // Collecting input data for training and testing
@@ -86,12 +86,12 @@ public class LizNeuralTrainingService extends TLizService {
 
             // Initialisation of neural engine
             INeuralNetwork neuralNetwork = new LizNeuralNetwork(generateNetworkConfiguration(), filePath);
-            neuralNetwork.setSnapshotListener(snapshot -> {
+            neuralNetwork.setTrainingSnapshotListener(snapshot -> {
                 transactionTemplate.executeWithoutResult(status -> {
                     saveTrainingSnapshot(conceptId, executionId, scenarioId, playerId, snapshot);
                 });
             });
-            neuralNetwork.setInterruptListener(() -> {
+            neuralNetwork.setTrainingInterruptListener(() -> {
                 Boolean isInterrupt = transactionTemplate.execute(status -> {
                     LizNeuralExecution executionToCheck = lizNeuralExecutionRepository.findById(executionId);
                     if (executionToCheck == null) { // INTERRUPT:OK - due: no record found

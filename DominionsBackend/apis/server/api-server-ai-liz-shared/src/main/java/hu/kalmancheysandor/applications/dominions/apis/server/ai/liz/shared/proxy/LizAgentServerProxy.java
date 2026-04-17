@@ -6,7 +6,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="server-ai-liz-agent")
+
+@FeignClient(
+        name = "server-ai-liz-agent",
+        contextId = "LizAgentServerProxy"
+//        path = "/concept"
+)
 public interface LizAgentServerProxy {
     @PostMapping("/call")
     public AiDecisionResponse generateResponse(@RequestBody AiDecisionRequest request);

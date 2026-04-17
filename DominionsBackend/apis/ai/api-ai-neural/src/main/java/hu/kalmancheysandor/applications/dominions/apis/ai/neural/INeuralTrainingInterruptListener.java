@@ -1,6 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.apis.ai.neural;
 
 @FunctionalInterface
-public interface INeuralInterruptListener {
+public interface INeuralTrainingInterruptListener {
     boolean onListen();
 }
