@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.applications.dominions.servers.site.configuration.feign;
+package hu.kalmancheysandor.applications.dominions.servers.admin.configuration.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
