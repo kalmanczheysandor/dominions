@@ -23,17 +23,57 @@ public class RoutingConfiguration {
                         .uri("lb://server-auth")
                 )
 
+//
+//                .route("server-site-websocket", r -> r
+//                        .path("/site/spring-boot-chat/**")
+//                        .filters(f -> f
+//                                .stripPrefix(1)              // levágja a /site-t
+//                                .filter(new RFilter("site-ws"))
+//                        )
+//                        .uri("lb:ws://server-site")      // ← KULCSFONTOSSÁGÚ!
+//                )
 
-                .route("server-site-websocket", r -> r
+
+//                .route("server-site-socket", r -> r
+//                        .path("/api/site/**")
+//                        .filters(f -> f
+//                                .stripPrefix(2)
+//                                .filter((exchange, chain) -> {
+//                                    System.out.println(">>> AFTERrrr STRIP: " + exchange.getRequest().getURI());
+//                                    return chain.filter(exchange);
+//                                })
+//                                .filter(new RFilter("server-site-socket"))
+//                        )
+//                        .uri("lb://server-site")
+//                )
+
+
+                .route("server-site-ws", r -> r
+                        .path("/site/spring-boot-chat/*/*/websocket")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb:ws://server-site")
+                )
+
+                .route("server-site-http", r -> r
                         .path("/site/spring-boot-chat/**")
-                        .filters(f -> f
-                                .stripPrefix(1)              // levágja a /site-t
-                                .filter(new RFilter("site-ws"))
-                        )
-                        .uri("lb:ws://server-site")      // ← KULCSFONTOSSÁGÚ!
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://server-site")
                 )
 
 
+
+//                .route("server-site-socket", r -> r
+//                        .path("/site/spring-boot-chat/**")
+//                        .filters(f -> f
+//                                .stripPrefix(1)
+//                                .filter((exchange, chain) -> {
+//                                    System.out.println(">>> AFTER STRIP: " + exchange.getRequest().getURI());
+//                                    return chain.filter(exchange);
+//                                })
+//                                .filter(new RFilter("server-site-socket"))
+//                        )
+//                        .uri("lb:ws://server-site")
+//                )
 //                .route("server-site-websocket-handshake", r -> r
 //                        .path("/site/ws/connect/**")
 //                        .filters(f -> f.stripPrefix(1).filter(new RFilter("server-site-A-1")))
@@ -42,7 +82,7 @@ public class RoutingConfiguration {
 
                 .route("server-site-normal", r -> r
                         .path("/site/**")
-                        .filters(f -> f.stripPrefix(1).filter(new RFilter("server-site-A-3")))
+                        .filters(f -> f.stripPrefix(1).filter(new RFilter("server-site-normal")))
                         .uri("lb://server-site")
                 )
 
