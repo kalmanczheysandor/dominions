@@ -41,7 +41,7 @@ public abstract class TLizService extends TAiService {
                 .defendersMaxCount(TAiEngine.DEFENDERS_COUNT_MAX)
                 .attackPowerMin(TAiEngine.RESERVE_SIZE_MIN)
                 .attackPowerMax(TAiEngine.RESERVE_SIZE_MAX)
-                .cellCount(42)// TODO ez nem lehet fix
+                .cellCount(TAiEngine.CELL_C0UNT)
                 .build();
     }
 
@@ -96,12 +96,6 @@ public abstract class TLizService extends TAiService {
         }
     }
 
-
-
-
-
-
-
     protected LizHistoryScenario accessHistoryScenario(String scenarioUuid) {
 
         LizHistoryScenario lizHistoryScenario = lizHistoryScenarioRepository.findByScenarioUuid(scenarioUuid);
@@ -127,38 +121,4 @@ public abstract class TLizService extends TAiService {
         }
         return lizHistorySession;
     }
-
-//    protected LizHistoryScenario findHistoryScenarioAndRegisterIfNotExists(String scenarioUuid, String scenarioName) {
-//        // Determine current record and its id
-//        LizHistoryScenario lizHistoryScenario = lizHistoryScenarioRepository.findByScenarioUuid(scenarioUuid);
-//        if (lizHistoryScenario == null) { // Register it if it was not
-//            lizHistoryScenario = lizHistoryScenarioRepository.save(new LizHistoryScenario(scenarioUuid, scenarioName));
-//        }
-//        return lizHistoryScenario;
-//    }
-//
-//
-//    // TODO: ismetlodik
-//    // TODO: Tedd megosztott helyre
-//    protected LizHistoryPlayer findHistoryPlayerAndRegisterIfNotExists(String userUuid) {
-//        // Determine current record and its id
-//        LizHistoryPlayer lizHistoryPlayer = lizHistoryPlayerRepository.findByUserUuid(userUuid);
-//        if (lizHistoryPlayer == null) { // Register it if it was not
-//            lizHistoryPlayer = lizHistoryPlayerRepository.save(new LizHistoryPlayer(userUuid));
-//        }
-//        return lizHistoryPlayer;
-//    }
-//
-//    // TODO: Tedd megosztott helyre
-//    protected LizHistorySession findHistorySessionAndRegisterIfNotExists(String sessionUuid) {
-//        // Determine current record and its id
-//        LizHistorySession lizHistorySession = lizHistorySessionRepository.findBySessionUuid(sessionUuid);
-//        if (lizHistorySession == null) { // Register it if it was not
-//            lizHistorySession = lizHistorySessionRepository.save(new LizHistorySession(sessionUuid));
-//        }
-//        return lizHistorySession;
-//    }
-
-
-
 }
