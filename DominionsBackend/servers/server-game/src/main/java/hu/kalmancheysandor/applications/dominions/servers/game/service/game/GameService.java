@@ -435,7 +435,13 @@ public class GameService {
 
         // Orchestrator: Collecting all Ai intention and store
         if (playOrchestrator.getAiPlayerMaxSlotSize() > 0 && playOrchestrator.aiMissingIntentionCount() > 0) {
-            Map<Integer, GameAction> aiPlayerIntentions = communicateToAiPlayers(playOrchestrator.getAllAiPlayers(), playOrchestrator.getPlayState(), gameScenario.getUuid());
+            Map<Integer, GameAction> aiPlayerIntentions = communicateToAiPlayers(
+                    playOrchestrator.getAllAiPlayers(),
+                    playOrchestrator.getPlayState(),
+                    gameScenario.getUuid(),
+                    gameScenario.getTitle(),
+                    gameSessionToModify.getUuid()
+            );
             playOrchestrator.saveMultipleIntention(aiPlayerIntentions);
         }
 
@@ -470,22 +476,16 @@ public class GameService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void saveCurrentIntentionsIntoHistory(GameSession gameSession, PlayState playState) {
+        // Init
+        GameScenario gameScenario = gameScenarioRepository.findById(gameSession.getScenarioId());
 
-        HistoryQueueItem historyQueueItem = new HistoryQueueItem();
-        historyQueueItem.setPlayState(playState);
-        streamBridge.send("queueHistory-out-0", historyQueueItem, MimeType.valueOf("application/json"));
-
-        System.out.println("STREAM_A1");
-
-
-        AiHistoryQueueItem aiHistoryQueueItem = new AiHistoryQueueItem();
-        aiHistoryQueueItem.setPlayState(playState);
-        aiHistoryQueueItem.setScenarioId(gameSession.getScenarioId());
-        aiHistoryQueueItem.setSessionUuid(gameSession.getUuid());
-        streamBridge.send("queueHistoryBroadcast-out-0", aiHistoryQueueItem);
-        System.out.println("STREAM_Broadcast");
-
-
+        // Put items into queue
+        streamBridge.send("queueHistoryBroadcast-out-0", AiHistoryQueueItem.builder()
+                .playState(playState)
+                .scenarioUuid(gameScenario.getUuid())
+                .sessionUuid(gameSession.getUuid())
+                .build()
+        );
     }
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -636,7 +636,7 @@ public class GameService {
     /// Request and Response generator methods ///////////////////////////////////////////////////////////////
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private AiDecisionRequest generateAiRequest(int yourPlayerKey, String yourUserUuid, String yourCharacterCode, PlayState playStateObj, String scenarioUuid) {
+    private AiDecisionRequest generateAiRequest(int yourPlayerKey, String yourUserUuid,String yourUserName, String yourCharacterCode, PlayState playStateObj, String scenarioUuid,String scenarioTitle, String sessionUuid) {
 
         GameState gameState = playStateObj.getGameState();
 
@@ -665,9 +665,12 @@ public class GameService {
         // Generate return object
         return AiDecisionRequest.builder()
                 .scenarioUuid(scenarioUuid)
+                .scenarioName(scenarioTitle)
+                .sessionUuid(sessionUuid)
                 .playerCharacterCode(yourCharacterCode)
                 .yourPlayerKey(yourPlayerKey)
                 .yourUserUuid(yourUserUuid)
+                .yourUserName(yourUserName)
                 .yourReserveSize(gameState.getOpponents()[yourPlayerKey].getReserveSize())
                 .reserves(reserveSizeList)
                 .gameState(gameState)
@@ -681,7 +684,7 @@ public class GameService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private Map<Integer, GameAction> communicateToAiPlayers(Map<Integer, PlayerData> players, PlayState playState, String scenarioUuid) {
+    private Map<Integer, GameAction> communicateToAiPlayers(Map<Integer, PlayerData> players, PlayState playState, String scenarioUuid, String scenarioTitle, String sessionUuid) {
 
         Map<Integer, GameAction> intentions = new HashMap<>();
         for (Map.Entry<Integer, PlayerData> playerEntry : players.entrySet()) {
@@ -699,9 +702,12 @@ public class GameService {
             AiDecisionResponse aiDecisionResponseObj = waitingAiResponse(aiPlayer, generateAiRequest(
                             aiPlayerIndex,
                             aiPlayer.getUserUuid(),
+                            aiPlayer.getName(),
                             aiPlayer.getCharacterCode(),
                             playState,
-                            scenarioUuid
+                            scenarioUuid,
+                            scenarioTitle,
+                    sessionUuid
                     )
             );
 

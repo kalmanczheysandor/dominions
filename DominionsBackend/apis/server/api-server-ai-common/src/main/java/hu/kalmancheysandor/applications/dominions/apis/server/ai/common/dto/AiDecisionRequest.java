@@ -17,13 +17,15 @@ public class AiDecisionRequest {
     private GameState gameState;
     private Integer yourPlayerKey;
     private String yourUserUuid;
+    private String yourUserName;
     private Integer yourReserveSize;
     private Map<Integer, Integer> reserves = new HashMap<>();
     private Map<Integer,Player> enemyPlayers;
     //private Integer scenarioId;
     private String scenarioUuid;
+    private String scenarioName;
     private String playerCharacterCode;
-
+    private String sessionUuid;
 
 
     @Data
