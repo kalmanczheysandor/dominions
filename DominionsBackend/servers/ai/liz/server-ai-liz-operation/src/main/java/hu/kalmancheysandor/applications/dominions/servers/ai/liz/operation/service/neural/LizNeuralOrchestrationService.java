@@ -1,7 +1,18 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.service.neural;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetworkTrainingConfiguration;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.orchestration.PlayState;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.orchestration.player.PlayerData;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.action.GameAction;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameState;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.exception.GeneralGameStateException;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.queue.AiHistoryQueueItem;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistory;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistorySession;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTraining;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingTask;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.execution.LizNeuralConceptExecutionConflictException;
@@ -14,15 +25,16 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exce
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.LizNeuralConceptNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.neural.training.LizNeuralTrainingTaskNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryPlayerRepository;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryScenarioRepository;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistorySessionRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.LizNeuralConceptRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service.TLizService;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.history.History;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDGenerator;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockTimeoutException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PessimisticLockException;
+import hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.etc.PlayerDecision;
+import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -47,6 +59,11 @@ import java.util.stream.Stream;
 @Transactional(isolation = Isolation.SERIALIZABLE)
 public class LizNeuralOrchestrationService extends TLizService {
 
+    @Autowired
+    private LizHistoryRepository lizHistoryRepository;
+
+    @Autowired
+    private LizHistorySessionRepository lizHistorySessionRepository;
     @Autowired
     private LizHistoryPlayerRepository lizHistoryPlayerRepository;
 
@@ -85,6 +102,9 @@ public class LizNeuralOrchestrationService extends TLizService {
 
     @Autowired
     private PlatformTransactionManager transactionManager;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////
     /// EVENT METHODS /////////////////////////////////////////////////////////////////////////////////////
@@ -321,7 +341,7 @@ public class LizNeuralOrchestrationService extends TLizService {
             throw new RuntimeException("No scenarios found!");
         }
 
-        if(lizHistoryPlayerRepository.countAll()==0){
+        if (lizHistoryPlayerRepository.countAll() == 0) {
             throw new RuntimeException("No player found!");
         }
 
@@ -846,5 +866,129 @@ public class LizNeuralOrchestrationService extends TLizService {
                 .build();
     }
 
+    public void eventHistoryQueueItemReceived(AiHistoryQueueItem queueItem) {
+        log.info("QUEUE[-History-].Reader: {}\n", queueItem);
 
+        // Initialisation
+        PlayState playState = queueItem.getPlayState();
+        GameState gameState = playState.getGameState();
+        String sessionUuid = queueItem.getSessionUuid();
+        String scenarioUuid = queueItem.getScenarioUuid();
+        String scenarioName = queueItem.getScenarioName();
+        int turn = playState.getTurn();
+
+        // Register local representations if not exists
+        registerHistorySessionIfNotExists(sessionUuid);
+        registerHistoryScenarioIfNotExists(scenarioUuid, scenarioName);
+
+        //
+        Set<GameAction> intentions = new HashSet<>();
+        for (Map.Entry<Integer, PlayerData> playerEntry : playState.getPlayers().entrySet()) {
+
+            // Initialisation
+            Integer playerIndex = playerEntry.getKey();
+            PlayerData playerData = playerEntry.getValue();
+            String userUuid = playerData.getUserUuid();
+            String userName = playerData.getName();
+
+            // Not to store data of dead player
+            if (!gameState.getOpponent(playerIndex).isAlive()) {
+                continue;
+            }
+
+            if (!playerData.isIntentionAlreadyGiven()) {
+                throw new GeneralGameStateException("No intention is present for player! Player index:" + playerData.getIndex());
+            }
+
+            //
+            GameAction playerIntention = playerData.getIntention();
+            int reserveSize = gameState.getOpponents()[playerIndex].getReserveSize();
+            int enemiesCount = gameState.getOpponents().length - 1;
+            String playerNameCode = playerData.getName();
+
+            //
+            saveAHistory(sessionUuid, scenarioUuid, turn, userUuid,userName, PlayerDecision.create(
+                            playerIndex,
+                            playerIntention.getTargetCellKey(),
+                            playerIntention.getAttackingTroopSize(),
+                            reserveSize,
+                            enemiesCount,
+                            gameState
+                    )
+            );
+        }
+
+
+    }
+
+
+    private void saveAHistory(String sessionUuid, String scenarioUuid, int turn, String userUuid,String userName, PlayerDecision playerDecision) {
+
+        // Register local representation if not exists
+        registerHistoryPlayerIfNotExists(userUuid, userName);
+
+        // Access local representations
+        LizHistorySession lizHistorySession = accessHistorySession(sessionUuid);
+        int lizHistorySessionId = lizHistorySession.getId();
+        LizHistoryScenario lizHistoryScenario = accessHistoryScenario(scenarioUuid);
+        int lizHistoryScenarioId = lizHistoryScenario.getId();
+        LizHistoryPlayer lizHistoryPlayer = accessHistoryPlayer(userUuid);
+        int lizHistoryPlayerId = lizHistoryPlayer.getId();
+
+                // Save history
+        lizHistoryRepository.save(LizHistory.builder()
+                .sessionId(lizHistorySessionId)
+                .scenarioId(lizHistoryScenarioId)
+                .playerId(lizHistoryPlayer.getId())
+                .turn(turn)
+                .decision(convertPlayerDecisionObjToJson(playerDecision))
+                .dateCreated(LocalDateTime.now())
+                .build()
+        );
+    }
+
+//
+//    // TODO: ismetlodik
+//    // TODO: Tedd megosztott helyre
+//    private LizHistoryPlayer findHistoryPlayerAndRegisterIfNotExists(String userUuid) {
+//        // Determine current record and its id
+//        LizHistoryPlayer lizHistoryPlayer = lizHistoryPlayerRepository.findByUserUuid(userUuid);
+//        if (lizHistoryPlayer == null) { // Register it if it was not
+//            lizHistoryPlayer = lizHistoryPlayerRepository.save(new LizHistoryPlayer(userUuid));
+//        }
+//        return lizHistoryPlayer;
+//    }
+//
+//    // TODO: Tedd megosztott helyre
+//    private LizHistorySession findHistorySessionAndRegisterIfNotExists(String sessionUuid) {
+//        // Determine current record and its id
+//        LizHistorySession lizHistorySession = lizHistorySessionRepository.findBySessionUuid(sessionUuid);
+//        if (lizHistorySession == null) { // Register it if it was not
+//            lizHistorySession = lizHistorySessionRepository.save(new LizHistorySession(sessionUuid));
+//        }
+//        return lizHistorySession;
+//    }
+//    // TODO: Tedd megosztott helyre
+//    private LizHistoryScenario findHistoryScenarioAndRegisterIfNotExists(String scenarioUuid) {
+//        // Determine current record and its id
+//        LizHistoryScenario lizHistoryScenario = lizHistoryScenarioRepository.findByScenarioUuid(scenarioUuid);
+//        if (lizHistoryScenario == null) { // Register it if it was not
+//            lizHistoryScenario = lizHistoryScenarioRepository.save(new LizHistoryScenario(scenarioUuid));
+//        }
+//        return lizHistoryScenario;
+//    }
+
+
+
+
+    // TODO: ?? ismetlodo??
+    // TODO: Tedd megosztott helyre
+    private String convertPlayerDecisionObjToJson(PlayerDecision playerDecision) {
+        try {
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            return objectMapper.writeValueAsString(playerDecision);
+        } catch (JsonProcessingException e) {
+            throw new GeneralGameStateException("Error at parsing");
+        }
+    }
 }
