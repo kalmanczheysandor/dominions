@@ -419,7 +419,7 @@ public class LizNeuralConceptService extends TLizService {
     /// /////////////////////////////////////////////////////////////////////////////////////////////////
 
     public LizNeuralConceptExecutionStatusResponse executionStatus(String conceptUuid) {
-        System.out.println("executionStatus:conceptUuid"+conceptUuid);
+        System.out.println("executionStatus: conceptUuid:"+conceptUuid);
         // Access entity(s) via repository
         LizNeuralConcept conceptRecord = lizNeuralConceptRepository.findByUuid(conceptUuid);
         if (conceptRecord == null) {

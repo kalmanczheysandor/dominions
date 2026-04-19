@@ -52,6 +52,34 @@ public class LizNeuralTrainingTask {
     private LocalDateTime dateFinished;
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        LizNeuralTrainingTask that = (LizNeuralTrainingTask) o;
+        return Objects.equals(conceptId, that.conceptId) && Objects.equals(executionId, that.executionId) && Objects.equals(scenarioId, that.scenarioId) && Objects.equals(playerId, that.playerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(conceptId, executionId, scenarioId, playerId);
+    }
+
+
+    @Override
+    public String toString() {
+        return "LizNeuralTrainingTask{" +
+                "conceptId=" + conceptId +
+                ", executionId=" + executionId +
+                ", scenarioId=" + scenarioId +
+                ", playerId=" + playerId +
+                ", taskPhase=" + taskPhase +
+                ", taskResult=" + taskResult +
+                ", dateCreated=" + dateCreated +
+                ", dateModified=" + dateModified +
+                ", dateFinished=" + dateFinished +
+                '}';
+    }
+
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -76,6 +104,9 @@ public class LizNeuralTrainingTask {
         public int hashCode() {
             return Objects.hash(conceptId, executionId, scenarioId, playerId);
         }
+
+
+
     }
 
     public enum TaskPhase {
