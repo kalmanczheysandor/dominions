@@ -25,10 +25,8 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.serv
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDGenerator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -473,7 +471,7 @@ public class LizNeuralConceptService extends TLizService {
         lizNeuralOrchestrationService.eventExecutionContinue(conceptUuid);
     }
 
-    public void eventExecutionCancel(String conceptUuid) {
-        lizNeuralOrchestrationService.eventExecutionCancel(conceptUuid);
+    public void eventExecutionAbort(String conceptUuid) {
+        lizNeuralOrchestrationService.eventExecutionAbort(conceptUuid);
     }
 }

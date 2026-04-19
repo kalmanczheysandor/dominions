@@ -32,12 +32,10 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repo
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.LizNeuralConceptRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service.TLizService;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.history.History;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDGenerator;
 import hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.etc.PlayerDecision;
 import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -187,7 +185,7 @@ public class LizNeuralOrchestrationService extends TLizService {
     }
 
     @Async
-    public void eventExecutionCancel(String conceptUuid) {
+    public void eventExecutionAbort(String conceptUuid) {
         // Access entity: Toplevel record
         LizNeuralConcept conceptToAccess = accessConceptRecordByUuid(conceptUuid);
 
@@ -206,7 +204,7 @@ public class LizNeuralOrchestrationService extends TLizService {
         execution = accessAnExecutionRecordAndLockIt(execution.getId());
 
         //
-        atomicCancelExecution(execution);
+        atomicAbortExecution(execution);
     }
 
     private LizNeuralTrainingTask.TaskResult learn(LizNeuralConcept concept, LizNeuralExecution execution, LizNeuralTrainingTask task) {
@@ -430,10 +428,10 @@ public class LizNeuralOrchestrationService extends TLizService {
         execution.setDateModified(LocalDateTime.now());
     }
 
-    private void atomicCancelExecution(LizNeuralExecution execution) {
+    private void atomicAbortExecution(LizNeuralExecution execution) {
 
         //
-        collectAllUnfinishedTasksAndCancelThem(execution);
+        collectAllUnfinishedTasksAndAbortThem(execution);
 
         //
         LocalDateTime dateNow = LocalDateTime.now();
@@ -696,7 +694,7 @@ public class LizNeuralOrchestrationService extends TLizService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public void collectAllUnfinishedTasksAndCancelThem(LizNeuralExecution execution) {
+    public void collectAllUnfinishedTasksAndAbortThem(LizNeuralExecution execution) {
 
         LocalDateTime dateNow = LocalDateTime.now();
         try (Stream<LizNeuralTrainingTask> stream = lizNeuralTrainingTaskRepository.streamAllTaskInUnfinishedPhasesAtExecutionId(execution.getConcept().getId(), execution.getId())) {

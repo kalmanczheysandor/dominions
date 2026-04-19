@@ -10,7 +10,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.
 import hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.service.neural.LizNeuralConceptService;
 import hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.service.neural.LizNeuralOrchestrationService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -134,6 +133,6 @@ public class LizNeuralConceptController {
     @GetMapping("/{uuid}/execution/action/cancel")
     @ResponseStatus(HttpStatus.OK)
     public void executionCancelAction(@PathVariable("uuid") String conceptUuid) {
-        lizNeuralConceptService.eventExecutionCancel(conceptUuid);
+        lizNeuralConceptService.eventExecutionAbort(conceptUuid);
     }
 }
