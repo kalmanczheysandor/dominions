@@ -16,6 +16,7 @@
     <file url="file://$PROJECT_DIR$/apis/monitoring/api-monitoring-client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/monitoring/api-monitoring-client/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-all/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-authentication-common/src/main/java" charset="UTF-8" />
@@ -32,6 +33,7 @@
     <file url="file://$PROJECT_DIR$/servers/ai/egon/server-ai-egon-agent/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/helga/server-ai-helga-agent/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/otto/server-ai-otto-agent/src/main/java" charset="UTF-8" />

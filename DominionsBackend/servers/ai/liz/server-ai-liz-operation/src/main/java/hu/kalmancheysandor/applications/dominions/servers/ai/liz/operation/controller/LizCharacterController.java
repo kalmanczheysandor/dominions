@@ -68,7 +68,8 @@ public class LizCharacterController {
     @DeleteMapping("/{uuid}/delete")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("uuid") String uuid) {
-        lizCharacterService.deleteOneLizPersonnel(uuid);
+
+        lizCharacterService.deleteOneLizCharacter(uuid);
     }
 
     @DeleteMapping("/delete")

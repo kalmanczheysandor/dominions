@@ -163,7 +163,7 @@ public class LizCharacterService extends TLizService {
         return modelMapper.map(recordModified, LizCharacterUpdateResponse.class);
     }
 
-    public void deleteOneLizPersonnel(@NotBlank String recordUuid) {
+    public void deleteOneLizCharacter(@NotBlank String recordUuid) {
 
         // Execution
         try {

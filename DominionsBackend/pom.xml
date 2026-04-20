@@ -21,6 +21,7 @@
         <module>apis/server/api-server-authentication-common</module>
         <module>apis/server/api-server-ai-common</module>
         <module>apis/server/api-server-ai-liz-shared</module>
+        <module>apis/server/api-server-ai-hugo-shared</module>
         <module>apis/server/api-server-mailing-shared</module>
 
 
@@ -55,6 +56,7 @@
         <module>servers/ai/liz/server-ai-liz-agent</module>
         <module>servers/ai/liz/server-ai-liz-operation</module>
         <module>servers/ai/hugo/server-ai-hugo-agent</module>
+        <module>servers/ai/hugo/server-ai-hugo-operation</module>
         <module>servers/ai/helga/server-ai-helga-agent</module>
         <module>servers/server-config</module>
         <module>servers/server-monitoring</module>
