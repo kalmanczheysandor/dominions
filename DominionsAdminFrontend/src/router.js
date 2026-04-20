@@ -22,6 +22,8 @@ import LizPersonnelSolutionTrainingPage from "@/pages/ai/liz/-old/training/LizPe
 import LizCharacterPage from "@/pages/ai/liz/character/LizCharacterPage.vue";
 import LizVariantPage from "@/pages/ai/liz/variant/LizVariantPage.vue";
 import LizNeuralConceptPage from "@/pages/ai/liz/concept/LizNeuralConceptPage.vue";
+import HugoVariantPage from "@/pages/ai/hugo/variant/HugoVariantPage.vue";
+import HugoCharacterPage from "@/pages/ai/hugo/character/HugoCharacterPage.vue";
 
 
 export const router = createRouter({
@@ -156,6 +158,31 @@ export const router = createRouter({
         //     }
         // },
 
+
+        {
+            name: 'Ai.Hugo.Character',
+            path: '/ai/hugo/character',
+            component: HugoCharacterPage,
+            meta: {
+                title: 'Hugo-Characters',
+                requiresAuth: true,
+                requiredPermissions: [authService.generateAccessPermissionOn('Ai.Hugo.Character')],
+                cssName: 'DefaultPageStyle'
+            }
+        },
+        {
+            name: 'Ai.Hugo.Variant',
+            path: '/ai/hugo/variant',
+            component: HugoVariantPage,
+            meta: {
+                title: 'Hugo-Variants',
+                requiresAuth: true,
+                requiredPermissions: [authService.generateAccessPermissionOn('Ai.Hugo.Variant')],
+                cssName: 'DefaultPageStyle'
+            }
+        },
+
+
         {
             name: 'Ai.Liz.Character',
             path: '/ai/liz/character',
@@ -194,7 +221,7 @@ export const router = createRouter({
             redirect: (to) => {
                 //
                 if (to.fullPath.startsWith('/api')) {
-                    console.warn("The path:",to.fullPath," is blocked, because browser tried to navigate into to /api.. scopes!");
+                    console.warn("The path:", to.fullPath, " is blocked, because browser tried to navigate into to /api.. scopes!");
                 }
 
                 //
@@ -212,28 +239,26 @@ export const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-    if(to.path === '/') {
-        if(!authService.isUserAuthenticated()) {
+    if (to.path === '/') {
+        if (!authService.isUserAuthenticated()) {
             next('/login');
             return;
-        }
-        else {
+        } else {
             next('/main');
             return;
         }
     }
 
-    if(to.meta.requiresAuth && !authService.isUserAuthenticated() && to.path !== '/login') {
+    if (to.meta.requiresAuth && !authService.isUserAuthenticated() && to.path !== '/login') {
         next('/login');
         return;
-    }
-    else if(to.meta.requiresAuth && authService.isUserAuthenticated()) {
-        if(to.meta.requiresAuth.requiredPermissions) {
+    } else if (to.meta.requiresAuth && authService.isUserAuthenticated()) {
+        if (to.meta.requiresAuth.requiredPermissions) {
             for (const permission of to.meta.requiresAuth.requiredPermissions) {
-                if(!authService.hasCurrentUserPermission(permission)) {
+                if (!authService.hasCurrentUserPermission(permission)) {
                     await TWarningDialog({
                         title: 'Permission warning',
-                        message: 'Sorry! You do not have the necessary permission:'+permission
+                        message: 'Sorry! You do not have the necessary permission:' + permission
                     });
                     next('/')
                     return;
@@ -242,12 +267,10 @@ router.beforeEach(async (to, from, next) => {
         }
         next();
         return;
-    }
-    else if(!to.meta.requiresAuth) {
+    } else if (!to.meta.requiresAuth) {
         next();
         return;
-    }
-    else{
+    } else {
         next();
         return;
     }

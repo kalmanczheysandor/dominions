@@ -1,5 +1,5 @@
 <template>
-    <TDialog ref="Dialog" title="New admin permission group" :closeable="true" @whenDialogClosed="whenParentDialogClosed">
+    <TDialog ref="Dialog" title="New hugoVariant" :closeable="true" @whenDialogClosed="whenParentDialogClosed">
         <v-form ref="Form" class="TTabbedPanel" v-model="Form.validation.isValid">
             <v-tabs v-model="MainTabComponent.activeKey" align-tabs="end" color="primary">
                 <v-tab value="Tab1">*</v-tab>
@@ -7,12 +7,21 @@
             <v-tabs-window v-model="MainTabComponent.activeKey">
                 <v-tabs-window-item value="Tab1">
                     <v-text-field v-model="Form.Fields.NameTextInput.value" label="Name"
-                                  :rules="Form.Fields.NameTextInput.rules"
-                                  variant="outlined" density="compact" clearable/>
+                                  :rules="Form.Fields.NameTextInput.rules" variant="outlined" density="compact"
+                                  clearable/>
+                    <v-text-field v-model="Form.Fields.ConfMaxIterationsPerTurn.value" label="Max search depth"
+                                  :rules="Form.Fields.ConfMaxIterationsPerTurn.rules" variant="outlined" density="compact"
+                                  clearable/>
+                    <v-autocomplete
+                            v-model="Form.Fields.HeuristicSelectInput.selectedKey"
+                            :rules="Form.Fields.HeuristicSelectInput.rules"
+                            :items="Form.Fields.HeuristicSelectInput.itemsToDisplay"
+                            label="Heuristic" item-value="uuid" item-title="name"
+                            :search-input="Form.Fields.HeuristicSelectInput.searchText"
+                            variant="outlined" density="compact" clearable dense
+                    />
                     <v-checkbox v-model="Form.Fields.EnabledCheckInput.isChecked" label="Enabled" variant="outlined"
                                 density="compact" clearable/>
-                    <TCheckboxMatrixInput v-model="Form.Fields.AdminPermissionGroupCheckboxMatrixInput.selectedItems"
-                                          :config="Form.Fields.AdminPermissionGroupCheckboxMatrixInput.config"/>
                 </v-tabs-window-item>
             </v-tabs-window>
 
@@ -29,16 +38,21 @@ import TDialog from "@/framework/component/TDialog/TDialog.vue";
 import TConfirmDialog from "@/framework/component/TConfirmDialog/TConfirmDialog";
 import {authService} from "@/services/auth/AuthService";
 import TController from "@/framework/TController";
-import {RequiredFieldRule, TextFieldRule} from "@/validation.js";
-import adminPermissionGroupService from "@/services/account/admin/permission/AdminPermissionGroupService";
-import TCheckboxMatrixInput from "@/framework/component/TCheckboxMatrixInput/TCheckboxMatrixInput.vue";
+import {
+    PositiveNumberFieldRuleWithZero,
+    RequiredFieldRule,
+    TextFieldRule
+} from "@/validation.js";
+import hugoVariantService from "@/services/ai/hugo/variant/HugoVariantService";
+import hugoCharacterService from "@/services/ai/hugo/character/HugoCharacterService";
+
+
 
 export default {
-    name: "AdminPermissionGroupAddDialog",
-    components: {TCheckboxMatrixInput, TDialog},
+    name: "HugoVariantAddDialog",
+    components: {TDialog},
     data() {
         return {
-
             MainTabComponent: {
                 activeTabKey: null,
             },
@@ -48,35 +62,20 @@ export default {
                         value: "",
                         rules: [RequiredFieldRule, TextFieldRule]
                     },
+                    ConfMaxIterationsPerTurn: {
+                        value: "0",
+                        rules: [RequiredFieldRule, PositiveNumberFieldRuleWithZero]
+                    },
+                    HeuristicSelectInput: {
+                        itemsToDisplay: [],
+                        searchText: '',
+                        selectedKey: null,
+                        rules: [RequiredFieldRule]
+                    },
                     EnabledCheckInput: {
                         isChecked: true,
                         rules: []
                     },
-                    AdminPermissionGroupCheckboxMatrixInput: {
-                        config: {
-                            columns: [
-                                {Code: 'VIEW', Caption: 'Access'},
-                                {Code: 'ADD', Caption: 'Add'},
-                                {Code: 'EDIT', Caption: 'Edit'},
-                                {Code: 'DELETE', Caption: 'Delete'}
-                            ],
-                            rows: [
-                                {Field: 'Ai.Hugo.Character', Caption: 'AI > Hugo > Character'},
-                                {Field: 'Ai.Hugo.Variant', Caption: 'AI > Hugo > Variant'},
-                                {Field: 'Ai.Liz.Character', Caption: 'AI > Liz > Character'},
-                                {Field: 'Ai.Liz.Variant', Caption: 'AI > Liz > Variant'},
-                                {Field: 'Ai.Liz.Concept', Caption: 'AI > Liz > Concept'},
-                                {Field: 'Game.Scenario', Caption: 'Game > Scenario'},
-                                {Field: 'Account.Admin.User', Caption: 'Account > Admin > Users'},
-                                {Field: 'Account.Admin.PermissionGroup', Caption: 'Account > Admin > PermissionGroups'},
-                                {Field: 'Account.Admin.Settings', Caption: 'Account > Admin > Settings'},
-                                {Field: 'Account.Site.User', Caption: 'Account > Site > Users'},
-                                {Field: 'Account.Site.PermissionGroup', Caption: 'Account > Site > PermissionGroups'},
-                            ],
-                        },
-                        selectedItems: [],
-                        rules: []
-                    }
                 },
                 validation: {
                     isValid: false,
@@ -101,10 +100,11 @@ export default {
                 }
 
                 // Save form value
-                const result = await adminPermissionGroupService.save({
+                await hugoVariantService.save({
                     name: this.Form.Fields.NameTextInput.value,
-                    enabled: this.Form.Fields.EnabledCheckInput.isChecked,
-                    permissions: this.Form.Fields.AdminPermissionGroupCheckboxMatrixInput.selectedItems
+                    confSearchDepth: this.Form.Fields.ConfMaxIterationsPerTurn.value,
+                    heuristicUuid: this.Form.Fields.HeuristicSelectInput.selectedKey,
+                    enabled: this.Form.Fields.EnabledCheckInput.isChecked
                 });
 
                 // Display success message
@@ -121,11 +121,17 @@ export default {
         },
         async open() {
             try {
-                // Checking adminPermission
-                authService.assertAddActionGrantedOn("Account.Admin.PermissionGroup");
+                // Checking permission
+                authService.assertAddActionGrantedOn("Ai.Hugo.Variant");
+
+                // Retrieve: meta record(s)
+                const heuristicResult = await hugoVariantService.atAddListHeuristic();
+
+                // Inject: form meta values
+                this.Form.Fields.HeuristicSelectInput.itemsToDisplay = heuristicResult.data;
 
                 // Display dialog
-                await this.$refs.Dialog.open();
+                this.$refs.Dialog.open();
             } catch (exp) {
                 await TController.displayExceptionMessages(exp);
                 this.close();

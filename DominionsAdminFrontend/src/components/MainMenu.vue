@@ -100,6 +100,22 @@ export default {
                         icon: 'mdi-view-dashboard',
                         subItems: [
                             {
+                                title: 'Hugo engine',
+                                icon: 'mdi-account-outline',
+                                subItems: [
+                                    {
+                                        title: 'Character',
+                                        icon: 'mdi-account-group',
+                                        route: '/ai/hugo/character'
+                                    },
+                                    {
+                                        title: 'Variant',
+                                        icon: 'mdi-account-group',
+                                        route: '/ai/hugo/variant'
+                                    }
+                                ]
+                            },
+                            {
                                 title: 'Liz Engine',
                                 icon: 'mdi-account-outline',
                                 subItems: [
@@ -136,21 +152,7 @@ export default {
                         ]
                     },
 
-                    // {
-                    //     title: 'Breeds',
-                    //     icon: 'mdi-view-dashboard',
-                    //     route: '/breed'
-                    // },
-                    // {
-                    //     title: 'Dogs',
-                    //     icon: 'mdi-view-dashboard',
-                    //     route: '/dog'
-                    // },
-                    // {
-                    //     title: 'Sites',
-                    //     icon: 'mdi-view-dashboard',
-                    //     route: '/site'
-                    // },
+
 
                     {
                         title: 'Accounts',
