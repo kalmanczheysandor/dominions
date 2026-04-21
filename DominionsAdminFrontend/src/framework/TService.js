@@ -201,6 +201,10 @@ class TService {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the history-player for concept record by uuid:' + data.parameters.uuid);
                 } else if (data.code == 'LizNeuralConceptHistoryScenarioNotFoundByUuidException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the history-scenario for concept record by uuid:' + data.parameters.uuid);
+                }else if (data.code == 'LizNeuralConceptDirectoryDeletionFailedException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t delete file structure of concept');
+                }else if (data.code == 'LizNeuralConceptDeletionBlockedByActiveExecutionException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t delete concept while there is any unfinished execution!');
                 }
 
 
