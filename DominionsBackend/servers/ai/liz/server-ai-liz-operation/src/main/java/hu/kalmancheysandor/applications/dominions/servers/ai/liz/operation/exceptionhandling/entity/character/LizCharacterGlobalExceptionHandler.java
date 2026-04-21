@@ -40,6 +40,18 @@ public class LizCharacterGlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler(LizCharacterNotFoundByCodeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public GeneralFailureResponse handle(LizCharacterNotFoundByCodeException exception) {
+        // Logging
+        log.error("LizCharacter not found by code: {}", exception.getCode(), exception);
+
+        // Generate response
+        GeneralFailureResponse response = new GeneralFailureResponse(exception.getClass().getSimpleName(), exception.getMessage());
+        response.addParameter("code", exception.getCode());
+
+        return response;
+    }
     @ExceptionHandler(LizCharacterAssociationRestrictedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public GeneralFailureResponse handle(LizCharacterAssociationRestrictedException exception) {
