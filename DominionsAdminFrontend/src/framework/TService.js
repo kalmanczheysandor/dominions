@@ -115,6 +115,44 @@ class TService {
                 }
 
 
+                // HugoCharacter
+                if (data.code == 'HugoCharacterNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record!');
+                } else if (data.code == 'HugoCharacterNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'HugoCharacterAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record association is restricted!');
+                } else if (data.code == 'HugoCharacterReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record is still referenced elsewhere!');
+                } else if (data.code == 'HugoCharacterNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                } else if (data.code == 'HugoCharacterCodeIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The code "' + data.parameters.code + '" is already in use!');
+                }
+
+                // HugoVariant
+                if (data.code == 'HugoVariantNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the variant record!');
+                } else if (data.code == 'HugoVariantNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the variant record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'HugoVariantAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record association is restricted!');
+                } else if (data.code == 'HugoVariantReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record is still referenced elsewhere!');
+                } else if (data.code == 'HugoVariantIsNotAChildOfThisParentException') {
+                    throw new GeneralFailureException(data.code, 'The variant record is not a child record of referenced parent!');
+                } else if (data.code == 'HugoVariantNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                }
+
+
+                // HugoHeuristic
+                if (data.code == 'HugoHeuristicNotFoundByCodeException.java') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record!');
+                } else if (data.code == 'HugoHeuristicNotFoundByUuidException.java') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record by uuid:' + data.parameters.uuid);
+                }
+
                 // LizCharacter
                 if (data.code == 'LizCharacterNotFoundException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the character record!');
