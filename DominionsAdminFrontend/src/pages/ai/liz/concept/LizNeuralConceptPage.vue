@@ -59,14 +59,6 @@
                                            Result
                                         </v-list-item-title>
                                     </v-list-item>
-                                    <v-list-item>
-                                        <template v-slot:prepend>
-                                            <v-icon icon="mdi-stairs-up "></v-icon>
-                                        </template>
-                                        <v-list-item-title @click="eventClickOnResultRowButton(item.uuid)">
-                                           Result
-                                        </v-list-item-title>
-                                    </v-list-item>
                                 </v-list>
                             </v-menu>
                         </v-list-item>
