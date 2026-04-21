@@ -64,7 +64,7 @@ public class LizNeuralConceptController {
     @DeleteMapping("/{uuid}/delete")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("uuid") String uuid) {
-        lizNeuralConceptService.deleteOneLizPersonnel(uuid);
+        lizNeuralConceptService.deleteOneLizConcept(uuid);
     }
 
     @DeleteMapping("/delete")

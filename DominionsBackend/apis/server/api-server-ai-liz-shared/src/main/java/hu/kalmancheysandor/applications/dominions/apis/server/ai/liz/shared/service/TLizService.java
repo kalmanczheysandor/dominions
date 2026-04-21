@@ -8,6 +8,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.enti
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistorySession;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingResult;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingTask;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.LizNeuralConceptDirectoryDeletionFailedException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.history.LizHistoryPlayerNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.history.LizHistoryScenarioNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.history.LizHistorySessionNotFoundByUuidException;
@@ -16,6 +17,12 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repo
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistorySessionRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 
 public abstract class TLizService extends TAiService {
     @Autowired
@@ -54,8 +61,36 @@ public abstract class TLizService extends TAiService {
     }
 
     protected String generateNetworkFileDirectoryString(int conceptId, int scenarioId, int playerId) {
-        return applicationConfig.getLizServer().getNeuralNetwork().getBaseFolder() + "/trainings/concept-" + conceptId + "/scenario-" + scenarioId + "/player-" +playerId;
+        return generateConceptDirectoryString(conceptId) + "/scenario-" + scenarioId + "/player-" + playerId;
     }
+
+    private String generateConceptDirectoryString(int conceptId) {
+        return applicationConfig.getLizServer().getNeuralNetwork().getBaseFolder() + "/trainings/concept-" + conceptId;
+    }
+
+
+    protected void deleteRecursivelyConceptDirectoryIfExists(int conceptId) {
+        try {
+            String pathToConceptFolder = generateConceptDirectoryString(conceptId);
+            Path path = Paths.get(pathToConceptFolder);
+
+            if (Files.exists(path)) {
+                Files.walk(path)
+                        .sorted(Comparator.reverseOrder()) // It is important in order to delete files earlier than folders
+                        .forEach(p -> {
+                            try {
+                                Files.delete(p);
+                            } catch (IOException e) {
+                               throw new LizNeuralConceptDirectoryDeletionFailedException(conceptId);
+                            }
+
+                        });
+            }
+        } catch (IOException e) {
+            throw new LizNeuralConceptDirectoryDeletionFailedException(conceptId);
+        }
+    }
+
 
     protected static String generateNetworkFileNameByTrainingTask(LizNeuralTrainingTask task) {
         return generateNetworkFileName(task.getConceptId(), task.getScenarioId(), task.getPlayerId(), task.getExecutionId());
@@ -70,7 +105,6 @@ public abstract class TLizService extends TAiService {
     }
 
 
-
     protected void registerHistoryScenarioIfNotExists(String scenarioUuid, String scenarioName) {
         // Determine current record and its id
         LizHistoryScenario lizHistoryScenario = lizHistoryScenarioRepository.findByScenarioUuid(scenarioUuid);
@@ -80,7 +114,7 @@ public abstract class TLizService extends TAiService {
     }
 
 
-    protected void registerHistoryPlayerIfNotExists(String userUuid,String userName) {
+    protected void registerHistoryPlayerIfNotExists(String userUuid, String userName) {
         // Determine current record and its id
         LizHistoryPlayer lizHistoryPlayer = lizHistoryPlayerRepository.findByUserUuid(userUuid);
         if (lizHistoryPlayer == null) { // Register it if it was not
