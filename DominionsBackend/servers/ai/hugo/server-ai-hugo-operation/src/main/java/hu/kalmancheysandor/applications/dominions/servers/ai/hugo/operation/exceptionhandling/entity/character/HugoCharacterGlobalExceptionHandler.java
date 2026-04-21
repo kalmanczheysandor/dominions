@@ -2,6 +2,7 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.operation.exc
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.character.*;
+
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.failure.GeneralFailureResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -40,6 +41,19 @@ public class HugoCharacterGlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler(HugoCharacterNotFoundByCodeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public GeneralFailureResponse handle(HugoCharacterNotFoundByCodeException exception) {
+        // Logging
+        log.error("HugoCharacter not found by code: {}", exception.getCode(), exception);
+
+        // Generate response
+        GeneralFailureResponse response = new GeneralFailureResponse(exception.getClass().getSimpleName(), exception.getMessage());
+        response.addParameter("code", exception.getCode());
+
+        return response;
+    }
+    
     @ExceptionHandler(HugoCharacterAssociationRestrictedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public GeneralFailureResponse handle(HugoCharacterAssociationRestrictedException exception) {
