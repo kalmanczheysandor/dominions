@@ -200,7 +200,7 @@ public class LizNeuralConceptService extends TLizService {
         }
 
         // check whether an unfinished execution exists
-        if(lizNeuralExecutionRepository.isAnyRunning(recordId)) {
+        if(lizNeuralExecutionRepository.isAnyUnfinished(recordId)) {
             throw new LizNeuralConceptDeletionBlockedByActiveExecutionException(recordId);
         }
 
