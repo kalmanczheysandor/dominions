@@ -47,15 +47,14 @@
         <!-- .......AI.......-->
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-ai-common</artifactId>
+            <artifactId>api-ai-neural</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-ai-hugo</artifactId>
+            <artifactId>api-ai-liz</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
 
 
         <!--.......UTILS.......-->
