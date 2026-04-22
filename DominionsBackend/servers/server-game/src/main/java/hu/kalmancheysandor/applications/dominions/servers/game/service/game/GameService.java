@@ -20,7 +20,9 @@ import hu.kalmancheysandor.applications.dominions.apis.general.exceptions.Illega
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.queue.AiHistoryQueueItem;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.proxy.HugoAgentServerProxy;
 
+//import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.hugo.HugoAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy.LizAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
@@ -59,7 +61,6 @@ import java.util.*;
 
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MimeType;
 
 @Slf4j
 @Service
@@ -92,10 +93,10 @@ public class GameService {
 
     @Autowired
     private LizAgentServerProxy lizAgentServerProxy;
-//
-//    @Autowired
-//    private HugoAiAgentServerProxy hugoAiAgentServerProxy;
-//
+
+    @Autowired
+    private HugoAgentServerProxy hugoAgentServerProxy;
+
 //    @Autowired
 //    private HelgaAiAgentServerProxy helgaAiAgentServerProxy;
 
@@ -755,6 +756,9 @@ public class GameService {
 
         if (engineType == GameMapEngineType.AI_LIZ) {
             aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
+        }
+        else if (engineType == GameMapEngineType.AI_HUGO) {
+            aiDecisionResponseObj = hugoAgentServerProxy.generateResponse(aiDecisionRequestObj);
         } else {
             throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
         }
