@@ -17,7 +17,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.enti
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.LizVariant;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralConcept;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralExecution;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingResult;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.character.LizCharacterNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.history.scenario.LizHistoryScenarioNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryPlayerRepository;
@@ -26,14 +25,11 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repo
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.LizNeuralExecutionRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.LizNeuralTrainingResultRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service.TLizService;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.game.GameScenario;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotFoundByUuidException;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameScenarioRepository;
+//import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameScenarioRepository;
 import hu.kalmancheysandor.applications.dominions.apis.util.file.filehandler.FileHandler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,8 +53,8 @@ public class LizAgentService extends TLizService {
     @Autowired
     private LizNeuralTrainingResultRepository lizNeuralTrainingResultRepository;
 
-    @Autowired
-    private GameScenarioRepository gameScenarioRepository;
+//    @Autowired
+//    private GameScenarioRepository gameScenarioRepository;
 
     @Autowired
     private LizCharacterRepository lizCharacterRepository;
