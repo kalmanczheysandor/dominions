@@ -32,14 +32,6 @@
                             <template v-slot:prepend>
                                 <v-icon icon="mdi-pencil"></v-icon>
                             </template>
-                            <v-list-item-title @click="eventClickOnSolutionsRowButton(item.uuid)">Solutions
-                            </v-list-item-title>
-                        </v-list-item>
-
-                        <v-list-item>
-                            <template v-slot:prepend>
-                                <v-icon icon="mdi-pencil"></v-icon>
-                            </template>
                             <v-list-item-title @click="eventClickOnModifyRowButton(item.uuid)">Modify
                             </v-list-item-title>
                         </v-list-item>
@@ -212,13 +204,7 @@
                 await this.$refs.LizVariantModifyDialog.open(uuid)
             },
 
-            async eventClickOnSolutionsRowButton(uuid) {
-                try {
-                    this.$router.push('/ai/liz/personnel/'+uuid+'/solution');
-                } catch (exp) {
-                    await TController.displayExceptionMessages(exp);
-                }
-            },
+
 
             async eventClickOnRefreshButton() {
                 await this.reloadList();

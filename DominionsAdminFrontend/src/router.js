@@ -16,9 +16,6 @@ import GameScenarioPage from "@/pages/game/scenario/GameScenarioPage.vue";
 import SiteUserPage from "@/pages/account/site/user/SiteUserPage.vue";
 import SitePermissionGroupPage from "@/pages/account/site/permission/SitePermissionGroupPage.vue";
 
-import LizPersonnelPage from "@/pages/ai/liz/-old/personnel/LizPersonnelPage.vue";
-import LizPersonnelSolutionPage from "@/pages/ai/liz/-old/solution/LizPersonnelSolutionPage.vue";
-import LizPersonnelSolutionTrainingPage from "@/pages/ai/liz/-old/training/LizPersonnelSolutionTrainingPage.vue";
 import LizCharacterPage from "@/pages/ai/liz/character/LizCharacterPage.vue";
 import LizVariantPage from "@/pages/ai/liz/variant/LizVariantPage.vue";
 import LizNeuralConceptPage from "@/pages/ai/liz/concept/LizNeuralConceptPage.vue";
