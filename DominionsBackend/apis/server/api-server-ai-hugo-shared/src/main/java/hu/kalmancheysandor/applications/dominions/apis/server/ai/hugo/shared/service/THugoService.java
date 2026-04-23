@@ -2,10 +2,14 @@ package hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.se
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.service.TAiService;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.heuristic.HugoHeuristicEvaluatorType;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.history.HugoHistoryPlayer;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.history.HugoHistoryScenario;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.history.HugoHistorySession;
 
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.training.HugoCharacter;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.training.HugoVariant;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.character.HugoCharacterNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.history.HugoHistoryPlayerNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.history.HugoHistoryScenarioNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.history.HugoHistorySessionNotFoundByUuidException;
@@ -84,4 +88,7 @@ public abstract class THugoService extends TAiService {
         }
         return hugoHistorySession;
     }
+
+
+
 }
