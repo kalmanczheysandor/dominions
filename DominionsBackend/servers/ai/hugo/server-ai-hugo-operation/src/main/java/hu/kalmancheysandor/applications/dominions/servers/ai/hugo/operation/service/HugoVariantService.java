@@ -4,6 +4,7 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.operation.ser
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.dto.variant.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.dto.variant.option.HugoVariantHeuristicOptionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.heuristic.HugoHeuristicEvaluatorType;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.training.HugoVariant;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.heuristic.HugoHeuristicNotFoundByCodeException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.heuristic.HugoHeuristicNotFoundByUuidException;
@@ -55,8 +56,8 @@ public class HugoVariantService extends THugoService {
     private ApplicationConfig applicationConfig;
 
     private List<HeuristicItem> heuristicList = List.of(
-            new HeuristicItem(1, "HEUR1", "00000-h1", "Heur-general"),
-            new HeuristicItem(2, "HEUR2", "00000-h2", "Heur-advanced")
+            new HeuristicItem(1, HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR.toString(), "00000-h1", HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR.toString()),
+            new HeuristicItem(2, HugoHeuristicEvaluatorType.HUGO_SECOND_HEURISTIC_EVALUATOR.toString(), "00000-h2", HugoHeuristicEvaluatorType.HUGO_SECOND_HEURISTIC_EVALUATOR.toString())
     );
 
     public HugoVariantAccessResponse access(@NotBlank String recordUuid) {

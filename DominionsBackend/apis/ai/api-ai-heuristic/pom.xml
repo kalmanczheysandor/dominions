@@ -10,7 +10,13 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>api-ai-hugo</artifactId>
+    <artifactId>api-ai-heuristic</artifactId>
+
+    <properties>
+        <stanford-corenlp.version>4.5.3</stanford-corenlp.version>
+        <opennlp-tools.version>2.1.1</opennlp-tools.version>
+        <neuroph.version>2.92</neuroph.version>
+    </properties>
 
     <dependencies>
         <!-- .......GENERAL.......-->
@@ -25,22 +31,6 @@
             <artifactId>api-ai-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-
-        <!-- .......GAME.......-->
-        <dependency>
-            <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-game-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-ai-heuristic</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-
     </dependencies>
     <build>
         <plugins>
@@ -57,5 +47,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

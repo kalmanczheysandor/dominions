@@ -2,6 +2,9 @@ package hu.kalmancheysandor.applications.dominions.apis.ai.hugo;
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.common.AiDecisionContext;
 import hu.kalmancheysandor.applications.dominions.apis.ai.common.AiDecisionResult;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.IHeuristicAiEngine;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.IHeuristicEvaluation;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.IHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameState;
 import hu.kalmancheysandor.applications.dominions.apis.general.exceptions.IllegalPointOfExecution;
 import lombok.AllArgsConstructor;
@@ -11,7 +14,10 @@ import lombok.NoArgsConstructor;
 import java.util.*;
 
 
-public class HugoAiAdvancedEngine extends THugoAIEngine {
+public class HugoAiAdvancedEngine extends THugoAIEngine implements IHeuristicAiEngine {
+
+    private IHeuristicEvaluator heuristicEvaluator;
+
 
 
     @Override
@@ -20,10 +26,8 @@ public class HugoAiAdvancedEngine extends THugoAIEngine {
         BranchData branchData = chooseTheBestStep(context.getGameState(), context.getYourPlayerKey(), 1, 0);
         Integer chosenCellKey = branchData.advisedStepKey;
 
-
-
         if (chosenCellKey != null) {
-            System.out.println("ChosenCellKey:"+chosenCellKey);
+            System.out.println("ChosenCellKey:" + chosenCellKey);
             return new AiDecisionResult(chosenCellKey, calculatePlayerMaxAttackPower(context.getGameState(), context.getYourPlayerKey()));
         }
         System.out.println("ChosenCellKey:Reserve");
@@ -32,10 +36,10 @@ public class HugoAiAdvancedEngine extends THugoAIEngine {
 
     private BranchData chooseTheBestStep(GameState gameState, int supportedPlayerKey, int maxDeepness, int parentLevelDeepness) {
         int currentLevel = parentLevelDeepness + 1;
-        System.out.println("########## LEVEL "+currentLevel+" ####################");
+        System.out.println("########## LEVEL " + currentLevel + " ####################");
 
-        System.out.println("DefendedCellKeys:"+collectCellKeysOfAPlayer(gameState,supportedPlayerKey));
-        System.out.println("AvailableSteps:"+collectCellKeysOfCurrentAttackZoneOfPlayer(gameState, supportedPlayerKey));
+        System.out.println("DefendedCellKeys:" + collectCellKeysOfAPlayer(gameState, supportedPlayerKey));
+        System.out.println("AvailableSteps:" + collectCellKeysOfCurrentAttackZoneOfPlayer(gameState, supportedPlayerKey));
         // Step 1
         Map<Integer, List<Map<Integer, Integer>>> combinationsGroups = generateCombinationGroups(gameState, supportedPlayerKey);
 
@@ -45,7 +49,7 @@ public class HugoAiAdvancedEngine extends THugoAIEngine {
         // Step 3
         Integer stepKey;
         List<GameState> gameStateVariants;
-        HeuristicData theLessWorse = null;
+        HugoHeuristicEvaluation theLessWorse = null;
         Integer chosenKey = null;
         for (Map.Entry<Integer, List<GameState>> entry : gameStateListGroups.entrySet()) {
             stepKey = entry.getKey();
@@ -53,75 +57,54 @@ public class HugoAiAdvancedEngine extends THugoAIEngine {
 
 
             // Loop - All game state variants inside of my step
-            HeuristicData h;
-            List<HeuristicData> heuristicDataList = new ArrayList<>();
-            for (GameState gameStataVariant : gameStateVariants) {
+            BranchData b;
+            HugoHeuristicEvaluation currentHeuristicEvaluation;
+            HugoHeuristicEvaluation worstHeuristicEvaluation = null;
+            List<HugoHeuristicEvaluation> hugoHeuristicEvaluationList = new ArrayList<>();
+            for (GameState gameStateVariant : gameStateVariants) {
                 if (maxDeepness > currentLevel) {
-                    BranchData b = chooseTheBestStep(gameStataVariant, supportedPlayerKey, maxDeepness, currentLevel);
-                    h = b.getHeuristicValue();
-                    heuristicDataList.add(h);
+                    b = chooseTheBestStep(gameStateVariant, supportedPlayerKey, maxDeepness, currentLevel);
+                    currentHeuristicEvaluation = b.getHugoHeuristicEvaluation();
                 } else if (maxDeepness == currentLevel) {
-                    h = generateHeuristicData(gameStataVariant, supportedPlayerKey);
-                    heuristicDataList.add(h);
+                    currentHeuristicEvaluation = generateHeuristicEvaluationObject(gameStateVariant, supportedPlayerKey);
+                    //currentHeuristicEvaluation = heuristicEvaluator.evaluate(gameStateVariant, supportedPlayerKey);
                 } else {
                     throw new IllegalPointOfExecution("Unexpected case is found!");
                 }
+
+
+                //
+                if (worstHeuristicEvaluation == null) {
+                    worstHeuristicEvaluation = currentHeuristicEvaluation;
+                } else if (currentHeuristicEvaluation.compareTo(worstHeuristicEvaluation) < 0) { // worstHeuristic is better than heuristicItem, so heuristicItem is worse than worstHeuristic
+                    worstHeuristicEvaluation = currentHeuristicEvaluation;
+                }
+
+
             }
-            // TODO vegallapot eseten nem lehet ujabb satet, de eleve nem is lesz attack zone
-            // Az adott kezdo allapotra alkalmazott sajat operator alkalmazas heurisztikaja, az ellenfelek osszes leheteseges lepes variacioja altal eloallitott legrosszabat kell tekinteni.
-            HeuristicData worst = findWorstHeuristic(heuristicDataList); // worst for me, but better for opponents
 
-
-            // Azt tekintjuk a legjobb operator alklamazasnak a tamogatott jatekos szamara, ami a a leheto legjobb erteket adja.
+            // Azt tekintjuk a legjobb operator alklamazasnak a tamogatott jatekos szamara, ami a a leheto legjobb erteket adja.(vagyis a legkevesbe rosszat akarjuk valasztani)
             if (theLessWorse == null) {
-                theLessWorse = worst;
+                theLessWorse = worstHeuristicEvaluation;
                 chosenKey = stepKey;
-            } else if (isHeuristicBetterThan(worst, theLessWorse)||isHeuristicEqualWith(worst, theLessWorse)) {
-                theLessWorse = worst;
+            } else if (theLessWorse.compareTo(worstHeuristicEvaluation) < 0) {// Amikor a theLessWorse rosszabb mint a worst, akkor a worst a theLessWorse roszabb. akkor egy kevesbe roszabra kell attalitani
+                theLessWorse = worstHeuristicEvaluation;
                 chosenKey = stepKey;
             }
-//            else if (isHeuristicEqualWith(worst, theLessWorse)) {   // Hogy elkeruljuk a reserve bent ragadasat, mert ha mindneki egyenlo akkor az elso maradna, ami a reserve.
-//                theLessWorse = worst;
-//                chosenKey = stepKey;
-//            }
 
-            System.out.println(">".repeat(currentLevel)+" ObservedCellKey:"+stepKey+" H:"+worst.getOccupancyShare()+" .....chosen:"+chosenKey);
+            System.out.println(">".repeat(currentLevel) + " ObservedCellKey:" + stepKey + " H:" + worstHeuristicEvaluation.getHeuristicValue() + " .....chosen:" + chosenKey);
         }
 
         return new BranchData(chosenKey, theLessWorse);
     }
 
+    private HugoHeuristicEvaluation findWorstHeuristicEvaluationInAGroup(List<HugoHeuristicEvaluation> hugoHeuristicEvaluationList) {
+        HugoHeuristicEvaluation worstHeuristic = null;
 
-    private boolean isHeuristicBetterThan(HeuristicData a, HeuristicData b) {
-        return a.getOccupancyShare() > b.getOccupancyShare();
-    }
-
-    private boolean isHeuristicEqualWith(HeuristicData a, HeuristicData b) {
-        return a.getOccupancyShare() == b.getOccupancyShare();
-    }
-
-    private boolean isHeuristicWorseThan(HeuristicData a, HeuristicData b) {
-        return a.getOccupancyShare() < b.getOccupancyShare();
-    }
-
-    private HeuristicData findBestHeuristic(List<HeuristicData> heuristicDataList) {
-        HeuristicData bestHeuristic = null;
-        for (HeuristicData heuristicItem : heuristicDataList) {
-            if (bestHeuristic == null) {
-                bestHeuristic = heuristicItem;
-            } else if (isHeuristicBetterThan(heuristicItem, bestHeuristic)) {
-                bestHeuristic = heuristicItem;
-            }
-        }
-        return bestHeuristic;
-    }
-
-    private HeuristicData findWorstHeuristic(List<HeuristicData> heuristicDataList) {
-        HeuristicData worstHeuristic = null;
-        for (HeuristicData heuristicItem : heuristicDataList) {
+        for (HugoHeuristicEvaluation heuristicItem : hugoHeuristicEvaluationList) {
             if (worstHeuristic == null) {
                 worstHeuristic = heuristicItem;
-            } else if (isHeuristicWorseThan(heuristicItem, worstHeuristic)) {
+            } else if (heuristicItem.compareTo(worstHeuristic) < 0) { // worstHeuristic is better than heuristicItem, so heuristicItem is worse than worstHeuristic
                 worstHeuristic = heuristicItem;
             }
         }
@@ -129,28 +112,48 @@ public class HugoAiAdvancedEngine extends THugoAIEngine {
     }
 
 
-    private HeuristicData generateHeuristicData(GameState gameState, int myPlayerKey) {
-        int allCellCount = gameState.getCellCount();
-        int emptyCellCount = gameState.getEmptyCellCount();
-        double occupiedCellCount = allCellCount - emptyCellCount;
-        int playerCount = gameState.getPlayerCount();
-        double myOccupiedCellCount = gameState.getOccupiedCellsCountOfPlayer(myPlayerKey);
-        //System.out.println("myOccupiedCellCount[" + myOccupiedCellCount + "] / occupiedCellCount[" + occupiedCellCount + "]");
-
-        double occupancyShare = myOccupiedCellCount / occupiedCellCount;
-        return new HeuristicData(occupancyShare);
+    private HugoHeuristicEvaluation generateHeuristicEvaluationObject(GameState gameState, int myPlayerKey) {
+        IHeuristicEvaluation evaluation = heuristicEvaluator.evaluate(gameState, myPlayerKey);
+        if (evaluation instanceof HugoHeuristicEvaluation) {
+            return (HugoHeuristicEvaluation) evaluation;
+        }
+        throw new RuntimeException("Wrong class cast type");
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    ///// [Inner Classes] /////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////
+//    private HugoHeuristicEvaluation generateHeuristicEvaluationObject(GameState gameState, int myPlayerKey) {
+//        int allCellCount = gameState.getCellCount();
+//        int emptyCellCount = gameState.getEmptyCellCount();
+//        double occupiedCellCount = allCellCount - emptyCellCount;
+//        int playerCount = gameState.getPlayerCount();
+//        double myOccupiedCellCount = gameState.getOccupiedCellsCountOfPlayer(myPlayerKey);
+//        //System.out.println("myOccupiedCellCount[" + myOccupiedCellCount + "] / occupiedCellCount[" + occupiedCellCount + "]");
+//
+//        double occupancyShare = myOccupiedCellCount / occupiedCellCount;
+//        return new HugoHeuristicEvaluation(occupancyShare);
+//    }
+
+
+    @Override
+    public void registerHeuristicEvaluator(IHeuristicEvaluator evaluator) {
+//        if (!(evaluator instanceof HugoFirstHeuristicEvaluator)) {
+//            throw new RuntimeException("Wrong heuristic evaluator!");
+//        }
+//
+//        this.heuristicEvaluator = (HugoFirstHeuristicEvaluator) evaluator;
+        this.heuristicEvaluator = evaluator;
+    }
+
+
+    /// ////////////////////////////////////////////////////////////////////////////////////////
+    /// // Inner Classes /////////////////////////////////////////////////////////////////////
+    /// ////////////////////////////////////////////////////////////////////////////////////////
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     private static class BranchData {
         Integer advisedStepKey;
-        HeuristicData heuristicValue;
+        HugoHeuristicEvaluation hugoHeuristicEvaluation;
     }
 
 }

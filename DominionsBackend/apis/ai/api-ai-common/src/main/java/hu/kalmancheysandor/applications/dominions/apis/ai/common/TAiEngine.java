@@ -141,9 +141,6 @@ public abstract class TAiEngine implements IAiEngine {
         return cellKeysOfAttackZone.contains(observedCellKey);
     }
 
-
-
-
     protected static int getPlayerReserveSize(GameState gameState, int playerKey) {
         return gameState.getOpponent(playerKey).getReserveSize();
     }

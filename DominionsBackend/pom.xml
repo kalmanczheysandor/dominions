@@ -29,6 +29,7 @@
         <module>apis/ai/api-ai-otto</module>
         <module>apis/ai/api-ai-liz</module>
         <module>apis/ai/api-ai-neural</module>
+        <module>apis/ai/api-ai-heuristic</module>
         <module>apis/ai/api-ai-egon</module>
         <module>apis/ai/api-ai-hugo</module>
         <module>apis/ai/api-ai-helga</module>
