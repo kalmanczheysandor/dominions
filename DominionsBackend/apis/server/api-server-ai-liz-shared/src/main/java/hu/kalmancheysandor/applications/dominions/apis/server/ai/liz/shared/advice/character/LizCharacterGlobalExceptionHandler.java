@@ -17,7 +17,7 @@ public class LizCharacterGlobalExceptionHandler {
 
     @ExceptionHandler(LizCharacterNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleCharacterNotFound(LizCharacterNotFoundException ex) {
+    public GeneralFailureResponse handle(LizCharacterNotFoundException ex) {
 
         log.error("LizCharacter not found: {}", ex.getMessage(), ex);
 
@@ -30,11 +30,9 @@ public class LizCharacterGlobalExceptionHandler {
         return response;
     }
 
-
-
     @ExceptionHandler(LizCharacterNotFoundByUuidException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleCharacterNotFoundByUuid(LizCharacterNotFoundByUuidException ex) {
+    public GeneralFailureResponse handle(LizCharacterNotFoundByUuidException ex) {
 
         log.error("LizCharacter not found by UUID: {}", ex.getUuid(), ex);
 
@@ -48,11 +46,9 @@ public class LizCharacterGlobalExceptionHandler {
         return response;
     }
 
-
-
     @ExceptionHandler(LizCharacterNotFoundByCodeException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleCharacterNotFoundByCode(LizCharacterNotFoundByCodeException ex) {
+    public GeneralFailureResponse handle(LizCharacterNotFoundByCodeException ex) {
 
         log.error("LizCharacter not found by code: {}", ex.getCode(), ex);
 
@@ -66,13 +62,9 @@ public class LizCharacterGlobalExceptionHandler {
         return response;
     }
 
-
-
-
-
     @ExceptionHandler(LizCharacterAssociationRestrictedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleCharacterAssociationRestricted(LizCharacterAssociationRestrictedException ex) {
+    public GeneralFailureResponse handle(LizCharacterAssociationRestrictedException ex) {
 
         log.warn("LizCharacter association is restricted. Id: {}. Title: {}", ex.getId(), ex.getTitle(), ex);
 
@@ -88,7 +80,7 @@ public class LizCharacterGlobalExceptionHandler {
 
     @ExceptionHandler(LizCharacterReferencedElsewhereException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleCharacterReferencedElsewhere(LizCharacterReferencedElsewhereException ex) {
+    public GeneralFailureResponse handle(LizCharacterReferencedElsewhereException ex) {
 
         log.warn("LizCharacter with id '{}' is still referenced. Name: {}", ex.getId(), ex.getName(), ex);
 
@@ -104,7 +96,7 @@ public class LizCharacterGlobalExceptionHandler {
 
     @ExceptionHandler(LizCharacterNameIsReservedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleReservedCharacterName(LizCharacterNameIsReservedException ex) {
+    public GeneralFailureResponse handle(LizCharacterNameIsReservedException ex) {
 
         log.warn("LizCharacter name is reserved: {}", ex.getName(), ex);
 
@@ -118,10 +110,9 @@ public class LizCharacterGlobalExceptionHandler {
         return response;
     }
 
-
     @ExceptionHandler(LizCharacterCodeIsReservedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleCharacterCodeIsReserved(LizCharacterCodeIsReservedException ex) {
+    public GeneralFailureResponse handle(LizCharacterCodeIsReservedException ex) {
 
         log.warn("LizCharacter code is reserved: {}", ex.getCode(), ex);
 
@@ -134,11 +125,5 @@ public class LizCharacterGlobalExceptionHandler {
 
         return response;
     }
-
-
-
-
-
-
 
 }
