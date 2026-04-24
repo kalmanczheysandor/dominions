@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
+        "hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.advice",
         "hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation"
 })
 @EnableAsync

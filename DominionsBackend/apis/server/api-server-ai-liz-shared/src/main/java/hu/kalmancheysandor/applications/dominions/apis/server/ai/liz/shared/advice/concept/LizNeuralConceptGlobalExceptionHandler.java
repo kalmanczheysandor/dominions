@@ -1,8 +1,7 @@
-package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.exceptionhandling.entity.concept;
+package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.advice.concept;
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.*;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.variant.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.failure.GeneralFailureResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -18,87 +17,81 @@ public class LizNeuralConceptGlobalExceptionHandler {
 
     @ExceptionHandler(LizNeuralConceptNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handle(LizNeuralConceptNotFoundException exception) {
-        // Logging
-        log.error("LizNeuralConcept not found: {}", exception.getMessage());
+    public GeneralFailureResponse handle(LizNeuralConceptNotFoundException ex) {
 
-        // Generate response
-        // Response
+        log.error("LizNeuralConcept not found: {}", ex.getMessage(), ex);
+
+        // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
-                exception.getClass().getSimpleName(),
-                exception.getMessage()
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
         );
         return response;
     }
 
     @ExceptionHandler(LizNeuralConceptNotFoundByUuidException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handle(LizNeuralConceptNotFoundByUuidException exception) {
-        // Logging
-        log.error("LizNeuralConcept not found by UUID: {}", exception.getUuid(), exception);
+    public GeneralFailureResponse handle(LizNeuralConceptNotFoundByUuidException ex) {
 
-        // Generate response
-        // Response
+        log.error("LizNeuralConcept not found by UUID: {}", ex.getUuid(), ex);
+
+        // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
-                exception.getClass().getSimpleName(),
-                exception.getMessage()
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
         );
-        response.addParameter("uuid", exception.getUuid());
+        response.addParameter("uuid", ex.getUuid());
 
         return response;
     }
 
     @ExceptionHandler(LizNeuralConceptAssociationRestrictedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handle(LizNeuralConceptAssociationRestrictedException exception) {
-        // Logging
-        log.warn("LizNeuralConcept association is restricted. LizNeuralConcept id: {}. LizNeuralConcept title: {}", exception.getId(), exception.getTitle());
+    public GeneralFailureResponse handle(LizNeuralConceptAssociationRestrictedException ex) {
 
-        // Generate response
-        // Response
+        log.warn("LizNeuralConcept association is restricted. Id: {}. Title: {}", ex.getId(), ex.getTitle(), ex);
+
+        // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
-                exception.getClass().getSimpleName(),
-                exception.getMessage()
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
         );
-        response.addParameter("name", exception.getTitle());
+        response.addParameter("name", ex.getTitle());
 
         return response;
     }
 
     @ExceptionHandler(LizNeuralConceptReferencedElsewhereException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handle(LizNeuralConceptReferencedElsewhereException exception) {
-        // Logging
-        log.warn("LizNeuralConcept with '{}' id is still referenced with. LizNeuralConcept name: {}.", exception.getId(), exception.getName());
+    public GeneralFailureResponse handle(LizNeuralConceptReferencedElsewhereException ex) {
 
-        // Generate response
-        // Response
+        log.warn("LizNeuralConcept with id '{}' is still referenced. Name: {}", ex.getId(), ex.getName(), ex);
+
+        // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
-                exception.getClass().getSimpleName(),
-                exception.getMessage()
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
         );
-        response.addParameter("name", exception.getName());
+        response.addParameter("name", ex.getName());
 
         return response;
     }
 
     @ExceptionHandler(LizNeuralConceptNameIsReservedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handle(LizNeuralConceptNameIsReservedException exception) {
-        // Logging
-        log.warn("LizNeuralConcept name is reserved: {}", exception.getName());
+    public GeneralFailureResponse handle(LizNeuralConceptNameIsReservedException ex) {
 
-        // Generate response
-        // Response
+        log.warn("LizNeuralConcept name is reserved: {}", ex.getName(), ex);
+
+        // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
-                exception.getClass().getSimpleName(),
-                exception.getMessage()
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
         );
-        response.addParameter("name", exception.getName());
+        response.addParameter("name", ex.getName());
 
         return response;
     }
-
 
     @ExceptionHandler(LizNeuralConceptHistoryPlayerNotFoundByUuidException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -134,7 +127,6 @@ public class LizNeuralConceptGlobalExceptionHandler {
         return response;
     }
 
-
     @ExceptionHandler(LizNeuralConceptDirectoryDeletionFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public GeneralFailureResponse handle(LizNeuralConceptDirectoryDeletionFailedException exception) {
@@ -169,4 +161,40 @@ public class LizNeuralConceptGlobalExceptionHandler {
         response.addParameter("id", exception.getId());
         return response;
     }
+
+
+
+
+
+
+    @ExceptionHandler(LizNeuralConceptNoExecutionExistsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public GeneralFailureResponse handle(LizNeuralConceptNoExecutionExistsException ex) {
+
+        log.error("No execution exists for LizNeuralConcept", ex);
+
+        // Generate output
+        GeneralFailureResponse response = new GeneralFailureResponse(
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
+        );
+
+        return response;
+    }
+
+    @ExceptionHandler(LizNeuralConceptNoFinishedExecutionExistsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public GeneralFailureResponse handle(LizNeuralConceptNoFinishedExecutionExistsException ex) {
+
+        log.error("No finished execution exists for LizNeuralConcept", ex);
+
+        // Generate output
+        GeneralFailureResponse response = new GeneralFailureResponse(
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
+        );
+
+        return response;
+    }
+
 }
