@@ -1,7 +1,6 @@
-package hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.excepttionhandler.variant;
+package hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.advice.variant;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.variant.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.variant.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.failure.GeneralFailureResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ public class HugoVariantGlobalExceptionHandler {
 
     @ExceptionHandler(HugoVariantNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleVariantNotFound(HugoVariantNotFoundException ex) {
+    public GeneralFailureResponse handle(HugoVariantNotFoundException ex) {
 
         log.error("HugoVariant not found: {}", ex.getMessage(), ex);
 
@@ -31,11 +30,9 @@ public class HugoVariantGlobalExceptionHandler {
         return response;
     }
 
-
-
     @ExceptionHandler(HugoVariantNotFoundByUuidException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleVariantNotFoundByUuid(HugoVariantNotFoundByUuidException ex) {
+    public GeneralFailureResponse handle(HugoVariantNotFoundByUuidException ex) {
 
         log.error("HugoVariant not found by UUID: {}", ex.getUuid(), ex);
 
@@ -51,7 +48,7 @@ public class HugoVariantGlobalExceptionHandler {
 
     @ExceptionHandler(HugoVariantAssociationRestrictedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleVariantAssociationRestricted(HugoVariantAssociationRestrictedException ex) {
+    public GeneralFailureResponse handle(HugoVariantAssociationRestrictedException ex) {
 
         log.warn("HugoVariant association is restricted. Id: {}. Title: {}", ex.getId(), ex.getTitle(), ex);
 
@@ -67,7 +64,7 @@ public class HugoVariantGlobalExceptionHandler {
 
     @ExceptionHandler(HugoVariantReferencedElsewhereException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleVariantReferencedElsewhere(HugoVariantReferencedElsewhereException ex) {
+    public GeneralFailureResponse handle(HugoVariantReferencedElsewhereException ex) {
 
         log.warn("HugoVariant with id '{}' is still referenced. Name: {}", ex.getId(), ex.getName(), ex);
 
@@ -83,7 +80,7 @@ public class HugoVariantGlobalExceptionHandler {
 
     @ExceptionHandler(HugoVariantNameIsReservedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleReservedVariantName(HugoVariantNameIsReservedException ex) {
+    public GeneralFailureResponse handle(HugoVariantNameIsReservedException ex) {
 
         log.warn("HugoVariant name is reserved: {}", ex.getName(), ex);
 
@@ -96,10 +93,5 @@ public class HugoVariantGlobalExceptionHandler {
 
         return response;
     }
-
-
-
-
-
 
 }

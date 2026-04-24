@@ -1,8 +1,8 @@
-package hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.excepttionhandler.heurisitc;
+package hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.advice.character;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.heuristic.*;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.heuristic.evaluator.HugoUnexpectedHeuristicEvaluatorTypeCodeException;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.character.*;
+
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.failure.GeneralFailureResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(1)
 @Slf4j
 @RestControllerAdvice
-public class HugoHeuristicGlobalExceptionHandler {
+public class HugoCharacterGlobalExceptionHandler {
 
-    @ExceptionHandler(HugoHeuristicNotFoundException.class)
+    @ExceptionHandler(HugoCharacterNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleHeuristicNotFound(HugoHeuristicNotFoundException ex) {
+    public GeneralFailureResponse handle(HugoCharacterNotFoundException ex) {
 
-        log.error("HugoHeuristic not found: {}", ex.getMessage(), ex);
+        log.error("HugoCharacter not found: {}", ex.getMessage(), ex);
 
         // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
@@ -31,13 +31,11 @@ public class HugoHeuristicGlobalExceptionHandler {
         return response;
     }
 
-
-
-    @ExceptionHandler(HugoHeuristicNotFoundByUuidException.class)
+    @ExceptionHandler(HugoCharacterNotFoundByUuidException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleHeuristicNotFoundByUuid(HugoHeuristicNotFoundByUuidException ex) {
+    public GeneralFailureResponse handle(HugoCharacterNotFoundByUuidException ex) {
 
-        log.error("HugoHeuristic not found by UUID: {}", ex.getUuid(), ex);
+        log.error("HugoCharacter not found by UUID: {}", ex.getUuid(), ex);
 
         // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
@@ -49,13 +47,11 @@ public class HugoHeuristicGlobalExceptionHandler {
         return response;
     }
 
-
-
-    @ExceptionHandler(HugoHeuristicNotFoundByCodeException.class)
+    @ExceptionHandler(HugoCharacterNotFoundByCodeException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralFailureResponse handleHeuristicNotFoundByCode(HugoHeuristicNotFoundByCodeException ex) {
+    public GeneralFailureResponse handle(HugoCharacterNotFoundByCodeException ex) {
 
-        log.error("HugoHeuristic not found by code: {}", ex.getCode(), ex);
+        log.error("HugoCharacter not found by code: {}", ex.getCode(), ex);
 
         // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
@@ -67,14 +63,11 @@ public class HugoHeuristicGlobalExceptionHandler {
         return response;
     }
 
-
-
-
-    @ExceptionHandler(HugoHeuristicAssociationRestrictedException.class)
+    @ExceptionHandler(HugoCharacterAssociationRestrictedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleHeuristicAssociationRestricted(HugoHeuristicAssociationRestrictedException ex) {
+    public GeneralFailureResponse handle(HugoCharacterAssociationRestrictedException ex) {
 
-        log.warn("HugoHeuristic association is restricted. Id: {}. Title: {}", ex.getId(), ex.getTitle(), ex);
+        log.warn("HugoCharacter association is restricted. Id: {}. Title: {}", ex.getId(), ex.getTitle(), ex);
 
         // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
@@ -86,28 +79,11 @@ public class HugoHeuristicGlobalExceptionHandler {
         return response;
     }
 
-    @ExceptionHandler(HugoHeuristicReferencedElsewhereException.class)
+    @ExceptionHandler(HugoCharacterReferencedElsewhereException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleHeuristicReferencedElsewhere(HugoHeuristicReferencedElsewhereException ex) {
+    public GeneralFailureResponse handle(HugoCharacterReferencedElsewhereException ex) {
 
-        log.warn("HugoHeuristic with id '{}' is still referenced. Name: {}", ex.getId(), ex.getName(), ex);
-
-        // Generate output
-        GeneralFailureResponse response = new GeneralFailureResponse(
-                ex.getClass().getSimpleName(),
-                ex.getMessage()
-        );
-        response.addParameter("id", ex.getId());
-        response.addParameter("name", ex.getName());
-
-        return response;
-    }
-
-    @ExceptionHandler(HugoHeuristicNameIsReservedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralFailureResponse handleReservedHeuristicName(HugoHeuristicNameIsReservedException ex) {
-
-        log.warn("HugoHeuristic name is reserved: {}", ex.getName(), ex);
+        log.warn("HugoCharacter with id '{}' is still referenced. Name: {}", ex.getId(), ex.getName(), ex);
 
         // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
@@ -119,24 +95,36 @@ public class HugoHeuristicGlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler(HugoCharacterNameIsReservedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralFailureResponse handle(HugoCharacterNameIsReservedException ex) {
 
+        log.warn("HugoCharacter name is reserved: {}", ex.getName(), ex);
 
-
-    @ExceptionHandler(HugoUnexpectedHeuristicEvaluatorTypeCodeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public GeneralFailureResponse handleUnexpectedHeuristicType(HugoUnexpectedHeuristicEvaluatorTypeCodeException ex) {
-
-        log.warn("Unexpected HugoHeuristic typeCode: {}", ex.getTypeCode(), ex);
-
+        // Generate output
         GeneralFailureResponse response = new GeneralFailureResponse(
                 ex.getClass().getSimpleName(),
                 ex.getMessage()
         );
-
-        response.addParameter("typeCode", ex.getTypeCode());
+        response.addParameter("name", ex.getName());
 
         return response;
     }
 
+    @ExceptionHandler(HugoCharacterCodeIsReservedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralFailureResponse handle(HugoCharacterCodeIsReservedException ex) {
+
+        log.warn("HugoCharacter code is reserved: {}", ex.getCode(), ex);
+
+        // Generate output
+        GeneralFailureResponse response = new GeneralFailureResponse(
+                ex.getClass().getSimpleName(),
+                ex.getMessage()
+        );
+        response.addParameter("code", ex.getCode());
+
+        return response;
+    }
 
 }
