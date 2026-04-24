@@ -33,7 +33,6 @@ class TService {
                     throw new GeneralFailureException(data.code, 'The identifier "' + data.parameters.identifier + '" is already in use!');
                 }
 
-
                 // Admin-Profile
                 if (data.code == 'AdminProfileNotFoundException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the settings record!');
@@ -120,6 +119,8 @@ class TService {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the character record!');
                 } else if (data.code == 'HugoCharacterNotFoundByUuidException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'HugoCharacterNotFoundByCodeException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by code:' + data.parameters.cdoe);
                 } else if (data.code == 'HugoCharacterAssociationRestrictedException') {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record association is restricted!');
                 } else if (data.code == 'HugoCharacterReferencedElsewhereException') {
@@ -130,6 +131,7 @@ class TService {
                     throw new GeneralFailureException(data.code, 'The code "' + data.parameters.code + '" is already in use!');
                 }
 
+
                 // HugoVariant
                 if (data.code == 'HugoVariantNotFoundException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the variant record!');
@@ -139,18 +141,26 @@ class TService {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record association is restricted!');
                 } else if (data.code == 'HugoVariantReferencedElsewhereException') {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record is still referenced elsewhere!');
-                } else if (data.code == 'HugoVariantIsNotAChildOfThisParentException') {
-                    throw new GeneralFailureException(data.code, 'The variant record is not a child record of referenced parent!');
-                } else if (data.code == 'HugoVariantNameIsReservedException') {
+                }  else if (data.code == 'HugoVariantNameIsReservedException') {
                     throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
                 }
 
 
                 // HugoHeuristic
-                if (data.code == 'HugoHeuristicNotFoundByCodeException.java') {
+                if (data.code == 'HugoHeuristicNotFoundException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record!');
-                } else if (data.code == 'HugoHeuristicNotFoundByUuidException.java') {
+                } else if (data.code == 'HugoHeuristicNotFoundByUuidException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'HugoHeuristicNotFoundByCodeException.java') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record by code:' + data.parameters.uuid);
+                } else if (data.code == 'HugoHeuristicAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" heuristic record association is restricted!');
+                } else if (data.code == 'HugoHeuristicReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" heuristic record is still referenced elsewhere!');
+                }  else if (data.code == 'HugoHeuristicNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                } else if (data.code == 'HugoUnexpectedHeuristicEvaluatorTypeCodeException.java') {
+                    throw new GeneralFailureException(data.code, 'Unexpected heuristic typeCode:' + data.parameters.typeCode);
                 }
 
                 // LizCharacter
@@ -158,6 +168,8 @@ class TService {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the character record!');
                 } else if (data.code == 'LizCharacterNotFoundByUuidException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by uuid:' + data.parameters.uuid);
+                }else if (data.code == 'LizCharacterNotFoundByCodeException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by code:' + data.parameters.code);
                 } else if (data.code == 'LizCharacterAssociationRestrictedException') {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record association is restricted!');
                 } else if (data.code == 'LizCharacterReferencedElsewhereException') {
@@ -177,8 +189,6 @@ class TService {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record association is restricted!');
                 } else if (data.code == 'LizVariantReferencedElsewhereException') {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record is still referenced elsewhere!');
-                } else if (data.code == 'LizVariantIsNotAChildOfThisParentException') {
-                    throw new GeneralFailureException(data.code, 'The variant record is not a child record of referenced parent!');
                 } else if (data.code == 'LizVariantNameIsReservedException') {
                     throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
                 }
@@ -193,35 +203,18 @@ class TService {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" concept record association is restricted!');
                 } else if (data.code == 'LizNeuralConceptReferencedElsewhereException') {
                     throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" concept record is still referenced elsewhere!');
-                } else if (data.code == 'LizNeuralConceptIsNotAChildOfThisParentException') {
-                    throw new GeneralFailureException(data.code, 'The concept record is not a child record of referenced parent!');
                 } else if (data.code == 'LizNeuralConceptNameIsReservedException') {
                     throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
                 } else if (data.code == 'LizNeuralConceptHistoryPlayerNotFoundByUuidException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the history-player for concept record by uuid:' + data.parameters.uuid);
                 } else if (data.code == 'LizNeuralConceptHistoryScenarioNotFoundByUuidException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t find the history-scenario for concept record by uuid:' + data.parameters.uuid);
-                }else if (data.code == 'LizNeuralConceptDirectoryDeletionFailedException') {
+                } else if (data.code == 'LizNeuralConceptDirectoryDeletionFailedException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t delete file structure of concept');
-                }else if (data.code == 'LizNeuralConceptDeletionBlockedByActiveExecutionException') {
+                } else if (data.code == 'LizNeuralConceptDeletionBlockedByActiveExecutionException') {
                     throw new GeneralFailureException(data.code, 'Couldn\'t delete concept while there is any unfinished execution!');
                 }
 
-
-                // LizVariantTraining
-                if (data.code == 'LizVariantTrainingNotFoundException') {
-                    throw new GeneralFailureException(data.code, 'Couldn\'t find the liz-variant-training record!');
-                } else if (data.code == 'LizVariantTrainingNotFoundByUuidException') {
-                    throw new GeneralFailureException(data.code, 'Couldn\'t find the liz-variant-training record by uuid:' + data.parameters.uuid);
-                } else if (data.code == 'LizVariantTrainingAssociationRestrictedException') {
-                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.title + '" liz-variant-training record association is restricted!');
-                } else if (data.code == 'LizVariantTrainingReferencedElsewhereException') {
-                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.title + '" liz-variant-training record is still referenced elsewhere!');
-                } else if (data.code == 'LizVariantTrainingIsNotAChildOfThisParentException') {
-                    throw new GeneralFailureException(data.code, 'The  liz-variant-training record is not a child record of referenced parent!');
-                } else if (data.code == 'LizVariantTrainingTitleIsReservedException') {
-                    throw new GeneralFailureException(data.code, 'The title "' + data.parameters.title + '" is already in use!');
-                }
 
                 throw new GeneralErrorException('??[GeneralFailureResponse]:' + data.code + '??');
 
