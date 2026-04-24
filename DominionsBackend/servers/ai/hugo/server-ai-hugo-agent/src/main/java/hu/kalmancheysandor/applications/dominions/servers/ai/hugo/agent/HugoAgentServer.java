@@ -1,8 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.agent;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.common.IAiEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.hugo.HugoAiAdvancedEngine;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +15,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
-        "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.excepttionhandler",
+        "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.advice",
         "hu.kalmancheysandor.applications.dominions.servers.ai.hugo"
 })
 @EnableAsync

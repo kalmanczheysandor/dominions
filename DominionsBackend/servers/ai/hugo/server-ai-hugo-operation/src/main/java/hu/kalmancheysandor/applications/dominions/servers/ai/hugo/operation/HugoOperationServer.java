@@ -20,7 +20,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
-        "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.excepttionhandler",
+        "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.advice",
         "hu.kalmancheysandor.applications.dominions.servers.ai.hugo.operation"
 })
 @EnableAsync
