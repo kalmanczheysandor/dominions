@@ -3,6 +3,9 @@ package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.rep
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTraining;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +21,15 @@ public interface LizNeuralTrainingRepository extends JpaRepository<LizNeuralTrai
 //    @Modifying
 //    @Query("DELETE FROM LizNeuralTraining t WHERE t.scenarioId <= :scenarioId")
 //    void deleteAllWhereScenarioId(@Param("scenarioId") int scenarioId);
+
+
+    @Modifying
+    @Query("""
+        DELETE
+        FROM LizNeuralTraining t
+        WHERE t.conceptId=:conceptId
+    """)
+    void deleteAllWhereConceptId(
+            @Param("conceptId") int conceptId
+    );
 }

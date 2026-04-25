@@ -20,16 +20,16 @@ import hu.kalmancheysandor.applications.dominions.apis.general.exceptions.Illega
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.queue.AiHistoryQueueItem;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.egon.EgonAiAgentServerProxy;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.helga.HelgaAiAgentServerProxy;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.hugo.HugoAiAgentServerProxy;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.liz.LizAgentServerProxy;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.otto.OttoAiAgenServerProxy;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.proxy.HugoAgentServerProxy;
+
+//import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.hugo.HugoAgentServerProxy;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy.LizAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.game.GameScenario;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.history.History;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotFoundByUuidException;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotPublishedException;
 
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameScenarioRepository;
@@ -61,7 +61,6 @@ import java.util.*;
 
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MimeType;
 
 @Slf4j
 @Service
@@ -86,20 +85,20 @@ public class GameService {
 //    @Autowired
 //    private PlayOrchestrator playOrchestrator;
 
-    @Autowired
-    private OttoAiAgenServerProxy ottoAiAgenServerProxy;
-
-    @Autowired
-    private EgonAiAgentServerProxy egonAiServerProxy;
+//    @Autowired
+//    private OttoAiAgenServerProxy ottoAiAgenServerProxy;
+//
+//    @Autowired
+//    private EgonAiAgentServerProxy egonAiServerProxy;
 
     @Autowired
     private LizAgentServerProxy lizAgentServerProxy;
 
     @Autowired
-    private HugoAiAgentServerProxy hugoAiAgentServerProxy;
+    private HugoAgentServerProxy hugoAgentServerProxy;
 
-    @Autowired
-    private HelgaAiAgentServerProxy helgaAiAgentServerProxy;
+//    @Autowired
+//    private HelgaAiAgentServerProxy helgaAiAgentServerProxy;
 
     @Autowired
     private SiteUserRepository siteUserRepository;
@@ -227,8 +226,6 @@ public class GameService {
 
         return response;
     }
-
-
 
 
     public GamePlayStateResponse stateOfGamePlay(@NotNull GamePlayStateRequest request) {
@@ -423,6 +420,13 @@ public class GameService {
         // Access entity via repository
         GameSession gameSessionToModify = gameSessionRepository.findByUuid(gameSessionUuid);
 
+        // Access entity via repository
+        GameScenario gameScenario = gameScenarioRepository.findById(gameSessionToModify.getScenarioId());
+        if (gameScenario == null) {
+            throw new GameScenarioNotFoundException(gameSessionToModify.getScenarioId());
+        }
+
+
         // Convert json fields to object
         PlayState playStateObj = convertJsonToPlayStateObj(gameSessionToModify.getPlayState());
         GameMap gameMapObj = convertJsonToGameMapObj(gameSessionToModify.getGameMap());
@@ -432,7 +436,13 @@ public class GameService {
 
         // Orchestrator: Collecting all Ai intention and store
         if (playOrchestrator.getAiPlayerMaxSlotSize() > 0 && playOrchestrator.aiMissingIntentionCount() > 0) {
-            Map<Integer, GameAction> aiPlayerIntentions = communicateToAiPlayers(playOrchestrator.getAllAiPlayers(), playOrchestrator.getPlayState(), gameSessionToModify.getScenarioId());
+            Map<Integer, GameAction> aiPlayerIntentions = communicateToAiPlayers(
+                    playOrchestrator.getAllAiPlayers(),
+                    playOrchestrator.getPlayState(),
+                    gameScenario.getUuid(),
+                    gameScenario.getTitle(),
+                    gameSessionToModify.getUuid()
+            );
             playOrchestrator.saveMultipleIntention(aiPlayerIntentions);
         }
 
@@ -467,22 +477,16 @@ public class GameService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void saveCurrentIntentionsIntoHistory(GameSession gameSession, PlayState playState) {
+        // Init
+        GameScenario gameScenario = gameScenarioRepository.findById(gameSession.getScenarioId());
 
-        HistoryQueueItem historyQueueItem = new HistoryQueueItem();
-        historyQueueItem.setPlayState(playState);
-        streamBridge.send("queueHistory-out-0", historyQueueItem, MimeType.valueOf("application/json"));
-
-        System.out.println("STREAM_A1");
-
-
-        AiHistoryQueueItem aiHistoryQueueItem = new AiHistoryQueueItem();
-        aiHistoryQueueItem.setPlayState(playState);
-        aiHistoryQueueItem.setScenarioId(gameSession.getScenarioId());
-        aiHistoryQueueItem.setSessionUuid(gameSession.getUuid());
-        streamBridge.send("queueHistoryBroadcast-out-0", aiHistoryQueueItem);
-        System.out.println("STREAM_Broadcast");
-
-
+        // Put items into queue
+        streamBridge.send("queueHistoryBroadcast-out-0", AiHistoryQueueItem.builder()
+                .playState(playState)
+                .scenarioUuid(gameScenario.getUuid())
+                .sessionUuid(gameSession.getUuid())
+                .build()
+        );
     }
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -633,30 +637,21 @@ public class GameService {
     /// Request and Response generator methods ///////////////////////////////////////////////////////////////
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private AiDecisionRequest generateAiRequest(int yourPlayerKey, String yourUserUuid, PlayState playStateObj, int scenarioId) {
+    private AiDecisionRequest generateAiRequest(int yourPlayerKey, String yourUserUuid,String yourUserName, String yourCharacterCode, PlayState playStateObj, String scenarioUuid,String scenarioTitle, String sessionUuid) {
 
         GameState gameState = playStateObj.getGameState();
 
-//        // Collect user uuids
-//        Set<String> userUuids = new HashSet<>();
-//        for (PlayerData playerData : playStateObj.getPlayers().values()) {
-//            userUuids.add(playerData.getUserUuid());
-//        }
-
-
-        Map<Integer, AiDecisionRequest.Player> playersList = new HashMap<>();
-        AiDecisionRequest.Player aPlayer;
+        AiDecisionRequest.Player aiDecisionplayer;
+        Map<Integer, AiDecisionRequest.Player> decisionPlayersList = new HashMap<>();
         for (PlayerData playerData : playStateObj.getPlayers().values()) {
 
-            // Initialisation
-            aPlayer = new AiDecisionRequest.Player();
-            aPlayer.setPlayerKey(playerData.getIndex());
-            aPlayer.setPlayerType(playerData.getPlayerType());
-            aPlayer.setName(playerData.getName());
-            aPlayer.setUserUuid(playerData.getUserUuid());
-
             // Add
-            playersList.put(Integer.valueOf(aPlayer.getPlayerKey()), aPlayer);
+            decisionPlayersList.put(playerData.getIndex(), AiDecisionRequest.Player.builder()
+                    .playerKey(playerData.getIndex())
+                    .playerType(playerData.getPlayerType())
+                    .name(playerData.getName())
+                    .userUuid(playerData.getUserUuid())
+                    .build());
         }
 
         // Collect reserve size of each player
@@ -669,15 +664,19 @@ public class GameService {
         }
 
         // Generate return object
-        AiDecisionRequest request = new AiDecisionRequest();
-        request.setScenarioId(scenarioId);
-        request.setYourPlayerKey(yourPlayerKey);
-        request.setYourUserUuid(yourUserUuid);
-        request.setYourReserveSize(gameState.getOpponents()[yourPlayerKey].getReserveSize());
-        request.setReserves(reserveSizeList);
-        request.setGameState(gameState);
-        request.setPlayers(playersList);
-        return request;
+        return AiDecisionRequest.builder()
+                .scenarioUuid(scenarioUuid)
+                .scenarioName(scenarioTitle)
+                .sessionUuid(sessionUuid)
+                .playerCharacterCode(yourCharacterCode)
+                .yourPlayerKey(yourPlayerKey)
+                .yourUserUuid(yourUserUuid)
+                .yourUserName(yourUserName)
+                .yourReserveSize(gameState.getOpponents()[yourPlayerKey].getReserveSize())
+                .reserves(reserveSizeList)
+                .gameState(gameState)
+                .enemyPlayers(decisionPlayersList)
+                .build();
     }
 
 
@@ -686,7 +685,7 @@ public class GameService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private Map<Integer, GameAction> communicateToAiPlayers(Map<Integer, PlayerData> players, PlayState playState, int scenarioId) {
+    private Map<Integer, GameAction> communicateToAiPlayers(Map<Integer, PlayerData> players, PlayState playState, String scenarioUuid, String scenarioTitle, String sessionUuid) {
 
         Map<Integer, GameAction> intentions = new HashMap<>();
         for (Map.Entry<Integer, PlayerData> playerEntry : players.entrySet()) {
@@ -698,11 +697,20 @@ public class GameService {
 
             //
             int aiPlayerIndex = playerEntry.getKey();
-            ArtificialPlayer player = (ArtificialPlayer) playerEntry.getValue();
+            ArtificialPlayer aiPlayer = (ArtificialPlayer) playerEntry.getValue();
 
             // Send request
-            AiDecisionRequest aiDecisionRequestObj = generateAiRequest(aiPlayerIndex, player.getUserUuid(), playState, scenarioId);
-            AiDecisionResponse aiDecisionResponseObj = waitingAiResponse(player, aiDecisionRequestObj);
+            AiDecisionResponse aiDecisionResponseObj = waitingAiResponse(aiPlayer, generateAiRequest(
+                            aiPlayerIndex,
+                            aiPlayer.getUserUuid(),
+                            aiPlayer.getName(),
+                            aiPlayer.getCharacterCode(),
+                            playState,
+                            scenarioUuid,
+                            scenarioTitle,
+                    sessionUuid
+                    )
+            );
 
             // Create an Action by Ai response
             Integer targetCellKey = aiDecisionResponseObj.getTargetCellKey();
@@ -730,16 +738,27 @@ public class GameService {
         AiDecisionResponse aiDecisionResponseObj;
 
         // Wait for ai response
-        if (engineType == GameMapEngineType.AI_OTTO) {
-            aiDecisionResponseObj = ottoAiAgenServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_EGON == engineType) {
-            aiDecisionResponseObj = egonAiServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_LIZ == engineType) {
+//        if (engineType == GameMapEngineType.AI_OTTO) {
+//        //    aiDecisionResponseObj = ottoAiAgenServerProxy.generateResponse(aiDecisionRequestObj);
+//        } else if (GameMapEngineType.AI_EGON == engineType) {
+//          //  aiDecisionResponseObj = egonAiServerProxy.generateResponse(aiDecisionRequestObj);
+//        } else if (GameMapEngineType.AI_LIZ == engineType) {
+//            //aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
+//
+//        } else if (GameMapEngineType.AI_HUGO == engineType) {
+//            //aiDecisionResponseObj = hugoAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
+//        } else if (GameMapEngineType.AI_HELGA == engineType) {
+//        //aiDecisionResponseObj = helgaAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
+//        } else {
+//            throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
+//        }
+//
+
+        if (engineType == GameMapEngineType.AI_LIZ) {
             aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_HUGO == engineType) {
-            aiDecisionResponseObj = hugoAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
-        } else if (GameMapEngineType.AI_HELGA == engineType) {
-            aiDecisionResponseObj = helgaAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
+        }
+        else if (engineType == GameMapEngineType.AI_HUGO) {
+            aiDecisionResponseObj = hugoAgentServerProxy.generateResponse(aiDecisionRequestObj);
         } else {
             throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
         }

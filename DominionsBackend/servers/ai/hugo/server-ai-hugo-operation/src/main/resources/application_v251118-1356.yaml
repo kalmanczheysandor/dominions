@@ -1,0 +1,39 @@
+server:
+  port: 15041
+
+
+
+spring:
+  application:
+    name: 'server-ai-liz'
+  config:
+    import: configserver:http://localhost:8888
+
+  cloud:
+    stream:
+      bindings:
+        queueHistoryBroadcast-in-0:
+          destination: history-broadcast-main
+          group: ai-liz-history-queue
+          contentType: application/json
+          consumer:
+            concurrency: 1
+            queueName: ai-liz-history-queue
+      rabbit:
+        bindings:
+          queueHistoryBroadcast-in-0:
+            consumer:
+              exchangeType: fanout
+              acknowledgeMode: AUTO
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: ${global.monitoring.rabbitmq.host}
+                port: ${global.monitoring.rabbitmq.port}
+                username: ${global.monitoring.rabbitmq.username}
+                password: ${global.monitoring.rabbitmq.password}
+                virtual-host: ${global.monitoring.rabbitmq.virtual-host}
+debug: true

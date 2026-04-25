@@ -370,5 +370,15 @@ public interface LizNeuralExecutionRepository extends JpaRepository<LizNeuralExe
 
 
 
+    @Modifying
+    @Query("""
+        DELETE
+        FROM LizNeuralExecution t
+        WHERE t.concept.id=:conceptId
+    """)
+    void deleteAllWhereConceptId(
+            @Param("conceptId") int conceptId
+    );
+
 
 }

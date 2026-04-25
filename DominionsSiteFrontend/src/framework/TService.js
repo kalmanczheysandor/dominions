@@ -70,7 +70,122 @@ class TService {
                 }
 
 
-                // Etc
+                // GameScenario
+                if (data.code == 'GameScenarioNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the game-scenario record!');
+                } else if (data.code == 'GameScenarioNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the game-scenario record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'GameScenarioAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.title + '" game-scenario record association is restricted!');
+                } else if (data.code == 'GameScenarioReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.title + '" game-scenario record is still referenced elsewhere!');
+                } else if (data.code == 'GameScenarioTitleIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The title "' + data.parameters.title + '" is already in use!');
+                }
+
+
+                // HugoCharacter
+                if (data.code == 'HugoCharacterNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record!');
+                } else if (data.code == 'HugoCharacterNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'HugoCharacterNotFoundByCodeException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by code:' + data.parameters.cdoe);
+                } else if (data.code == 'HugoCharacterAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record association is restricted!');
+                } else if (data.code == 'HugoCharacterReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record is still referenced elsewhere!');
+                } else if (data.code == 'HugoCharacterNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                } else if (data.code == 'HugoCharacterCodeIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The code "' + data.parameters.code + '" is already in use!');
+                }
+
+
+                // HugoVariant
+                if (data.code == 'HugoVariantNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the variant record!');
+                } else if (data.code == 'HugoVariantNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the variant record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'HugoVariantAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record association is restricted!');
+                } else if (data.code == 'HugoVariantReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record is still referenced elsewhere!');
+                }  else if (data.code == 'HugoVariantNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                }
+
+
+                // HugoHeuristic
+                if (data.code == 'HugoHeuristicNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record!');
+                } else if (data.code == 'HugoHeuristicNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'HugoHeuristicNotFoundByCodeException.java') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the heuristic record by code:' + data.parameters.uuid);
+                } else if (data.code == 'HugoHeuristicAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" heuristic record association is restricted!');
+                } else if (data.code == 'HugoHeuristicReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" heuristic record is still referenced elsewhere!');
+                }  else if (data.code == 'HugoHeuristicNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                } else if (data.code == 'HugoUnexpectedHeuristicEvaluatorTypeCodeException.java') {
+                    throw new GeneralFailureException(data.code, 'Unexpected heuristic typeCode:' + data.parameters.typeCode);
+                }
+
+                // LizCharacter
+                if (data.code == 'LizCharacterNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record!');
+                } else if (data.code == 'LizCharacterNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by uuid:' + data.parameters.uuid);
+                }else if (data.code == 'LizCharacterNotFoundByCodeException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the character record by code:' + data.parameters.code);
+                } else if (data.code == 'LizCharacterAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record association is restricted!');
+                } else if (data.code == 'LizCharacterReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" character record is still referenced elsewhere!');
+                } else if (data.code == 'LizCharacterNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                } else if (data.code == 'LizCharacterCodeIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The code "' + data.parameters.code + '" is already in use!');
+                }
+
+                // LizVariant
+                if (data.code == 'LizVariantNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the variant record!');
+                } else if (data.code == 'LizVariantNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the variant record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'LizVariantAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record association is restricted!');
+                } else if (data.code == 'LizVariantReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" variant record is still referenced elsewhere!');
+                } else if (data.code == 'LizVariantNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                }
+
+
+                // LizNeuralConcept
+                if (data.code == 'LizNeuralConceptNotFoundException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the concept record!');
+                } else if (data.code == 'LizNeuralConceptNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the concept record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'LizNeuralConceptAssociationRestrictedException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" concept record association is restricted!');
+                } else if (data.code == 'LizNeuralConceptReferencedElsewhereException') {
+                    throw new GeneralFailureException(data.code, 'The "' + data.parameters.name + '" concept record is still referenced elsewhere!');
+                } else if (data.code == 'LizNeuralConceptNameIsReservedException') {
+                    throw new GeneralFailureException(data.code, 'The name "' + data.parameters.name + '" is already in use!');
+                } else if (data.code == 'LizNeuralConceptHistoryPlayerNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the history-player for concept record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'LizNeuralConceptHistoryScenarioNotFoundByUuidException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t find the history-scenario for concept record by uuid:' + data.parameters.uuid);
+                } else if (data.code == 'LizNeuralConceptDirectoryDeletionFailedException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t delete file structure of concept');
+                } else if (data.code == 'LizNeuralConceptDeletionBlockedByActiveExecutionException') {
+                    throw new GeneralFailureException(data.code, 'Couldn\'t delete concept while there is any unfinished execution!');
+                }
+
+
 
 
                 throw new GeneralErrorException('??[GeneralFailureResponse]:' + data.code + '??');

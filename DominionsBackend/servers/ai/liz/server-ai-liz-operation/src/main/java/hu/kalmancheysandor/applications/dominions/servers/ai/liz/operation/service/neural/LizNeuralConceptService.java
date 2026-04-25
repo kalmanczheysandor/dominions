@@ -10,25 +10,18 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.concept.result.option.LizNeuralConceptResultHistoryScenarioOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryPlayer;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryScenario;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralConcept;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralExecution;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingResult;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingSnapshot;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryPlayerRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryScenarioRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.LizNeuralConceptRepository;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.LizNeuralExecutionRepository;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.LizNeuralTrainingResultRepository;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.LizNeuralTrainingSnapshotRepository;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service.TLizService;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDGenerator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +64,12 @@ public class LizNeuralConceptService extends TLizService {
 
     @Autowired
     LizNeuralTrainingSnapshotRepository lizNeuralTrainingSnapshotRepository;
+
+    @Autowired
+    LizNeuralTrainingTaskRepository lizNeuralTrainingTaskRepository;
+
+    @Autowired
+    LizNeuralTrainingRepository lizNeuralTrainingRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -164,7 +163,7 @@ public class LizNeuralConceptService extends TLizService {
         return modelMapper.map(recordModified, LizNeuralConceptUpdateResponse.class);
     }
 
-    public void deleteOneLizPersonnel(@NotBlank String recordUuid) {
+    public void deleteOneLizConcept(@NotBlank String recordUuid) {
 
         // Execution
         try {
@@ -200,12 +199,27 @@ public class LizNeuralConceptService extends TLizService {
             throw new LizNeuralConceptReferencedElsewhereException(recordId, recordToDelete.getName());
         }
 
-        // Delete item from db
+        // check whether an unfinished execution exists
+        if(lizNeuralExecutionRepository.isAnyUnfinished(recordId)) {
+            throw new LizNeuralConceptDeletionBlockedByActiveExecutionException(recordId);
+        }
+
+        // Delete child items of main
+        lizNeuralTrainingSnapshotRepository.deleteAllWhereConceptId(recordId);
+        lizNeuralTrainingResultRepository.deleteAllWhereConceptId(recordId);
+        lizNeuralTrainingTaskRepository.deleteAllWhereConceptId(recordId);
+        lizNeuralTrainingRepository.deleteAllWhereConceptId(recordId);
+        lizNeuralExecutionRepository.deleteAllWhereConceptId(recordId);
+
+        // Delete main item from db
         try {
             lizNeuralConceptRepository.deleteById(recordId);
         } catch (EntityNotFoundException e) {
             throw new LizNeuralConceptNotFoundException(recordId);
         }
+
+        // Delete file structure if exists. It has to be final due to any deleted files and folders are not recoverable.
+        deleteRecursivelyConceptDirectoryIfExists(recordId);
     }
 
 
@@ -419,7 +433,7 @@ public class LizNeuralConceptService extends TLizService {
     /// /////////////////////////////////////////////////////////////////////////////////////////////////
 
     public LizNeuralConceptExecutionStatusResponse executionStatus(String conceptUuid) {
-        System.out.println("executionStatus:conceptUuid"+conceptUuid);
+        System.out.println("executionStatus: conceptUuid:"+conceptUuid);
         // Access entity(s) via repository
         LizNeuralConcept conceptRecord = lizNeuralConceptRepository.findByUuid(conceptUuid);
         if (conceptRecord == null) {
@@ -473,7 +487,7 @@ public class LizNeuralConceptService extends TLizService {
         lizNeuralOrchestrationService.eventExecutionContinue(conceptUuid);
     }
 
-    public void eventExecutionCancel(String conceptUuid) {
-        lizNeuralOrchestrationService.eventExecutionCancel(conceptUuid);
+    public void eventExecutionAbort(String conceptUuid) {
+        lizNeuralOrchestrationService.eventExecutionAbort(conceptUuid);
     }
 }

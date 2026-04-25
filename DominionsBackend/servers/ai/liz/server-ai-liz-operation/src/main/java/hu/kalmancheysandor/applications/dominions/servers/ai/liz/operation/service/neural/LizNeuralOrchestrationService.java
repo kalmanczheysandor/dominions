@@ -1,10 +1,22 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.service.neural;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetworkTrainingConfiguration;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.orchestration.PlayState;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.orchestration.player.PlayerData;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.action.GameAction;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameState;
+import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.exception.GeneralGameStateException;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.queue.AiHistoryQueueItem;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistory;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistorySession;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTraining;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingTask;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.execution.LizNeuralConceptExecutionConflictException;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.execution.LizNeuralConceptExecutionNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.queue.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryPlayer;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryScenario;
@@ -14,15 +26,15 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exce
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.LizNeuralConceptNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.neural.training.LizNeuralTrainingTaskNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryPlayerRepository;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistoryScenarioRepository;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.history.LizHistorySessionRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.LizNeuralConceptRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service.TLizService;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDGenerator;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockTimeoutException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PessimisticLockException;
+import hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.etc.PlayerDecision;
+import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -37,6 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.MimeType;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
@@ -47,6 +60,11 @@ import java.util.stream.Stream;
 @Transactional(isolation = Isolation.SERIALIZABLE)
 public class LizNeuralOrchestrationService extends TLizService {
 
+    @Autowired
+    private LizHistoryRepository lizHistoryRepository;
+
+    @Autowired
+    private LizHistorySessionRepository lizHistorySessionRepository;
     @Autowired
     private LizHistoryPlayerRepository lizHistoryPlayerRepository;
 
@@ -85,6 +103,9 @@ public class LizNeuralOrchestrationService extends TLizService {
 
     @Autowired
     private PlatformTransactionManager transactionManager;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////
     /// EVENT METHODS /////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +162,7 @@ public class LizNeuralOrchestrationService extends TLizService {
 
     @Async
     public void eventExecutionPause(String conceptUuid) {
-
+        System.out.println("EVENT:Pause");
         // Access entity: Toplevel record
         LizNeuralConcept conceptToAccess = accessConceptRecordByUuid(conceptUuid);
 
@@ -164,7 +185,7 @@ public class LizNeuralOrchestrationService extends TLizService {
     }
 
     @Async
-    public void eventExecutionCancel(String conceptUuid) {
+    public void eventExecutionAbort(String conceptUuid) {
         // Access entity: Toplevel record
         LizNeuralConcept conceptToAccess = accessConceptRecordByUuid(conceptUuid);
 
@@ -183,7 +204,7 @@ public class LizNeuralOrchestrationService extends TLizService {
         execution = accessAnExecutionRecordAndLockIt(execution.getId());
 
         //
-        atomicCancelExecution(execution);
+        atomicAbortExecution(execution);
     }
 
     private LizNeuralTrainingTask.TaskResult learn(LizNeuralConcept concept, LizNeuralExecution execution, LizNeuralTrainingTask task) {
@@ -209,9 +230,29 @@ public class LizNeuralOrchestrationService extends TLizService {
         return resultCode;
     }
 
+
+    private void delay(LocalDateTime itemCreatedTime, long waitingTime) {
+        LocalDateTime now = LocalDateTime.now();
+
+        long secondsSinceCreation = Duration.between(itemCreatedTime, now).getSeconds();
+
+        long remainingTime = waitingTime - secondsSinceCreation;
+
+        if (remainingTime > 0) {
+            try {
+                Thread.sleep(remainingTime * 1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
+    }
+
+
     @Transactional(propagation = Propagation.NEVER)
     public void eventTaskProcessingQueueItemReceived(LizNeuralConceptTaskProcessingQueueItem queueItem) {
 
+        System.out.println("QUEUE-ITEM:" + queueItem);
         // Defining block level type/class
         class ExecutionResult {
             LizNeuralConcept concept;
@@ -227,6 +268,22 @@ public class LizNeuralOrchestrationService extends TLizService {
 
         // Step 1
         ExecutionResult executionResult = transactionTemplate.execute(status -> {
+
+            //
+            delay(queueItem.getDateCreated(),10);
+
+            //
+            LizNeuralExecution execution = accessExecutionRecordById(queueItem.getExecutionId());
+            if (execution == null) {
+                throw new LizNeuralConceptExecutionNotFoundException(queueItem.getExecutionId());
+            }
+
+            if(!LizNeuralExecution.ProcessPhase.RUNNING.equals(execution.getProcessPhase())) {
+                System.out.println("Execution is not in running phase, cancel processing");
+                System.out.println("BECAUSE:" + execution.getProcessPhase());
+                return null;
+            }
+
             //
             LizNeuralTrainingTask taskToProcess = lizNeuralTrainingTaskRepository.findByCompositeKey(
                     queueItem.getConceptId(),
@@ -238,18 +295,19 @@ public class LizNeuralOrchestrationService extends TLizService {
                 throw new LizNeuralTrainingTaskNotFoundException();
             }
 
+
             //
             if (!isTaskAllowedToBeProcessed(taskToProcess)) {
-//                throw new RuntimeException("Task not allowed to be processed - in step 1");
                 System.out.println("Task not allowed to be processed - in step 1");
+                System.out.println("BECAUSE:" + taskToProcess.getTaskPhase());
+                System.out.println("TheTask:"+taskToProcess);
                 return null;
             }
 
             // Access entity: Toplevel record
             LizNeuralConcept concept = accessConceptRecordById(taskToProcess.getConceptId());
 
-            //
-            LizNeuralExecution execution = accessExecutionRecordById(taskToProcess.getExecutionId());
+
 
             return new ExecutionResult(concept, execution, taskToProcess);
         });
@@ -321,7 +379,7 @@ public class LizNeuralOrchestrationService extends TLizService {
             throw new RuntimeException("No scenarios found!");
         }
 
-        if(lizHistoryPlayerRepository.countAll()==0){
+        if (lizHistoryPlayerRepository.countAll() == 0) {
             throw new RuntimeException("No player found!");
         }
 
@@ -355,7 +413,7 @@ public class LizNeuralOrchestrationService extends TLizService {
     private void atomicPauseExecution(LizNeuralExecution execution) {
         //
         collectAllRunningTasksAndPauseThem(execution);
-
+        System.out.println("GGGG-atomicPauseExecution");
         //
         execution.setProcessPhase(LizNeuralExecution.ProcessPhase.PAUSED);
         execution.setDateModified(LocalDateTime.now());
@@ -370,10 +428,10 @@ public class LizNeuralOrchestrationService extends TLizService {
         execution.setDateModified(LocalDateTime.now());
     }
 
-    private void atomicCancelExecution(LizNeuralExecution execution) {
+    private void atomicAbortExecution(LizNeuralExecution execution) {
 
         //
-        collectAllUnfinishedTasksAndCancelThem(execution);
+        collectAllUnfinishedTasksAndAbortThem(execution);
 
         //
         LocalDateTime dateNow = LocalDateTime.now();
@@ -636,7 +694,7 @@ public class LizNeuralOrchestrationService extends TLizService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public void collectAllUnfinishedTasksAndCancelThem(LizNeuralExecution execution) {
+    public void collectAllUnfinishedTasksAndAbortThem(LizNeuralExecution execution) {
 
         LocalDateTime dateNow = LocalDateTime.now();
         try (Stream<LizNeuralTrainingTask> stream = lizNeuralTrainingTaskRepository.streamAllTaskInUnfinishedPhasesAtExecutionId(execution.getConcept().getId(), execution.getId())) {
@@ -662,7 +720,6 @@ public class LizNeuralOrchestrationService extends TLizService {
         LocalDateTime dateNow = LocalDateTime.now();
         try (Stream<LizNeuralTrainingTask> stream = lizNeuralTrainingTaskRepository.streamAllTaskInQueuedPhaseAtExecutionId(execution.getConcept().getId(), execution.getId())) {
             stream.forEach(task -> {
-                System.out.println("CCCC:" + task);
                 if (LizNeuralTrainingTask.TaskPhase.QUEUED == task.getTaskPhase()) {
                     System.out.println("collect to: PAUSE");
                     task.setTaskPhase(LizNeuralTrainingTask.TaskPhase.PAUSED);
@@ -683,9 +740,21 @@ public class LizNeuralOrchestrationService extends TLizService {
         try (Stream<LizNeuralTrainingTask> stream = lizNeuralTrainingTaskRepository.streamAllTaskInPausedPhaseAtExecutionId(execution.getConcept().getId(), execution.getId())) {
             stream.forEach(task -> {
                 if (LizNeuralTrainingTask.TaskPhase.PAUSED == task.getTaskPhase()) {
-                    registerATaskInQueue(task);
+                    System.out.println("collect to: RUN");
+
+                    //
+                    if (!isTaskAllowedToBeQueued(task)) {
+                        throw new RuntimeException("Task is not allowed to be queued!");
+                    }
+
+                    //
+                    task.setTaskPhase(LizNeuralTrainingTask.TaskPhase.QUEUED);
+                    task.setTaskResult(LizNeuralTrainingTask.TaskResult.PENDING);
                     task.setDateModified(dateNow);
                     entityManager.flush();
+
+                    //
+                    registerATaskInQueue(task);
                 }
                 entityManager.detach(task);
 
@@ -701,7 +770,17 @@ public class LizNeuralOrchestrationService extends TLizService {
         try (Stream<LizNeuralTrainingTask> stream = lizNeuralTrainingTaskRepository.streamAllTaskInCreatedPhaseAtExecutionId(execution.getConcept().getId(), execution.getId())) {
             stream.forEach(task -> {
                 if (LizNeuralTrainingTask.TaskPhase.CREATED == task.getTaskPhase()) {
+                    //
+                    if (!isTaskAllowedToBeQueued(task)) {
+                        throw new RuntimeException("Task is not allowed to be queued!");
+                    }
+
+                    //
                     registerATaskInQueue(task);
+
+                    //
+                    task.setTaskPhase(LizNeuralTrainingTask.TaskPhase.QUEUED);
+                    task.setTaskResult(LizNeuralTrainingTask.TaskResult.PENDING);
                     task.setDateModified(dateNow);
                     entityManager.flush();
                 }
@@ -787,24 +866,17 @@ public class LizNeuralOrchestrationService extends TLizService {
     private void registerATaskInQueue(LizNeuralTrainingTask task) {
 
         //
-        if (!isTaskAllowedToBeQueued(task)) {
-            throw new RuntimeException("Task is not allowed to be queued!");
-        }
-
-        //
         streamBridge.send("queueExecutionTaskProcessingItemRead-out-0", LizNeuralConceptTaskProcessingQueueItem.builder()
                         .conceptId(task.getConceptId())
                         .executionId(task.getExecutionId())
                         .scenarioId(task.getScenarioId())
                         .playerId(task.getPlayerId())
+                        .dateCreated(LocalDateTime.now())
                         .build(),
                 MimeType.valueOf("application/json")
         );
 
-        //
-        task.setTaskPhase(LizNeuralTrainingTask.TaskPhase.QUEUED);
-        task.setTaskResult(LizNeuralTrainingTask.TaskResult.PENDING);
-        task.setDateModified(LocalDateTime.now());
+
     }
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -846,5 +918,127 @@ public class LizNeuralOrchestrationService extends TLizService {
                 .build();
     }
 
+    public void eventHistoryQueueItemReceived(AiHistoryQueueItem queueItem) {
+        log.info("QUEUE[-History-].Reader: {}\n", queueItem);
 
+        // Initialisation
+        PlayState playState = queueItem.getPlayState();
+        GameState gameState = playState.getGameState();
+        String sessionUuid = queueItem.getSessionUuid();
+        String scenarioUuid = queueItem.getScenarioUuid();
+        String scenarioName = queueItem.getScenarioName();
+        int turn = playState.getTurn();
+
+        // Register local representations if not exists
+        registerHistorySessionIfNotExists(sessionUuid);
+        registerHistoryScenarioIfNotExists(scenarioUuid, scenarioName);
+
+        //
+        Set<GameAction> intentions = new HashSet<>();
+        for (Map.Entry<Integer, PlayerData> playerEntry : playState.getPlayers().entrySet()) {
+
+            // Initialisation
+            Integer playerIndex = playerEntry.getKey();
+            PlayerData playerData = playerEntry.getValue();
+            String userUuid = playerData.getUserUuid();
+            String userName = playerData.getName();
+
+            // Not to store data of dead player
+            if (!gameState.getOpponent(playerIndex).isAlive()) {
+                continue;
+            }
+
+            if (!playerData.isIntentionAlreadyGiven()) {
+                throw new GeneralGameStateException("No intention is present for player! Player index:" + playerData.getIndex());
+            }
+
+            //
+            GameAction playerIntention = playerData.getIntention();
+            int reserveSize = gameState.getOpponents()[playerIndex].getReserveSize();
+            int enemiesCount = gameState.getOpponents().length - 1;
+            String playerNameCode = playerData.getName();
+
+            //
+            saveAHistory(sessionUuid, scenarioUuid, turn, userUuid, userName, PlayerDecision.create(
+                            playerIndex,
+                            playerIntention.getTargetCellKey(),
+                            playerIntention.getAttackingTroopSize(),
+                            reserveSize,
+                            enemiesCount,
+                            gameState
+                    )
+            );
+        }
+
+
+    }
+
+
+    private void saveAHistory(String sessionUuid, String scenarioUuid, int turn, String userUuid, String userName, PlayerDecision playerDecision) {
+
+        // Register local representation if not exists
+        registerHistoryPlayerIfNotExists(userUuid, userName);
+
+        // Access local representations
+        LizHistorySession lizHistorySession = accessHistorySession(sessionUuid);
+        int lizHistorySessionId = lizHistorySession.getId();
+        LizHistoryScenario lizHistoryScenario = accessHistoryScenario(scenarioUuid);
+        int lizHistoryScenarioId = lizHistoryScenario.getId();
+        LizHistoryPlayer lizHistoryPlayer = accessHistoryPlayer(userUuid);
+        int lizHistoryPlayerId = lizHistoryPlayer.getId();
+
+        // Save history
+        lizHistoryRepository.save(LizHistory.builder()
+                .sessionId(lizHistorySessionId)
+                .scenarioId(lizHistoryScenarioId)
+                .playerId(lizHistoryPlayer.getId())
+                .turn(turn)
+                .decision(convertPlayerDecisionObjToJson(playerDecision))
+                .dateCreated(LocalDateTime.now())
+                .build()
+        );
+    }
+
+//
+//    // TODO: ismetlodik
+//    // TODO: Tedd megosztott helyre
+//    private LizHistoryPlayer findHistoryPlayerAndRegisterIfNotExists(String userUuid) {
+//        // Determine current record and its id
+//        LizHistoryPlayer lizHistoryPlayer = lizHistoryPlayerRepository.findByUserUuid(userUuid);
+//        if (lizHistoryPlayer == null) { // Register it if it was not
+//            lizHistoryPlayer = lizHistoryPlayerRepository.save(new LizHistoryPlayer(userUuid));
+//        }
+//        return lizHistoryPlayer;
+//    }
+//
+//    // TODO: Tedd megosztott helyre
+//    private LizHistorySession findHistorySessionAndRegisterIfNotExists(String sessionUuid) {
+//        // Determine current record and its id
+//        LizHistorySession lizHistorySession = lizHistorySessionRepository.findBySessionUuid(sessionUuid);
+//        if (lizHistorySession == null) { // Register it if it was not
+//            lizHistorySession = lizHistorySessionRepository.save(new LizHistorySession(sessionUuid));
+//        }
+//        return lizHistorySession;
+//    }
+//    // TODO: Tedd megosztott helyre
+//    private LizHistoryScenario findHistoryScenarioAndRegisterIfNotExists(String scenarioUuid) {
+//        // Determine current record and its id
+//        LizHistoryScenario lizHistoryScenario = lizHistoryScenarioRepository.findByScenarioUuid(scenarioUuid);
+//        if (lizHistoryScenario == null) { // Register it if it was not
+//            lizHistoryScenario = lizHistoryScenarioRepository.save(new LizHistoryScenario(scenarioUuid));
+//        }
+//        return lizHistoryScenario;
+//    }
+
+
+    // TODO: ?? ismetlodo??
+    // TODO: Tedd megosztott helyre
+    private String convertPlayerDecisionObjToJson(PlayerDecision playerDecision) {
+        try {
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            return objectMapper.writeValueAsString(playerDecision);
+        } catch (JsonProcessingException e) {
+            throw new GeneralGameStateException("Error at parsing");
+        }
+    }
 }

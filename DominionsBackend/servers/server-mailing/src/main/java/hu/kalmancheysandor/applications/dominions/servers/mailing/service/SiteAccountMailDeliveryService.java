@@ -22,7 +22,7 @@ public class SiteAccountMailDeliveryService {
 
     public void enqueueSiteAccountSignUpVerificationMail(SiteAccountSignUpVerificationMailEnqueueRequest request) {
 
-        String verificationLink = "http://localhost:8080/account/signup/verification/" + request.getVerificationToken();
+        String verificationLink = "https://game.dominions.hu/account/signup/verification/" + request.getVerificationToken();
         String htmlTemplate = """
                 <html>
                   <body style="margin:0;padding:20px;font-family:Arial,sans-serif;background-color:#f9f9f9;">
@@ -37,7 +37,7 @@ public class SiteAccountMailDeliveryService {
                                   <a href="${VerificationLink}" style="background-color:transparent;color:#0052cc;padding:10px 20px;text-decoration:none;">${VerificationLink}</a>
                                 </p>
                                 <hr style="border:none;border-top:1px solid #eee;">
-                                <small style="color:#999;">Ez egy automatikus üzenet.</small>
+                                <small style="color:#999;">This is an auto-generated message. Do not reply.</small>
                               </td>
                             </tr>
                           </table>
@@ -74,7 +74,7 @@ public class SiteAccountMailDeliveryService {
 
     public void enqueueSiteAccountRecoveryVerificationMail(SiteAccountRecoveryVerificationMailEnqueueRequest request) {
 
-        String verificationLink = "http://localhost:8080/account/recovery/submit/" + request.getVerificationToken();
+        String verificationLink = "https://game.dominions.hu/account/recovery/submit/" + request.getVerificationToken();
         String htmlTemplate = """
                 <html>
                   <body style="margin:0;padding:20px;font-family:Arial,sans-serif;background-color:#f9f9f9;">
@@ -89,7 +89,7 @@ public class SiteAccountMailDeliveryService {
                                   <a href="${VerificationLink}" style="background-color:transparent;color:#0052cc;padding:10px 20px;text-decoration:none;">${VerificationLink}</a>
                                 </p>
                                 <hr style="border:none;border-top:1px solid #eee;">
-                                <small style="color:#999;">Ez egy automatikus üzenet.</small>
+                                <small style="color:#999;">This is an auto-generated message. Do not reply.</small>
                               </td>
                             </tr>
                           </table>

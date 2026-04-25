@@ -25,6 +25,10 @@ public class AdminPathSection extends SecurityPermissionPathGenerator {
         validTargets.add("Ai.Liz.Variant");
         validTargets.add("Ai.Liz.Concept");
 
+        validTargets.add("Ai.Hugo.Character");
+        validTargets.add("Ai.Hugo.Variant");
+
+
         validTargets.add("Account.Admin.User");
         validTargets.add("Account.Admin.PermissionGroup");
         validTargets.add("Account.Admin.Settings");
@@ -42,6 +46,9 @@ public class AdminPathSection extends SecurityPermissionPathGenerator {
     }
     public AdminPathSection liz() {
         return new AdminPathSection(this, "Liz");
+    }
+    public AdminPathSection hugo() {
+        return new AdminPathSection(this, "Hugo");
     }
     public AdminPathSection character() {return new AdminPathSection(this, "Character");}
     public AdminPathSection variant() {

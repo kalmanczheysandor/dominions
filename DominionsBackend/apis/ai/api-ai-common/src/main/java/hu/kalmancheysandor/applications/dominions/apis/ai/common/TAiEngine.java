@@ -31,6 +31,8 @@ public abstract class TAiEngine implements IAiEngine {
     public final static int TROOPS_SIZE_MIN = 0;
     public final static int TROOPS_SIZE_MAX = 100;
 
+    public final static int CELL_C0UNT = 42;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Game state methods /////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,9 +140,6 @@ public abstract class TAiEngine implements IAiEngine {
         Set<Integer> cellKeysOfAttackZone = collectCellKeysOfCurrentAttackZoneOfPlayer(gameState,playerKey);
         return cellKeysOfAttackZone.contains(observedCellKey);
     }
-
-
-
 
     protected static int getPlayerReserveSize(GameState gameState, int playerKey) {
         return gameState.getOpponent(playerKey).getReserveSize();

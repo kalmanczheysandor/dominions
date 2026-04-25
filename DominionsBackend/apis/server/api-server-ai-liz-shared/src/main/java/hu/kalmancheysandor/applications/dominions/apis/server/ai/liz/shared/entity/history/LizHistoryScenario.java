@@ -15,9 +15,10 @@ import java.util.Objects;
 @AllArgsConstructor
 public class LizHistoryScenario {
 
-    public LizHistoryScenario(String scenarioUuid) {
+    public LizHistoryScenario(String scenarioUuid,String caption) {
         this.scenarioUuid = scenarioUuid;
         this.dateCreated = LocalDateTime.now();
+        this.caption = caption;
     }
 
     @Id

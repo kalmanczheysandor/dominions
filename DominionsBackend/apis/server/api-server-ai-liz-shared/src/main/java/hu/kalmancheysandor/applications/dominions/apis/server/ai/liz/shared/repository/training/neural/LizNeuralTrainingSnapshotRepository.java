@@ -97,4 +97,16 @@ public interface LizNeuralTrainingSnapshotRepository extends JpaRepository<LizNe
             @Param("scenarioId") int scenarioId,
             @Param("playerId") int playerId
     );
+
+
+
+    @Modifying
+    @Query("""
+        DELETE
+        FROM LizNeuralTrainingSnapshot t
+        WHERE t.conceptId=:conceptId
+    """)
+    void deleteAllWhereConceptId(
+            @Param("conceptId") int conceptId
+    );
 }

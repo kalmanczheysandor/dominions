@@ -14,22 +14,22 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication(scanBasePackages = {
-    "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
-    "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
+        "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
+        "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
-    "hu.kalmancheysandor.applications.dominions.servers.mailing"
+        "hu.kalmancheysandor.applications.dominions.servers.mailing"
 })
 @EnableAsync
 @EnableFeignClients
 @EnableJpaRepositories(basePackages = {
 //    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.repository",
 //    "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
-    "hu.kalmancheysandor.applications.dominions.servers.mailing"
+        "hu.kalmancheysandor.applications.dominions.servers.mailing"
 })
 @EntityScan(basePackages = {
 //    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.entity",
-    "hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity",
-    "hu.kalmancheysandor.applications.dominions.servers.ai.liz"
+//        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity",
+        "hu.kalmancheysandor.applications.dominions.servers.mailing"
 })
 public class MailingServer {
     public static void main(String[] args) {

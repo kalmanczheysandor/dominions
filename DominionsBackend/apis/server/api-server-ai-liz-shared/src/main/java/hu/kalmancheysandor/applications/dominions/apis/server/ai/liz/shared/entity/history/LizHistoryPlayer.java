@@ -15,8 +15,9 @@ import java.util.Objects;
 @AllArgsConstructor
 public class LizHistoryPlayer {
 
-    public LizHistoryPlayer(String userUuid) {
+    public LizHistoryPlayer(String userUuid, String caption) {
         this.userUuid = userUuid;
+        this.caption = caption;
         this.dateCreated = LocalDateTime.now();
     }
 

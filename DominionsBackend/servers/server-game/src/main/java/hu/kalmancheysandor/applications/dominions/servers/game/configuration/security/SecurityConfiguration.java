@@ -46,11 +46,11 @@ public class SecurityConfiguration {
                         .requestMatchers("/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/spring-boot-chat/**").permitAll()    // websocket
-                        .requestMatchers("/test/spring-boot-chat/**").permitAll()    // websocket
+                        .requestMatchers("/game/spring-boot-chat/**").permitAll()    // websocket
                         .requestMatchers("/app/**").permitAll()//websocket
-                        .requestMatchers("/test/app/**").permitAll()//websocket
-                        .requestMatchers("/test/**").permitAll()
-                        .requestMatchers("/data/**").permitAll()
+                        .requestMatchers("/game/app/**").permitAll()//websocket
+                        .requestMatchers("/game/**").permitAll()
+                        .requestMatchers("/game/**").permitAll()
 
                 )
                 .formLogin(f -> f.disable())
@@ -73,7 +73,9 @@ public class SecurityConfiguration {
                                 "https://admin.dominions.hu"
                         ) // A frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
-                        .allowCredentials(true); // Engedélyezi a session cookie-kat
+                        .allowedHeaders("*")
+                        .allowCredentials(true) // Engedélyezi a session cookie-kat
+                        .exposedHeaders("Set-Cookie"); // EZ FONTOS!
             }
         };
     }

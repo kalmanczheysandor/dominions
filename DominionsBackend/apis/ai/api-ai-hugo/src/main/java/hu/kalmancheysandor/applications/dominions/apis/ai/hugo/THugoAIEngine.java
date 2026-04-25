@@ -8,13 +8,16 @@ import hu.kalmancheysandor.applications.dominions.apis.game.common.representatio
 
 import java.util.*;
 
-public abstract class THugoAIEngine extends TAiEngine {
+public abstract class THugoAIEngine extends TAiEngine  {
 
     protected GameStateMachine gameStateMachine;
 
 
+
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////
-    ///// [Combination methods] ///////////////////////////////////////////////////////////////
+    ///// Combination methods ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
     protected GameState applyOneCombinationOnGameState(GameState initialGameState, Map<Integer, Integer> combination) {
 
@@ -66,7 +69,7 @@ public abstract class THugoAIEngine extends TAiEngine {
         Integer targetedCellKey;
         List<Map<Integer, Integer>> combinationListInAGroup;
         Map<Integer, List<Map<Integer, Integer>>> stepGroups = new HashMap<>();
-        HeuristicData hData;
+        HugoHeuristicEvaluation hData;
         for (Map<Integer, Integer> combinationItem : allStepCombinationsList) {
             //System.out.println("CombinationItem:"+combinationItem);
             if (!combinationItem.containsKey(supportedPlayerKey)) {

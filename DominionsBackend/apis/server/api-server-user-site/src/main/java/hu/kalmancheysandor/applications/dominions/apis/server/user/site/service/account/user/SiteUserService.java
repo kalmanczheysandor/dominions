@@ -162,8 +162,10 @@ public class SiteUserService {
         entityManager.refresh(siteUserSaved);
 
         // Save image
-        String filename = getUserPhotosFolder() + "/" + siteUserSaved.getId() + "/photo.jpg";
-        FileHandler.updateBase64Image(filename, request.getImageBase64());
+        if(request.getImageBase64() != null) {
+            String filename = getUserPhotosFolder() + "/" + siteUserSaved.getId() + "/photo.jpg";
+            FileHandler.updateBase64Image(filename, request.getImageBase64());
+        }
 
         // Generate response
         List<String> groupUuidList = siteUserSaved.getSiteUserGroups().stream()

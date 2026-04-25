@@ -1,4 +1,4 @@
-erver:
+server:
   port: 15041
 spring:
   config:

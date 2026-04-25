@@ -19,7 +19,12 @@ app:
       hikari:
         transaction-isolation: TRANSACTION_REPEATABLE_READ
 
-
+    ai-hugo:
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/dominions_ai_hugo?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+      username: root
+      password: CHANGE_ME
+      hikari:
+        transaction-isolation: TRANSACTION_REPEATABLE_READ
 
 spring:
 #  datasource:

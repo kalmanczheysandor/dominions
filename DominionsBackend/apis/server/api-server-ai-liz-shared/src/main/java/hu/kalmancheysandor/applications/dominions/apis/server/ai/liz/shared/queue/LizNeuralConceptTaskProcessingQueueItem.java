@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
@@ -17,6 +19,7 @@ public class LizNeuralConceptTaskProcessingQueueItem {
     private int executionId;
     private int scenarioId;
     private int playerId;
+    private LocalDateTime dateCreated;
 
     @Override
     public boolean equals(Object o) {
@@ -37,6 +40,7 @@ public class LizNeuralConceptTaskProcessingQueueItem {
                 ", executionId=" + executionId +
                 ", scenarioId=" + scenarioId +
                 ", playerId=" + playerId +
+                ", dateCreated=" + dateCreated +
                 '}';
     }
 }
