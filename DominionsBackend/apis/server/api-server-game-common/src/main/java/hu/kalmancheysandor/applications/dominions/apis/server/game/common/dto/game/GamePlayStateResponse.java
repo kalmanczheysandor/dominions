@@ -21,4 +21,5 @@ public class GamePlayStateResponse {
     private int[] winnerKeys;
     private List<String> participants;
     private int turn;
+    private int missingPlayerRespondCount = 0;
 }

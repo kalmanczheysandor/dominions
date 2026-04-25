@@ -1,18 +1,18 @@
 <template>
 
-        <MenuBar @whenClickOnResignMenuButton="whenNavigationMenuAttemptsResign"/>
-        <h3 class="SectionTitle">
-            Game
-        </h3>
-        <GameBoard ref="GameBoardComponent"
-                   @whenSelectedYourself="whenSelectedYourself"
-                   @whenSelectedOutOfNeighbourhood="whenSelectedOutOfNeighbourhood"
-                   @whenAttackButTroopSizeIsOverTheAvailable="whenAttackButTroopSizeIsOverTheAvailable"
-                   @whenActionIsAttack="whenActionIsAttack"
-                   @whenActionIsReserve="whenActionIsReserve"
-                   @whenActionIsResign="whenActionIsResign"
-                   @whenActionIsAlreadySent="whenActionIsAlreadySent"
-        />
+    <MenuBar @whenClickOnResignMenuButton="whenNavigationMenuAttemptsResign"/>
+    <h3 class="SectionTitle">
+        Game
+    </h3>
+    <GameBoard ref="GameBoardComponent"
+               @whenSelectedYourself="whenSelectedYourself"
+               @whenSelectedOutOfNeighbourhood="whenSelectedOutOfNeighbourhood"
+               @whenAttackButTroopSizeIsOverTheAvailable="whenAttackButTroopSizeIsOverTheAvailable"
+               @whenActionIsAttack="whenActionIsAttack"
+               @whenActionIsReserve="whenActionIsReserve"
+               @whenActionIsResign="whenActionIsResign"
+               @whenActionIsAlreadySent="whenActionIsAlreadySent"
+    />
 </template>
 
 <script>
@@ -30,6 +30,7 @@ export default {
     components: {GameBoard, MenuBar},
     data: () => ({
         GlobalStore: useGlobalStore(),
+        intervalId: null,
     }),
     computed: {
         gameSessionUuid() {
@@ -125,6 +126,47 @@ export default {
         /// [ ???? methods ] //////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        async refreshGameBoard() {
+            console.log("POLLING")
+            //
+            const gameStateResponse = await gameService.state({
+                gameSessionUuid: this.GlobalStore.GamePlayPage.gameSessionUuid,
+                endpointKey: authService.getCurrentSessionId(),
+                userUuid: authService.getCurrentUserUuid(),
+                playerName: authService.getCurrentUserIdentifier()
+            });
+
+            console.log(gameStateResponse)
+
+
+            // Refresh values
+            const gameBoardComponent = this.$refs.GameBoardComponent;
+            gameBoardComponent.refreshPlayState({
+                state: gameStateResponse.gameMapState,
+                statusCode: gameStateResponse.statusCode,
+                maxHumanPlayerCount: gameStateResponse.maxHumanPlayerCount,
+                currentHumanPlayerCount: gameStateResponse.currentHumanPlayerCount,
+                turn: gameStateResponse.turn,
+                winnerKeys: gameStateResponse.winnerKeys
+            });
+        },
+
+
+        startPolling() {
+            this.stopPolling();
+            const poll = async () => {
+                await this.refreshGameBoard(this.uuid);
+                this.intervalId = setTimeout(poll, 2000);
+            };
+            poll();
+        },
+        stopPolling() {
+            if (this.intervalId) {
+                clearTimeout(this.intervalId);
+                this.intervalId = null;
+            }
+        },
+
         async loadGame() {
 
             // Communicate with backend
@@ -163,21 +205,23 @@ export default {
             console.log("HELLO" + this.GlobalStore.GamePlayPage.gameSessionUuid)
             // Subscribe
 
-            const gameBoardComponent = this.$refs.GameBoardComponent;
-            await gameService.listenOnStateChanel(this.GlobalStore.GamePlayPage.gameSessionUuid, (gameMapStateResponse) => {
-                console.log("---REFRESH---")
-                console.log(gameMapStateResponse)
+            this.startPolling();
 
-                // Refresh values
-                gameBoardComponent.refreshPlayState({
-                    state: gameMapStateResponse.gameMapState,
-                    statusCode: gameMapStateResponse.statusCode,
-                    maxHumanPlayerCount: gameMapStateResponse.maxHumanPlayerCount,
-                    currentHumanPlayerCount: gameMapStateResponse.currentHumanPlayerCount,
-                    turn: gameMapStateResponse.turn,
-                    winnerKeys: gameMapStateResponse.winnerKeys
-                });
-            })
+            const gameBoardComponent = this.$refs.GameBoardComponent;
+            // await gameService.listenOnStateChanel(this.GlobalStore.GamePlayPage.gameSessionUuid, (gameMapStateResponse) => {
+            //     console.log("---REFRESH---")
+            //     console.log(gameMapStateResponse)
+            //
+            //     // Refresh values
+            //     gameBoardComponent.refreshPlayState({
+            //         state: gameMapStateResponse.gameMapState,
+            //         statusCode: gameMapStateResponse.statusCode,
+            //         maxHumanPlayerCount: gameMapStateResponse.maxHumanPlayerCount,
+            //         currentHumanPlayerCount: gameMapStateResponse.currentHumanPlayerCount,
+            //         turn: gameMapStateResponse.turn,
+            //         winnerKeys: gameMapStateResponse.winnerKeys
+            //     });
+            // })
         },
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

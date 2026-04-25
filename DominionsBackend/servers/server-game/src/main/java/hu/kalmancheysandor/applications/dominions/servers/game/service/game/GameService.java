@@ -242,6 +242,7 @@ public class GameService {
         PlayState playStateObj = convertJsonToPlayStateObj(gameSessionToFind.getPlayState());
         GameMap gameMapObj = convertJsonToGameMapObj(gameSessionToFind.getGameMap());
 
+        // Collect users
         List<String> participants = new ArrayList<>();
         for (PlayerData playerData : playStateObj.getPlayers().values()) {
             if (playerData.isArtificial()) {
@@ -255,6 +256,8 @@ public class GameService {
             participants.add(siteUser.getIdentifier());
         }
 
+        //
+        int missingIntentionCount = calculateMissingIntentionCount(playStateObj);
 
         // Generate response
         GamePlayStateResponse response = new GamePlayStateResponse();
@@ -267,6 +270,7 @@ public class GameService {
         response.setParticipants(participants);
         response.setTurn(playStateObj.getTurn());
         response.setWinnerKeys(playStateObj.getGameState().getWinnerKeys());
+        response.setMissingPlayerRespondCount(missingIntentionCount);
         return response;
     }
 
@@ -492,47 +496,47 @@ public class GameService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     ///  QUEUE METHODS  //////////////////////////////////////////////////////////////////////////////////////
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void queueHistoryRead(HistoryQueueItem item) {
-        log.info("QUEUE[-History-].Reader: {}\n", item);
-        PlayState playState = item.getPlayState();
-        GameState gameState = playState.getGameState();
-
-
-        Set<GameAction> intentions = new HashSet<>();
-        for (Map.Entry<Integer, PlayerData> playerEntry : playState.getPlayers().entrySet()) {
-            ///
-            Integer playerIndex = playerEntry.getKey();
-            PlayerData playerData = playerEntry.getValue();
-
-            ///
-            if (!gameState.getOpponent(playerIndex).isAlive()) {
-                continue;
-            }
-
-            if (!playerData.isIntentionAlreadyGiven()) {
-                throw new GeneralGameStateException("No intention is present for player! Player index:" + playerData.getIndex());
-            }
-
-            ///
-            GameAction playerIntention = playerData.getIntention();
-            int reserveSize = gameState.getOpponents()[playerIndex].getReserveSize();
-            int enemiesCount = gameState.getOpponents().length - 1;
-            String playerNameCode = playerData.getName();
-            String userUuid = playerData.getUserUuid();
-
-            PlayerDecision playerDecision = PlayerDecision.create(playerIndex, playerIntention.getTargetCellKey(), playerIntention.getAttackingTroopSize(), reserveSize, enemiesCount, gameState);
-
-            // Save history
-            History history = new History();
-            history.setPlayer(playerNameCode);
-            history.setUserUuid(userUuid);
-            history.setDecision(convertPlayerDecisionObjToJson(playerDecision));
-            historyRepository.save(history);
-        }
-
-
-    }
-
+//    public void queueHistoryRead(HistoryQueueItem item) {
+//        log.info("QUEUE[-History-].Reader: {}\n", item);
+//        PlayState playState = item.getPlayState();
+//        GameState gameState = playState.getGameState();
+//
+//
+//        Set<GameAction> intentions = new HashSet<>();
+//        for (Map.Entry<Integer, PlayerData> playerEntry : playState.getPlayers().entrySet()) {
+//            ///
+//            Integer playerIndex = playerEntry.getKey();
+//            PlayerData playerData = playerEntry.getValue();
+//
+//            ///
+//            if (!gameState.getOpponent(playerIndex).isAlive()) {
+//                continue;
+//            }
+//
+//            if (!playerData.isIntentionAlreadyGiven()) {
+//                throw new GeneralGameStateException("No intention is present for player! Player index:" + playerData.getIndex());
+//            }
+//
+//            ///
+//            GameAction playerIntention = playerData.getIntention();
+//            int reserveSize = gameState.getOpponents()[playerIndex].getReserveSize();
+//            int enemiesCount = gameState.getOpponents().length - 1;
+//            String playerNameCode = playerData.getName();
+//            String userUuid = playerData.getUserUuid();
+//
+//            PlayerDecision playerDecision = PlayerDecision.create(playerIndex, playerIntention.getTargetCellKey(), playerIntention.getAttackingTroopSize(), reserveSize, enemiesCount, gameState);
+//
+//            // Save history
+//            History history = new History();
+//            history.setPlayer(playerNameCode);
+//            history.setUserUuid(userUuid);
+//            history.setDecision(convertPlayerDecisionObjToJson(playerDecision));
+//            historyRepository.save(history);
+//        }
+//
+//
+//    }
+//
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     /// /  Assert methods /////////////////////////////////////////////////////////////////////////////////////
@@ -637,7 +641,7 @@ public class GameService {
     /// Request and Response generator methods ///////////////////////////////////////////////////////////////
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private AiDecisionRequest generateAiRequest(int yourPlayerKey, String yourUserUuid,String yourUserName, String yourCharacterCode, PlayState playStateObj, String scenarioUuid,String scenarioTitle, String sessionUuid) {
+    private AiDecisionRequest generateAiRequest(int yourPlayerKey, String yourUserUuid, String yourUserName, String yourCharacterCode, PlayState playStateObj, String scenarioUuid, String scenarioTitle, String sessionUuid) {
 
         GameState gameState = playStateObj.getGameState();
 
@@ -708,7 +712,7 @@ public class GameService {
                             playState,
                             scenarioUuid,
                             scenarioTitle,
-                    sessionUuid
+                            sessionUuid
                     )
             );
 
@@ -756,8 +760,7 @@ public class GameService {
 
         if (engineType == GameMapEngineType.AI_LIZ) {
             aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
-        }
-        else if (engineType == GameMapEngineType.AI_HUGO) {
+        } else if (engineType == GameMapEngineType.AI_HUGO) {
             aiDecisionResponseObj = hugoAgentServerProxy.generateResponse(aiDecisionRequestObj);
         } else {
             throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
@@ -769,6 +772,17 @@ public class GameService {
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Helper methods //////////////////////////////////////////////////////////////////////////////////////
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    private int calculateMissingIntentionCount(PlayState playState) {
+        int count = 0;
+        for (PlayerData player : playState.getPlayers().values()) {
+            int playerIndex = player.getIndex();
+
+            if (!player.isIntentionAlreadyGiven() && playState.getGameState().getOpponent(playerIndex).isAlive()) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     private static Set<Integer> collectNeighboursOfACell(boolean[][] matrix, int cellKey) {
         Set<Integer> output = new HashSet<>();
