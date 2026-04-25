@@ -34,8 +34,9 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 Principal user = SimpMessageHeaderAccessor.getUser(message.getHeaders());
-
+                String sessionId = SimpMessageHeaderAccessor.getSessionId(message.getHeaders());
                 System.out.println("THE PRINCIPAL IS: " + user.getName());
+                System.out.println("THE PRINCIPAL session: " + sessionId);
                 // debug here
                 return message;
             }
@@ -78,7 +79,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
                             }
                         })
 
-                .withSockJS();
+                .withSockJS().setSessionCookieNeeded(true);
     }
 
 //    @Bean

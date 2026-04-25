@@ -17,7 +17,12 @@ class TSocket  {
                 // stompClient.heartbeatIncoming = 10000; // 10 mp-enként vár heartbeat-et
                 // stompClient.heartbeatOutgoing = 10000; // 10 mp-enként küld heartbeat-et
 
-                const socket = new SockJS(socketEndpointUrl);
+                // const socket = new SockJS(socketEndpointUrl);
+                const socket = new SockJS(socketEndpointUrl, null, {
+                    transports: ["xhr-streaming", "xhr-polling"]        // Forcing not to use websocket.
+                });
+
+
                 const stompClient = Stomp.over(socket);
                 stompClient.connect({}, (frame) => {
                     resolve(stompClient);

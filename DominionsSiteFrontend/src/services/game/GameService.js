@@ -9,7 +9,8 @@ class GameService extends TService {
     permissionResource = 'Game.Launch';
     stompClient = null;
     // socketEndpointUrl = 'http://localhost:15000/site/spring-boot-chat';
-    socketEndpointUrl = 'https://game.dominions.hu/api/site/spring-boot-chat';
+    // socketEndpointUrl = 'https://game.dominions.hu/api/site/spring-boot-chat';
+    socketEndpointUrl = '/api/site/spring-boot-chat';
     responseTimeout = 5000;
 
     async connectToSocketEndpoint() {

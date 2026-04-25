@@ -37,8 +37,8 @@ public class CorsConf extends CorsConfiguration {
 
 
         // WebSocketekhez is kiterjesztjük a CORS beállítást
-        source.registerCorsConfiguration("/test/spring-boot-chat", config); // WebSocket endpoint
-        source.registerCorsConfiguration("/test/app/chat", config);       // WebSocket endpoint
+        source.registerCorsConfiguration("/spring-boot-chat", config); // WebSocket endpoint
+        source.registerCorsConfiguration("/app/chat", config);       // WebSocket endpoint
 
 
         return new CorsWebFilter(source);
