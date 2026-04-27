@@ -20,9 +20,10 @@ public class SitePathSection extends SecurityPermissionPathGenerator {
     private void collectingValidTargets() {
         Set<String> validTargets = new HashSet<String>();
 
-        validTargets.add("Account.SignUp");
-        validTargets.add("Account.SignIn");
         validTargets.add("Account.Settings");
+        validTargets.add("Game.Play");
+        validTargets.add("Game.Create");
+        validTargets.add("Game.Lobby");
 
         this.setValidTargets(validTargets);
     }
@@ -32,16 +33,23 @@ public class SitePathSection extends SecurityPermissionPathGenerator {
         return new SitePathSection(this, "Account");
     }
 
-    public SitePathSection signUp() {
-        return new SitePathSection(this, "SignUp");
-    }
-    public SitePathSection signIn() {
-        return new SitePathSection(this, "SignIn");
-    }
-
     public SitePathSection settings() {
         return new SitePathSection(this, "Settings");
     }
 
+    public SitePathSection game() {
+        return new SitePathSection(this, "Game");
+    }
 
+    public SitePathSection create() {
+        return new SitePathSection(this, "Create");
+    }
+
+    public SitePathSection lobby() {
+        return new SitePathSection(this, "Lobby");
+    }
+
+    public SitePathSection play() {
+        return new SitePathSection(this, "Play");
+    }
 }

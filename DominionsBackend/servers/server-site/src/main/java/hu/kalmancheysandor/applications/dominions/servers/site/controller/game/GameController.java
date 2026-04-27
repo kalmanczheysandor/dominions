@@ -4,6 +4,8 @@ import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.ga
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.user.site.SitePermission;
+import hu.kalmancheysandor.applications.dominions.apis.server.user.site.service.authentication.SiteAuthenticationService;
 import hu.kalmancheysandor.applications.dominions.apis.util.file.filehandler.FileHandler;
 import hu.kalmancheysandor.applications.dominions.servers.site.service.game.GameService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,12 +31,14 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private SiteAuthenticationService authenticationService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public GamePlayCreateResponse createGamePlay(@Valid @RequestBody GamePlayCreateRequest request) {
         // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
+        authenticationService.assertHasAddPermission(SitePermission.generator().game().create());
 
         return gameService.createGamePlay(request);
     }
@@ -44,7 +48,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     public GamePlayJoinResponse joinToGamePlay(@NotNull @RequestBody GamePlayJoinRequest request) {
         // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
+        authenticationService.assertHasEditPermission(SitePermission.generator().game().lobby());
 
         return gameService.joinToGamePlay(request);
     }
@@ -54,17 +58,16 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     public GamePlayStateResponse stateOfGamePlay(@NotNull @RequestBody GamePlayStateRequest request) {
         // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
+        authenticationService.assertHasAccessPermission(SitePermission.generator().game().play());
 
         return gameService.stateOfGamePlay(request);
-
     }
 
 
     @GetMapping("/list/recruiting")
     public List<GamePlayItemResponse> listAllRecruitingGamePlay() {
         // Check permission
-        //SecurityAuthorisation.assertHasAccessPermission(SecurityPermission.generator().breed());
+        authenticationService.assertHasAccessPermission(SitePermission.generator().game().lobby());
 
         return gameService.listAllRecruitingGamePlay();
     }
@@ -72,7 +75,7 @@ public class GameController {
     @GetMapping("/list/scenario")
     public List<GameScenarioItemResponse> listAllPublishedGameScenario() {
         // Check permission
-        //SecurityAuthorisation.assertHasAccessPermission(SecurityPermission.generator().breed());
+        authenticationService.assertHasAccessPermission(SitePermission.generator().game().create());
 
         return gameService.listAllPublishedGameScenario();
     }
@@ -84,8 +87,8 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     public void sendAttackActionToGamePlay(@NotNull @RequestBody GamePlayAttackActionRequest request) {
         // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
-        System.out.println("Site-attack");
+        authenticationService.assertHasEditPermission(SitePermission.generator().game().play());
+
         gameService.sendAttackActionToGamePlay(request);
     }
 
@@ -93,7 +96,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     public void sendReserveActionToGamePlay(@NotNull @RequestBody GamePlayReserveActionRequest request) {
         // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
+        authenticationService.assertHasEditPermission(SitePermission.generator().game().play());
 
         gameService.sendReserveActionToGamePlay(request);
     }
@@ -105,8 +108,10 @@ public class GameController {
 
     @GetMapping("/scenario/{uuid}/image/main")
     public ResponseEntity<Resource> image(@PathVariable("uuid") String uuid, HttpServletRequest request) {
+        // Check permission
+        authenticationService.assertHasAccessPermission(SitePermission.generator().game().create());
 
-
+        //
         FileHandler.Result result = gameService.scenarioImage(uuid);
         if (result == null) {
             return ResponseEntity.noContent().build();

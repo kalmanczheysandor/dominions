@@ -62,12 +62,10 @@ export default {
                             ],
                             rows: [
                                 {Field: 'Main', Caption: 'Main'},
-                                {Field: 'Profile', Caption: 'Profile'},
-                                {Field: 'Game.Scenario', Caption: 'Game > Scenario'},
+                                {Field: 'Game.Create', Caption: 'Game > Create'},
                                 {Field: 'Game.Lobby', Caption: 'Game > Lobby'},
                                 {Field: 'Game.Play', Caption: 'Game > Play'},
                                 {Field: 'Account.Settings', Caption: 'Account > Settings'},
-
                             ],
                         },
                         selectedItems: [],

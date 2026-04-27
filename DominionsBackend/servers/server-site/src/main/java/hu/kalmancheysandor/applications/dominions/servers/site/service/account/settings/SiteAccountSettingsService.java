@@ -27,7 +27,7 @@ public class SiteAccountSettingsService {
     private SiteUserRepository siteUserRepository;
 
     @Autowired
-    private SiteAuthenticationService siteAuthenticationService;
+    private SiteAuthenticationService authenticationService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -51,7 +51,7 @@ public class SiteAccountSettingsService {
     public SiteAccountSettingsProfileDetailsAccessResponse accessAccountProfileDetails() {
         System.out.println("XX-B1");
         // Access entity via repository
-        int userId = siteAuthenticationService.getCurrentAuthenticatedUserId();
+        int userId = authenticationService.getCurrentAuthenticatedUserId();
         SiteUser userToAccess = siteUserRepository.findById(userId);
         System.out.println("XX-B2");
         if (userToAccess == null) {
@@ -67,7 +67,7 @@ public class SiteAccountSettingsService {
     public void updateAccountProfileDetails(SiteAccountSettingsProfileDetailsUpdateRequest request) {
 
         // Access entity via repository
-        int userId = siteAuthenticationService.getCurrentAuthenticatedUserId();
+        int userId = authenticationService.getCurrentAuthenticatedUserId();
         SiteUser userToModify = siteUserRepository.findById(userId);
         if (userToModify == null) {
             throw new SiteAccountSettingsUserNotFoundException(userId);
@@ -86,7 +86,7 @@ public class SiteAccountSettingsService {
     public FileHandler.Result accessAccountProfilePhoto() {
 
         // Access entity via repository
-        int userId = siteAuthenticationService.getCurrentAuthenticatedUserId();
+        int userId = authenticationService.getCurrentAuthenticatedUserId();
         SiteUser userToModify = siteUserRepository.findById(userId);
         if (userToModify == null) {
             throw new SiteAccountSettingsUserNotFoundException(userId);
@@ -104,7 +104,7 @@ public class SiteAccountSettingsService {
     public SiteAccountSettingsCredentialPasswordAccessResponse accessAccountCredentialPassword() {
 
         // Access entity via repository
-        int userId = siteAuthenticationService.getCurrentAuthenticatedUserId();
+        int userId = authenticationService.getCurrentAuthenticatedUserId();
         SiteUser userToAccess = siteUserRepository.findById(userId);
         if (userToAccess == null) {
             throw new SiteAccountSettingsUserNotFoundException(userId);
@@ -119,7 +119,7 @@ public class SiteAccountSettingsService {
     public void updateAccountCredentialPassword(SiteAccountSettingsCredentialPasswordUpdateRequest request) {
 
         // Access entity via repository
-        int userId = siteAuthenticationService.getCurrentAuthenticatedUserId();
+        int userId = authenticationService.getCurrentAuthenticatedUserId();
         SiteUser userToModify = siteUserRepository.findById(userId);
         if (userToModify == null) {
             throw new SiteAccountSettingsUserNotFoundException(userId);
