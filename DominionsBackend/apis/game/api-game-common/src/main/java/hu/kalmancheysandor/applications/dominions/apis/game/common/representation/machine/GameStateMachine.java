@@ -46,7 +46,7 @@ public class GameStateMachine {
                 conflictGroups.put(observedAction.getTargetCellKey(), actions);     // Actions belonging to the same cell are members of the same conflict-group
             } else { // After the first action in the group
                 Set<GameAction> actions = conflictGroups.get(observedAction.getTargetCellKey());
-                actions.add(observedAction);
+                actions.add(observedAction);    // It is a bit trick! it uses the reference of the list of the conflict group
             }
         }
         //  System.out.println(group);
@@ -65,7 +65,7 @@ public class GameStateMachine {
         for (GameAction processedAction : actionsToProcess) {
             GameStateCell attackedGameStateCell = getCell(processedAction.getTargetCellKey());
 
-            if (processedAction.getTargetCellKey() != null) {   // When it was an attack and not reserve move
+            if (processedAction.getTargetCellKey() != null) {   // When it was an attack and not a reserve move
 
                 if (attackedGameStateCell.getDefendingTroopSize() < processedAction.getAttackingTroopSize()) { // Defender are weaker
                     attackedGameStateCell.setDefendingTroopSize(processedAction.getAttackingTroopSize() - attackedGameStateCell.getDefendingTroopSize());
@@ -166,7 +166,7 @@ public class GameStateMachine {
         Integer targetCellKey = action.getTargetCellKey();
         GameStatePlayer player = state.getOpponent(playerKey);
 
-        // No mor action is allowed when game is finished
+        // No more action is allowed when game is finished
         if (state.getStatusCode() == GameStateStatusCode.FINISHED) {
             throw new GameAlreadyEndedGameStateMachineException();
         }
@@ -195,7 +195,7 @@ public class GameStateMachine {
                 throw new NotEnoughSupplyGameStateMachineException(playerKey, action.getAttackingTroopSize(), player.getReserveSize());
             }
 
-            // When the cell attacked belongs to the attacker and neither to the enemy and nor empty.
+            // When the attacked cell belongs to the attacker and neither to the enemy and nor empty.
             if (targetCell.getOccupierKey() == action.getPlayerKey()) {
                 throw new SelfAttackPlayerGameStateMachineException(playerKey, targetCellKey);
             }
@@ -213,7 +213,7 @@ public class GameStateMachine {
 
         } else {
 
-            if (action.getAttackingTroopSize() != 0) {
+            if (action.getAttackingTroopSize() > 0) {
                 throw new NoTroopsPermittedToSendGameStateMachineException(playerKey);
             }
         }

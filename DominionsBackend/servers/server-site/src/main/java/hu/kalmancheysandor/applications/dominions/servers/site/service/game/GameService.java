@@ -5,6 +5,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.common.component.c
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionRequest;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayResignActionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.game.GameScenario;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotFoundByUuidException;
@@ -43,7 +44,7 @@ public class GameService {
         GamePlayCreateResponse response = gameServerProxy.createGamePlay(request);
 
         // Broadcast state to all belonging participants
-        broadcastGamePlayStateToParticipants(response.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
+       // broadcastGamePlayStateToParticipants(response.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
 
         return response;
     }
@@ -53,7 +54,7 @@ public class GameService {
         GamePlayJoinResponse response = gameServerProxy.joinToGamePlay(request);
 
         // Broadcast state to all belonging participants
-        broadcastGamePlayStateToParticipants(request.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
+    //    broadcastGamePlayStateToParticipants(request.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
 
         return response;
     }
@@ -93,7 +94,7 @@ public class GameService {
         gameServerProxy.sendAttackActionToGamePlay(request);
         System.out.println("Site-attack:2");
         // Broadcast state to all belonging participants
-        broadcastGamePlayStateToParticipants(request.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
+      //  broadcastGamePlayStateToParticipants(request.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
         System.out.println("Site-attack:3");
     }
 
@@ -101,7 +102,15 @@ public class GameService {
         gameServerProxy.sendReserveActionToGamePlay(request);
 
         // Broadcast state to all belonging participants
-        broadcastGamePlayStateToParticipants(request.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
+        //broadcastGamePlayStateToParticipants(request.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
+    }
+
+
+    public void sendResignActionToGamePlay(@Valid @NotNull GamePlayResignActionRequest request) {
+        gameServerProxy.sendResignActionToGamePlay(request);
+
+        // Broadcast state to all belonging participants
+        //broadcastGamePlayStateToParticipants(request.getGameSessionUuid(), request.getEndpointKey(), request.getUserUuid());
     }
 
 

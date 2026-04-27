@@ -2,10 +2,7 @@ package hu.kalmancheysandor.applications.dominions.servers.game.controller;
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.*;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionRequest;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionResponse;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionRequest;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import hu.kalmancheysandor.applications.dominions.servers.game.service.game.GameService;
 import jakarta.validation.Valid;
@@ -97,6 +94,17 @@ public class GameController {
         //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
 
         return gameService.sendReserveActionToGamePlay(request);
+    }
+
+
+
+    @PostMapping("/action/resign")
+    @ResponseStatus(HttpStatus.OK)
+    public GamePlayResignActionResponse sendResignActionToGamePlay(@NotNull @RequestBody GamePlayResignActionRequest request) {
+        // Check permission
+        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
+
+        return gameService.sendResignActionToGamePlay(request);
     }
 
 

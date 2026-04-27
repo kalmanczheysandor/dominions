@@ -3,6 +3,7 @@ package hu.kalmancheysandor.applications.dominions.servers.site.controller.game;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionRequest;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayResignActionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.util.file.filehandler.FileHandler;
 import hu.kalmancheysandor.applications.dominions.servers.site.service.game.GameService;
@@ -96,6 +97,16 @@ public class GameController {
         //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
 
         gameService.sendReserveActionToGamePlay(request);
+    }
+
+
+    @PostMapping("/action/resign")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendResignActionToGamePlay(@NotNull @RequestBody GamePlayResignActionRequest request) {
+        // Check permission
+        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
+
+        gameService.sendResignActionToGamePlay(request);
     }
 
 

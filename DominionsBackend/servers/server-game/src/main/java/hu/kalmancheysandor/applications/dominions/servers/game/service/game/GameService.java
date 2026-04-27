@@ -25,6 +25,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.pro
 //import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.hugo.HugoAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy.LizAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.game.GameScenario;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.history.History;
@@ -37,10 +38,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.game.common.reposi
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.entity.account.SiteUser;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.repository.account.SiteUserRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.*;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionRequest;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionResponse;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionRequest;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.game.GameSession;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.session.GameSessionNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.session.GameSessionNotRecruitingException;
@@ -414,6 +411,27 @@ public class GameService {
         GamePlayReserveActionResponse response = new GamePlayReserveActionResponse();
         return response;
     }
+
+    public GamePlayResignActionResponse sendResignActionToGamePlay(GamePlayResignActionRequest request) {
+        // Remove all expired sessions
+        removeAllExpiredSessions();
+
+        // Checking
+        assertGameSessionUuidExists(request.getGameSessionUuid());
+        assertGameSessionIsNotRecruiting(request.getGameSessionUuid());
+
+        // Execution
+        sendActionToGamePlay(request.getGameSessionUuid(), request.getPlayerIndex(), null, 0);
+
+        //Generate response
+        GamePlayResignActionResponse response = new GamePlayResignActionResponse();
+        return response;
+    }
+
+
+
+
+
 
     private void sendActionToGamePlay(String gameSessionUuid, int playerIndex, Integer targetCellKey, int attackingTroopSize) {
 

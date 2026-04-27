@@ -2,10 +2,7 @@ package hu.kalmancheysandor.applications.dominions.servers.site.proxy.game;
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.*;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionRequest;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionResponse;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionRequest;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayReserveActionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +30,9 @@ public interface GameServerProxy {
 
     @PostMapping("/action/reserve")
     public GamePlayReserveActionResponse sendReserveActionToGamePlay(@Valid @RequestBody GamePlayReserveActionRequest request);
+
+    @PostMapping("/action/resign")
+    public GamePlayResignActionResponse sendResignActionToGamePlay(@Valid @RequestBody GamePlayResignActionRequest request);
 
 
     @GetMapping("/list")
