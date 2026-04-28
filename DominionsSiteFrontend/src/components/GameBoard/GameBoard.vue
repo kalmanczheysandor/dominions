@@ -547,6 +547,7 @@ export default {
                 let countryClassAttribute = {'Country': true};
                 if (cellItem.occupierKey !== null && cellItem.armySize > 0) {
                     countryClassAttribute['Player' + cellItem.occupierKey] = true;
+                    console.log('occupier.key:',cellItem.occupierKey);
                 }
 
                 if (this.action.targetKey == cellIndex) {
@@ -1010,7 +1011,7 @@ export default {
     border-color: orange !important;
 }
 
-.Player4 {
+.Player3 {
     fill: green !important;
     color: green !important;
     background-color: green !important;
@@ -1018,7 +1019,7 @@ export default {
 }
 
 
-.Player5 {
+.Player4 {
     fill: indigo !important;
     color: indigo !important;
     background-color: indigo !important;
@@ -1026,10 +1027,10 @@ export default {
 }
 
 .Player6 {
-    fill: blueviolet !important;
-    color: blueviolet !important;
-    background-color: blueviolet !important;
-    border-color: blueviolet !important;
+    fill: goldenrod !important;
+    color: goldenrod !important;
+    background-color: goldenrod !important;
+    border-color: goldenrod !important;
 }
 
 
