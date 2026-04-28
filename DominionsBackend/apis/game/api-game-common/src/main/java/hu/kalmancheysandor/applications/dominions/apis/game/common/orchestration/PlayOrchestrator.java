@@ -143,17 +143,12 @@ public class PlayOrchestrator {
             ArtificialPlayer player = null;
             GameMapConfigurationPlayer gameMapConfigurationPlayer = gameMap.getConfiguration().getPlayers().get(aiPlayerIndex);
 
-            if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_OTTO) {
-                player = new ArtificialPlayer(aiPlayerIndex, "AI-OTTO-UserUuid", "Mr Otto Ai " + aiPlayerIndex, GameMapEngineType.AI_OTTO, gameMapConfigurationPlayer.getCharacter(), "AI-OTTO-EndpointKey-" + aiPlayerIndex);
-            } else if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_EGON) {
-                player = new ArtificialPlayer(aiPlayerIndex, "AI-EGON-UserUuid", "Mr Egon Ai " + aiPlayerIndex, GameMapEngineType.AI_EGON, gameMapConfigurationPlayer.getCharacter(), "AI-EGON-EndpointKey-" + aiPlayerIndex);
-            } else if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_LIZ) {
-                player = new ArtificialPlayer(aiPlayerIndex, "AI-LIZ-UserUuid", "Miss Liz Ai " + aiPlayerIndex, GameMapEngineType.AI_LIZ, gameMapConfigurationPlayer.getCharacter(), "AI-LIZ-EndpointKey-" + aiPlayerIndex);
+
+            if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_LIZ) {
+                player = new ArtificialPlayer(aiPlayerIndex, "AI-LIZ-UserUuid"+aiPlayerIndex, "AiLiz["+ aiPlayerIndex+"]:" +gameMapConfigurationPlayer.getCharacter(), GameMapEngineType.AI_LIZ, gameMapConfigurationPlayer.getCharacter(), "AI-LIZ-EndpointKey-" + aiPlayerIndex);
             } else if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_HUGO) {
-                player = new ArtificialPlayer(aiPlayerIndex, "AI-HUGO-UserUuid", "Mr Hugo Ai " + aiPlayerIndex, GameMapEngineType.AI_HUGO, gameMapConfigurationPlayer.getCharacter(), "AI-HUGO-EndpointKey-" + aiPlayerIndex);
-            } else if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_HELGA) {
-                player = new ArtificialPlayer(aiPlayerIndex, "AI-HELGA-UserUuid", "Miss Helga Ai " + aiPlayerIndex, GameMapEngineType.AI_HELGA, gameMapConfigurationPlayer.getCharacter(), "AI-HELGA-EndpointKey-" + aiPlayerIndex);
-            } else {
+                player = new ArtificialPlayer(aiPlayerIndex, "AI-HUGO-UserUuid"+aiPlayerIndex, "AiHugo["+ aiPlayerIndex+"]:" +gameMapConfigurationPlayer.getCharacter(), GameMapEngineType.AI_HUGO, gameMapConfigurationPlayer.getCharacter(), "AI-HUGO-EndpointKey-" + aiPlayerIndex);
+            }  else {
                 throw new IllegalPointOfExecution("Unknown ai engine type is found:" + gameMapConfigurationPlayer.getEngine().name());
             }
 
@@ -334,8 +329,12 @@ public class PlayOrchestrator {
     }
 
     public boolean isUserUuidAlreadyRegistered(@NotNull String userUuid) {
+        System.out.println("+++++++++++++++++isUserUuidAlreadyRegistered++++++++++");
         for (PlayerData player : this.playState.players.values()) {
+
+            System.out.println("Check userUuid: " + userUuid + " against player: " + player.getUserUuid());
             if (userUuid.equals(player.getUserUuid())) {
+                System.out.println("TRUE");
                 return true;
             }
         }
