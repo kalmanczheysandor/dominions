@@ -4,7 +4,7 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.serv
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetworkTrainingConfiguration;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetworkTrainingConfiguration;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.orchestration.PlayState;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.orchestration.player.PlayerData;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.action.GameAction;

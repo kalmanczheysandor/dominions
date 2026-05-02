@@ -9,6 +9,9 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/apis/ai/api-ai-egon/pom.xml" />
+        <option value="$PROJECT_DIR$/apis/ai/api-ai-helga/pom.xml" />
+        <option value="$PROJECT_DIR$/apis/ai/api-ai-otto/pom.xml" />
         <option value="$PROJECT_DIR$/apis/mailing/api-mailing-common/pom.xml" />
       </set>
     </option>

@@ -3,9 +3,9 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.serv
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizInputData;
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetwork;
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetworkTrainingConfiguration;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizInputData;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetworkTrainingConfiguration;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralInputData;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.NeuralNetworkTrainingResult;

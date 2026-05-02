@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.ai.common.service;
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.common.AiDecisionContext;
-import hu.kalmancheysandor.applications.dominions.apis.ai.common.AiDecisionResult;
+import hu.kalmancheysandor.applications.dominions.apis.ai.general.common.AiDecisionContext;
+import hu.kalmancheysandor.applications.dominions.apis.ai.general.common.AiDecisionResult;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
 import org.modelmapper.ModelMapper;

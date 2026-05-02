@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service;
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.common.TAiEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.general.common.TAiEngine;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.service.TAiService;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryPlayer;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryScenario;

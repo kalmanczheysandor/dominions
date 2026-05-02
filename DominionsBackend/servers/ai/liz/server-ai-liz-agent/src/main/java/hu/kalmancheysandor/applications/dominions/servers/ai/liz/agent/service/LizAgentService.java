@@ -1,8 +1,8 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.liz.agent.service;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizAiEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizNeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizAiEngine;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralAiEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralNetwork;
 
@@ -20,7 +20,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exce
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.character.LizCharacterNotFoundByCodeException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.character.LizCharacterNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.LizNeuralConceptAssociationRestrictedException;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.LizNeuralConceptNoExecutionExistsException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.LizNeuralConceptNoFinishedExecutionExistsException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.concept.LizNeuralConceptNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.exception.variant.LizVariantAssociationRestrictedException;

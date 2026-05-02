@@ -34,9 +34,9 @@ public class SecurityContextDebugFilter extends OncePerRequestFilter {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null) {
-            System.out.println("❌ [GAME] No Authentication found in SecurityContext");
+            System.out.println("NO [GAME] No Authentication found in SecurityContext");
         } else {
-            System.out.println("✅ [GAME] Authenticated user: "
+            System.out.println("YES [GAME] Authenticated user: "
                     + auth.getName()
                     + " | authorities=" + auth.getAuthorities());
         }

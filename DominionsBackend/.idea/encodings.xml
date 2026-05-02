@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/api-ai-egon/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/api-ai-helga/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-heuristic/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-hugo/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-liz/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/apis/ai/api-ai-neural/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/api-ai-otto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/engine/api-ai-hugo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/engine/api-ai-liz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/general/api-ai-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/general/api-ai-heuristic/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/general/api-ai-neural/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/configuration/api-configuration-client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/configuration/api-configuration-client/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/etc/api-general/src/main/java" charset="UTF-8" />

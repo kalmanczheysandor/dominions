@@ -10,6 +10,13 @@
     <packaging>pom</packaging>
     <modules>
         <!--  APIS  -->
+
+        <module>apis/ai/general/api-ai-common</module>
+        <module>apis/ai/general/api-ai-neural</module>
+        <module>apis/ai/general/api-ai-heuristic</module>
+        <module>apis/ai/engine/api-ai-liz</module>
+        <module>apis/ai/engine/api-ai-hugo</module>
+
         <module>apis/monitoring/api-monitoring-client</module>
 
         <module>apis/server/api-server-all</module>
@@ -25,14 +32,7 @@
         <module>apis/server/api-server-mailing-shared</module>
 
 
-        <module>apis/ai/api-ai-common</module>
-        <module>apis/ai/api-ai-otto</module>
-        <module>apis/ai/api-ai-liz</module>
-        <module>apis/ai/api-ai-neural</module>
-        <module>apis/ai/api-ai-heuristic</module>
-        <module>apis/ai/api-ai-egon</module>
-        <module>apis/ai/api-ai-hugo</module>
-        <module>apis/ai/api-ai-helga</module>
+
         <module>apis/game/api-game-common</module>
 
         <module>apis/util/api-util-uuid</module>

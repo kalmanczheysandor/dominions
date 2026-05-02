@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.liz.agent.etc;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.liz.LizAiEngine;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizAiEngine;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameState;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameStateCell;
 import lombok.AllArgsConstructor;
