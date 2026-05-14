@@ -17,6 +17,7 @@
         <module>apis/ai/engine/api-ai-hugo</module>
 
         <module>apis/monitoring/api-monitoring-client</module>
+        <module>apis/configuration/api-configuration-client</module>
 
         <module>apis/server/api-server-all</module>
         <module>apis/server/api-server-common</module>
@@ -56,7 +57,7 @@
         <module>servers/server-monitoring</module>
         <module>apis/util/api-util-file</module>
         <module>apis/util/api-util-validate</module>
-        <module>apis/configuration/api-configuration-client</module>
+
 
     </modules>
 

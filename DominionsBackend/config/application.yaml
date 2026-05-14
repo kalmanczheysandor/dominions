@@ -5,7 +5,8 @@ global:
     config-repo: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
   monitoring:
     rabbitmq:
-      host: localhost
+#      host: localhost
+      host: CHANGE_ME
       port: 5672
       username: guest
       password: guest

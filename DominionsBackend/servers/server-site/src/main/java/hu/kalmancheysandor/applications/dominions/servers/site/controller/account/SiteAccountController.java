@@ -9,10 +9,12 @@ import hu.kalmancheysandor.applications.dominions.servers.site.dto.account.signu
 import hu.kalmancheysandor.applications.dominions.servers.site.dto.account.signup.SiteAccountSignUpVerificationResponse;
 import hu.kalmancheysandor.applications.dominions.servers.site.service.account.SiteAccountService;
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @RestController
@@ -25,6 +27,7 @@ public class SiteAccountController {
     @Autowired
     private SiteAuthenticationService authenticationService;
 
+    private static final Logger log = LoggerFactory.getLogger(SiteAccountController.class);
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,6 +55,14 @@ public class SiteAccountController {
     public SiteAccountSignUpResponse recovery(@Valid @RequestBody SiteAccountRecoveryRequest request) {
         // Check permission
 //        authenticationService.assertHasAddPermission(SitePermission.generator().account().signUp());
+
+
+
+        log.info("[RECOVERY] Login started");
+
+        log.warn("[RECOVERY] Invalid password");
+
+        log.error("[RECOVERY] Authentication failed");
 
         return siteAccountService.recovery(request);
     }
