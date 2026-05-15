@@ -1,0 +1,110 @@
+services:
+  server-config:
+    build: ./servers/server-config
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config:/config
+
+  server-eureka:
+    build: ./servers/server-eureka
+    ports:
+      - "15001:15001"
+    depends_on:
+      - server-config
+
+  server-gateway:
+    build: ./servers/server-gateway
+    ports:
+      - "15000:15000"
+    depends_on:
+      - server-config
+
+  server-auth:
+    build: ./servers/server-auth
+    ports:
+      - "15002:15002"
+    depends_on:
+      - server-config
+
+  server-site:
+    build: ./servers/server-site
+    ports:
+      - "15009:15009"
+    depends_on:
+      - server-config
+
+  server-admin:
+    build: ./servers/server-admin
+    ports:
+      - "15010:15010"
+    depends_on:
+      - server-config
+
+  server-game:
+    build: ./servers/server-game
+    ports:
+      - "15020:15020"
+    depends_on:
+      - server-config
+
+  server-mailing:
+    build: ./servers/server-mailing
+    ports:
+      - "15099:15099"
+    depends_on:
+      - server-config
+
+  server-monitoring:
+    build: ./servers/server-monitoring
+    ports:
+      - "15500:15500"
+    depends_on:
+      - server-config
+
+  server-zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    depends_on:
+      - server-config
+
+
+
+  #  site-service:
+#    build: ./servers/server-site
+
+
+  #
+  #  order-service:
+  #    build: ./order-service
+
+
+#  auth-service:
+#    build: ./auth-service
+#
+#  order-service:
+#    build: ./order-service
+
+#  payment-service:
+#    build: ./payment-service
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"

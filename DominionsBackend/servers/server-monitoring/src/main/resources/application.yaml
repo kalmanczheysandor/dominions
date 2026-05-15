@@ -5,6 +5,7 @@ spring:
   application:
     name: 'server-monitoring'
   config:
-    import: configserver:http://localhost:8888
+#    import: configserver:http://localhost:8888
+    import: configserver:http://server-config:8888
 
 debug: true
