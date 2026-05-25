@@ -2,7 +2,7 @@
 
 global:
   paths:
-    config-repo: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
+    config-repo: file:CHANGE_ME
   monitoring:
     rabbitmq:
       host: localhost

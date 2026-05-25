@@ -1,40 +1,52 @@
 server:
   port: 8888
+
 logging:
   level:
     org.springframework.cloud.config.client: DEBUG
     org.springframework.cloud.config.server: DEBUG
+
 spring:
   application:
     name: 'server-config'
+
   profiles:
     active: composite,native
+
   cloud:
     config:
       server:
         composite:
           - type: native
-            search-locations: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config\common
+            search-locations: file:CHANGE_ME/common
+
           - type: native
-            search-locations: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
+            search-locations: file:CHANGE_ME
+
           - type: native
             search-locations:
-              - file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config\common
-              - file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config\{application}
-              - file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
+              - file:CHANGE_ME/common
+              - file:CHANGE_ME/{application}
+              - file:CHANGE_ME
+
     bus:
       enabled: true
 
-  rabbitmq: # RabbitMQ kapcsolat
-    host: ${global.monitoring.rabbitmq.host}
-    port: ${global.monitoring.rabbitmq.port}
-    username: ${global.monitoring.rabbitmq.username}
-    password: ${global.monitoring.rabbitmq.password}
-    virtual-host: ${global.monitoring.rabbitmq.virtual-host}
+  rabbitmq:
+#    host: ${global.monitoring.rabbitmq.host}
+#    port: ${global.monitoring.rabbitmq.port}
+#    username: ${global.monitoring.rabbitmq.username}
+#    password: ${global.monitoring.rabbitmq.password}
+#    virtual-host: ${global.monitoring.rabbitmq.virtual-host}
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
 debug: true
 
 management:
   endpoints:
     web:
       exposure:
-        include: busrefresh, busenv, refresh
+        include: busrefresh,busenv,refresh
