@@ -914,18 +914,8 @@
       },
       "2": {
         "type": "ARTIFICIAL",
-        "engine": "AI_HUGO",
-        "character": "HUGO-BRISK-1"
-      },
-      "3": {
-        "type": "ARTIFICIAL",
         "engine": "AI_LIZ",
         "character": "LIZ-BERN-1"
-      },
-      "4": {
-        "type": "ARTIFICIAL",
-        "engine": "AI_LIZ",
-        "character": "LIZ-GREGOR-1"
       }
     },
     "boardCells": {
@@ -1301,16 +1291,6 @@
         "name": "Mr Brisk",
         "reserveSize": 2,
         "isAlive": true
-      },
-      "3": {
-        "name": "Dr. Bern",
-        "reserveSize": 2,
-        "isAlive": true
-      },
-      "4": {
-        "name": "jr. Gregor",
-        "reserveSize": 2,
-        "isAlive": true
       }
     },
     "cells": {
@@ -1335,12 +1315,12 @@
         "armySize": 5
       },
       "5": {
-        "occupierKey": 3,
-        "armySize": 6
+        "occupierKey": null,
+        "armySize": 0
       },
       "6": {
-        "occupierKey": 4,
-        "armySize": 7
+        "occupierKey": null,
+        "armySize": 0
       },
       "7": {
         "occupierKey": null,

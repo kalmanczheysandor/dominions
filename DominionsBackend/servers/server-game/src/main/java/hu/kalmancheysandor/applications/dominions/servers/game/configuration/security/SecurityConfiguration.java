@@ -70,8 +70,10 @@ public class SecurityConfiguration {
                                 "http://localhost:8080",
                                 "http://localhost:8081",
                                 "https://game.dominions.hu",
-                                "https://admin.dominions.hu"
-                        ) // A frontend URL
+                                "https://admin.dominions.hu",
+                                "https://game.dominions.test",
+                                "https://admin.dominions.test"
+                                ) // A frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowedHeaders("*")
                         .allowCredentials(true) // Engedélyezi a session cookie-kat

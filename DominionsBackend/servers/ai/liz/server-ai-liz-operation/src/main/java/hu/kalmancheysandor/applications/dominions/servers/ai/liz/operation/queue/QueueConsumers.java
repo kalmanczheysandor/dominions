@@ -33,7 +33,7 @@ public class QueueConsumers {
     }
 
 
-    //
+
 //    @Bean
 //    public Consumer<String> queueHistoryBroadcast(LizService lizService) {
 //        return payload -> {

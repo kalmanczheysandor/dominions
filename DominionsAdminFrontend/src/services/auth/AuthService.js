@@ -87,9 +87,10 @@ class AuthService extends TService {
 
     async login(userData) {
 
+        console.log("login", userData);
         try {
             const url = super.extendWithHost('/auth/admin/login');
-
+            console.log("login.url", url);
             // Communicate with server
             const response = await fetch(url, {
                 method: 'POST',
@@ -112,6 +113,7 @@ class AuthService extends TService {
             // Save data of authenticated user
             const authStore = this.getAuthStore();
             console.log("X3");
+            // console.log("ANSWER:",answer.data);
             authStore.isAuthenticated = true;
             authStore.user.identifier = answer.data.identifier;
             authStore.user.permissions = answer.data.permissions;

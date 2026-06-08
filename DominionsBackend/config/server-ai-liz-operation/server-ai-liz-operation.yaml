@@ -3,14 +3,14 @@ server:
 spring:
   config:
     import:
-      - ${global.paths.config-repo}\common\eureka.yaml
-      - ${global.paths.config-repo}\common\tracing.yaml
-      - ${global.paths.config-repo}\common\monitoring.yaml
-      - ${global.paths.config-repo}\common\logging.yaml
-      - ${global.paths.config-repo}\common\db.yaml
-#      - ${global.paths.config-repo}\common\session.yaml
-      #      - ${global.paths.config-repo}\common\upload.yaml
-      - ${global.paths.config-repo}\common\configuration-bus-client.yaml
+      - ${global.paths.config-repo}/common/eureka.yaml
+      - ${global.paths.config-repo}/common/tracing.yaml
+      - ${global.paths.config-repo}/common/monitoring.yaml
+      - ${global.paths.config-repo}/common/logging.yaml
+      - ${global.paths.config-repo}/common/db.yaml
+#      - ${global.paths.config-repo}/common/session.yaml
+      #      - ${global.paths.config-repo}/common/upload.yaml
+      - ${global.paths.config-repo}/common/configuration-bus-client.yaml
     debug: true
   cloud:
     function:

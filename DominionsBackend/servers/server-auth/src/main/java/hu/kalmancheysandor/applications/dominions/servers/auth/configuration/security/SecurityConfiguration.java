@@ -198,7 +198,9 @@ public class SecurityConfiguration {
                                 "http://localhost:8081",
                                 "https://localhost:8081",
                                 "https://game.dominions.hu",
-                                "https://admin.dominions.hu"
+                                "https://admin.dominions.hu",
+                                "https://game.dominions.test",
+                                "https://admin.dominions.test"
                         ) // A frontend URL
 //                    .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")

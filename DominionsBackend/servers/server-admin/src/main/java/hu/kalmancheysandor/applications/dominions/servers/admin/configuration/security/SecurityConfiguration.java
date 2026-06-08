@@ -68,7 +68,8 @@ public class SecurityConfiguration {
                         .allowedOrigins(
                                 "http://localhost:8081",
                                 "https://localhost:8081",
-                                "https://admin.dominions.hu"
+                                "https://admin.dominions.hu",
+                                "https://admin.dominions.test"
                         )  // A frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowedHeaders("*")

@@ -121,7 +121,7 @@ public class SiteAccountService {
         // Communication to mail delivery sub-system via proxy
         mailingServerProxy.enqueueSiteAccountSignUpVerificationMail(SiteAccountSignUpVerificationMailEnqueueRequest.builder()
                 .mailDeliveryData(MailDeliveryData.builder()
-                        .senderEmail("CHANGE_ME")
+                        .senderEmail("noreply@game.dominions.hu")
                         .recipientEmail("kalmanczheysandor@gmail.com")
                         .subject("SignUp verification")
                         .build()
@@ -198,7 +198,7 @@ public class SiteAccountService {
         // Communication to mail delivery sub-system via proxy
         mailingServerProxy.enqueueSiteAccountRecoveryVerificationMail(SiteAccountRecoveryVerificationMailEnqueueRequest.builder()
                 .mailDeliveryData(MailDeliveryData.builder()
-                        .senderEmail("CHANGE_ME")
+                        .senderEmail("noreply@game.dominions.hu")
                         .recipientEmail("kalmanczheysandor@gmail.com")
                         .subject("Recovery verification")
                         .build()

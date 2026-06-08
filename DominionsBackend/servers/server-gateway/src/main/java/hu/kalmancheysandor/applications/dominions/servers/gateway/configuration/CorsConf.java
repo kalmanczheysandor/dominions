@@ -23,8 +23,8 @@ public class CorsConf extends CorsConfiguration {
                 "http://localhost:8081",
                 "https://game.dominions.hu",
                 "https://admin.dominions.hu",
-                "https://game.demo.dominions.hu",
-                "https://admin.demo.dominions.hu"
+                "https://game.dominions.test",
+                "https://admin.dominions.test"
                 ) );
 //        config.setAllowedOrigins( List.of( "http://localhost:8080" ) ); //Collections.singtonList(....);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
