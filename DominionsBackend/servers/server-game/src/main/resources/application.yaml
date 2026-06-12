@@ -1,50 +1,8 @@
 server:
   port: 15020
 
-
 spring:
   application:
     name: 'server-game'
   config:
-    import: 'optional:configserver:'
-  cloud:
-    stream:
-      bindings:
-        queueHistoryBroadcast-out-0:
-          destination: history-broadcast-main
-          contentType: application/json
-        queueHistory-out-0:
-          destination: history-exchange-main
-        queueHistory-in-0:
-          destination: history-exchange-main
-          group: history-queue
-          consumer:
-            concurrency: 10
-            queueName: history-queue
-      rabbit:
-        bindings:
-          queueHistoryBroadcast-out-0:
-            producer:
-              exchangeType: topic
-              routingKey: x-route
-          queueHistory-out-0:
-            producer:
-              routingKey: route-main
-              exchangeType: direct
-#              persistentDeliveryMode: true
-          queueHistory-in-0:
-            consumer:
-              bindingRoutingKey: route-main
-              exchangeType: direct
-              acknowledgeMode: AUTO
-      binders:
-        rabbit:
-          type: rabbit
-          environment:
-            spring:
-              rabbitmq:
-                host: CHANGE_ME
-                port: 5672
-                username: guest
-                password: guest
-                virtual-host: /
+    import: configserver:http://server-config:8888
