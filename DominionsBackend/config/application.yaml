@@ -5,7 +5,7 @@ global:
     config-repo: file:/config
   monitoring:
     rabbitmq:
-      host: server-rabbitmq
+      host: CHANGE_ME
       port: 5672
       username: guest
       password: guest

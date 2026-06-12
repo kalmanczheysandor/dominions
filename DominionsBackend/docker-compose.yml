@@ -117,13 +117,13 @@ services:
 #      server-eureka:
 #        condition: service_healthy
 
-  server-rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - "15600:5672"
-      - "15601:15672"
-    healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+#  server-rabbitmq:
+#    image: rabbitmq:3-management
+#    ports:
+#      - "15600:5672"
+#      - "15601:15672"
+#    healthcheck:
+#      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 10
