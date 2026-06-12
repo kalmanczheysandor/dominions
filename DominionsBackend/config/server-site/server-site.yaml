@@ -11,4 +11,47 @@ spring:
       - ${global.paths.config-repo}/common/session.yaml
 #      - ${global.paths.config-repo}/common/upload.yaml
       - ${global.paths.config-repo}/common/configuration-bus-client.yaml
+  cloud:
+    stream:
+      bindings:
+        test-out-0:
+          destination: my-test-destination
+        myTest-in-0:
+          destination: my-test-destination
+          group: my-test-queue
+          consumer:
+            concurrency: 2
+      rabbit:
+        bindings:
+
+          test-out-0:
+            producer:
+              routingKeyExpression: '''my-test-key'''
+          myTest-in-0:
+            consumer:
+              bindingRoutingKey: '''my-test-key'''
+              queue-name-group-only: true
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: ${global.monitoring.rabbitmq.host}
+                port: ${global.monitoring.rabbitmq.port}
+                username: ${global.monitoring.rabbitmq.username}
+                password: ${global.monitoring.rabbitmq.password}
+                virtual-host: ${global.monitoring.rabbitmq.virtual-host}
+
+  mail:
+    host: CHANGE_ME
+    port: 25
+    username: CHANGE_ME
+    password: jwYur520f0he
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
 debug: true
