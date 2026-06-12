@@ -7,7 +7,7 @@ spring:
   application:
     name: 'server-ai-liz-agent'
   config:
-    import: configserver:http://localhost:8888
+    import: configserver:http://server-config:8888
 
 #  cloud:
 #    function:
@@ -35,7 +35,7 @@ spring:
 #          environment:
 #            spring:
 #              rabbitmq:
-#                host: localhost
+#                host: server-rabbitmq
 #                port: 5672
 #                username: guest
 #                password: guest

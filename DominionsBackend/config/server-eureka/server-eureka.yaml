@@ -2,8 +2,6 @@ server:
   port: 15001
 
 
-
-
 eureka:
   client:
     register-with-eureka: false

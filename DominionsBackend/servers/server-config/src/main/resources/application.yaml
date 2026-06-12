@@ -18,16 +18,16 @@ spring:
       server:
         composite:
           - type: native
-            search-locations: file:CHANGE_ME/common
+            search-locations: file:/config/common
 
           - type: native
-            search-locations: file:CHANGE_ME
+            search-locations: file:/config
 
           - type: native
             search-locations:
-              - file:CHANGE_ME/common
-              - file:CHANGE_ME/{application}
-              - file:CHANGE_ME
+              - file:/config/common
+              - file:/config/{application}
+              - file:/config
 
     bus:
       enabled: true
@@ -38,7 +38,7 @@ spring:
 #    username: ${global.monitoring.rabbitmq.username}
 #    password: ${global.monitoring.rabbitmq.password}
 #    virtual-host: ${global.monitoring.rabbitmq.virtual-host}
-    host: localhost
+    host: server-rabbitmq
     port: 5672
     username: guest
     password: guest

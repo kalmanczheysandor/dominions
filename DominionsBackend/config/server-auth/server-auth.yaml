@@ -39,7 +39,7 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: localhost
+                host: server-rabbitmq
                 port: 5672
                 username: guest
                 password: guest
