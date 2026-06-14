@@ -35,11 +35,16 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: CHANGE_ME
-                port: 5672
-                username: guest
-                password: guest
-                virtual-host: /
+#                host: CHANGE_ME
+#                port: 5672
+#                username: admin
+#                password: CHANGE_ME
+#                virtual-host: /
+                host: ${global.monitoring.rabbitmq.host}
+                port: ${global.monitoring.rabbitmq.port}
+                username: ${global.monitoring.rabbitmq.username}
+                password: ${global.monitoring.rabbitmq.password}
+                virtual-host: ${global.monitoring.rabbitmq.virtual-host}
 
 
 

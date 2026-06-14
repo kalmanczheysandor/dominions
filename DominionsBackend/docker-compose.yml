@@ -8,6 +8,8 @@ services:
     build: ./server-config
     ports:
       - "8888:8888"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     volumes:
       - CHANGE_ME:/config
     healthcheck:
@@ -22,6 +24,8 @@ services:
     build: ./server-gateway
     ports:
       - "15000:15000"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
@@ -33,6 +37,8 @@ services:
     build: ./server-eureka
     ports:
       - "15001:15001"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
          condition: service_healthy
@@ -50,6 +56,8 @@ services:
       - "15002:15002"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
@@ -62,6 +70,8 @@ services:
       - "15009:15009"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
@@ -74,6 +84,8 @@ services:
       - "15010:15010"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
@@ -87,6 +99,8 @@ services:
       - "15020:15020"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
@@ -99,6 +113,8 @@ services:
       - "15099:15099"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
@@ -111,19 +127,103 @@ services:
       - "15500:15500"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
 #      server-eureka:
 #        condition: service_healthy
 
-#  server-rabbitmq:
-#    image: rabbitmq:3-management
-#    ports:
-#      - "15600:5672"
-#      - "15601:15672"
-#    healthcheck:
-#      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 10
+
+
+  server-ai-hugo-operation:
+    build: ./server-ai-hugo-operation
+    ports:
+      - "15801:15043"
+    extra_hosts:
+      - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #      server-eureka:
+  #        condition: service_healthy
+
+
+  server-ai-hugo-agent-1:
+    build: ./server-ai-hugo-agent
+    ports:
+      - "15802:15044"
+    extra_hosts:
+      - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+#      server-eureka:
+#        condition: service_healthy
+
+
+  server-ai-hugo-agent-2:
+    build: ./server-ai-hugo-agent
+    ports:
+      - "15803:15044"
+    extra_hosts:
+      - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #      server-eureka:
+  #        condition: service_healthy
+
+
+  server-ai-liz-operation:
+    build: ./server-ai-liz-operation
+    ports:
+      - "15851:15042"
+    extra_hosts:
+      - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #      server-eureka:
+  #        condition: service_healthy
+
+
+  server-ai-liz-agent-1:
+    build: ./server-ai-liz-agent
+    ports:
+      - "15852:15041"
+    extra_hosts:
+      - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+    #      server-eureka:
+    #        condition: service_healthy
+
+  server-ai-liz-agent-2:
+    build: ./server-ai-liz-agent
+    ports:
+      - "15853:15041"
+    extra_hosts:
+      - "CHANGE_ME:host-gateway"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+
+
+
+    depends_on:
+      server-config:
+        condition: service_healthy
+    #      server-eureka:
+    #        condition: service_healthy

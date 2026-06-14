@@ -7,8 +7,8 @@ global:
     rabbitmq:
       host: CHANGE_ME
       port: 5672
-      username: guest
-      password: guest
+      username: admin
+      password: CHANGE_ME
       virtual-host: /
 app:
   test:

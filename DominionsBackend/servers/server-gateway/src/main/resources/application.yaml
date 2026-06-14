@@ -1,5 +1,3 @@
-
-
 server:
   port: 15000
 servlet:
@@ -12,17 +10,6 @@ spring:
     name: 'server-gateway'
   config:
     import: configserver:http://server-config:8888
-
-#  cloud:
-#    gateway:
-#      forwarded:
-#        enabled: true
-#      default-filters:
-#        - PreserveHostHeader
-#
-#
-
-
 
 
 
