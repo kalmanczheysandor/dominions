@@ -13,3 +13,9 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://server-zipkin:9411/api/v2/spans
