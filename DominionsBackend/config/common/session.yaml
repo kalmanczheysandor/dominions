@@ -7,7 +7,7 @@ spring:
     store-type: jdbc
     timeout: 30m
     jdbc:
-      table-name: SPRING_SESSION      # Ez figyelemn kivul van hagyva az "always" sechema letrehozaskor, csak akkor figyeli, ha mi hoztuk letre a tablat manualisan
-      attributes-table-name: SPRING_SESSION_ATTRIBUTES # Ez figyelemn kivul van hagyva az "always" sechema letrehozaskor, csak akkor figyeli, ha mi hoztuk letre a tablat manualisan
+      table-name: SPRING_SESSION      # This is ignored when the schema is created with "create" or "create-drop". It is only applied if the table was created manually.
+      attributes-table-name: SPRING_SESSION_ATTRIBUTES # This is ignored when the schema is created in "always" mode. It is only taken into account if the table was created manually.
       initialize-schema: always  # Automatic creation of session related tables
 
