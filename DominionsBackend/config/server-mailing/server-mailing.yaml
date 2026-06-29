@@ -47,14 +47,14 @@ spring:
                 virtual-host: ${global.monitoring.rabbitmq.virtual-host}
 
   mail:
-    host: CHANGE_ME
-    port: 587
-    username: "CHANGE_ME"
-    password: "CHANGE_ME"
+    host: ${MAIL_DELIVERY_PRIMARY_HOST}
+    port: ${MAIL_DELIVERY_PRIMARY_PORT}
+    username: ${MAIL_DELIVERY_PRIMARY_USERNAME}
+    password: ${MAIL_DELIVERY_PRIMARY_PASSWORD}
     properties:
       mail:
         smtp:
-          auth: true
+          auth: ${MAIL_DELIVERY_PRIMARY_SMTP_AUTH}
           starttls:
-            enable: true
+            enable: ${MAIL_DELIVERY_PRIMARY_SMTP_STARTTLS_ENABLE}
   debug: true
