@@ -5,16 +5,17 @@ global:
     config-repo: file:/config
   monitoring:
     rabbitmq:
-      host: CHANGE_ME
-      port: 5672
-      username: admin
-      password: CHANGE_ME
-      virtual-host: /
+      host: ${RABBITMQ_MONITORING_HOST}
+      port: ${RABBITMQ_MONITORING_PORT}
+      username: ${RABBITMQ_MONITORING_USERNAME}
+      password: ${RABBITMQ_MONITORING_PASSWORD}
+      virtual-host: ${RABBITMQ_MONITORING_VIRTUAL_HOST}
 app:
   test:
     x: 545
   global:
-    images-folder: "CHANGE_ME/images"
+    data-folder: ${APP_GLOBAL_DATA_FOLDER}
+    images-folder: "${app.global.data-folder}/images"
 
   game-server:
     session-management:
@@ -22,7 +23,7 @@ app:
 
   liz-server:
     neural-network:
-      base-folder: "CHANGE_ME/ai/liz"
+      base-folder: "${app.global.data-folder}/ai/liz"
 
   site-server:
     account:
