@@ -1,42 +1,41 @@
 services:
 
-
-
-
-
   server-config:
     build: ./server-config
     ports:
       - "8888:8888"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     volumes:
-      - CHANGE_ME:/config
+      - ${CENTRAL_CONFIG_REPO_PATH}:/config
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
       interval: 10s
       timeout: 5s
       retries: 10
 
-
-
   server-gateway:
     build: ./server-gateway
     ports:
       - "15000:15000"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-  #      server-eureka:
-  #        condition: service_healthy
+
 
 
   server-eureka:
     build: ./server-eureka
     ports:
       - "15001:15001"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
@@ -56,13 +55,13 @@ services:
       - "15002:15002"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-#      server-eureka:
-#        condition: service_healthy
 
   server-site:
     build: ./server-site
@@ -70,13 +69,13 @@ services:
       - "15009:15009"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-#      server-eureka:
-#        condition: service_healthy
 
   server-admin:
     build: ./server-admin
@@ -84,14 +83,13 @@ services:
       - "15010:15010"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-#      server-eureka:
-#        condition: service_healthy
-
 
   server-game:
     build: ./server-game
@@ -99,13 +97,13 @@ services:
       - "15020:15020"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-#      server-eureka:
-#        condition: service_healthy
 
   server-mailing:
     build: ./server-mailing
@@ -113,13 +111,13 @@ services:
       - "15099:15099"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-#      server-eureka:
-#        condition: service_healthy
 
   server-monitoring:
     build: ./server-monitoring
@@ -127,15 +125,13 @@ services:
       - "15500:15500"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-#      server-eureka:
-#        condition: service_healthy
-
-
 
   server-ai-hugo-operation:
     build: ./server-ai-hugo-operation
@@ -143,14 +139,13 @@ services:
       - "15801:15043"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
     depends_on:
       server-config:
         condition: service_healthy
-  #      server-eureka:
-  #        condition: service_healthy
-
 
   server-ai-hugo-agent-1:
     build: ./server-ai-hugo-agent
@@ -158,14 +153,13 @@ services:
       - "15802:15044"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-#      server-eureka:
-#        condition: service_healthy
-
 
   server-ai-hugo-agent-2:
     build: ./server-ai-hugo-agent
@@ -173,13 +167,13 @@ services:
       - "15803:15044"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-  #      server-eureka:
-  #        condition: service_healthy
 
   server-ai-hugo-agent-3:
     build: ./server-ai-hugo-agent
@@ -187,13 +181,13 @@ services:
       - "15804:15044"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-  #      server-eureka:
-  #        condition: service_healthy
 
   server-ai-hugo-agent-4:
     build: ./server-ai-hugo-agent
@@ -201,13 +195,13 @@ services:
       - "15805:15044"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-  #      server-eureka:
-  #        condition: service_healthy
 
   server-ai-liz-operation:
     build: ./server-ai-liz-operation
@@ -215,14 +209,13 @@ services:
       - "15851:15042"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-  #      server-eureka:
-  #        condition: service_healthy
-
 
   server-ai-liz-agent-1:
     build: ./server-ai-liz-agent
@@ -230,13 +223,13 @@ services:
       - "15852:15041"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-    #      server-eureka:
-    #        condition: service_healthy
 
   server-ai-liz-agent-2:
     build: ./server-ai-liz-agent
@@ -244,14 +237,13 @@ services:
       - "15853:15041"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-    #      server-eureka:
-    #        condition: service_healthy
-
 
   server-ai-liz-agent-3:
     build: ./server-ai-liz-agent
@@ -259,15 +251,13 @@ services:
       - "15854:15041"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-    #      server-eureka:
-    #        condition: service_healthy
-
-
 
   server-ai-liz-agent-4:
     build: ./server-ai-liz-agent
@@ -275,13 +265,13 @@ services:
       - "15855:15041"
     extra_hosts:
       - "CHANGE_ME:host-gateway"
+    env_file:
+      - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
     depends_on:
       server-config:
         condition: service_healthy
-    #      server-eureka:
-    #        condition: service_healthy
 
   server-zipkin:
     image: openzipkin/zipkin
