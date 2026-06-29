@@ -39,3 +39,9 @@ build/
 
 
 /.data/
+
+
+# Environment files
+.env
+**/.env
+**/*.env
