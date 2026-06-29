@@ -42,16 +42,4 @@ spring:
                 username: ${global.monitoring.rabbitmq.username}
                 password: ${global.monitoring.rabbitmq.password}
                 virtual-host: ${global.monitoring.rabbitmq.virtual-host}
-
-  mail:
-    host: CHANGE_ME
-    port: 25
-    username: CHANGE_ME
-    password: jwYur520f0he
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: false
 debug: true
