@@ -1,7 +1,6 @@
 server:
   port: 15043
 
-
 spring:
   application:
     name: 'server-ai-hugo-operation'

@@ -1,8 +1,6 @@
 server:
   port: 15009
 
-
-
 spring:
   application:
     name: 'server-site'
