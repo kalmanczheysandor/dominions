@@ -8,6 +8,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.user.site.service.
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -44,6 +45,12 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
+
+    @Value("${app.urls.admin-site}")
+    private String adminSiteUrl;
+
+    @Value("${app.urls.game-site}")
+    private String gameSiteUrl;
 
     @Autowired
     private SiteUserDetailsService siteUserDetailsService;
@@ -193,14 +200,8 @@ public class SecurityConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                                "http://localhost:8080",
-                                "https://localhost:8080",
-                                "http://localhost:8081",
-                                "https://localhost:8081",
-                                "https://game.dominions.hu",
-                                "https://admin.dominions.hu",
-                                "https://game.dominions.test",
-                                "https://admin.dominions.test"
+                                adminSiteUrl,
+                                gameSiteUrl
                         ) // A frontend URL
 //                    .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")

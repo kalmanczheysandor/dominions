@@ -3,6 +3,7 @@ package hu.kalmancheysandor.applications.dominions.servers.game.configuration.se
 
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.service.SiteUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -23,6 +24,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
 
+    @Value("${app.urls.admin-site}")
+    private String adminSiteUrl;
+
+    @Value("${app.urls.game-site}")
+    private String gameSiteUrl;
 
     @Autowired
     @Lazy
@@ -67,13 +73,9 @@ public class SecurityConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                                "http://localhost:8080",
-                                "http://localhost:8081",
-                                "https://game.dominions.hu",
-                                "https://admin.dominions.hu",
-                                "https://game.dominions.test",
-                                "https://admin.dominions.test"
-                                ) // A frontend URL
+                                adminSiteUrl,
+                                gameSiteUrl
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowedHeaders("*")
                         .allowCredentials(true) // Engedélyezi a session cookie-kat

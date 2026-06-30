@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.servers.gateway.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -10,6 +11,12 @@ import java.util.List;
 
 @Configuration
 public class CorsConf extends CorsConfiguration {
+    @Value("${app.urls.admin-site}")
+    private String adminSiteUrl;
+
+    @Value("${app.urls.game-site}")
+    private String gameSiteUrl;
+
     @Bean
     public CorsWebFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
@@ -18,14 +25,10 @@ public class CorsConf extends CorsConfiguration {
         config.setAllowCredentials(true);
 
         // Csak az engedélyezett domainek, amik ténylegesen hívhatják a gateway-t
-        config.setAllowedOrigins( List.of(
-                "http://localhost:8080",
-                "http://localhost:8081",
-                "https://game.dominions.hu",
-                "https://admin.dominions.hu",
-                "https://game.dominions.test",
-                "https://admin.dominions.test"
-                ) );
+        config.setAllowedOrigins(List.of(
+                adminSiteUrl,
+                gameSiteUrl
+        ));
 //        config.setAllowedOrigins( List.of( "http://localhost:8080" ) ); //Collections.singtonList(....);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         config.setAllowedHeaders(List.of("*"));
@@ -34,8 +37,6 @@ public class CorsConf extends CorsConfiguration {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);  // Alkalmazzuk minden REST végpontra is
-
-
 
 
         // WebSocketekhez is kiterjesztjük a CORS beállítást

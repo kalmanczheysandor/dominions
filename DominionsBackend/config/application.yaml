@@ -16,6 +16,10 @@ app:
   global:
     data-folder: ${APP_GLOBAL_DATA_FOLDER}
     images-folder: "${app.global.data-folder}/images"
+  urls:
+    admin-site: ${APP_URLS_ADMIN_SITE}
+    game-site: ${APP_URLS_GAME_SITE}
+    backend: ${APP_URLS_BACKEND}
 
   game-server:
     session-management:
