@@ -17,11 +17,11 @@ public class SecurityContextDebugFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-
         String requestedSessionId = request.getRequestedSessionId();
         HttpSession session = request.getSession(false);
 
-        System.out.println("---- SESSION DEBUG ----");
+        //
+        System.out.println("---------------- SESSION DEBUG -----------------");
         System.out.println("Requested Session ID: " + requestedSessionId);
 
         if (session != null) {
@@ -30,13 +30,13 @@ public class SecurityContextDebugFilter extends OncePerRequestFilter {
             System.out.println("No HttpSession exists");
         }
 
-
+        //
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null) {
-            System.out.println("NO [GAME] No Authentication found in SecurityContext");
+            System.out.println("[SecurityContext]: No Authentication found in SecurityContext");
         } else {
-            System.out.println("YES [GAME] Authenticated user: "
+            System.out.println("[SecurityContext]: Authenticated user: "
                     + auth.getName()
                     + " | authorities=" + auth.getAuthorities());
         }

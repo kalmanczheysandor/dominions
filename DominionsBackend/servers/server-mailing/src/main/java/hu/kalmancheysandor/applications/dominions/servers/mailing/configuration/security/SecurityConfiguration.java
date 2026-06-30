@@ -1,5 +1,4 @@
-package hu.kalmancheysandor.applications.dominions.servers.admin.configuration.security;
-
+package hu.kalmancheysandor.applications.dominions.servers.mailing.configuration.security;
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityContextDebugFilter;
@@ -36,12 +35,12 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // CSRF-t kikapcsolod, ami rendben van REST-nél
+                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .securityContext(context -> context
-                        .securityContextRepository(contextRepository)) // Biztosítja a `SecurityContext` mentését/visszaállítását
+                        .securityContextRepository(contextRepository)) //It provides the saving and restoration `SecurityContext`
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Használj mindig új session-t
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterAfter(
                         new SecurityContextDebugFilter(),
@@ -50,21 +49,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/spring-boot-chat/**").permitAll()    // websocket
-                        .requestMatchers("/site/spring-boot-chat/**").permitAll()    // websocket
-                        .requestMatchers("/app/**").permitAll()//websocket
-                        .requestMatchers("/site/app/**").permitAll()//websocket
-                        .requestMatchers("/site/**").permitAll()
-                        .requestMatchers("/data/**").permitAll()
-
                 )
                 .formLogin(f -> f.disable())
         ;
 
         return http.build();
     }
-
-
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -73,12 +63,13 @@ public class SecurityConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                            adminSiteUrl
+                                adminSiteUrl,
+                                gameSiteUrl
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowedHeaders("*")
-                        .allowCredentials(true) // Engedélyezi a session cookie-kat
-                        .exposedHeaders("Set-Cookie"); // EZ FONTOS!
+                        .allowCredentials(true); // Allows a session cookie-kat
+                //.exposedHeaders("Set-Cookie"); // TODO: ez itt lehet hogy nem kell
             }
         };
     }
@@ -87,7 +78,6 @@ public class SecurityConfiguration {
     public SecurityContextRepository securityContextRepository() {
         return new HttpSessionSecurityContextRepository();
     }
-
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {

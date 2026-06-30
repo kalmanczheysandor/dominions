@@ -1,6 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.servers.site.configuration.security;
 
 
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityContextDebugFilter;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.service.SiteUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
