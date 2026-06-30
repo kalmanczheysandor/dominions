@@ -24,7 +24,6 @@
         <module>apis/server/api-server-user-site</module>
         <module>apis/server/api-server-user-admin</module>
         <module>apis/server/api-server-user-common</module>
-        <module>apis/server/api-server-authentication-common</module>
         <module>apis/server/api-server-ai-common</module>
         <module>apis/server/api-server-ai-liz-shared</module>
         <module>apis/server/api-server-ai-hugo-shared</module>
