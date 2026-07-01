@@ -28,7 +28,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableJpaRepositories(basePackages = {
 //    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.repository",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository",
-        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
+//        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
         "hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation"
 })
 @EntityScan(basePackages = {

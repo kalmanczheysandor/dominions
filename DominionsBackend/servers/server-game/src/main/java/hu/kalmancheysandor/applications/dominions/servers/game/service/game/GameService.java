@@ -489,6 +489,7 @@ public class GameService {
                 .playState(playState)
                 .scenarioUuid(gameScenario.getUuid())
                 .sessionUuid(gameSession.getUuid())
+                .scenarioName(gameScenario.getTitle())
                 .build()
         );
     }

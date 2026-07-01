@@ -2,19 +2,24 @@
 
 global:
   paths:
-    config-repo: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
+    config-repo: file:/config
   monitoring:
     rabbitmq:
-      host: localhost
-      port: 5672
-      username: guest
-      password: guest
-      virtual-host: /
+      host: ${RABBITMQ_MONITORING_HOST}
+      port: ${RABBITMQ_MONITORING_PORT}
+      username: ${RABBITMQ_MONITORING_USERNAME}
+      password: ${RABBITMQ_MONITORING_PASSWORD}
+      virtual-host: ${RABBITMQ_MONITORING_VIRTUAL_HOST}
 app:
   test:
     x: 545
   global:
-    images-folder: "c:/@/@Szakdolgozat1/_apps/Dominions/DominionsBackend/.data/images"
+    data-folder: ${APP_GLOBAL_DATA_FOLDER}
+    images-folder: "${app.global.data-folder}/images"
+  urls:
+    admin-site: ${APP_URLS_ADMIN_SITE}
+    game-site: ${APP_URLS_GAME_SITE}
+    backend: ${APP_URLS_BACKEND}
 
   game-server:
     session-management:
@@ -22,7 +27,7 @@ app:
 
   liz-server:
     neural-network:
-      base-folder: "c:/@/@Szakdolgozat1/_apps/Dominions/DominionsBackend/.data/ai/liz"
+      base-folder: "${app.global.data-folder}/ai/liz"
 
   site-server:
     account:

@@ -920,12 +920,12 @@
       "3": {
         "type": "ARTIFICIAL",
         "engine": "AI_LIZ",
-        "character": "LIZ-BERN"
+        "character": "LIZ-BERN-1"
       },
       "4": {
         "type": "ARTIFICIAL",
         "engine": "AI_LIZ",
-        "character": "LIZ-GREGOR"
+        "character": "LIZ-GREGOR-1"
       }
     },
     "boardCells": {

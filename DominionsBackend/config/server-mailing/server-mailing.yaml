@@ -4,14 +4,14 @@ server:
 spring:
   config:
     import:
-      - ${global.paths.config-repo}\common\eureka.yaml
-      - ${global.paths.config-repo}\common\tracing.yaml
-      - ${global.paths.config-repo}\common\monitoring.yaml
-      - ${global.paths.config-repo}\common\logging.yaml
-      - ${global.paths.config-repo}\common\db.yaml
-  #      - ${global.paths.config-repo}\common\session.yaml
-  #      - ${global.paths.config-repo}\common\upload.yaml
-      - ${global.paths.config-repo}\common\configuration-bus-client.yaml
+      - ${global.paths.config-repo}/common/eureka.yaml
+      - ${global.paths.config-repo}/common/tracing.yaml
+      - ${global.paths.config-repo}/common/monitoring.yaml
+      - ${global.paths.config-repo}/common/logging.yaml
+      - ${global.paths.config-repo}/common/db.yaml
+  #      - ${global.paths.config-repo}/common/session.yaml
+  #      - ${global.paths.config-repo}/common/upload.yaml
+      - ${global.paths.config-repo}/common/configuration-bus-client.yaml
 
   cloud:
     stream:
@@ -35,23 +35,21 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: localhost
-                port: 5672
-                username: guest
-                password: guest
-                virtual-host: /
-
-
+                host: ${global.monitoring.rabbitmq.host}
+                port: ${global.monitoring.rabbitmq.port}
+                username: ${global.monitoring.rabbitmq.username}
+                password: ${global.monitoring.rabbitmq.password}
+                virtual-host: ${global.monitoring.rabbitmq.virtual-host}
 
   mail:
-    host: CHANGE_ME
-    port: 25
-    username: CHANGE_ME
-    password: jwYur520f0he
+    host: ${MAIL_DELIVERY_PRIMARY_HOST}
+    port: ${MAIL_DELIVERY_PRIMARY_PORT}
+    username: ${MAIL_DELIVERY_PRIMARY_USERNAME}
+    password: ${MAIL_DELIVERY_PRIMARY_PASSWORD}
     properties:
       mail:
         smtp:
-          auth: true
+          auth: ${MAIL_DELIVERY_PRIMARY_SMTP_AUTH}
           starttls:
-            enable: false
+            enable: ${MAIL_DELIVERY_PRIMARY_SMTP_STARTTLS_ENABLE}
   debug: true

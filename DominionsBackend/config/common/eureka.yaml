@@ -1,7 +1,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: 'http://localhost:15001/eureka'
+      defaultZone: 'http://server-eureka:15001/eureka'
 spring:
   cloud:
     discovery:

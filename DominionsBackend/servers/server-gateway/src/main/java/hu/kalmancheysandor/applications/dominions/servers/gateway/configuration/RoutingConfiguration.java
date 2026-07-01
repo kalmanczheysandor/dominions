@@ -17,6 +17,19 @@ public class RoutingConfiguration {
 //                .uri("lb://server-auth")
 //        )
 
+
+                .route("server-monitoring", r -> r
+                        .path("/monitoring/**")
+                        .filters(f -> f.stripPrefix(1).filter(new RFilter("server-eureka")))
+                        .uri("lb://server-monitoring")
+                )
+
+                .route("server-eureka", r -> r
+                        .path("/eureka/**")
+                        .filters(f -> f.stripPrefix(1).filter(new RFilter("server-eureka")))
+                        .uri("lb://server-eureka")
+                )
+
                 .route("server-auth", r -> r
                         .path("/auth/**")
                         .filters(f -> f.stripPrefix(1).filter(new RFilter("server-auth")))

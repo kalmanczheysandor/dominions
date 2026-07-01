@@ -1,4 +1,4 @@
 servlet:
   multipart:
-    max-file-size: -1
-    max-request-size: -1
+    max-file-size: ${UPLOAD_MAX_FILE_SIZE:-1MB}
+    max-request-size: ${UPLOAD_MAX_REQUEST_SIZE:-1MB}

@@ -35,11 +35,11 @@
             <artifactId>api-server-ai-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
             <artifactId>api-server-game-common</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
 
         <!-- .......SHARED.......-->
@@ -67,6 +67,18 @@
 <!--            <version>1.0-SNAPSHOT</version>-->
 <!--        </dependency>-->
 
+
+        <!--.......SECURITY.......-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!--.......WEB.......-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!--.......DATABASE.......-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -120,17 +132,11 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-
-                        </manifestEntries>
-                    </archive>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

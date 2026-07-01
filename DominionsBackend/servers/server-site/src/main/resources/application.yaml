@@ -1,54 +1,9 @@
 server:
   port: 15009
 
-
-
 spring:
   application:
     name: 'server-site'
   config:
-    import: configserver:http://localhost:8888
-  cloud:
-    stream:
-      bindings:
-        test-out-0:
-          destination: my-test-destination
-        myTest-in-0:
-          destination: my-test-destination
-          group: my-test-queue
-          consumer:
-            concurrency: 2
-      rabbit:
-        bindings:
+    import: configserver:http://server-config:8888
 
-          test-out-0:
-            producer:
-              routingKeyExpression: '''my-test-key'''
-          myTest-in-0:
-            consumer:
-              bindingRoutingKey: '''my-test-key'''
-              queue-name-group-only: true
-      binders:
-        rabbit:
-          type: rabbit
-          environment:
-            spring:
-              rabbitmq:
-                host: ${global.monitoring.rabbitmq.host}
-                port: ${global.monitoring.rabbitmq.port}
-                username: ${global.monitoring.rabbitmq.username}
-                password: ${global.monitoring.rabbitmq.password}
-                virtual-host: ${global.monitoring.rabbitmq.virtual-host}
-
-  mail:
-    host: CHANGE_ME
-    port: 25
-    username: CHANGE_ME
-    password: jwYur520f0he
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: false
-debug: true

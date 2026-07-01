@@ -1,40 +1,61 @@
 server:
   port: 8888
+
 logging:
   level:
     org.springframework.cloud.config.client: DEBUG
     org.springframework.cloud.config.server: DEBUG
+
 spring:
   application:
     name: 'server-config'
+
   profiles:
     active: composite,native
+
   cloud:
     config:
       server:
         composite:
           - type: native
-            search-locations: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config\common
+            search-locations: file:/config/common
+
           - type: native
-            search-locations: file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
+            search-locations: file:/config
+
           - type: native
             search-locations:
-              - file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config\common
-              - file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config\{application}
-              - file:///c:\@\@Szakdolgozat1\_apps\Dominions\DominionsBackend\config
+              - file:/config/common
+              - file:/config/{application}
+              - file:/config
+
     bus:
       enabled: true
 
-  rabbitmq: # RabbitMQ kapcsolat
-    host: ${global.monitoring.rabbitmq.host}
-    port: ${global.monitoring.rabbitmq.port}
-    username: ${global.monitoring.rabbitmq.username}
-    password: ${global.monitoring.rabbitmq.password}
-    virtual-host: ${global.monitoring.rabbitmq.virtual-host}
+  rabbitmq:
+#    host: ${global.monitoring.rabbitmq.host}
+#    port: ${global.monitoring.rabbitmq.port}
+#    username: ${global.monitoring.rabbitmq.username}
+#    password: ${global.monitoring.rabbitmq.password}
+#    virtual-host: ${global.monitoring.rabbitmq.virtual-host}
+    host: ${RABBITMQ_MONITORING_HOST}
+    port: ${RABBITMQ_MONITORING_PORT}
+    username: ${RABBITMQ_MONITORING_USERNAME}
+    password: ${RABBITMQ_MONITORING_PASSWORD}
+    virtual-host: ${RABBITMQ_MONITORING_VIRTUAL_HOST}
+#    host: CHANGE_ME
+#    port: 5672
+#    username: admin
+#    password: CHANGE_ME
+#    virtual-host: /
 debug: true
 
 management:
   endpoints:
     web:
       exposure:
-        include: busrefresh, busenv, refresh
+        include: busrefresh,busenv,refresh
+
+eureka:
+  client:
+    enabled: false

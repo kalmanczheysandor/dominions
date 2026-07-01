@@ -5,4 +5,4 @@ spring:
   application:
     name: 'server-mailing'
   config:
-    import: configserver:http://localhost:8888
+    import: configserver:http://server-config:8888

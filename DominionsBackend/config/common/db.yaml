@@ -1,44 +1,44 @@
 app:
   datasource:
     main:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/dominions?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-      username: root
-      password: CHANGE_ME
+      jdbc-url: jdbc:mysql://${DB_HOST}:${DB_PORT}/dominions?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
       hikari:
         transaction-isolation: TRANSACTION_REPEATABLE_READ
+        maximum-pool-size: 3
+        minimum-idle: 1
     session:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/dominions_session?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-      username: root
-      password: CHANGE_ME
+      jdbc-url: jdbc:mysql://${DB_HOST}:${DB_PORT}/dominions_session?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
       hikari:
         transaction-isolation: TRANSACTION_REPEATABLE_READ
+        maximum-pool-size: 3
+        minimum-idle: 1
     ai-liz:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/dominions_ai_liz?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-      username: root
-      password: CHANGE_ME
+      jdbc-url: jdbc:mysql://${DB_HOST}:${DB_PORT}/dominions_ai_liz?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
       hikari:
         transaction-isolation: TRANSACTION_REPEATABLE_READ
+        maximum-pool-size: 3
+        minimum-idle: 1
 
     ai-hugo:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/dominions_ai_hugo?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-      username: root
-      password: CHANGE_ME
+      jdbc-url: jdbc:mysql://${DB_HOST}:${DB_PORT}/dominions_ai_hugo?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
       hikari:
         transaction-isolation: TRANSACTION_REPEATABLE_READ
+        maximum-pool-size: 3
+        minimum-idle: 1
 
 spring:
-#  datasource:
-#
-#    # Case-1: No container in use
-#    jdbc-url: jdbc:mysql://127.0.0.1:3306/dominions?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-#
-#    # Case-2: Only database is in container
-#    #url: jdbc:mysql://127.0.0.1:3310/webshop?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-#
-#    # Case-3: containers are in use
-#    #   url: jdbc:mysql://webshop_db_container/webshop?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-#    username: root
-#    password: CHANGE_ME
+  datasource:
+    hikari:
+      maximum-pool-size: 3
+      minimum-idle: 1
   jpa:
     show: true
     hibernate:

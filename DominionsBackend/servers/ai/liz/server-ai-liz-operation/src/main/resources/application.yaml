@@ -1,13 +1,11 @@
 server:
   port: 15042
 
-
-
 spring:
   application:
     name: 'server-ai-liz-operation'
   config:
-    import: configserver:http://localhost:8888
+    import: configserver:http://server-config:8888
 
 
 

@@ -32,7 +32,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repo
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.LizNeuralExecutionRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training.neural.LizNeuralTrainingResultRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service.TLizService;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameScenarioRepository;
+//import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameScenarioRepository;
 import hu.kalmancheysandor.applications.dominions.apis.util.file.filehandler.FileHandler;
 
 
@@ -61,8 +61,8 @@ public class LizAgentService extends TLizService {
     @Autowired
     private LizNeuralTrainingResultRepository lizNeuralTrainingResultRepository;
 
-    @Autowired
-    private GameScenarioRepository gameScenarioRepository;
+//    @Autowired
+//    private GameScenarioRepository gameScenarioRepository;
 
     @Autowired
     private LizCharacterRepository lizCharacterRepository;
