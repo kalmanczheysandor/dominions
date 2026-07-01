@@ -43,5 +43,11 @@ build/
 
 # Environment files
 .env
+.env.local
+.env.hetzner
 **/.env
 **/*.env
+
+
+# Deployment files
+/.deploy/

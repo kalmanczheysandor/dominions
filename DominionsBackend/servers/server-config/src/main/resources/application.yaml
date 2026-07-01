@@ -38,11 +38,16 @@ spring:
 #    username: ${global.monitoring.rabbitmq.username}
 #    password: ${global.monitoring.rabbitmq.password}
 #    virtual-host: ${global.monitoring.rabbitmq.virtual-host}
-    host: CHANGE_ME
-    port: 5672
-    username: admin
-    password: CHANGE_ME
-    virtual-host: /
+    host: ${RABBITMQ_MONITORING_HOST}
+    port: ${RABBITMQ_MONITORING_PORT}
+    username: ${RABBITMQ_MONITORING_USERNAME}
+    password: ${RABBITMQ_MONITORING_PASSWORD}
+    virtual-host: ${RABBITMQ_MONITORING_VIRTUAL_HOST}
+#    host: CHANGE_ME
+#    port: 5672
+#    username: admin
+#    password: CHANGE_ME
+#    virtual-host: /
 debug: true
 
 management:
