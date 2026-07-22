@@ -73,6 +73,8 @@ services:
       - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    volumes:
+      - ${HOST_GLOBAL_DATA_FOLDER}:${APP_GLOBAL_DATA_FOLDER}
     depends_on:
       server-config:
         condition: service_healthy
@@ -87,6 +89,8 @@ services:
       - .env
     environment:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    volumes:
+      - ${HOST_GLOBAL_DATA_FOLDER}:${APP_GLOBAL_DATA_FOLDER}
     depends_on:
       server-config:
         condition: service_healthy
