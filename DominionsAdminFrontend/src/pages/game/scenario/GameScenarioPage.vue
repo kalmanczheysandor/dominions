@@ -58,13 +58,6 @@
                         </v-list-item>
                         <v-list-item>
                             <template v-slot:prepend>
-                                <v-icon icon="mdi-image-outline"></v-icon>
-                            </template>
-                            <v-list-item-title @click="eventClickOnGalleryRowButton(item.uuid)">Gallery
-                            </v-list-item-title>
-                        </v-list-item>
-                        <v-list-item>
-                            <template v-slot:prepend>
                                 <v-icon icon="mdi-delete-outline"></v-icon>
                             </template>
                             <v-list-item-title @click="eventClickOnDeleteRowButton(item.uuid)">Delete

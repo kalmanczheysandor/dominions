@@ -4,7 +4,6 @@
             <v-tabs v-model="MainTabComponent.activeTabKey" align-tabs="end" color="primary">
                 <v-tab value="Tab1">*</v-tab>
                 <v-tab value="Tab2">Map</v-tab>
-                <v-tab value="Tab3">Description</v-tab>
             </v-tabs>
             <v-tabs-window v-model="MainTabComponent.activeTabKey">
                 <v-tabs-window-item value="Tab1">
@@ -35,13 +34,6 @@
                         </v-col>
                     </v-row>
                 </v-tabs-window-item>
-                <v-tabs-window-item value="Tab3">
-                    <v-row>
-                        <v-col>
-                            <QuillEditor v-model:content="Form.Fields.DescriptionEditorInput.content" contentType="html" style="height: 250px;border:1px red solid;" :options="Form.Fields.DescriptionEditorInput.configuration"/>
-                        </v-col>
-                    </v-row>
-                </v-tabs-window-item>
             </v-tabs-window>
 
             <div class="ActionButtonBar">
@@ -60,13 +52,12 @@
     import TController from "@/framework/TController";
     import CroppieInput from "@/framework/component/CroppieInput/CroppieInput.vue";
     import {RequiredFieldRule, TextareaFieldRule, TextFieldRule} from "@/validation.js";
-    import {QuillEditor} from "@vueup/vue-quill";
 
 
 
     export default {
         name: "GameScenarioAddDialog",
-        components: {CroppieInput, TDialog, QuillEditor},
+        components: {CroppieInput, TDialog},
         data() {
             return {
                 MainTabComponent: {
@@ -104,24 +95,6 @@
                             selectedKey: null,
                             rules: [RequiredFieldRule]
                         },
-
-                        DescriptionEditorInput: {
-                            configuration: {
-                                debug: 'error',
-                                modules: {
-                                    toolbar: [
-                                        [{header: [1, 2, false]}],
-                                        ['bold', 'italic', 'underline'],
-                                        ['image', 'code-block'],
-                                    ]
-                                },
-                                placeholder: 'Content...',
-                                readOnly: false,
-                                theme: 'snow'
-                            },
-                            content: "",
-                            rules: []
-                        }
                     },
                     validation: {
                         isValid: false,
@@ -156,12 +129,12 @@
                         enabled: this.Form.Fields.EnabledCheckInput.isChecked,
                         published: this.Form.Fields.PublishedCheckInput.isChecked,
                         gameMap:this.Form.Fields.MapTextareaInput.value,
-                        description: this.Form.Fields.DescriptionEditorInput.content,
+                        description: "",
                         imageBase64: this.Form.Fields.ScenarioImageCroppieInput.base64Content
                     });
 
 
-                    // Display success message
+                    // Display a success message
                     TController.displaySavedToast();
 
                     // Hide dialog

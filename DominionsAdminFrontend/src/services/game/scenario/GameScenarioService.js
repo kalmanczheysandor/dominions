@@ -87,13 +87,17 @@ class GameScenarioService extends TService {
         }
     }
 
-    async atEditListBreed(uuid) {
+    async atEditListDifficulty(uuid) {
         // Checking permission
-        authService.assertEditActionGrantedOn(this.#permissionResource);
+        authService.assertAddActionGrantedOn(this.#permissionResource);
 
-        // Communicate with backend
-        const url = this.#baseUrl + '/' + uuid + '/edit/options/breed';
-        return await this.listAllRecord(url);
+        return {
+            data:[
+                {key:'EASY',title:'Easy'},
+                {key:'MODERATE',title:'Moderate'},
+                {key:'HARD',title:'Hard'}
+            ]
+        }
     }
 
 
