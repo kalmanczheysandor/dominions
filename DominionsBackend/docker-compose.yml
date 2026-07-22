@@ -179,6 +179,34 @@ services:
       server-config:
         condition: service_healthy
 
+#  server-ai-hugo-agent-3:
+#    build: ./server-ai-hugo-agent
+#    ports:
+#      - "15804:15044"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    env_file:
+#      - .env
+#    environment:
+#      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+#    depends_on:
+#      server-config:
+#        condition: service_healthy
+#
+#  server-ai-hugo-agent-4:
+#    build: ./server-ai-hugo-agent
+#    ports:
+#      - "15805:15044"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    env_file:
+#      - .env
+#    environment:
+#      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+#    depends_on:
+#      server-config:
+#        condition: service_healthy
+
   server-ai-liz-operation:
     build: ./server-ai-liz-operation
     ports:
@@ -220,6 +248,34 @@ services:
     depends_on:
       server-config:
         condition: service_healthy
+
+#  server-ai-liz-agent-3:
+#    build: ./server-ai-liz-agent
+#    ports:
+#      - "15854:15041"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    env_file:
+#      - .env
+#    environment:
+#      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+#    depends_on:
+#      server-config:
+#        condition: service_healthy
+#
+#  server-ai-liz-agent-4:
+#    build: ./server-ai-liz-agent
+#    ports:
+#      - "15855:15041"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    env_file:
+#      - .env
+#    environment:
+#      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+#    depends_on:
+#      server-config:
+#        condition: service_healthy
 
   server-zipkin:
     image: openzipkin/zipkin
