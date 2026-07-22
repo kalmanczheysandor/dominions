@@ -54,7 +54,7 @@ services:
     ports:
       - "15002:15002"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -68,7 +68,7 @@ services:
     ports:
       - "15009:15009"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -82,7 +82,7 @@ services:
     ports:
       - "15010:15010"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -96,7 +96,7 @@ services:
     ports:
       - "15020:15020"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -110,7 +110,7 @@ services:
     ports:
       - "15099:15099"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -124,7 +124,7 @@ services:
     ports:
       - "15500:15500"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -138,7 +138,7 @@ services:
     ports:
       - "15801:15043"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -152,7 +152,7 @@ services:
     ports:
       - "15802:15044"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -166,35 +166,7 @@ services:
     ports:
       - "15803:15044"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
-    env_file:
-      - .env
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
-    depends_on:
-      server-config:
-        condition: service_healthy
-
-  server-ai-hugo-agent-3:
-    build: ./server-ai-hugo-agent
-    ports:
-      - "15804:15044"
-    extra_hosts:
-      - "CHANGE_ME:host-gateway"
-    env_file:
-      - .env
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
-    depends_on:
-      server-config:
-        condition: service_healthy
-
-  server-ai-hugo-agent-4:
-    build: ./server-ai-hugo-agent
-    ports:
-      - "15805:15044"
-    extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -208,7 +180,7 @@ services:
     ports:
       - "15851:15042"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -222,7 +194,7 @@ services:
     ports:
       - "15852:15041"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
@@ -236,35 +208,7 @@ services:
     ports:
       - "15853:15041"
     extra_hosts:
-      - "CHANGE_ME:host-gateway"
-    env_file:
-      - .env
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
-    depends_on:
-      server-config:
-        condition: service_healthy
-
-  server-ai-liz-agent-3:
-    build: ./server-ai-liz-agent
-    ports:
-      - "15854:15041"
-    extra_hosts:
-      - "CHANGE_ME:host-gateway"
-    env_file:
-      - .env
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
-    depends_on:
-      server-config:
-        condition: service_healthy
-
-  server-ai-liz-agent-4:
-    build: ./server-ai-liz-agent
-    ports:
-      - "15855:15041"
-    extra_hosts:
-      - "CHANGE_ME:host-gateway"
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     environment:
