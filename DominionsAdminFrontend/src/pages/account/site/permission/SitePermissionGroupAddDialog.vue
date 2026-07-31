@@ -107,7 +107,7 @@ export default {
                 // Hide dialog
                 this.close();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         eventClickOnCancelButton() {
@@ -121,7 +121,7 @@ export default {
                 // Display dialog
                 await this.$refs.Dialog.open();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
                 this.close();
             }
         },

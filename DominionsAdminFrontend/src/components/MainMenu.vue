@@ -231,7 +231,7 @@ export default {
                 await authService.logout();
                 this.$router.push('/');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -240,7 +240,7 @@ export default {
             try {
                 this.$router.push('/account/admin/settings');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -260,7 +260,7 @@ export default {
                     profileAvatarUrl: avatarImageUrl
                 }
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         }
     },

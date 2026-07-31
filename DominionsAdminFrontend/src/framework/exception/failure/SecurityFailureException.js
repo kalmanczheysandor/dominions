@@ -1,16 +1,16 @@
 import TFailure from "@/framework/exception/failure/TFailure";
 
 export default class SecurityFailureException extends TFailure {
-    #message;
+    #data;
     #code
-    constructor(code, message) {
+    constructor(code, data) {
         super();
-        this.#message = message;
+        this.#data = data;
         this.#code = code;
     }
 
-    getMessage() {
-        return this.#message;
+    getData() {
+        return this.#data;
     }
 
     getCode() {

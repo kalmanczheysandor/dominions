@@ -178,7 +178,7 @@ export default {
                 // Hide dialog
                 this.close();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnCancelButton() {
@@ -219,7 +219,7 @@ export default {
                 // Load image
                 await this.$refs.PhotoCroppieInput.openFile(backendConfiguration.BACKEND_BASE_URL + '/account/site/user/' + uuid + '/photo');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
                 this.close();
             }
         },

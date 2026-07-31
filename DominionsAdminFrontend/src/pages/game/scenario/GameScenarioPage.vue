@@ -178,7 +178,7 @@
                     this.ScenarioListComponent.rows = result.data;
 
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
             },
 
@@ -198,7 +198,7 @@
                     TController.displayDeletedToast();
 
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
 
                 // Refresh list content
@@ -222,7 +222,7 @@
                     TController.displayDeletedToast()
 
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
 
                 // Refresh list content

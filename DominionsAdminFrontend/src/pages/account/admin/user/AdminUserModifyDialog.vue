@@ -190,7 +190,7 @@ export default {
                 // Hide dialog
                 this.close();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnCancelButton() {
@@ -232,7 +232,7 @@ export default {
                 await this.$refs.PhotoCroppieInput.openFile(backendConfiguration.BACKEND_BASE_URL + '/account/admin/user/' + uuid + '/photo');
                 // await this.$refs.PhotoCroppieInput.openFile("C:/@/@Szakdolgozat1/_apps/Dominions/DominionsBackend/.data/images/admin-user/settings/3/photo.jpg");
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
                 this.close();
             }
         },

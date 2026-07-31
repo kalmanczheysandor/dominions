@@ -70,7 +70,7 @@
                         return;
                     }
 
-                    // Do login
+                    // Do log in
                     await authService.login({
                         identifier: this.Form.Fields.IdentifierEmailInput.value,
                         password: this.Form.Fields.PasswordInput.value
@@ -78,7 +78,7 @@
 
                     this.$router.push('/main');
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
             }
         }

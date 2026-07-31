@@ -1,13 +1,19 @@
 import TError from "@/framework/exception/error/TError";
 export default class GeneralErrorException extends TError {
-    #message = "";
-    constructor(message) {
+    #data = null;
+    #code
+    constructor(code, data) {
         super();
-        this.#message = message;
+        this.#data = data;
+        this.#code = code;
     }
 
-    getMessage() {
-        return this.#message;
+    getData() {
+        return this.#data;
+    }
+
+    getCode() {
+        return this.#code;
     }
 
 }

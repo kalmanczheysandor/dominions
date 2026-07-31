@@ -185,7 +185,7 @@ export default {
                 TController.displaySuccessToast("It is started!");
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -204,7 +204,7 @@ export default {
                 TController.displaySuccessToast("It is continued!");
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -222,7 +222,7 @@ export default {
                 // Display success message
                 TController.displaySuccessToast("It is paused!");
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -240,7 +240,7 @@ export default {
                 // Display success message
                 TController.displaySuccessToast("It is cancelling!");
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -273,7 +273,7 @@ export default {
                 // Hide dialog
                 this.close();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -317,7 +317,7 @@ export default {
 
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -361,7 +361,7 @@ export default {
                 // Display dialog
                 this.$refs.Dialog.open();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
                 this.close();
             }
         },

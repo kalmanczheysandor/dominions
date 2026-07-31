@@ -90,7 +90,6 @@ class AuthService extends TService {
         console.log("login", userData);
         try {
             const url = super.extendWithHost('/auth/admin/login');
-            console.log("login.url", url);
             // Communicate with server
             const response = await fetch(url, {
                 method: 'POST',

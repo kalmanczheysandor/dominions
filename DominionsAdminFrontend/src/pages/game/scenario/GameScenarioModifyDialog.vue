@@ -156,7 +156,7 @@ export default {
                         // Hide dialog
                         this.close();
                     } catch (exp) {
-                        await TController.displayExceptionMessages(exp);
+                        await TController.handleExceptions(exp);
                     }
                 }
                 ,
@@ -192,7 +192,7 @@ export default {
                         await this.$refs.ScenarioImage.openFile(backendConfiguration.BACKEND_BASE_URL+'/game/scenario/'+uuid+'/image/main');
 
                     } catch (exp) {
-                        await TController.displayExceptionMessages(exp);
+                        await TController.handleExceptions(exp);
                         this.close();
                     }
                 }

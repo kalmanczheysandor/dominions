@@ -216,6 +216,8 @@ export const router = createRouter({
         {
             path: '/:pathMatch(.*)*',
             redirect: (to) => {
+                console.log("REDIRECT from:",to.fullPath)
+
                 //
                 if (to.fullPath.startsWith('/api')) {
                     console.warn("The path:", to.fullPath, " is blocked, because browser tried to navigate into to /api.. scopes!");

@@ -361,7 +361,7 @@ export default {
                 this.Form.Fields.PlayerSelectInput.selectedKey = historyPlayerResult.data.userUuid;
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -393,7 +393,7 @@ export default {
                 await this.loadExecutionsChartComponentContent(conceptUuid, scenarioUuid, playerUuid);
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -417,7 +417,7 @@ export default {
                     });
                 }
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -442,7 +442,7 @@ export default {
                     });
                 }
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -454,7 +454,7 @@ export default {
 
                 this.SnapshotsChartComponent.series[0].data = [];
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -466,7 +466,7 @@ export default {
 
                 this.ExecutionsChartComponent.series[0].data = [];
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnCancelButton() {
@@ -496,7 +496,7 @@ export default {
                 // Display dialog
                 this.$refs.Dialog.open();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
                 this.close();
             }
         },

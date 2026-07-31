@@ -1,5 +1,6 @@
 import TFailure from "@/framework/exception/failure/TFailure";
-export default class AuthenticationFailureException extends TFailure {
+
+export default class HttpFailureException extends TFailure {
 
     #data = null;
     #code
