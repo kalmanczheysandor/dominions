@@ -7,6 +7,8 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.concept.result.LizNeuralConceptSnapshotChartDataItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.concept.result.option.LizNeuralConceptResultHistoryPlayerOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.concept.result.option.LizNeuralConceptResultHistoryScenarioOptionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.user.admin.AdminPermission;
+import hu.kalmancheysandor.applications.dominions.apis.server.user.admin.service.authentication.AdminAuthenticationService;
 import hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.service.neural.LizNeuralConceptService;
 import hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.service.neural.LizNeuralOrchestrationService;
 import jakarta.validation.Valid;
@@ -26,6 +28,8 @@ public class LizNeuralConceptController {
 
     @Autowired
     LizNeuralOrchestrationService lizNeuralOrchestrationService;
+    @Autowired
+    private AdminAuthenticationService authenticationService;
 
 
     /// ///////////////////////////////////// ACCESS ////////////////////////////////////////////////////////////
@@ -33,6 +37,9 @@ public class LizNeuralConceptController {
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
     public LizNeuralConceptAccessResponse access(@PathVariable("uuid") String uuid) {
+        // Check permission
+        authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().liz().concept());
+
         return lizNeuralConceptService.access(uuid);
     }
 
@@ -40,6 +47,9 @@ public class LizNeuralConceptController {
 
     @GetMapping("/list")
     public List<LizNeuralConceptItemResponse> listAll() {
+        // Check permission
+        authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().liz().concept());
+
         return lizNeuralConceptService.listAll();
     }
 
@@ -47,6 +57,9 @@ public class LizNeuralConceptController {
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public LizNeuralConceptCreateResponse add(@Valid @RequestBody LizNeuralConceptCreateRequest request) {
+        // Check permission
+        authenticationService.assertHasAddPermission(AdminPermission.generator().ai().liz().concept());
+
         return lizNeuralConceptService.save(request);
     }
 
@@ -56,6 +69,9 @@ public class LizNeuralConceptController {
     @PostMapping("/{uuid}/edit")
     @ResponseStatus(HttpStatus.OK)
     public LizNeuralConceptUpdateResponse edit(@PathVariable("uuid") String uuid, @Valid @RequestBody LizNeuralConceptUpdateRequest request) {
+        // Check permission
+        authenticationService.assertHasEditPermission(AdminPermission.generator().ai().liz().concept());
+
         return lizNeuralConceptService.update(uuid, request);
     }
 
@@ -64,12 +80,18 @@ public class LizNeuralConceptController {
     @DeleteMapping("/{uuid}/delete")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("uuid") String uuid) {
+        // Check permission
+        authenticationService.assertHasDeletePermission(AdminPermission.generator().ai().liz().concept());
+
         lizNeuralConceptService.deleteOneLizConcept(uuid);
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@Valid @RequestBody LizNeuralConceptDeleteRequest request) {
+        // Check permission
+        authenticationService.assertHasDeletePermission(AdminPermission.generator().ai().liz().concept());
+
         lizNeuralConceptService.deleteMultiple(request);
     }
 
@@ -77,6 +99,10 @@ public class LizNeuralConceptController {
     @GetMapping("/{uuid}/result/chart/snapshot/{scenarioUuid}/{playerUuid}")
     @ResponseStatus(HttpStatus.OK)
     public LizNeuralConceptSnapshotChartDataItemResponse snapshotChartData(@PathVariable("uuid") String uuid, @PathVariable("scenarioUuid") String scenarioUuid, @PathVariable("playerUuid") String playerUuid) {
+        // Check permission
+        authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().liz().concept());
+
+
         System.out.println("RESULT-chart-snapshot:scenarioUuid:" + scenarioUuid + " playerUuid:" + playerUuid);
         return lizNeuralConceptService.snapshotChartData(uuid, scenarioUuid, playerUuid);
     }
@@ -85,7 +111,9 @@ public class LizNeuralConceptController {
     @GetMapping("/{uuid}/result/chart/execution/{scenarioUuid}/{playerUuid}")
     @ResponseStatus(HttpStatus.OK)
     public LizNeuralConceptExecutionChartDataItemResponse executionChartData(@PathVariable("uuid") String uuid, @PathVariable("scenarioUuid") String scenarioUuid, @PathVariable("playerUuid") String playerUuid) {
-        System.out.println("RESULT-chart-snapshot:scenarioUuid:" + scenarioUuid + " playerUuid:" + playerUuid);
+        // Check permission
+        authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().liz().concept());
+
         return lizNeuralConceptService.executionChartData(uuid, scenarioUuid, playerUuid);
     }
 

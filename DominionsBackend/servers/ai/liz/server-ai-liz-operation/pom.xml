@@ -42,6 +42,13 @@
 <!--        </dependency>-->
 
 
+
+        <!--.......USER.......-->
+        <dependency>
+            <groupId>hu.kalmancheysandor.applications.dominions</groupId>
+            <artifactId>api-server-user-admin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- .......SHARED.......-->
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>

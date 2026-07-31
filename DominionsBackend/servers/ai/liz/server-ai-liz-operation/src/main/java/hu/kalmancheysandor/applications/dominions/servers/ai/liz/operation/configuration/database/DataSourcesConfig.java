@@ -6,6 +6,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.session.jdbc.config.annotation.SpringSessionDataSource;
 //import org.springframework.session.jdbc.config.annotation.SpringSessionDataSource;
 
 import javax.sql.DataSource;
@@ -22,10 +23,10 @@ public class DataSourcesConfig {
         return ds;
     }
 
-//    @Bean
-//    @SpringSessionDataSource
-//    @ConfigurationProperties("app.datasource.session")
-//    public DataSource sessionDataSource() {
-//        return DataSourceBuilder.create().build();
-//    }
+    @Bean
+    @SpringSessionDataSource
+    @ConfigurationProperties("app.datasource.session")
+    public DataSource sessionDataSource() {
+        return DataSourceBuilder.create().build();
+    }
 }
