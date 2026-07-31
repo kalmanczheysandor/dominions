@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.user.common.security.authentication;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.server.user.common.exception.SessionExpiredException;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.exception.SessionExpiredException;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.common.exception.permission.AccessActionNotGrantedException;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.common.exception.permission.AddActionNotGrantedException;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.common.exception.permission.DeleteActionNotGrantedException;
@@ -10,7 +10,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.user.common.securi
 import hu.kalmancheysandor.applications.dominions.apis.server.user.common.security.UserSecurityDetails;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.common.security.authentication.exception.UserIsNotAuthenticatedException;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,7 +33,6 @@ public abstract class TAuthenticationService {
     public boolean hasDeletePermission(String resourceName) {
         return hasPermission(resourceName, "DELETE");
     }
-
 
     public boolean hasPermission(String resourceName, String action) {
         return hasPermission(resourceName + ":" + action);
@@ -76,14 +74,13 @@ public abstract class TAuthenticationService {
         return false;
     }
 
-    // TODO: eltuntetni mindenhonnan ezt a metodust
-    @Deprecated
-    public void assertHasPermission(String requiredPermission) {
-        if (!hasPermission(requiredPermission)) {
-            throw new AccessDeniedException("You do not have the required " + requiredPermission + " permission.");
-        }
-    }
-
+//    // TODO: eltuntetni mindenhonnan ezt a metodust
+//    @Deprecated
+//    private void assertHasPermission(String requiredPermission) {
+//        if (!hasPermission(requiredPermission)) {
+//            throw new AccessDeniedException("You do not have the required " + requiredPermission + " permission.");
+//        }
+//    }
 
     public void assertHasAccessPermission(String resourceName) {
         if (!hasAccessPermission(resourceName)) {
@@ -95,7 +92,6 @@ public abstract class TAuthenticationService {
         assertHasAccessPermission(path.generate());
     }
 
-
     public void assertHasAddPermission(String resourceName) {
         if (!hasAddPermission(resourceName)) {
             throw new AddActionNotGrantedException(resourceName);
@@ -106,7 +102,6 @@ public abstract class TAuthenticationService {
         assertHasAddPermission(path.generate());
     }
 
-
     public void assertHasEditPermission(String resourceName) {
         if (!hasEditPermission(resourceName)) {
             throw new EditActionNotGrantedException(resourceName);
@@ -116,7 +111,6 @@ public abstract class TAuthenticationService {
     public void assertHasEditPermission(SecurityPermissionPathGenerator path) {
         assertHasEditPermission(path.generate());
     }
-
 
     public void assertHasDeletePermission(String resourceName) {
         if (!hasDeletePermission(resourceName)) {
