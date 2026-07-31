@@ -1,6 +1,9 @@
 package hu.kalmancheysandor.applications.dominions.servers.auth.configuration.security;
 
 
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityContextDebugFilter;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAccessDenyHandler;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAuthenticationEntryPoint;
 import hu.kalmancheysandor.applications.dominions.servers.auth.configuration.security.admin.AdminAuthenticationFilter;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.admin.service.AdminUserDetailsService;
 import hu.kalmancheysandor.applications.dominions.servers.auth.configuration.security.site.SiteAuthenticationFilter;
@@ -34,14 +37,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 
-/**
- * Az authentikaciokor a vegrehajtasi sorrend:
- * 1. UserDetailsService
- * 2. AuthenticationManager
- * 3. login endpoint
- * 4. SecurityContext LÉTREHOZÁSA + MENTÉSE
- */
-
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
@@ -65,34 +60,25 @@ public class SecurityConfiguration {
             AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter("/admin/login", generateAdminAuthenticationManager(), adminUserDetailsService);
 
             http
-                    .securityMatcher("/admin/**") // csak site endpointok
-                    .csrf(csrf -> csrf.disable())// CSRF-t kikapcsolod, ami rendben van REST-nél
-                    .cors(Customizer.withDefaults())// CORS beállításaid helyesek, itt nincs gond
-                    .securityContext(context -> context
-                            .securityContextRepository(contextRepository)
-                    )// Biztosítja a `SecurityContext` mentését/visszaállítását
-                    .sessionManagement(session -> session
-                            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                    )// Használj mindig új session-t
+                    .securityMatcher("/admin/**")
+                    .csrf(csrf -> csrf.disable())
+                    .cors(Customizer.withDefaults())
+                    .securityContext(context -> context.securityContextRepository(contextRepository))
+                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                    .addFilterAfter(
+                            new SecurityContextDebugFilter(), org.springframework.security.web.context.SecurityContextHolderFilter.class
+                    )
+                    .exceptionHandling(ex -> ex
+                            .authenticationEntryPoint(new TAuthenticationEntryPoint())
+                            .accessDeniedHandler(new TAccessDenyHandler())
+                    )
                     .authorizeHttpRequests(request -> request
-                                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                    .requestMatchers("/spring-boot-chat/**").permitAll()
-                                    .requestMatchers("/test/**").permitAll()
-                                    .requestMatchers("/app/**").permitAll()
-//                        .requestMatchers("/admin/login").permitAll()
-                                    .requestMatchers("/admin/login").permitAll()
-                                    .requestMatchers("/data/test/**").permitAll()
-                                    .requestMatchers("/data/**").authenticated()
-                                    .requestMatchers("/main").authenticated()
-                                    .requestMatchers("/main/**").authenticated()
-                                    .requestMatchers("/css/**").permitAll()
-                                    .requestMatchers("/js/**").permitAll()
-                                    .requestMatchers("/font/**").permitAll()
-                                    .requestMatchers("/image/**").permitAll()
-                                    .requestMatchers("/login").permitAll()
+                            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                            .requestMatchers("/admin/login").permitAll()
+                            .requestMatchers("/admin/logout").permitAll()
+                            .anyRequest().authenticated()
                     )
                     .formLogin(f -> f.disable())
-//                  .addFilterBefore(new AdminSessionCookieFilter(), SessionManagementFilter.class)   // Ezzel biztositom, hogy az alapertelmezett cooki kezeles elott a sajatom kezelje
                     .addFilterBefore(adminAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                     .logout(logout -> logout
                             .logoutUrl("/admin/logout")
@@ -134,34 +120,25 @@ public class SecurityConfiguration {
 
         SiteAuthenticationFilter siteAuthenticationFilter = new SiteAuthenticationFilter("/site/login", generateSiteAuthenticationManager(), siteUserDetailsService);
         http
-                .securityMatcher("/site/**") // csak site endpointok
-                .csrf(csrf -> csrf.disable())// CSRF-t kikapcsolod, ami rendben van REST-nél
-                .cors(Customizer.withDefaults())// CORS beállításaid helyesek, itt nincs gond
-                .securityContext(context -> context
-                        .securityContextRepository(contextRepository)
-                )// Biztosítja a `SecurityContext` mentését/visszaállítását
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                )// Használj mindig új session-t
+                .securityMatcher("/site/**")
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .securityContext(context -> context.securityContextRepository(contextRepository))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .addFilterAfter(
+                        new SecurityContextDebugFilter(), org.springframework.security.web.context.SecurityContextHolderFilter.class
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new TAuthenticationEntryPoint())
+                        .accessDeniedHandler(new TAccessDenyHandler())
+                )
                 .authorizeHttpRequests(request -> request
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers("/spring-boot-chat/**").permitAll()
-                                .requestMatchers("/test/**").permitAll()
-                                .requestMatchers("/app/**").permitAll()
-//                        .requestMatchers("/admin/login").permitAll()
-                                .requestMatchers("/site/login").permitAll()
-                                .requestMatchers("/data/test/**").permitAll()
-                                .requestMatchers("/data/**").authenticated()
-                                .requestMatchers("/main").authenticated()
-                                .requestMatchers("/main/**").authenticated()
-                                .requestMatchers("/css/**").permitAll()
-                                .requestMatchers("/js/**").permitAll()
-                                .requestMatchers("/font/**").permitAll()
-                                .requestMatchers("/image/**").permitAll()
-                                .requestMatchers("/login").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/site/login").permitAll()
+                        .requestMatchers("/site/logout").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(f -> f.disable())
-//                .addFilterBefore(new SiteSessionCookieFilter(), SessionManagementFilter.class)   // Ezzel biztositom, hogy az alapertelmezett cooki kezeles elott a sajatom kezelje
                 .addFilterBefore(siteAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
                         .logoutUrl("/site/logout")
@@ -202,12 +179,11 @@ public class SecurityConfiguration {
                         .allowedOrigins(
                                 adminSiteUrl,
                                 gameSiteUrl
-                        ) // A frontend URL
-//                    .allowedOrigins("*")
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowedHeaders("*")
-                        .allowCredentials(true) // Engedélyezi a session cookie-kat
-                        .exposedHeaders("Set-Cookie"); // EZ FONTOS!
+                        .allowCredentials(true)
+                        .exposedHeaders("Set-Cookie");
             }
         };
     }
@@ -238,10 +214,5 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-
-//    @Bean
-//    public HttpSessionIdResolver httpSessionIdResolver() {
-//        return new CentralHttpSessionIdResolver();
-//    }
 
 }
