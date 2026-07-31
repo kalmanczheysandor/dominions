@@ -7,10 +7,7 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.error.GeneralErrorResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.failure.GeneralFailureResponse;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.GeneralErrorResponseProxyException;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.GeneralFailureResponseProxyException;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.BrokenResponseProxyException;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.NotParseableResponseProxyException;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,6 +27,11 @@ public class ProxyResponseDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
+
+
+
+
+
         try (InputStream bodyContentStream = response.body().asInputStream()) {
             String content = convertInputStreamToString(bodyContentStream);
             if (isParseable(content, GeneralFailureResponse.class )) {
@@ -39,8 +41,11 @@ public class ProxyResponseDecoder implements ErrorDecoder {
                 throw new GeneralErrorResponseProxyException(objectMapper.readValue(content, GeneralErrorResponse.class));
             }
             else {
+                int httpStatusCode = response.status();
+                if(httpStatusCode>=400 && httpStatusCode<=599) {
+                    throw new HttpStatusResponseProxyException(httpStatusCode);
+                }
                 throw new NotParseableResponseProxyException(content);
-                //return new Default().decode(methodKey, response);
             }
         } catch (IOException e) {
             throw new BrokenResponseProxyException();

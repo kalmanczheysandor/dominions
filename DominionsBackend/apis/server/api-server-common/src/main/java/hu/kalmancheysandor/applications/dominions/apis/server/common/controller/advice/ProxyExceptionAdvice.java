@@ -2,10 +2,7 @@ package hu.kalmancheysandor.applications.dominions.apis.server.common.controller
 
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.error.GeneralErrorResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.failure.GeneralFailureResponse;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.BrokenResponseProxyException;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.GeneralErrorResponseProxyException;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.GeneralFailureResponseProxyException;
-import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.NotParseableResponseProxyException;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.proxy.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -47,6 +44,18 @@ public class ProxyExceptionAdvice {
 
         // Generate response
         GeneralErrorResponse response = new GeneralErrorResponse(exception.getClass().getSimpleName(), exception.getMessage());
+        return response;
+    }
+
+    @ExceptionHandler(HttpStatusResponseProxyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralErrorResponse handle(HttpStatusResponseProxyException exception) {
+        // Logging
+        log.warn("Proxy response with HTTP status {}: {}", exception.getStatusCode(), exception.getMessage());
+
+        // Generate response
+        GeneralErrorResponse response = new GeneralErrorResponse(exception.getClass().getSimpleName(), exception.getMessage());
+        response.addParameter("statusCode", String.valueOf(exception.getStatusCode()));
         return response;
     }
 
