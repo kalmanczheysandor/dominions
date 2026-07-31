@@ -20,20 +20,23 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
+        "hu.kalmancheysandor.applications.dominions.apis.server.user.common",
+        "hu.kalmancheysandor.applications.dominions.apis.server.user.admin",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.advice",
         "hu.kalmancheysandor.applications.dominions.servers.ai.hugo.operation"
 })
 @EnableAsync
 @EnableFeignClients
 @EnableJpaRepositories(basePackages = {
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.repository",
+    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.repository",
+        "hu.kalmancheysandor.applications.dominions.apis.server.user.admin.repository",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.repository",
-        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
+//        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
         "hu.kalmancheysandor.applications.dominions.servers.ai.hugo.operation"
 })
 @EntityScan(basePackages = {
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.entity",
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.site.entity",
+    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.entity",
+    "hu.kalmancheysandor.applications.dominions.apis.server.user.admin.entity",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity",
         "hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity",
         "hu.kalmancheysandor.applications.dominions.servers.ai.hugo.operation"

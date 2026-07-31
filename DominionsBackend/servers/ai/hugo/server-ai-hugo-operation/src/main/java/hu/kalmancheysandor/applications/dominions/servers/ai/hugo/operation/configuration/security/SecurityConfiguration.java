@@ -2,6 +2,8 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.operation.con
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityContextDebugFilter;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAccessDenyHandler;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,18 +38,19 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
-                .securityContext(context -> context
-                        .securityContextRepository(contextRepository)) //It provides the saving and restoration `SecurityContext`
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .securityContext(context -> context.securityContextRepository(contextRepository)) // It providest saving and loading of SecurityContext
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterAfter(
-                        new SecurityContextDebugFilter(),
-                        org.springframework.security.web.context.SecurityContextHolderFilter.class
+                        new SecurityContextDebugFilter(), org.springframework.security.web.context.SecurityContextHolderFilter.class
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new TAuthenticationEntryPoint())
+                        .accessDeniedHandler(new TAccessDenyHandler())
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/**").authenticated()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(f -> f.disable())
         ;
@@ -66,8 +69,8 @@ public class SecurityConfiguration {
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowedHeaders("*")
-                        .allowCredentials(true); // Allows a session cookie-kat
-                //.exposedHeaders("Set-Cookie"); // TODO: ez itt lehet hogy nem kell
+                        .allowCredentials(true);
+//                        .exposedHeaders("Set-Cookie");
             }
         };
     }
