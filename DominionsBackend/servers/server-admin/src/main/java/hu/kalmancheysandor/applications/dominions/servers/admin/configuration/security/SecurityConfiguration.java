@@ -1,8 +1,10 @@
 package hu.kalmancheysandor.applications.dominions.servers.admin.configuration.security;
 
 
-
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityContextDebugFilter;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAccessDenyHandler;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,34 +38,26 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // CSRF-t kikapcsolod, ami rendben van REST-nél
+                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
-                .securityContext(context -> context
-                        .securityContextRepository(contextRepository)) // Biztosítja a `SecurityContext` mentését/visszaállítását
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Használj mindig új session-t
-                )
+                .securityContext(context -> context.securityContextRepository(contextRepository)) // It providest saving and loading of SecurityContext
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterAfter(
-                        new SecurityContextDebugFilter(),
-                        org.springframework.security.web.context.SecurityContextHolderFilter.class
+                        new SecurityContextDebugFilter(), org.springframework.security.web.context.SecurityContextHolderFilter.class
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new TAuthenticationEntryPoint())
+                        .accessDeniedHandler(new TAccessDenyHandler())
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/spring-boot-chat/**").permitAll()    // websocket
-                        .requestMatchers("/site/spring-boot-chat/**").permitAll()    // websocket
-                        .requestMatchers("/app/**").permitAll()//websocket
-                        .requestMatchers("/site/app/**").permitAll()//websocket
-                        .requestMatchers("/site/**").permitAll()
-                        .requestMatchers("/data/**").permitAll()
-
+                        .requestMatchers("/**").authenticated()
+                        .anyRequest().authenticated()
                 )
-                .formLogin(f -> f.disable())
-        ;
+                .formLogin(f -> f.disable());
 
         return http.build();
     }
-
 
 
     @Bean
@@ -73,12 +67,12 @@ public class SecurityConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                            adminSiteUrl
+                                adminSiteUrl
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                         .allowedHeaders("*")
-                        .allowCredentials(true) // Engedélyezi a session cookie-kat
-                        .exposedHeaders("Set-Cookie"); // EZ FONTOS!
+                        .allowCredentials(true)
+                        .exposedHeaders("Set-Cookie");
             }
         };
     }
