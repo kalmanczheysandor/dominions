@@ -1,7 +1,9 @@
-import TSocketException from "@/framework/exception/socket/TSocketException";
+import GeneralSocketException from "@/framework/exception/socket/GeneralSocketException";
 
-export default class UnableToConnectSocketException extends TSocketException {
+export default class UnableToConnectSocketException extends GeneralSocketException {
     constructor() {
-        super();
+        super('UnableToConnectSocketException', {
+            parameters: {}
+        });
     }
 }

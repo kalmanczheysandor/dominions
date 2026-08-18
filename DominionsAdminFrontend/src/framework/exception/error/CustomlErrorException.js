@@ -1,10 +1,9 @@
-import GeneralErrorException from "@/framework/exception/error/GeneralErrorException";
-import TError from "@/framework/exception/error/TError";
+import TErrorException from "@/framework/exception/error/TErrorException";
 
-export default class CustomErrorException extends TError {
+export default class CustomErrorException extends TErrorException {
     #message = "";
     constructor(message) {
-        super();
+        super('CustomErrorException');
         this.#message = message;
     }
 

@@ -11,11 +11,13 @@ global:
       password: ${RABBITMQ_MONITORING_PASSWORD}
       virtual-host: ${RABBITMQ_MONITORING_VIRTUAL_HOST}
 app:
+
   test:
     x: 545
   global:
     data-folder: ${APP_GLOBAL_DATA_FOLDER}
     images-folder: "${app.global.data-folder}/images"
+    secret-application-key: ${APP_GLOBAL_SECRET_APPLICATION_KEY}
   urls:
     admin-site: ${APP_URLS_ADMIN_SITE}
     game-site: ${APP_URLS_GAME_SITE}

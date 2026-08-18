@@ -1,7 +1,7 @@
-import ActionNotGrantedFailureException from '@/framework/exception/permission/ActionNotGrantedFailureException.js';
+import TPermissionFailureException from '@/framework/exception/permission/TPermissionFailureException.js';
 
-export default class AccessActionNotGrantedFailureException extends ActionNotGrantedFailureException {
+export default class AccessActionNotGrantedFailureException extends TPermissionFailureException {
     constructor() {
-        super('ACCESS');
+        super('AccessActionNotGrantedFailureException','ACCESS');
     }
 }

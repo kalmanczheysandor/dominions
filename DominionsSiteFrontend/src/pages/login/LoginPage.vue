@@ -87,7 +87,7 @@ export default {
 
                 this.$router.push('/main');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -95,14 +95,14 @@ export default {
             try {
                 this.$router.push('/account/signup');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnRecoveryButton() {
             try {
                 this.$router.push('/account/recovery');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         }
     }

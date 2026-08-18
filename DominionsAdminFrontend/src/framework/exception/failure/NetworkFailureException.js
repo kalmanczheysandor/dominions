@@ -1,6 +1,6 @@
-import TFailure from "@/framework/exception/failure/TFailure";
-export default class NetworkFailureException extends TFailure {
+import TFailureException from "@/framework/exception/failure/TFailureException";
+export default class NetworkFailureException extends TFailureException {
     constructor() {
-        super();
+        super('NetworkFailureException');
     }
 }

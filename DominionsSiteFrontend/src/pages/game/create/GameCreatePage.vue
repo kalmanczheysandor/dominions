@@ -91,7 +91,7 @@ export default {
                 this.scenarioListComponent.rows = listRows;
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -127,7 +127,7 @@ export default {
                 });
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 

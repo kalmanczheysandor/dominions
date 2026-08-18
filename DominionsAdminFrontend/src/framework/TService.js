@@ -1,10 +1,9 @@
-import GeneralFailureException from "@/framework/exception/failure/GeneralFailureException";
-import GeneralErrorException from "@/framework/exception/error/GeneralErrorException";
-import AuthenticationFailureException from "@/framework/exception/failure/AuthenticationFailureException";
+import GeneralBackendException from "@/framework/exception/backend/GeneralBackendException";
+import AuthenticationBackendException from "@/framework/exception/backend/AuthenticationBackendException";
 import NetworkFailureException from "@/framework/exception/failure/NetworkFailureException";
-import SecurityFailureException from "@/framework/exception/failure/SecurityFailureException";
+import SecurityBackendException from "@/framework/exception/backend/SecurityBackendException";
 import backendConfiguration from "@/configurations/backendConfiguration"
-import HttpFailureException from "@/framework/exception/failure/HttpFailureException";
+import HttpBackendException from "@/framework/exception/backend/HttpBackendException";
 import CustomErrorException from "@/framework/exception/error/CustomlErrorException";
 
 class TService {
@@ -12,28 +11,32 @@ class TService {
     }
 
     static convertBackendResponsesToExceptionIfNeeded(context, data) {
-        console.log("-----TService-----");
-        console.log("Data:", data);
-        console.log("Context:", context);
-
-        console.log("???:", "Alma");
 
         if (typeof data === "object" && data !== null && Object.hasOwn(data, "type")) {
-            console.log("Type:", data.type);
-            if (data.type == 'GeneralFailureResponse') {
-                throw new GeneralFailureException(data.code, data);
-            } else if (data.type == 'SecurityFailureResponse') {
-                throw new SecurityFailureException(data.code, data);
-            } else if (data.type == 'AuthenticationFailureResponse') {
-                throw new AuthenticationFailureException(data.code, data);
-            } else if (data.type == 'GeneralErrorResponse') {
-                throw new GeneralErrorException(data.code, data);
+
+            //
+            let type = data.type;
+            let code = data.code;
+            let parameters = {};
+            if (Object.hasOwn(data, "parameters")) {
+                parameters = data.parameters;
+            }
+
+            //
+            if (type === 'GeneralErrorResponse') {
+                throw new GeneralBackendException(code,parameters);
+            } else if (type === 'GeneralFailureResponse') {
+                throw new GeneralBackendException(code,parameters);
+            } else if (type === 'SecurityFailureResponse') {
+                throw new SecurityBackendException(code,parameters);
+            } else if (type === 'AuthenticationFailureResponse') {
+                throw new AuthenticationBackendException(code,parameters);
             } else {
-                throw new CustomErrorException('Unsupported response type is found:' + data.type + '!');
+                throw new CustomErrorException('Unsupported response type is found:' + type + '!');
             }
         } else if (typeof context === "object" && context !== null && Object.hasOwn(context, "status")) {
             if (context.status >= 400 && context.status <= 599) {
-                throw new HttpFailureException(context.status, context);
+                throw new HttpBackendException(context.status, context);
             } else {
                 throw new CustomErrorException('Unsupported http status code is found:' + context.status + '!');
             }

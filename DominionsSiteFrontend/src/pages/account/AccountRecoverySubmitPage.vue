@@ -90,7 +90,7 @@ export default {
 
                 this.$router.push('/main');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         }
     }

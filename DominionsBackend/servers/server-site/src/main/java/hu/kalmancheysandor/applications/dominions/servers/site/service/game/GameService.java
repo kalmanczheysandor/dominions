@@ -10,7 +10,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameScenarioRepository;
 import hu.kalmancheysandor.applications.dominions.apis.util.file.filehandler.FileHandler;
-import hu.kalmancheysandor.applications.dominions.servers.site.proxy.game.GameServerProxy;
+import hu.kalmancheysandor.applications.dominions.apis.server.game.common.proxy.GameServerProxy;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

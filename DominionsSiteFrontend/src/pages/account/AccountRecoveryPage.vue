@@ -77,7 +77,7 @@ export default {
                 }
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         }
     }

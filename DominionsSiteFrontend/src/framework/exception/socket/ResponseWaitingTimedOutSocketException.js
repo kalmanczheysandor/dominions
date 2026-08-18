@@ -1,15 +1,18 @@
-import TSocketException from "@/framework/exception/socket/TSocketException";
+import GeneralSocketException from "@/framework/exception/socket/GeneralSocketException";
 
-export default class ResponseWaitingTimedOutSocketException extends TSocketException {
+export default class ResponseWaitingTimedOutSocketException extends GeneralSocketException {
     #url;
 
     constructor(url) {
-        super();
+        super('ResponseWaitingTimedOutSocketException', {
+            parameters: {
+                url: url
+            }
+        });
         this.#url = url;
-        this._url = url;
     }
 
-    get url() {
+    getUrl() {
         return this._url;
     }
 }

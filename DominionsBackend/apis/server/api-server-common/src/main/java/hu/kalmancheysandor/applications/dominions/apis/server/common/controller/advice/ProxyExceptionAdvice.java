@@ -60,18 +60,17 @@ public class ProxyExceptionAdvice {
     }
 
 
+
+
     @ExceptionHandler(BrokenResponseProxyException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public GeneralErrorResponse handle(BrokenResponseProxyException exception) {
-        // Logging
-        log.warn("Proxy response is broken.");
+        log.warn("Proxy response is broken: {}", exception.getMessage());
 
         // Generate response
         GeneralErrorResponse response = new GeneralErrorResponse(exception.getClass().getSimpleName(), exception.getMessage());
         return response;
     }
-
-
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.DESTINATION_LOCKED)

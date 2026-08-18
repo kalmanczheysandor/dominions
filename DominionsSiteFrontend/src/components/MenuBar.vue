@@ -75,7 +75,7 @@ export default {
                 this.$router.push('/game/lobby');
                 this.$emit('whenClickOnPlayMenuButton');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnSettingsMenuButton() {
@@ -83,7 +83,7 @@ export default {
                 this.$router.push('/account/settings');
                 this.$emit('whenClickOnSettingsMenuButton');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnChartsMenuButton() {
@@ -91,7 +91,7 @@ export default {
                 this.$router.push('/charts');
                 this.$emit('whenClickOnChartsMenuButton');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnLogoutMenuButton() {
@@ -105,11 +105,11 @@ export default {
                     await authService.logout();
                     this.$router.push('/');
                 } catch (exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
                 this.$emit('whenClickOnLogoutMenuButton');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -117,7 +117,7 @@ export default {
             try {
                 this.$emit('whenClickOnResignMenuButton');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
     }

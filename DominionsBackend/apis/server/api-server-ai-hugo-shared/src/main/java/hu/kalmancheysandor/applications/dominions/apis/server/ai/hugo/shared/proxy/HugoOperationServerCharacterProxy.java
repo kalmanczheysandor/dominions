@@ -3,6 +3,7 @@ package hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.pr
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.dto.character.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.dto.character.option.HugoCharacterVariantOptionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @FeignClient(
         name = "server-ai-hugo-operation",
         contextId = "HugoOperationServerCharacterProxy",
+//        configuration = PrimaryFeignProxyConfig.class,
         path = "/character"
 )
 public interface HugoOperationServerCharacterProxy {

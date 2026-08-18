@@ -7,6 +7,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.concept.result.LizNeuralConceptSnapshotChartDataItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.concept.result.option.LizNeuralConceptResultHistoryPlayerOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.concept.result.option.LizNeuralConceptResultHistoryScenarioOptionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @FeignClient(
         name = "server-ai-liz-operation",
         contextId = "LizOperationServerNeuralConceptProxy",
+        configuration = PrimaryFeignProxyConfig.class,
         path = "/concept"
 )
 public interface LizOperationServerNeuralConceptProxy {

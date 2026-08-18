@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication(scanBasePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
+        "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
         "hu.kalmancheysandor.applications.dominions.apis.server.game.common",
         "hu.kalmancheysandor.applications.dominions.apis.server.user.common",
@@ -26,7 +27,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @EnableFeignClients(basePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.mailing.shared.proxy",
-        "hu.kalmancheysandor.applications.dominions.servers.site.proxy"
+        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.proxy"
 })
 @EnableJpaRepositories(basePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",

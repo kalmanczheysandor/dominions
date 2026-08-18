@@ -25,6 +25,7 @@ public class SiteAccountMailDeliveryController {
     @PostMapping("/recovery/verification/enqueue")
     @ResponseStatus(HttpStatus.OK)
     public void enqueueSiteAccountRecoveryVerificationMail(@Valid @RequestBody SiteAccountRecoveryVerificationMailEnqueueRequest request) {
+        System.out.println("enqueueSiteAccountRecoveryVerificationMail");
         siteAccountMailDeliveryService.enqueueSiteAccountRecoveryVerificationMail(request);
     }
 }

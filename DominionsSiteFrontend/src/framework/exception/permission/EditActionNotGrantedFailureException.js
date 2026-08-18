@@ -1,7 +1,7 @@
-import ActionNotGrantedFailureException from '@/framework/exception/permission/ActionNotGrantedFailureException.js';
+import TPermissionFailureException from '@/framework/exception/permission/TPermissionFailureException.js';
 
-export default  class EditActionNotGrantedFailureException extends ActionNotGrantedFailureException {
+export default  class EditActionNotGrantedFailureException extends TPermissionFailureException {
     constructor() {
-        super('EDIT');
+        super('EditActionNotGrantedFailureException','EDIT');
     }
 }

@@ -165,7 +165,7 @@ public class SiteAccountService {
     public SiteAccountSignUpResponse recovery(@Valid @NotNull SiteAccountRecoveryRequest request) {
         // Delete all non-verified and expired record
         deleteAllExpiredAccountRecoveryVerification(LocalDateTime.now());
-
+        System.out.println("---recovery");
         // Attempting to find user details by its identifier
         SiteUser user = siteUserRepository.findByIdentifier(request.getIdentifier());
         if (user == null) {
@@ -244,7 +244,7 @@ public class SiteAccountService {
 
         // Delete all non-verified and expired record
         deleteAllExpiredAccountRecoveryVerification(LocalDateTime.now());
-
+        System.out.println("---recoverySubmit");
         // Checking: Whether the confirmation is matching (even it is empty)
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new SiteAccountRecoveryConfirmPasswordMismatchException();

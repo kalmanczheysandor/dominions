@@ -52,21 +52,21 @@ export default {
             try {
                 this.$router.push('/game/lobby');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnSettingsMenuButton() {
             try {
                 this.$router.push('/account/settings');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnChartsMenuButton() {
             try {
                 this.$router.push('/charts');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventClickOnLogoutMenuButton() {
@@ -79,7 +79,7 @@ export default {
                 await authService.logout();
                 this.$router.push('/');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 

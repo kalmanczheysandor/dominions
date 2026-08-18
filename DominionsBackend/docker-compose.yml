@@ -78,7 +78,7 @@ services:
     depends_on:
       server-config:
         condition: service_healthy
-
+#
   server-admin:
     build: ./server-admin
     ports:
@@ -122,20 +122,20 @@ services:
     depends_on:
       server-config:
         condition: service_healthy
-
-  server-monitoring:
-    build: ./server-monitoring
-    ports:
-      - "15500:15500"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    env_file:
-      - .env
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
-    depends_on:
-      server-config:
-        condition: service_healthy
+#
+#  server-monitoring:
+#    build: ./server-monitoring
+#    ports:
+#      - "15500:15500"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    env_file:
+#      - .env
+#    environment:
+#      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+#    depends_on:
+#      server-config:
+#        condition: service_healthy
 
   server-ai-hugo-operation:
     build: ./server-ai-hugo-operation
@@ -150,7 +150,7 @@ services:
     depends_on:
       server-config:
         condition: service_healthy
-
+#
   server-ai-hugo-agent-1:
     build: ./server-ai-hugo-agent
     ports:
@@ -164,20 +164,20 @@ services:
     depends_on:
       server-config:
         condition: service_healthy
-
-  server-ai-hugo-agent-2:
-    build: ./server-ai-hugo-agent
-    ports:
-      - "15803:15044"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    env_file:
-      - .env
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
-    depends_on:
-      server-config:
-        condition: service_healthy
+#
+#  server-ai-hugo-agent-2:
+#    build: ./server-ai-hugo-agent
+#    ports:
+#      - "15803:15044"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    env_file:
+#      - .env
+#    environment:
+#      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+#    depends_on:
+#      server-config:
+#        condition: service_healthy
 
 #  server-ai-hugo-agent-3:
 #    build: ./server-ai-hugo-agent
@@ -220,7 +220,7 @@ services:
     depends_on:
       server-config:
         condition: service_healthy
-
+#
   server-ai-liz-agent-1:
     build: ./server-ai-liz-agent
     ports:
@@ -234,20 +234,20 @@ services:
     depends_on:
       server-config:
         condition: service_healthy
-
-  server-ai-liz-agent-2:
-    build: ./server-ai-liz-agent
-    ports:
-      - "15853:15041"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    env_file:
-      - .env
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
-    depends_on:
-      server-config:
-        condition: service_healthy
+#
+#  server-ai-liz-agent-2:
+#    build: ./server-ai-liz-agent
+#    ports:
+#      - "15853:15041"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    env_file:
+#      - .env
+#    environment:
+#      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+#    depends_on:
+#      server-config:
+#        condition: service_healthy
 
 #  server-ai-liz-agent-3:
 #    build: ./server-ai-liz-agent

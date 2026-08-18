@@ -131,7 +131,7 @@
                     // Hide dialog
                     this.close();
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
             },
             async eventClickOnCancelButton() {
@@ -164,7 +164,7 @@
                     // Display dialog
                     this.$refs.Dialog.open();
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                     this.close();
                 }
             },
