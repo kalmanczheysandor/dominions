@@ -3,6 +3,7 @@ package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.pro
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.character.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.character.option.LizCharacterVariantOptionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @FeignClient(
         name = "server-ai-liz-operation",
         contextId = "LizOperationServerCharacterProxy",
+        configuration = PrimaryFeignProxyConfig.class,
         path = "/character"
 )
 public interface LizOperationServerCharacterProxy {

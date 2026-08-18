@@ -1,7 +1,13 @@
-import GeneralErrorException from "@/framework/exception/error/GeneralErrorException";
+import TException from "@/framework/exception/TException";
 
-export default class ParameterErrorException extends GeneralErrorException {
+export default class ParameterErrorException extends TException {
+    #message = "";
     constructor(message) {
-        super(message);
+        super('ParameterErrorException');
+        this.#message = message;
+    }
+
+    getMessage() {
+        return this.#message;
     }
 }

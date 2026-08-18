@@ -5,6 +5,7 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.character.option.LizCharacterVariantOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.variant.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.variant.option.LizVariantConceptOptionResponse;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @FeignClient(
         name = "server-ai-liz-operation",
         contextId = "LizOperationServerVariantProxy",
+        configuration = PrimaryFeignProxyConfig.class,
         path = "/variant"
 )
 public interface LizOperationServerVariantProxy {

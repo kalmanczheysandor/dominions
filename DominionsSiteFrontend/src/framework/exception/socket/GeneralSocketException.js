@@ -1,5 +1,6 @@
-import TFailure from "@/framework/exception/failure/TFailure";
-export default class AuthenticationFailureException extends TFailure {
+import TSocketException from "@/framework/exception/socket/TSocketException";
+
+export default class GeneralSocketException extends TSocketException {
 
     #data = null;
     #code

@@ -189,7 +189,7 @@ export default {
                 // Display the success message
                 TController.displayModifiedToast();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -230,7 +230,7 @@ export default {
                 // Display success message
                 TController.displayModifiedToast();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -250,7 +250,7 @@ export default {
                 this.CredentialsForm.Fields.NewPasswordAgainInput.value = "";
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -269,7 +269,7 @@ export default {
                await this.$refs.ProfileImageCroppieInput.openFile(backendConfiguration.BACKEND_BASE_URL + '/account/settings/profile/photo');
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
     },

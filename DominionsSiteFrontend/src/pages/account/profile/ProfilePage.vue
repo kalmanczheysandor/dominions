@@ -154,7 +154,7 @@
                     // Display success message
                     TController.displayModifiedToast();
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
             },
             async eventClickOnPersonalFormModifyButton() {
@@ -194,7 +194,7 @@
                     // Display success message
                     TController.displayModifiedToast();
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
             },
 
@@ -219,7 +219,7 @@
                     await this.$refs.ProfileImageCroppieInput.openFile(backendConfiguration.BACKEND_BASE_URL+'/data/account/settings/details/image/main');
 
                 } catch(exp) {
-                    await TController.displayExceptionMessages(exp);
+                    await TController.handleExceptions(exp);
                 }
             },
         },

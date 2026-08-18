@@ -1,13 +1,13 @@
 import TErrorException from "@/framework/exception/error/TErrorException";
-export default class GeneralErrorException extends TErrorException {
+
+export default class CustomErrorException extends TErrorException {
     #message = "";
     constructor(message) {
-        super();
+        super('CustomErrorException');
         this.#message = message;
     }
 
     getMessage() {
         return this.#message;
     }
-
 }

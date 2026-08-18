@@ -1,6 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy;
 
 
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(
         name = "server-ai-liz-training",
         contextId = "LizTrainingServerTrainingProxy",
+        configuration = PrimaryFeignProxyConfig.class,
         path = "/training"
 )
 public interface LizTrainingServerTrainingProxy {

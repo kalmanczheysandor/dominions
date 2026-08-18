@@ -47,8 +47,6 @@ public class AdminAuthenticationFilter extends AbstractAuthenticationProcessingF
         String password = request.getParameter("password");
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(identifier, password);
 
-
-
         System.out.println("------------Attempt to authenticate [AdminAuthenticationFilter]-------------");
         System.out.println("Identifier:" + identifier);
         System.out.println("Password:" + password);
@@ -64,7 +62,8 @@ public class AdminAuthenticationFilter extends AbstractAuthenticationProcessingF
 
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
-        // TODO: It is a temporary solution! Source: https://github.com/spring-projects/spring-security/issues/9173
+        // TODO: It is a temporary solution!
+        // Source: https://github.com/spring-projects/spring-security/issues/9173
         // Get the right session
         request.getSession()
                 .setAttribute(
@@ -73,7 +72,6 @@ public class AdminAuthenticationFilter extends AbstractAuthenticationProcessingF
                 );
 
         // Determine session-id
-//        HttpSession session = request.getSession(false);
         HttpSession session = request.getSession(true);
         session.setAttribute("SESSION_TYPE", "ADMIN");
         String sessionId = session.getId();

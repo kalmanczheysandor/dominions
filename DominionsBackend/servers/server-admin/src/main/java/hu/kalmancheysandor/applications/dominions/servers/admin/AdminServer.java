@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication(scanBasePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.common.controller.advice",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign",
+        "hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security",
         "hu.kalmancheysandor.applications.dominions.apis.server.common.component",
         "hu.kalmancheysandor.applications.dominions.apis.server.user.common",
         "hu.kalmancheysandor.applications.dominions.apis.server.user.admin",

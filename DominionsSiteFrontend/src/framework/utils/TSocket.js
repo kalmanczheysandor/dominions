@@ -72,7 +72,7 @@ class TSocket  {
         }
 
         if(contentObj.type) {
-            TService.convertToExceptionIfNeeded(contentObj)
+            TService.convertBackendResponsesToExceptionIfNeeded(contentObj)
         }
         return contentObj;
     }

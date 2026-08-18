@@ -112,14 +112,14 @@ export default {
                 this.PlayListComponent.rows = listRows;
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
         async eventOnClickCreateButton() {
             try {
                 this.$router.push('/game/create');
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -161,7 +161,7 @@ export default {
                 });
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
     },

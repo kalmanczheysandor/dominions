@@ -46,7 +46,7 @@ export default {
             try {
                 await this.loadGame();
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
         },
 
@@ -79,7 +79,7 @@ export default {
                 });
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
 
         },
@@ -99,7 +99,7 @@ export default {
                 });
 
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
 
         },
@@ -117,7 +117,7 @@ export default {
                     playerIndex: actionData.playerIndex
                 });
             } catch (exp) {
-                await TController.displayExceptionMessages(exp);
+                await TController.handleExceptions(exp);
             }
 
         },

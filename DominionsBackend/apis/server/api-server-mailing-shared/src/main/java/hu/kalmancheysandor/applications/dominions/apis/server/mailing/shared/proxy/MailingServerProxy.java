@@ -1,5 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.mailing.shared.proxy;
 
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import hu.kalmancheysandor.applications.dominions.apis.server.mailing.shared.dto.SiteAccountRecoveryVerificationMailEnqueueRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.mailing.shared.dto.SiteAccountSignUpVerificationMailEnqueueRequest;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -8,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@FeignClient(name = "server-mailing")
+@FeignClient(
+        name = "server-mailing",
+        configuration = PrimaryFeignProxyConfig.class
+)
 public interface MailingServerProxy {
 
     @PostMapping("/site/account/signup/verification/enqueue")

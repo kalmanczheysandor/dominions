@@ -1,6 +1,7 @@
-package hu.kalmancheysandor.applications.dominions.servers.site.proxy.game;
+package hu.kalmancheysandor.applications.dominions.apis.server.game.common.proxy;
 
 
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.action.GamePlayAttackActionResponse;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name="server-game")
+@FeignClient(
+        name = "server-game",
+        contextId = "GameServerProxy",
+        configuration = PrimaryFeignProxyConfig.class
+)
 public interface GameServerProxy {
     @PostMapping("/create")
     public GamePlayCreateResponse createGamePlay(@Valid @RequestBody GamePlayCreateRequest request);

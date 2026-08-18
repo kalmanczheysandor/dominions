@@ -1,10 +1,10 @@
 package hu.kalmancheysandor.applications.dominions.servers.admin.configuration.security;
 
 
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityApiKeyFilter;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityContextDebugFilter;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAccessDenyHandler;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAuthenticationEntryPoint;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -28,6 +30,10 @@ public class SecurityConfiguration {
     @Value("${app.urls.admin-site}")
     private String adminSiteUrl;
 
+    @Value("${app.global.secret-application-key}")
+    private  String secretApiKey;
+
+
     @Value("${app.urls.game-site}")
     private String gameSiteUrl;
 
@@ -35,16 +41,15 @@ public class SecurityConfiguration {
     @Lazy
     private SecurityContextRepository contextRepository;
 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
-                .securityContext(context -> context.securityContextRepository(contextRepository)) // It providest saving and loading of SecurityContext
+                .securityContext(context -> context.securityContextRepository(contextRepository)) // It provides saving and loading of SecurityContext
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .addFilterAfter(
-                        new SecurityContextDebugFilter(), org.springframework.security.web.context.SecurityContextHolderFilter.class
-                )
+                .addFilterAfter(new SecurityContextDebugFilter(), SecurityContextHolderFilter.class)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(new TAuthenticationEntryPoint())
                         .accessDeniedHandler(new TAccessDenyHandler())

@@ -2,6 +2,7 @@ package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.pro
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.solution.*;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.feign.PrimaryFeignProxyConfig;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @FeignClient(
         name = "server-ai-liz-training",
         contextId = "LizTrainingServerPersonnelSolutionProxy",
+        configuration = PrimaryFeignProxyConfig.class,
         path = "/personnel"
 )
 public interface LizTrainingServerPersonnelSolutionProxy {

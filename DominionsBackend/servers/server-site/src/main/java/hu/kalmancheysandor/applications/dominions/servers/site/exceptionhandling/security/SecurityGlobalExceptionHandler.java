@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.servers.site.exceptionhandling.security;
 
 import hu.kalmancheysandor.applications.dominions.apis.server.common.dto.failure.SecurityFailureResponse;
-import hu.kalmancheysandor.applications.dominions.apis.server.user.common.exception.SessionExpiredException;
+import hu.kalmancheysandor.applications.dominions.apis.server.common.exception.SessionExpiredException;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.common.security.authentication.exception.UserIsNotAuthenticatedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
