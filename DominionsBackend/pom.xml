@@ -13,6 +13,7 @@
         <module>apis/ai/general/api-ai-common</module>
         <module>apis/ai/general/api-ai-neural</module>
         <module>apis/ai/general/api-ai-heuristic</module>
+        <module>apis/ai/general/api-ai-defensive</module>
         <module>apis/ai/engine/api-ai-liz</module>
         <module>apis/ai/engine/api-ai-hugo</module>
 
