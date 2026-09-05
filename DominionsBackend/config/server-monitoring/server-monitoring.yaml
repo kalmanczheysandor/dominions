@@ -5,7 +5,7 @@ spring:
     import:
       - ${global.paths.config-repo}/common/eureka.yaml
       - ${global.paths.config-repo}/common/tracing.yaml
-      #      - ${global.paths.config-repo}/common/monitoring.yaml
+      #      - ${global.paths.config-repo}/common/observability.yaml
       - ${global.paths.config-repo}/common/logging.yaml
       #      - ${global.paths.config-repo}/common/db.yaml
       #      - ${global.paths.config-repo}/common/session.yaml

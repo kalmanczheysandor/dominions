@@ -1,0 +1,33 @@
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.stream.binding: DEBUG
+    com.fasterxml.jackson.databind: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+
+    org.springframework.cloud.stream: DEBUG
+    org.springframework.amqp: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${global.management.endpoints.web.exposure.include}
+
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+  tracing:
+    sampling:
+      probability: 1.0
+
+  otlp:
+    tracing:
+      endpoint: http://server-tempo:4318/v1/traces
+
+  zipkin:
+    tracing:
+      endpoint: http://server-zipkin:9411/api/v2/spans

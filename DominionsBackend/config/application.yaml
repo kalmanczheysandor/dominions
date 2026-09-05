@@ -10,6 +10,12 @@ global:
       username: ${RABBITMQ_MONITORING_USERNAME}
       password: ${RABBITMQ_MONITORING_PASSWORD}
       virtual-host: ${RABBITMQ_MONITORING_VIRTUAL_HOST}
+  management:
+    endpoints:
+      web:
+        exposure:
+#          include: "health,info,prometheus,busrefresh,busenv,refresh"
+          include: "*"
 app:
 
   test:
