@@ -16,6 +16,7 @@
         <module>apis/ai/general/api-ai-defensive</module>
         <module>apis/ai/engine/api-ai-liz</module>
         <module>apis/ai/engine/api-ai-hugo</module>
+        <module>apis/ai/engine/api-ai-otto</module>
 
         <module>apis/monitoring/api-monitoring-client</module>
 
