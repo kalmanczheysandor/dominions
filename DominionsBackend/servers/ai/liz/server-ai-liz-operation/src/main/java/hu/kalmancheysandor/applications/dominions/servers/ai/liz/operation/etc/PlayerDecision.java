@@ -1,7 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.etc;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizAiEngine;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizAiAlgorithm;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameState;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameStateCell;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class PlayerDecision {
 
 
     public static PlayerDecision create(Integer supportedPlayerIndex, Integer target, int troopSize, int reserveSize, int enemiesCount, GameState gameState) {
-        Map<Integer, Integer> rankMap = LizAiEngine.createRankMapOfOccupierIndexes(gameState,supportedPlayerIndex );
+        Map<Integer, Integer> rankMap = LizAiAlgorithm.createRankMapOfOccupierIndexes(gameState,supportedPlayerIndex );
 
         // Fields
         Map<Integer, Field> fields = new HashMap<>();

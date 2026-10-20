@@ -60,15 +60,5 @@ public class LizAgentServer {
     }
 
 
-    private void aCallTest() {
-//        INeuralAiEngine myTestEngine = new  LizAiEngine();
-//        myTestEngine.trainIt();
-
-//        LizNeuralNetwork network = new LizNeuralNetwork();
-//        network.train(null, null);
-//        network.
-
-
-    }
 
 }

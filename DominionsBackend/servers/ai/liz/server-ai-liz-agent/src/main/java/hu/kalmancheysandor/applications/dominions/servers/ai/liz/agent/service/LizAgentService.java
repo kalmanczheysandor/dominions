@@ -1,10 +1,11 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.liz.agent.service;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizAiEngine;
+
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralAiEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralAiAlgorithm;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralNetwork;
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
@@ -103,7 +104,7 @@ public class LizAgentService extends TLizService {
         int latestExecutionId = determineLatestFinishedExecution(conceptId);
 
         // Initialise the decision-making engine
-        INeuralAiEngine aiDecisionEngine = new LizAiEngine();
+        INeuralAiAlgorithm aiDecisionEngine = new LizEngine();
 
         // Register all enemy network
         for (Map.Entry<Integer, AiDecisionRequest.Player> playerEntry : enemyPlayers.entrySet()) {

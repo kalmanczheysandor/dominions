@@ -270,7 +270,7 @@ public class LizNeuralOrchestrationService extends TLizService {
         ExecutionResult executionResult = transactionTemplate.execute(status -> {
 
             //
-            delay(queueItem.getDateCreated(),10);
+            delay(queueItem.getDateCreated(), 10);
 
             //
             LizNeuralExecution execution = accessExecutionRecordById(queueItem.getExecutionId());
@@ -278,7 +278,7 @@ public class LizNeuralOrchestrationService extends TLizService {
                 throw new LizNeuralConceptExecutionNotFoundException(queueItem.getExecutionId());
             }
 
-            if(!LizNeuralExecution.ProcessPhase.RUNNING.equals(execution.getProcessPhase())) {
+            if (!LizNeuralExecution.ProcessPhase.RUNNING.equals(execution.getProcessPhase())) {
                 System.out.println("Execution is not in running phase, cancel processing");
                 System.out.println("BECAUSE:" + execution.getProcessPhase());
                 return null;
@@ -300,13 +300,12 @@ public class LizNeuralOrchestrationService extends TLizService {
             if (!isTaskAllowedToBeProcessed(taskToProcess)) {
                 System.out.println("Task not allowed to be processed - in step 1");
                 System.out.println("BECAUSE:" + taskToProcess.getTaskPhase());
-                System.out.println("TheTask:"+taskToProcess);
+                System.out.println("TheTask:" + taskToProcess);
                 return null;
             }
 
             // Access entity: Toplevel record
             LizNeuralConcept concept = accessConceptRecordById(taskToProcess.getConceptId());
-
 
 
             return new ExecutionResult(concept, execution, taskToProcess);
@@ -959,7 +958,13 @@ public class LizNeuralOrchestrationService extends TLizService {
             String playerNameCode = playerData.getName();
 
             //
-            saveAHistory(sessionUuid, scenarioUuid, turn, userUuid, userName, PlayerDecision.create(
+            saveAHistory(
+                    sessionUuid,
+                    scenarioUuid,
+                    turn,
+                    userUuid,
+                    userName,
+                    PlayerDecision.create(
                             playerIndex,
                             playerIntention.getTargetCellKey(),
                             playerIntention.getAttackingTroopSize(),
@@ -975,20 +980,26 @@ public class LizNeuralOrchestrationService extends TLizService {
 
 
     private void saveAHistory(String sessionUuid, String scenarioUuid, int turn, String userUuid, String userName, PlayerDecision playerDecision) {
-
+        log.info("QUEUE[-History-].saveAHistory decision {}", playerDecision);
         // Register local representation if not exists
         registerHistoryPlayerIfNotExists(userUuid, userName);
-
+        log.info("QUEUE[-History-].saveAHistory.A1");
         // Access local representations
         LizHistorySession lizHistorySession = accessHistorySession(sessionUuid);
         int lizHistorySessionId = lizHistorySession.getId();
+        log.info("QUEUE[-History-].saveAHistory.A2 lizHistorySessionId: {}", lizHistorySessionId);
+
         LizHistoryScenario lizHistoryScenario = accessHistoryScenario(scenarioUuid);
         int lizHistoryScenarioId = lizHistoryScenario.getId();
+        log.info("QUEUE[-History-].saveAHistory.A3 lizHistoryScenarioId: {}", lizHistoryScenarioId);
+
+
         LizHistoryPlayer lizHistoryPlayer = accessHistoryPlayer(userUuid);
         int lizHistoryPlayerId = lizHistoryPlayer.getId();
+        log.info("QUEUE[-History-].saveAHistory.A4 lizHistoryPlayerId: {}", lizHistoryPlayerId);
 
         // Save history
-        lizHistoryRepository.save(LizHistory.builder()
+        LizHistory h= lizHistoryRepository.save(LizHistory.builder()
                 .sessionId(lizHistorySessionId)
                 .scenarioId(lizHistoryScenarioId)
                 .playerId(lizHistoryPlayer.getId())
@@ -997,6 +1008,8 @@ public class LizNeuralOrchestrationService extends TLizService {
                 .dateCreated(LocalDateTime.now())
                 .build()
         );
+        log.info("QUEUE[-History-].saveAHistory.A5 History: {}", h);
+
     }
 
 //

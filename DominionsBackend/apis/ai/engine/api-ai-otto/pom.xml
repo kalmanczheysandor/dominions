@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-ai-defensive</artifactId>
+            <artifactId>api-ai-riskmin</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

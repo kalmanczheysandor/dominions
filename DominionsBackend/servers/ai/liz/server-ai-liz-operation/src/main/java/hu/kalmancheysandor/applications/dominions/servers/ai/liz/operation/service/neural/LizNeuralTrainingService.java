@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizInputData;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetworkTrainingConfiguration;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralInputData;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralNetwork;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.NeuralNetworkTrainingResult;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.NeuralNetworkTrainingSnapshot;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralInputData;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.NeuralNetworkTrainingResult;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.NeuralNetworkTrainingSnapshot;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistory;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralExecution;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingResult;
@@ -168,9 +168,10 @@ public class LizNeuralTrainingService extends TLizService {
         System.out.println("-------convertHistoryToTrainingData-----");
         try {
 
+            int cellCount   = decisionObj.getFields().size();
 
-            int[] cellOwners = new int[decisionObj.getFields().size()];
-            int[] cellDefendersSize = new int[decisionObj.getFields().size()];
+            int[] cellOwners = new int[cellCount];
+            int[] cellDefendersSize = new int[cellCount];
             for (Map.Entry<Integer, PlayerDecision.Field> fieldEntry : decisionObj.getFields().entrySet()) {
                 int fieldIndex = fieldEntry.getKey();
                 PlayerDecision.Field fieldObj = fieldEntry.getValue();

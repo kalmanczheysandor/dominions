@@ -1,11 +1,11 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.agent.service;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.HugoAiAdvancedEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.HugoFirstHeuristicEvaluator;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.HugoSecondHeuristicEvaluator;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.IHeuristicAiEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.IHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.algorithm.maxf.IMaxFAlgorithm;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoEngine;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoFirstHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoSecondHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.IHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.heuristic.HugoHeuristicEvaluatorType;
@@ -47,7 +47,7 @@ public class HugoAgentService extends THugoService {
         registerHistoryScenarioIfNotExists(scenarioUuid, scenarioName);
 
         //
-        IHeuristicAiEngine engine = new HugoAiAdvancedEngine();
+        IMaxFAlgorithm engine = new HugoEngine();
         engine.registerHeuristicEvaluator(
                 determineHeuristicEvaluatorByCharacterCode(myCharacterCode)
         );

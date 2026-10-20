@@ -277,12 +277,12 @@ services:
 #      server-config:
 #        condition: service_healthy
 
-  server-zipkin:
-    image: openzipkin/zipkin
-    container_name: server-zipkin
-    ports:
-      - "9411:9411"
-    restart: unless-stopped
+#  server-zipkin:
+#    image: openzipkin/zipkin
+#    container_name: server-zipkin
+#    ports:
+#      - "9411:9411"
+#    restart: unless-stopped
 
 
 

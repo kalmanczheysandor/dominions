@@ -27,7 +27,7 @@ public class QueueConsumers {
 
 
     @Bean
-    public Consumer<AiHistoryQueueItem> queueHistoryBroadcast(LizNeuralOrchestrationService service) {
+    public Consumer<AiHistoryQueueItem> queueHistoryBroadcastReceiver(LizNeuralOrchestrationService service) {
         System.out.println("TTX");
         return service::eventHistoryQueueItemReceived;
     }

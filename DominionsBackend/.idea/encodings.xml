@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/apis/ai/algorithm/api-ai-maxf/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/algorithm/api-ai-riskmin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/api-ai-egon/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/api-ai-helga/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/api-ai-otto/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/engine/api-ai-hugo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/engine/api-ai-liz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/ai/engine/api-ai-otto/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/general/api-ai-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/general/api-ai-heuristic/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/ai/general/api-ai-neural/src/main/java" charset="UTF-8" />
@@ -19,6 +22,7 @@
     <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/apis/server/api-server-ai-otto-shared/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-all/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-authentication-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apis/server/api-server-common/src/main/java" charset="UTF-8" />
@@ -38,6 +42,7 @@
     <file url="file://$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/otto/server-ai-otto-agent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/servers/ai/otto/server-ai-otto-operation/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/server-ai-egon/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/server-ai-helga/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servers/ai/server-ai-hugo/src/main/java" charset="UTF-8" />

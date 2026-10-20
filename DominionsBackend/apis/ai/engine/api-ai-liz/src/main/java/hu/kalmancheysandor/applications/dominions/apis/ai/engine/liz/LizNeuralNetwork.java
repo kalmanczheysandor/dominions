@@ -1,6 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz;
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.*;
+import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.*;
 import hu.kalmancheysandor.applications.dominions.apis.general.utils.TArray;
 import lombok.*;
 import org.neuroph.core.Layer;
@@ -82,7 +82,6 @@ public class LizNeuralNetwork extends TNeuralNetwork {
 
         // Set up training set by training data
         DataSet trainingSet = buildDataSet(trainingDataRows);
-        ;
 
         // Set up configurations
         BackPropagation learningRule = new BackPropagation();

@@ -13,7 +13,9 @@
         <module>apis/ai/general/api-ai-common</module>
         <module>apis/ai/general/api-ai-neural</module>
         <module>apis/ai/general/api-ai-heuristic</module>
-        <module>apis/ai/general/api-ai-defensive</module>
+
+        <module>apis/ai/algorithm/api-ai-riskmin</module>
+
         <module>apis/ai/engine/api-ai-liz</module>
         <module>apis/ai/engine/api-ai-hugo</module>
         <module>apis/ai/engine/api-ai-otto</module>
@@ -59,6 +61,10 @@
         <module>apis/util/api-util-file</module>
         <module>apis/util/api-util-validate</module>
         <module>apis/configuration/api-configuration-client</module>
+        <module>apis/server/api-server-ai-otto-shared</module>
+        <module>servers/ai/otto/server-ai-otto-agent</module>
+        <module>servers/ai/otto/server-ai-otto-operation</module>
+        <module>apis/ai/algorithm/api-ai-maxf</module>
 
     </modules>
 

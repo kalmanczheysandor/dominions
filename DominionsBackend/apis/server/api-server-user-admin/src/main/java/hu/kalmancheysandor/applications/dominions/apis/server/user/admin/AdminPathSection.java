@@ -44,16 +44,27 @@ public class AdminPathSection extends SecurityPermissionPathGenerator {
     public AdminPathSection ai() {
         return new AdminPathSection(this, "Ai");
     }
+
     public AdminPathSection liz() {
         return new AdminPathSection(this, "Liz");
     }
+
     public AdminPathSection hugo() {
         return new AdminPathSection(this, "Hugo");
     }
-    public AdminPathSection character() {return new AdminPathSection(this, "Character");}
+
+    public AdminPathSection otto() {
+        return new AdminPathSection(this, "Otto");
+    }
+
+    public AdminPathSection character() {
+        return new AdminPathSection(this, "Character");
+    }
+
     public AdminPathSection variant() {
         return new AdminPathSection(this, "Variant");
     }
+
     public AdminPathSection concept() {
         return new AdminPathSection(this, "Concept");
     }
@@ -63,14 +74,13 @@ public class AdminPathSection extends SecurityPermissionPathGenerator {
     }
 
 
-
     public AdminPathSection game() {
         return new AdminPathSection(this, "Game");
     }
+
     public AdminPathSection scenario() {
         return new AdminPathSection(this, "Scenario");
     }
-
 
 
     public AdminPathSection account() {
