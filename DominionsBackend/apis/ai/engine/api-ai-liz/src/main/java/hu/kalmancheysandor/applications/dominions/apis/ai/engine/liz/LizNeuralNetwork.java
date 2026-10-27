@@ -1,6 +1,7 @@
 package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz;
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.*;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.*;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.*;
 import hu.kalmancheysandor.applications.dominions.apis.general.utils.TArray;
 import lombok.*;
 import org.neuroph.core.Layer;
@@ -19,22 +20,22 @@ import org.neuroph.util.NeuralNetworkType;
 import java.io.File;
 import java.util.*;
 
-public class LizNeuralNetwork extends TNeuralNetwork {
+public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
 
     private final static int INPUT_VECTOR_ATTACKPOWER_SECTION_LEGNTH = 1;
     private Configuration configuration;
     private NeuralNetwork network;
     private String networkFilePath;
-    private INeuralTrainingSnapshotListener trainingSnapshotListener;
-    private INeuralTrainingInterruptListener trainingInterruptListener;
+    private INeuralNetworkTrainingSnapshotListener trainingSnapshotListener;
+    private INeuralNetworkTrainingInterruptListener trainingInterruptListener;
 
     @Override
-    public void setTrainingSnapshotListener(INeuralTrainingSnapshotListener trainingSnapshotListener) {
+    public void setTrainingSnapshotListener(INeuralNetworkTrainingSnapshotListener trainingSnapshotListener) {
         this.trainingSnapshotListener = trainingSnapshotListener;
     }
 
     @Override
-    public void setTrainingInterruptListener(INeuralTrainingInterruptListener trainingInterruptListener) {
+    public void setTrainingInterruptListener(INeuralNetworkTrainingInterruptListener trainingInterruptListener) {
         this.trainingInterruptListener = trainingInterruptListener;
     }
 
@@ -69,19 +70,25 @@ public class LizNeuralNetwork extends TNeuralNetwork {
         System.out.println("Neural network saved to '" + filePath + "'");
     }
 
+
     @Override
-    public NeuralNetworkTrainingResult train(List<INeuralInputData> trainingDataList, INeuralNetworkTrainingConfiguration trainingConfiguration, List<INeuralInputData> testingDataList) {
+    public NeuralNetworkTrainingResult train(List<INeuralNetworkTrainingItem> trainingItemList, INeuralNetworkTrainingConfiguration trainingConfiguration, List<INeuralNetworkTrainingItem> testingItemList) {
         System.out.println("<<<< LizNeuralNetwork: Training.Start >>>>");
 
         // Convert
-        List<LizInputData> trainingDataRows = LizInputData.convertInputDataList(trainingDataList);
+        List<LizNeuralNetworkTrainingItem> trainingItems = LizNeuralNetworkTrainingItem.convertTrainingItemList(trainingItemList);
+        List<LizNeuralNetworkTrainingItem> testingItems = LizNeuralNetworkTrainingItem.convertTrainingItemList(testingItemList);
         LizNeuralNetworkTrainingConfiguration lizTrainingConfiguration = LizNeuralNetworkTrainingConfiguration.generateInstance(trainingConfiguration);
 
+//        List<LizNeuralNetworkModelInput> trainingDataRows = LizNeuralNetworkModelInput.convertInputDataList(trainingItemList);
+//        List<LizNeuralNetworkModelInput> testingDataRows = LizNeuralNetworkModelInput.convertInputDataList(testingItemsList);
+
         // Print training data list
-        printTrainingDataList(trainingDataRows);
+        //printTrainingDataList(trainingDataRows);
 
         // Set up training set by training data
-        DataSet trainingSet = buildDataSet(trainingDataRows);
+        DataSet trainingSet = buildTrainingDataSet(trainingItems);
+        DataSet testingSet = buildTrainingDataSet(testingItems);
 
         // Set up configurations
         BackPropagation learningRule = new BackPropagation();
@@ -98,6 +105,7 @@ public class LizNeuralNetwork extends TNeuralNetwork {
         double bestPrecisionRate = 0.0;
         int bestTurn = 0;
         int maxTurnCount = lizTrainingConfiguration.getMaxTurn();
+
         for (int turn = 1; turn <= maxTurnCount; turn++) {
             System.out.println("++++++++TURN:" + turn + "+++++++++++++++++++++++++++++++++++++++++++");
 
@@ -111,7 +119,7 @@ public class LizNeuralNetwork extends TNeuralNetwork {
             network.learn(trainingSet);
 
             // Evaluate current phase
-            evaluationResult = evaluationOfANetwork(network, testingDataList);
+            evaluationResult = evaluationOfANetwork(network, testingSet);
 
             // Save network-instance into file if precision is better in current turn than in previous turn
             if (evaluationResult.getPrecisionRate() > bestPrecisionRate) {
@@ -131,7 +139,6 @@ public class LizNeuralNetwork extends TNeuralNetwork {
                         .build()
                 );
             }
-
 
         }
 
@@ -191,12 +198,7 @@ public class LizNeuralNetwork extends TNeuralNetwork {
         return isOk;
     }
 
-    private NeuralNetworkEvaluationResult evaluationOfANetwork(NeuralNetwork networkObj, List<INeuralInputData> testingDataList) {
-        // Convert
-        List<LizInputData> testingDataRows = LizInputData.convertInputDataList(testingDataList);
-
-        // Build data set
-        DataSet testingSet = buildDataSet(testingDataRows);
+    private NeuralNetworkEvaluationResult evaluationOfANetwork(NeuralNetwork networkObj, DataSet testingSet) {
 
         // Test the trained neural network
         int okCount = 0;
@@ -223,87 +225,70 @@ public class LizNeuralNetwork extends TNeuralNetwork {
         System.out.println("itemsCount: " + itemsCount);
         System.out.println("precisionRate: " + precisionRate);
 
-        return NeuralNetworkEvaluationResult.builder().precisionRate(precisionRate).build();
+        return NeuralNetworkEvaluationResult.builder()
+                .precisionRate(precisionRate)
+                .build();
     }
 
+//
+//    @Override
+//    public void test(List<INeuralInputData> testingDataList) {
+//        System.out.println("<<<< LizNeuralNetwork: Testing >>>>");
+//
+//        // Convert
+//        List<LizInputData> testingDataRows = LizInputData.convertInputDataList(testingDataList);
+//
+//        // Build data set
+//        DataSet testingSet = buildDataSet(testingDataRows);
+////        printDataSet(testingSet);
+//
+//        // Test the trained neural network
+//        System.out.println("Testing trained neural network:");
+//        int okCount = 0;
+//        for (DataSetRow dataRow : testingSet.getRows()) {
+//            network.setInput(dataRow.getInput());
+//            network.calculate();
+//
+//            double[] networkOutput = network.getOutput();
+//            double[] desiredOutput = dataRow.getDesiredOutput();
+//
+//            boolean result = evaluationOfAnOutput(networkOutput, desiredOutput);
+//            if (result) {
+//                okCount++;
+//            }
+//
+//        }
+//
+//        double precisionRate = 0.0;
+//        int itemsCount = testingSet.size();
+//        if (itemsCount > 0) {
+//            precisionRate = (double) okCount / (double) itemsCount;
+//        }
+//
 
+    /// /        System.out.println("OkCount: " + okCount);
+    /// /        System.out.println("ItemsCount: " + itemsCount);
+//        System.out.println("Precision Rateeee: " + precisionRate);
+//    }
     @Override
-    public void test(List<INeuralInputData> testingDataList) {
-        System.out.println("<<<< LizNeuralNetwork: Testing >>>>");
+    public INeuralNetworkModelOutput calculate(INeuralNetworkModelInput modelInput) {
+        System.out.println("<<<< LizNeuralNetwork: calculate >>>>");
 
         // Convert
-        List<LizInputData> testingDataRows = LizInputData.convertInputDataList(testingDataList);
+        LizNeuralNetworkModelInput modelInputObj = LizNeuralNetworkModelInput.convertInstance(modelInput);
 
-        // Build data set
-        DataSet testingSet = buildDataSet(testingDataRows);
-//        printDataSet(testingSet);
-
-        // Test the trained neural network
-        System.out.println("Testing trained neural network:");
-        int okCount = 0;
-        for (DataSetRow dataRow : testingSet.getRows()) {
-            network.setInput(dataRow.getInput());
-            network.calculate();
-
-            double[] networkOutput = network.getOutput();
-            double[] desiredOutput = dataRow.getDesiredOutput();
-
-            boolean result = evaluationOfAnOutput(networkOutput, desiredOutput);
-            if (result) {
-                okCount++;
-            }
-
-        }
-
-        double precisionRate = 0.0;
-        int itemsCount = testingSet.size();
-        if (itemsCount > 0) {
-            precisionRate = (double) okCount / (double) itemsCount;
-        }
-
-//        System.out.println("OkCount: " + okCount);
-//        System.out.println("ItemsCount: " + itemsCount);
-        System.out.println("Precision Rateeee: " + precisionRate);
-    }
-
-    @Override
-    public double[] calculate(INeuralInputData inputData) {
-        System.out.println("<<<< LizNeuralNetwork: Calculate >>>>");
-
-        // Convert
-        LizInputData lizInputData = LizInputData.generateInstance(inputData);
-        double[] inputVector = generateInputVectorByTrainingData(lizInputData);
+        // Vectorisation
+        double[] modelInputVector = convertModelInputObjToModelInputVector(modelInputObj);
 
 
         // Get result from the model
-        double[] normalisedOutputVector;
-        network.setInput(inputVector);
+        network.setInput(modelInputVector);
         network.calculate();
-        normalisedOutputVector = network.getOutput();
-        if (normalisedOutputVector.length != determineOutputVectorLength()) {
-            throw new RuntimeException("Output size is wrong!");
-        }
+        double[] modelOutputVector = network.getOutput();
 
-        // Denormalisation - Cell hit scores
-        double[] cellHitScoresNormalised = new double[determineOutputVectorAttackProbabilitySectionLength()];
-        System.arraycopy(normalisedOutputVector, 0, cellHitScoresNormalised, 0, determineOutputVectorAttackProbabilitySectionLength());
-        double[] cellHitScoresDenormalised = new double[determineOutputVectorAttackProbabilitySectionLength()];
-        for (int i = 0; i < cellHitScoresNormalised.length; i++) {
-            cellHitScoresDenormalised[i] = denormaliseValue(cellHitScoresNormalised[i], 0, 100); // values denormalised between 0% and 100%
-        }
-
-        // Denormalisation - Attacking troops size
-        double attackingTroopSizeNormalised = normalisedOutputVector[normalisedOutputVector.length - 1]; // Pointing to the last index
-        double attackingTroopSizeDenormalised = denormaliseValue(attackingTroopSizeNormalised, configuration.getAttackPowerMin(), configuration.getAttackPowerMax());
-
-        // Generate output
-        double[] output = new double[determineOutputVectorLength()];
-        System.arraycopy(cellHitScoresDenormalised, 0, output, 0, cellHitScoresDenormalised.length);
-        output[output.length - 1] = attackingTroopSizeDenormalised;
-        printOutputVectorInfo(output);
-
-        return output;
+        return convertModelOutputVectorToModelOutputObj(modelOutputVector);
     }
+
 
     private void printOutputVectorInfo(double[] outputVector) {
         String[] s1 = new String[determineOutputVectorLength()];
@@ -513,77 +498,118 @@ public class LizNeuralNetwork extends TNeuralNetwork {
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Build methods //////////////////////////////////////////////////////////////////////////////////////////////////
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private DataSet buildDataSet(List<LizInputData> trainingDataList) {
+    private DataSet buildTrainingDataSet(List<LizNeuralNetworkTrainingItem> trainingItems) {
+        //
         DataSet trainingSet = new DataSet(determineInputVectorLength(), determineOutputVectorLength());
-        for (LizInputData trainingData : trainingDataList) {
+
+        //
+        for (LizNeuralNetworkTrainingItem trainingItem : trainingItems) {
+
+            LizNeuralNetworkModelInput modelInputObj = LizNeuralNetworkModelInput.convertInstance(trainingItem.getNeuralNetworkModelInput());
+            LizNeuralNetworkModelOutput modelOutputObj = LizNeuralNetworkModelOutput.convertInstance(trainingItem.getNeuralNetworkModelOutput());
+            double[] modelInputVector = convertModelInputObjToModelInputVector(modelInputObj);
+            double[] modelOutputVector = convertModelOutputObjToModelOutputVector(modelOutputObj);
+
+            //
             trainingSet.addRow(
-                    new DataSetRow(
-                            generateInputVectorByTrainingData(trainingData),
-                            generateOutputVectorByTrainingData(trainingData)
-                    )
+                    new DataSetRow(modelInputVector, modelOutputVector)
             );
         }
         return trainingSet;
     }
 
-    public double[] generateInputVectorByTrainingData(LizInputData trainingData) {
 
-        // Input checking - attackPower
-        if (trainingData.getAttackPower() < configuration.getAttackPowerMin()) {
-            throw new RuntimeException("Value of attackPower('" + trainingData.getAttackPower() + "') must not be under than interval('" + configuration.getAttackPowerMin() + "') minimum!");
-        }
-        if (trainingData.getAttackPower() > configuration.getAttackPowerMax()) {
-            throw new RuntimeException("Value of maxAttackPower('" + trainingData.getAttackPower() + "')must not be above than interval('" + configuration.getAttackPowerMax() + "') maximum!");
-        }
+    private double[] convertModelInputObjToModelInputVector(LizNeuralNetworkModelInput modelInputObj) {
 
-        // Input checking - cell owners
-        if (trainingData.getCellOwnerRanks().length != determineInputVectorOwnersSectionLength()) {
-            throw new RuntimeException("Invalid length of cell owner ranks!");
-        }
-        if (trainingData.getCellDefendersSize().length != determineInputVectorDefendersSectionLength()) {
-            throw new RuntimeException("Invalid length of cell defenders!");
-        }
-
-        // Initialisation
-        ArrayList<Double> inputNodeValuesList = new ArrayList<>();
-
-        // Input nodes - Reserve size
-        inputNodeValuesList.add(normaliseValue(trainingData.getAttackPower(), configuration.getAttackPowerMin(), configuration.getAttackPowerMax()));
-
-        // Input nodes - Cell owners
-        for (int ownerKey : trainingData.getCellOwnerRanks()) {
-            //int swappedKey = ownerKey + 1; // so -1 will be 0 and will mean empty. (Originally, in game state representation, -1 was referred to empty cell)
-            double normalisedKey = normaliseValue(ownerKey, configuration.getOwnerRankMinIndex(), configuration.getOwnerRankMaxIndex());
-            inputNodeValuesList.add(normalisedKey);
-        }
-
-        // Input nodes - Defending troop size
-        for (int defenderSize : trainingData.getCellDefendersSize()) {
-            inputNodeValuesList.add(normaliseValue(defenderSize, configuration.getDefendersMinCount(), configuration.getDefendersMaxCount()));
-        }
-
-        return inputNodeValuesList.stream().mapToDouble(i -> i).toArray();
+//        // Input checking - attackPower
+//        if (modelInputObj.getAttackPower() < configuration.getAttackPowerMin()) {
+//            throw new RuntimeException("Value of attackPower('" + modelInputObj.getAttackPower() + "') must not be under than interval('" + configuration.getAttackPowerMin() + "') minimum!");
+//        }
+//        if (modelInputObj.getAttackPower() > configuration.getAttackPowerMax()) {
+//            throw new RuntimeException("Value of maxAttackPower('" + modelInputObj.getAttackPower() + "')must not be above than interval('" + configuration.getAttackPowerMax() + "') maximum!");
+//        }
+//
+//        // Input checking - cell owners
+//        if (modelInputObj.getCellOccupierIndex().length != determineInputVectorOwnersSectionLength()) {
+//            throw new RuntimeException("Invalid length of cell owner ranks!");
+//        }
+//        if (modelInputObj.getCellGarrisonSize().length != determineInputVectorDefendersSectionLength()) {
+//            throw new RuntimeException("Invalid length of cell defenders!");
+//        }
+//
+//        // Initialisation
+//        ArrayList<Double> inputNodeValuesList = new ArrayList<>();
+//
+//        // Input nodes - Reserve size
+//        inputNodeValuesList.add(normaliseValue(modelInputObj.getAttackPower(), configuration.getAttackPowerMin(), configuration.getAttackPowerMax()));
+//
+//        // Input nodes - Cell owners
+//        for (int ownerKey : modelInputObj.getCellOccupierIndex()) {
+//            //int swappedKey = ownerKey + 1; // so -1 will be 0 and will mean empty. (Originally, in game state representation, -1 was referred to empty cell)
+//            double normalisedKey = normaliseValue(ownerKey, configuration.getOwnerRankMinIndex(), configuration.getOwnerRankMaxIndex());
+//            inputNodeValuesList.add(normalisedKey);
+//        }
+//
+//        // Input nodes - Defending troop size
+//        for (int defenderSize : modelInputObj.getCellGarrisonSize()) {
+//            inputNodeValuesList.add(normaliseValue(defenderSize, configuration.getDefendersMinCount(), configuration.getDefendersMaxCount()));
+//        }
+//
+//        return inputNodeValuesList.stream().mapToDouble(i -> i).toArray();
+        throw new RuntimeException("Not implemented yet!");
     }
 
-    private double[] generateOutputVectorByTrainingData(LizInputData trainingData) {
-        // Input checking - Cell owners
-        if (trainingData.getCellOwnerRanks().length != determineInputVectorOwnersSectionLength()) {
-            throw new RuntimeException("Invalid length of cell owner ranks!");
-        }
-        if (trainingData.getCellDefendersSize().length != determineInputVectorDefendersSectionLength()) {
-            throw new RuntimeException("Invalid length of cell defenders!");
-        }
-
-        // Initialise
-        int cellCount = trainingData.getCellOwnerRanks().length;
-
-        // Output nodes - Targeted cell percentage
-        double[] outputNodeValuesArray = new double[cellCount];     // By default, all values are 0 (because array default values) which means 0% probability
-        if (trainingData.getChosenTarget() != -1) {        // When attack action happened and not reserve action
-            outputNodeValuesArray[trainingData.getChosenTarget()] = normaliseValue(100, 0, 100);        // The potentiality id 100%, others 0%
-        }
-        return outputNodeValuesArray;
+    private double[] convertModelOutputObjToModelOutputVector(LizNeuralNetworkModelOutput modelOutputObj) {
+        throw new RuntimeException("Not implemented yet!");
     }
+
+    private LizNeuralNetworkModelOutput convertModelOutputVectorToModelOutputObj(double[] modelOutputVector) {
+
+//        if (modelOutputVector.length != determineOutputVectorLength()) {
+//            throw new RuntimeException("Output size is wrong!");
+//        }
+//
+//        // Denormalisation - Cell hit scores
+//        double[] cellHitScoresNormalised = new double[determineOutputVectorAttackProbabilitySectionLength()];
+//        System.arraycopy(modelOutputVector, 0, cellHitScoresNormalised, 0, determineOutputVectorAttackProbabilitySectionLength());
+//        double[] cellHitScoresDenormalised = new double[determineOutputVectorAttackProbabilitySectionLength()];
+//        for (int i = 0; i < cellHitScoresNormalised.length; i++) {
+//            cellHitScoresDenormalised[i] = denormaliseValue(cellHitScoresNormalised[i], 0, 100); // values denormalised between 0% and 100%
+//        }
+//
+//        // Denormalisation - Attacking troops size
+//        double attackingTroopSizeNormalised = modelOutputVector[modelOutputVector.length - 1]; // Pointing to the last index
+//        double attackingTroopSizeDenormalised = denormaliseValue(attackingTroopSizeNormalised, configuration.getAttackPowerMin(), configuration.getAttackPowerMax());
+//
+//        // Generate output
+//        double[] output = new double[determineOutputVectorLength()];
+//        System.arraycopy(cellHitScoresDenormalised, 0, output, 0, cellHitScoresDenormalised.length);
+//        output[output.length - 1] = attackingTroopSizeDenormalised;
+//        printOutputVectorInfo(output);
+
+//        return output;
+        throw new RuntimeException("Not implemented yet!");
+    }
+
+//    private double[] generateOutputVectorByTrainingData(LizInputData trainingData) {
+//        // Input checking - Cell owners
+//        if (trainingData.getCellOccupierIndex().length != determineInputVectorOwnersSectionLength()) {
+//            throw new RuntimeException("Invalid length of cell owner ranks!");
+//        }
+//        if (trainingData.getCellGarrisonSize().length != determineInputVectorDefendersSectionLength()) {
+//            throw new RuntimeException("Invalid length of cell defenders!");
+//        }
+//
+//        // Initialise
+//        int cellCount = trainingData.getCellOccupierIndex().length;
+//
+//        // Output nodes - Targeted cell percentage
+//        double[] outputNodeValuesArray = new double[cellCount];     // By default, all values are 0 (because array default values) which means 0% probability
+//        if (trainingData.getChosenTarget() != -1) {        // When attack action happened and not reserve action
+//            outputNodeValuesArray[trainingData.getChosenTarget()] = normaliseValue(100, 0, 100);        // The potentiality id 100%, others 0%
+//        }
+//        return outputNodeValuesArray;
+//    }
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Helper methods //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,8 +642,8 @@ public class LizNeuralNetwork extends TNeuralNetwork {
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private static void printTrainingDataList(List<LizInputData> trainingDataList) {
-        for (LizInputData trainingData : trainingDataList) {
+    private static void printTrainingDataList(List<LizNeuralNetworkModelInput> trainingDataList) {
+        for (LizNeuralNetworkModelInput trainingData : trainingDataList) {
             System.out.println(trainingData);
         }
     }

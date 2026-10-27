@@ -5,7 +5,7 @@ import hu.kalmancheysandor.applications.dominions.apis.ai.algorithm.maxf.IMaxFAl
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoFirstHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoSecondHeuristicEvaluator;
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.IHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.IHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.heuristic.HugoHeuristicEvaluatorType;

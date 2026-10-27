@@ -953,12 +953,9 @@ public class LizNeuralOrchestrationService extends TLizService {
 
             //
             GameAction playerIntention = playerData.getIntention();
-            int reserveSize = gameState.getOpponents()[playerIndex].getReserveSize();
-            int enemiesCount = gameState.getOpponents().length - 1;
-            String playerNameCode = playerData.getName();
 
             //
-            saveAHistory(
+            saveAPlayerHistory(
                     sessionUuid,
                     scenarioUuid,
                     turn,
@@ -968,8 +965,6 @@ public class LizNeuralOrchestrationService extends TLizService {
                             playerIndex,
                             playerIntention.getTargetCellKey(),
                             playerIntention.getAttackingTroopSize(),
-                            reserveSize,
-                            enemiesCount,
                             gameState
                     )
             );
@@ -979,7 +974,7 @@ public class LizNeuralOrchestrationService extends TLizService {
     }
 
 
-    private void saveAHistory(String sessionUuid, String scenarioUuid, int turn, String userUuid, String userName, PlayerDecision playerDecision) {
+    private void saveAPlayerHistory(String sessionUuid, String scenarioUuid, int turn, String userUuid, String userName, PlayerDecision playerDecision) {
         log.info("QUEUE[-History-].saveAHistory decision {}", playerDecision);
         // Register local representation if not exists
         registerHistoryPlayerIfNotExists(userUuid, userName);

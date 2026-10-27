@@ -4,8 +4,8 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.liz.agent.service;
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralAiAlgorithm;
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralAiAlgorithm;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetwork;
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;

@@ -3,13 +3,11 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.serv
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizInputData;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetworkTrainingConfiguration;
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralInputData;
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.INeuralNetwork;
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.NeuralNetworkTrainingResult;
-import hu.kalmancheysandor.applications.dominions.apis.ai.heuristic.NeuralNetworkTrainingSnapshot;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.*;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.NeuralNetworkTrainingResult;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.NeuralNetworkTrainingSnapshot;
+import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetworkTrainingItem;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistory;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralExecution;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralTrainingResult;
@@ -74,15 +72,15 @@ public class LizNeuralTrainingService extends TLizService {
             String filePath = directoryToStore + "/" + fileName;
 
             // Collecting input data for training and testing
-            Map<String, List<INeuralInputData>> x = collectDataForTrainingAndTesting(scenarioId, playerId);
-            List<INeuralInputData> trainingDataList = x.getOrDefault("trainingData", List.of());
-            List<INeuralInputData> testingDataList = x.getOrDefault("testingData", List.of());
+            Map<String, List<INeuralNetworkTrainingItem>> x = collectDataForTrainingAndTesting(scenarioId, playerId);
+            List<INeuralNetworkTrainingItem> trainingItemList = x.getOrDefault("trainingData", List.of());
+            List<INeuralNetworkTrainingItem> testingItemList = x.getOrDefault("testingData", List.of());
 
             //
             System.out.println("LIZ AI Start training...");
             System.out.println("FilePath code: " + filePath);
-            System.out.println("Training data list:" + trainingDataList.size());
-            System.out.println("Test data list:" + testingDataList.size());
+            System.out.println("Training data list:" + trainingItemList.size());
+            System.out.println("Test data list:" + testingItemList.size());
 
             // Initialisation of neural engine
             INeuralNetwork neuralNetwork = new LizNeuralNetwork(generateNetworkConfiguration(), filePath);
@@ -109,27 +107,28 @@ public class LizNeuralTrainingService extends TLizService {
                 return Boolean.TRUE.equals(isInterrupt);
             });
 
-
             // Execution
             NeuralNetworkTrainingResult neuralTrainingResult = null;
             boolean isTrainingStarted = false;
-            if (!trainingDataList.isEmpty()) {
+            if (!trainingItemList.isEmpty()) {
                 isTrainingStarted = true;
-                neuralTrainingResult = neuralNetwork.train(trainingDataList, trainingConfiguration, testingDataList);
+                neuralTrainingResult = neuralNetwork.train(
+                        trainingItemList,
+                        trainingConfiguration,
+                        testingItemList
+                );
             }
 
             //
             if (!isTrainingStarted) {   // it occurs when no training data exists. It counts to be a valid case, so an initial network has to be saved. Without this solution the previously never played players would cause a never ending problem-cycle
                 neuralNetwork.save();
                 saveTrainingResultInSeparateTransaction(conceptId, executionId, scenarioId, playerId, neuralTrainingResult);
-            }
-            else if (isTrainingStarted && NeuralNetworkTrainingResult.Status.DONE.equals(neuralTrainingResult.getStatus())) { // no cancel occurred, so training is fully done
+            } else if (isTrainingStarted && NeuralNetworkTrainingResult.Status.DONE.equals(neuralTrainingResult.getStatus())) { // no cancel occurred, so training is fully done
                 neuralNetwork.save();
                 saveTrainingResultInSeparateTransaction(conceptId, executionId, scenarioId, playerId, neuralTrainingResult);
             } else if (isTrainingStarted && NeuralNetworkTrainingResult.Status.CANCELED.equals(neuralTrainingResult.getStatus())) { // When cancel occurred
                 deleteAllTrainingSnapshotInSeparateTransaction(conceptId, executionId, scenarioId, playerId);
-            }
-            else {
+            } else {
                 throw new RuntimeException("Unsupported case is found");
             }
 
@@ -140,56 +139,101 @@ public class LizNeuralTrainingService extends TLizService {
         }
     }
 
-
-
-    private Map<String, List<INeuralInputData>> collectDataForTrainingAndTesting(int scenarioId, int playerId) throws JsonProcessingException {
+    private Map<String, List<INeuralNetworkTrainingItem>> collectDataForTrainingAndTesting(int scenarioId, int playerId) throws JsonProcessingException {
 
         // Provide training and testing records
         List<LizHistory> historyList = lizHistoryRepository.listAllAtPlayerIdAndScenarioId(playerId, scenarioId);
-        List<INeuralInputData> trainingDataList = new ArrayList<>();
-        List<INeuralInputData> testingDataList = new ArrayList<>();
+        List<INeuralNetworkTrainingItem> trainingItemList = new ArrayList<>();
+        List<INeuralNetworkTrainingItem> testingItemList = new ArrayList<>();
+
         int itemCount = 0;
         for (LizHistory history : historyList) {
+            //
+            PlayerDecision playerDecisionObj = objectMapper.readValue(history.getDecision(), PlayerDecision.class);
+
             // Create decision object
-            INeuralInputData inputData = convertPlayerDecisionToNeuralTrainingData(objectMapper.readValue(history.getDecision(), PlayerDecision.class));
-//            if (itemCount % 2 == 0) {
-//                trainingDataList.add(inputData);
-//            } else {
-//                testingDataList.add(inputData);
-//            }
-            trainingDataList.add(inputData);
-            testingDataList.add(inputData);
+            INeuralNetworkTrainingItem item = convertPlayerDecisionToNeuralNetworkTrainingItem(playerDecisionObj);
+            if (itemCount % 2 == 0) {
+                trainingItemList.add(item);
+            } else {
+                testingItemList.add(item);
+            }
             itemCount++;
         }
-        return Map.of("trainingData", trainingDataList, "testingData", testingDataList);
+        return Map.of("trainingData", trainingItemList, "testingData", testingItemList);
     }
+//
+//    private Map<String, List<INeuralInputData>> collectDataForTrainingAndTesting_old(int scenarioId, int playerId) throws JsonProcessingException {
+//
+//        // Provide training and testing records
+//        List<LizHistory> historyList = lizHistoryRepository.listAllAtPlayerIdAndScenarioId(playerId, scenarioId);
+//        List<INeuralInputData> trainingDataList = new ArrayList<>();
+//        List<INeuralInputData> testingDataList = new ArrayList<>();
+//        int itemCount = 0;
+//        for (LizHistory history : historyList) {
+//            // Create decision object
+//            INeuralInputData inputData = convertPlayerDecisionToNeuralNetworkTrainingItem(objectMapper.readValue(history.getDecision(), PlayerDecision.class));
 
-    private INeuralInputData convertPlayerDecisionToNeuralTrainingData(PlayerDecision decisionObj) {
-        System.out.println("-------convertHistoryToTrainingData-----");
+    /// /            if (itemCount % 2 == 0) {
+    /// /                trainingDataList.add(inputData);
+    /// /            } else {
+    /// /                testingDataList.add(inputData);
+    /// /            }
+//            trainingDataList.add(inputData);
+//            testingDataList.add(inputData);
+//            itemCount++;
+//        }
+//        return Map.of("trainingData", trainingDataList, "testingData", testingDataList);
+//    }
+    private INeuralNetworkTrainingItem convertPlayerDecisionToNeuralNetworkTrainingItem(PlayerDecision decisionObj) {
+        System.out.println("-------convertPlayerDecisionToNeuralNetworkTrainingItem-----");
         try {
 
-            int cellCount   = decisionObj.getFields().size();
+            //
+            int cellCount = decisionObj.getBoardFields().size();
+            int playerCount = decisionObj.getBoardPlayers().size();
+            int targetedCell = decisionObj.getDecision().getTarget();   // increases from -1
+            int appliedOperatorIndex = targetedCell + 1;// increases from 0
 
-            int[] cellOwners = new int[cellCount];
-            int[] cellDefendersSize = new int[cellCount];
-            for (Map.Entry<Integer, PlayerDecision.Field> fieldEntry : decisionObj.getFields().entrySet()) {
-                int fieldIndex = fieldEntry.getKey();
-                PlayerDecision.Field fieldObj = fieldEntry.getValue();
+            //
+            int[] cellOccupierIndex = new int[cellCount];
+            int[] cellGarrisonSize = new int[cellCount];
+            int[] playerTerritorySize = new int[playerCount];
+            int[] playerReserveSize = new int[playerCount];
+            boolean[] playerIsAlive = new boolean[playerCount];
+            double[] operatorProbability = new double[cellCount + 1];
 
-                int playerKey = fieldObj.rankIndex;
-
-                cellOwners[fieldIndex] = playerKey;
-                cellDefendersSize[fieldIndex] = fieldObj.getDefenders();
+            //
+            for (PlayerDecision.BoardField boardField : decisionObj.getBoardFields()) {
+                cellOccupierIndex[boardField.getIndex()] = boardField.getOccupierIndex();
+                cellGarrisonSize[boardField.getIndex()] = boardField.getGarrisonSize();
             }
 
-            //Output
-            LizInputData trainingData = new LizInputData();
-            trainingData.setAttackPower(decisionObj.getReserveSize());
-            trainingData.setCellOwnerRanks(cellOwners);
-            trainingData.setCellDefendersSize(cellDefendersSize);
-            trainingData.setChosenTarget(decisionObj.getDecision().getTarget());
+            //
+            for (PlayerDecision.BoardPlayer boardPlayer : decisionObj.getBoardPlayers()) {
+                playerTerritorySize[boardPlayer.getIndex() - 1] = boardPlayer.getTerritorySize();
+                playerReserveSize[boardPlayer.getIndex() - 1] = boardPlayer.getReserveSize();
+                playerIsAlive[boardPlayer.getIndex() - 1] = boardPlayer.isAlive();
+            }
 
-            return trainingData;
+            //
+            if (appliedOperatorIndex >= operatorProbability.length) {
+                throw new RuntimeException("appliedOperatorIndex is out of bounds: " + appliedOperatorIndex + " >= " + operatorProbability.length);
+            }
+            operatorProbability[appliedOperatorIndex] = 1.0; // The operator that was applied is set to 1.0, while the others remain at 0.0
+
+            return new LizNeuralNetworkTrainingItem(
+                    LizNeuralNetworkModelInput.builder()
+                            .cellOccupierIndex(cellOccupierIndex)
+                            .cellGarrisonSize(cellGarrisonSize)
+                            .playerTerritorySize(playerTerritorySize)
+                            .playerReserveSize(playerReserveSize)
+                            .playerIsAlive(playerIsAlive)
+                            .build(),
+                    LizNeuralNetworkModelOutput.builder()
+                            .operatorProbability(operatorProbability)
+                            .build()
+            );
         } catch (Exception e) {
             System.out.println(">>>>>>>>CONVERSION ERROR");
 
@@ -224,15 +268,15 @@ public class LizNeuralTrainingService extends TLizService {
         });
     }
 
-    private void saveTrainingResultInSeparateTransaction(int conceptId, int executionId, int scenarioId, int playerId,NeuralNetworkTrainingResult neuralNetworkTrainingResult) {
+    private void saveTrainingResultInSeparateTransaction(int conceptId, int executionId, int scenarioId, int playerId, NeuralNetworkTrainingResult neuralNetworkTrainingResult) {
 
         transactionTemplate.executeWithoutResult(status -> {
             double precisionRate = 0.0;
             int turnCount = 0;
-            int turnBest=0;
+            int turnBest = 0;
 
-            if(neuralNetworkTrainingResult!=null) {
-                precisionRate =  neuralNetworkTrainingResult.getPrecisionRate();
+            if (neuralNetworkTrainingResult != null) {
+                precisionRate = neuralNetworkTrainingResult.getPrecisionRate();
                 turnCount = neuralNetworkTrainingResult.getTurnCount();
                 turnBest = neuralNetworkTrainingResult.getTurnBest();
             }
