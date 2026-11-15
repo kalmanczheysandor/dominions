@@ -185,15 +185,36 @@ public class LizNeuralTrainingService extends TLizService {
 //        }
 //        return Map.of("trainingData", trainingDataList, "testingData", testingDataList);
 //    }
+
+    private int swapObservedPlayerIndexToZero(int observedPlayerIndex, int currentPlayerIndex) {
+
+        if (currentPlayerIndex == observedPlayerIndex) {
+            return 0;
+        } else if (currentPlayerIndex == 0) {
+            return observedPlayerIndex;
+        }
+        return currentPlayerIndex;
+    }
+
+    /**
+     *
+     * In PlayerDecision occupier -1 index means empty, 0 means first player index
+     * -1 target means the skip action.
+     * 0.. target means an attack agains a cell
+     * while here there are some changes:
+     * the first index player is:1
+     * empty cell is:0
+     * @param decisionObj
+     * @return
+     */
     private INeuralNetworkTrainingItem convertPlayerDecisionToNeuralNetworkTrainingItem(PlayerDecision decisionObj) {
         System.out.println("-------convertPlayerDecisionToNeuralNetworkTrainingItem-----");
         try {
 
-            //
+            int observedPlayerIndex = decisionObj.getObservedPlayerIndex();
             int cellCount = decisionObj.getBoardFields().size();
             int playerCount = decisionObj.getBoardPlayers().size();
-            int targetedCell = decisionObj.getDecision().getTarget();   // increases from -1
-            int appliedOperatorIndex = targetedCell + 1;// increases from 0
+            int appliedOperatorIndex = decisionObj.getDecision().getTarget(); // // increases from 0; 0 means the skip operator. the right side  value is increasing from -1
 
             //
             int[] cellOccupierIndex = new int[cellCount];
@@ -204,16 +225,30 @@ public class LizNeuralTrainingService extends TLizService {
             double[] operatorProbability = new double[cellCount + 1];
 
             //
-            for (PlayerDecision.BoardField boardField : decisionObj.getBoardFields()) {
-                cellOccupierIndex[boardField.getIndex()] = boardField.getOccupierIndex();
+            for (Map.Entry<Integer, PlayerDecision.BoardField> entry : decisionObj.getBoardFields().entrySet()) {
+                PlayerDecision.BoardField boardField = entry.getValue();
+
+                // Index alterations
+                int swappedPlayerIndex = swapObservedPlayerIndexToZero(boardField.getOccupierIndex(),observedPlayerIndex); // After swap: empty=-1, observedPlayer:0 other player higher than 0
+                int shiftedPlayerIndex = swappedPlayerIndex+1; // Reason: in NN -1 means a not working node. so after shift: empty cell is:0, observed player is:1 other player is higher than 1
+
+                //
+                cellOccupierIndex[boardField.getIndex()] = shiftedPlayerIndex;
                 cellGarrisonSize[boardField.getIndex()] = boardField.getGarrisonSize();
             }
 
             //
-            for (PlayerDecision.BoardPlayer boardPlayer : decisionObj.getBoardPlayers()) {
-                playerTerritorySize[boardPlayer.getIndex() - 1] = boardPlayer.getTerritorySize();
-                playerReserveSize[boardPlayer.getIndex() - 1] = boardPlayer.getReserveSize();
-                playerIsAlive[boardPlayer.getIndex() - 1] = boardPlayer.isAlive();
+            for (Map.Entry<Integer, PlayerDecision.BoardPlayer> entry : decisionObj.getBoardPlayers().entrySet()) {
+                PlayerDecision.BoardPlayer boardPlayer = entry.getValue();
+
+                // Index alterations
+                int swappedPlayerIndex = swapObservedPlayerIndexToZero(observedPlayerIndex, boardPlayer.getIndex());
+
+                // Swap is needed due to remain order wise(means: first node is for observed player)
+                // Do not shift the indexes
+                playerTerritorySize[swappedPlayerIndex] = boardPlayer.getTerritorySize();
+                playerReserveSize[swappedPlayerIndex] = boardPlayer.getReserveSize();
+                playerIsAlive[swappedPlayerIndex] = boardPlayer.isAlive();
             }
 
             //

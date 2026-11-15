@@ -229,6 +229,11 @@ public class GameState {
         return playerCount;
     }
 
+    public int getAlivePlayerCount() {
+        return countAlivePlayers();
+    }
+
+
     public int[] getAlivePlayers() {
         List<Integer> alivePlayers = new ArrayList<>();
 
@@ -259,6 +264,10 @@ public class GameState {
 
     public GameStatePlayer getOpponent(int playerKey) {
         return opponents[playerKey];
+    }
+
+    public boolean isOpponentExist(int playerKey) {
+        return playerKey >= 0 && playerKey < opponents.length && opponents[playerKey] != null;
     }
 
     public Set<Integer> getEmptyCellKeys() {

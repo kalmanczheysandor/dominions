@@ -494,50 +494,6 @@ public class GameService {
         );
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///  QUEUE METHODS  //////////////////////////////////////////////////////////////////////////////////////
-    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
-//    public void queueHistoryRead(HistoryQueueItem item) {
-//        log.info("QUEUE[-History-].Reader: {}\n", item);
-//        PlayState playState = item.getPlayState();
-//        GameState gameState = playState.getGameState();
-//
-//
-//        Set<GameAction> intentions = new HashSet<>();
-//        for (Map.Entry<Integer, PlayerData> playerEntry : playState.getPlayers().entrySet()) {
-//            ///
-//            Integer playerIndex = playerEntry.getKey();
-//            PlayerData playerData = playerEntry.getValue();
-//
-//            ///
-//            if (!gameState.getOpponent(playerIndex).isAlive()) {
-//                continue;
-//            }
-//
-//            if (!playerData.isIntentionAlreadyGiven()) {
-//                throw new GeneralGameStateException("No intention is present for player! Player index:" + playerData.getIndex());
-//            }
-//
-//            ///
-//            GameAction playerIntention = playerData.getIntention();
-//            int reserveSize = gameState.getOpponents()[playerIndex].getReserveSize();
-//            int enemiesCount = gameState.getOpponents().length - 1;
-//            String playerNameCode = playerData.getName();
-//            String userUuid = playerData.getUserUuid();
-//
-//            PlayerDecision playerDecision = PlayerDecision.create(playerIndex, playerIntention.getTargetCellKey(), playerIntention.getAttackingTroopSize(), reserveSize, enemiesCount, gameState);
-//
-//            // Save history
-//            History history = new History();
-//            history.setPlayer(playerNameCode);
-//            history.setUserUuid(userUuid);
-//            history.setDecision(convertPlayerDecisionObjToJson(playerDecision));
-//            historyRepository.save(history);
-//        }
-//
-//
-//    }
-//
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     /// /  Assert methods /////////////////////////////////////////////////////////////////////////////////////
@@ -628,14 +584,7 @@ public class GameService {
         }
     }
 
-    private String convertPlayerDecisionObjToJson(PlayerDecision playerDecision) {
-        try {
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            return objectMapper.writeValueAsString(playerDecision);
-        } catch (JsonProcessingException e) {
-            throw new GeneralGameStateException("Error at parsing");
-        }
-    }
+
 
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////

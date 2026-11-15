@@ -14,44 +14,56 @@ import java.util.*;
 @NoArgsConstructor
 public class PlayerDecision {
     private int observedPlayerIndex;
-    private Set<BoardField> boardFields = new HashSet<>();
-    private Set<BoardPlayer> boardPlayers = new HashSet<>();
+    private Map<Integer, BoardField> boardFields;
+    private Map<Integer, BoardPlayer> boardPlayers;
     private Move decision;
 
+    /**
+     * In PlayerDecision occupier -1 index means empty, 0 means first player index
+     *      * -1 target means the skip action.
+     *      * 0.. target means an attack agains a cell
+     * @param observedPlayerIndex
+     * @param target
+     * @param attackingTroopSize
+     * @param gameState
+     * @return
+     */
     public static PlayerDecision create(Integer observedPlayerIndex, Integer target, int attackingTroopSize, GameState gameState) {
 
         // Create player items
-        Set<BoardPlayer> boardPlayers = new HashSet<>();
-        for (int playerIndex = 0; playerIndex < gameState.getOpponents().length; playerIndex++) {
+        int opponentsCount = gameState.getOpponents().length;
+        Map<Integer, BoardPlayer> boardPlayers = new HashMap<>();
+        for (int playerIndex = 0; playerIndex < opponentsCount; playerIndex++) {
             GameStatePlayer player = gameState.getOpponents()[playerIndex];
-            boardPlayers.add(
-                    new BoardPlayer(playerIndex + 1, player.getReserveSize(), 0, player.isAlive())
+            int territorySize = gameState.getOccupiedCellsCountOfPlayer(playerIndex);
+            boardPlayers.put(
+                    playerIndex,
+                    new BoardPlayer(
+                            playerIndex,
+                            player.getReserveSize(),
+                            territorySize,
+                            player.isAlive()
+                    )
             );
         }
 
 
         // Create field items
-        Set<BoardField> boardFields = new HashSet<>();
-        for (int cellIndex = 0; cellIndex < gameState.getCells().length; cellIndex++) {
+        int cellCount = gameState.getOpponents().length;
+        Map<Integer, BoardField> boardFields = new HashMap<>();
+        for (int cellIndex = 0; cellIndex < cellCount; cellIndex++) {
             GameStateCell cell = gameState.getCells()[cellIndex];
-            int occupierKey = cell.getOccupierKey();        // -1 = empty, 0= first player index, ... other player indexes
-            int occupierIndex = occupierKey + 1;                //  0 = empty, 1= first player index, ... other player indexes
+            int occupierIndex = cell.getOccupierKey();        // -1 = empty, 0= first player index, ... other player indexes
 
             //
-            boardFields.add(new BoardField(cellIndex, occupierIndex, cell.getDefendingTroopSize()));
-
-            // Find the player
-            if (occupierIndex > 0) {// 0 would mean an empty cell
-                BoardPlayer boardPlayer = boardPlayers.stream()
-                        .filter(obj -> obj.getIndex() == occupierIndex)
-                        .findFirst()
-                        .orElse(null);
-                if (boardPlayer == null) {
-                    throw new RuntimeException("Occupier index(" + occupierIndex + ") not found in boardPlayers");
-                }
-                // Increase territory size of the player
-                boardPlayer.territorySize++;
-            }
+            boardFields.put(
+                    cellIndex,
+                    new BoardField(
+                            cellIndex,
+                            occupierIndex,
+                            cell.getDefendingTroopSize()
+                    )
+            );
         }
 
         // Replace null target with -1 to indicate no move
