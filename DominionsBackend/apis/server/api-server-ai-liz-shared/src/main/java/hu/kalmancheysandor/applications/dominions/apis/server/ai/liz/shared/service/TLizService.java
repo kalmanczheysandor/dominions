@@ -1,6 +1,5 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service;
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.general.common.TAiAlgorithm;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.service.TAiService;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryPlayer;
@@ -38,17 +37,22 @@ public abstract class TLizService extends TAiService {
     @Autowired
     private LizHistorySessionRepository lizHistorySessionRepository;
 
-    protected static LizNeuralNetwork.Configuration generateNetworkConfiguration() {
-        return LizNeuralNetwork.Configuration.builder()
-                .enemiesCountMin(TAiAlgorithm.ENEMIES_COUNT_MIN)
-                .enemiesCountMax(TAiAlgorithm.ENEMIES_COUNT_MAX)
-                .ownerRankMinIndex(TAiAlgorithm.OWNER_RANKS_INDEX_MIN)
-                .ownerRankMaxIndex(TAiAlgorithm.OWNER_RANKS_INDEX_MAX)
-                .defendersMinCount(TAiAlgorithm.DEFENDERS_COUNT_MIN)
-                .defendersMaxCount(TAiAlgorithm.DEFENDERS_COUNT_MAX)
-                .attackPowerMin(TAiAlgorithm.RESERVE_SIZE_MIN)
-                .attackPowerMax(TAiAlgorithm.RESERVE_SIZE_MAX)
-                .cellCount(TAiAlgorithm.CELL_C0UNT)
+    //TODO: Ez ne legyen statikus
+    protected static LizNeuralNetwork.LizNeuralNetworkConfiguration generateNetworkConfiguration() {
+        return LizNeuralNetwork.LizNeuralNetworkConfiguration.builder()
+                .inputLayer_cellOccupierIndexNodesSize(50)
+                .inputLayer_cellGarrisonSizeNodesSize(50)
+                .inputLayer_playerTerritorySizeNodesSize(10)
+                .inputLayer_playerReserveSizeNodesSize(10)
+                .inputLayer_playerIsAliveNodesSize(10)
+                .outputLayer_operatorSkipNodesSize(1)
+                .outputLayer_operatorAttackNodes(50)
+                .hiddenLayerCount(4)
+                .maximumPlayerIndex(10)
+                .maximumGarrisonSize(100)
+                .maximumReserveSize(100)
+                .maximumCellCount(50)
+                .maximumAliveValue(1)
                 .build();
     }
 

@@ -976,9 +976,11 @@ public class LizNeuralOrchestrationService extends TLizService {
 
     private void saveAPlayerHistory(String sessionUuid, String scenarioUuid, int turn, String userUuid, String userName, PlayerDecision playerDecision) {
         log.info("QUEUE[-History-].saveAHistory decision {}", playerDecision);
+
         // Register local representation if not exists
         registerHistoryPlayerIfNotExists(userUuid, userName);
         log.info("QUEUE[-History-].saveAHistory.A1");
+
         // Access local representations
         LizHistorySession lizHistorySession = accessHistorySession(sessionUuid);
         int lizHistorySessionId = lizHistorySession.getId();

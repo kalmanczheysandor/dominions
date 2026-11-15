@@ -140,7 +140,10 @@ public class LizAgentService extends TLizService {
         String filePath = directoryToStore + "/" + fileName;
 
         System.out.println("Network Generated: path:" + filePath);
-        return new LizNeuralNetwork(generateNetworkConfiguration(), filePath);
+        return new LizNeuralNetwork(
+                generateNetworkConfiguration(),
+                filePath
+        );
     }
 
 

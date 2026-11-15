@@ -2,7 +2,6 @@ package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz;
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.*;
-import hu.kalmancheysandor.applications.dominions.apis.general.utils.TArray;
 import lombok.*;
 import org.neuroph.core.Layer;
 import org.neuroph.core.NeuralNetwork;
@@ -19,11 +18,11 @@ import org.neuroph.util.NeuralNetworkType;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
 
-    private final static int INPUT_VECTOR_ATTACKPOWER_SECTION_LEGNTH = 1;
-    private Configuration configuration;
+    private LizNeuralNetworkConfiguration configuration;
     private NeuralNetwork network;
     private String networkFilePath;
     private INeuralNetworkTrainingSnapshotListener trainingSnapshotListener;
@@ -40,8 +39,8 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     }
 
 
-    public LizNeuralNetwork(LizNeuralNetwork.Configuration configuration, String filePath) {
-        Configuration.validation(configuration);
+    public LizNeuralNetwork(LizNeuralNetworkConfiguration configuration, String filePath) {
+        LizNeuralNetworkConfiguration.validation(configuration);
         this.configuration = configuration;
         this.networkFilePath = filePath;
         initialise();
@@ -52,7 +51,7 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         // Load network file
         File fileObj = new File(networkFilePath);
         if (!fileObj.exists()) { // If not exists than generate and save it
-            NeuralNetwork network = assembleNeuralNetworkByData(determineInputVectorLength(), determineOutputVectorLength(), 4);
+            NeuralNetwork network = assembleNeuralNetworkByData(configuration);
             network.save(networkFilePath);
         }
         network = NeuralNetwork.createFromFile(networkFilePath);
@@ -72,7 +71,10 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
 
 
     @Override
-    public NeuralNetworkTrainingResult train(List<INeuralNetworkTrainingItem> trainingItemList, INeuralNetworkTrainingConfiguration trainingConfiguration, List<INeuralNetworkTrainingItem> testingItemList) {
+    public NeuralNetworkTrainingResult train(List<INeuralNetworkTrainingItem> trainingItemList,
+                                             INeuralNetworkTrainingConfiguration trainingConfiguration,
+                                             List<INeuralNetworkTrainingItem> testingItemList
+    ) {
         System.out.println("<<<< LizNeuralNetwork: Training.Start >>>>");
 
         // Convert
@@ -171,9 +173,9 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     }
 
 
-    private void process() {
-
-    }
+//    private void process() {
+//
+//    }
 
 
     private boolean evaluationOfAnOutput(double[] networkOutput, double[] desiredOutput) {
@@ -290,35 +292,35 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     }
 
 
-    private void printOutputVectorInfo(double[] outputVector) {
-        String[] s1 = new String[determineOutputVectorLength()];
-        String[] s2 = new String[determineOutputVectorLength()];
-        String[] s3 = new String[determineOutputVectorLength()];
-
-        int columnIndex = 0;
-        for (double value : outputVector) {
-            if (columnIndex + 1 <= determineOutputVectorAttackProbabilitySectionLength()) {
-                s1[columnIndex] = "C" + columnIndex;
-                s2[columnIndex] = "";
-                if (value > 0.0) {
-                    s2[columnIndex] = "X";
-                }
-
-                s3[columnIndex] = value + "%";
-            } else if (columnIndex + 1 <= determineOutputVectorAttackProbabilitySectionLength() + 1) {
-                s1[columnIndex] = "AttackPower";
-                s2[columnIndex] = "";
-                s3[columnIndex] = String.valueOf(value);
-            }
-            columnIndex++;
-        }
-
-        TArray.printMatrix(new Object[][]{
-                s1,
-                s2,
-                s3
-        });
-    }
+//    private void printOutputVectorInfo(double[] outputVector) {
+//        String[] s1 = new String[determineOutputVectorLength()];
+//        String[] s2 = new String[determineOutputVectorLength()];
+//        String[] s3 = new String[determineOutputVectorLength()];
+//
+//        int columnIndex = 0;
+//        for (double value : outputVector) {
+//            if (columnIndex + 1 <= determineOutputVectorAttackProbabilitySectionLength()) {
+//                s1[columnIndex] = "C" + columnIndex;
+//                s2[columnIndex] = "";
+//                if (value > 0.0) {
+//                    s2[columnIndex] = "X";
+//                }
+//
+//                s3[columnIndex] = value + "%";
+//            } else if (columnIndex + 1 <= determineOutputVectorAttackProbabilitySectionLength() + 1) {
+//                s1[columnIndex] = "AttackPower";
+//                s2[columnIndex] = "";
+//                s3[columnIndex] = String.valueOf(value);
+//            }
+//            columnIndex++;
+//        }
+//
+//        TArray.printMatrix(new Object[][]{
+//                s1,
+//                s2,
+//                s3
+//        });
+//    }
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Network assembling /////////////////////////////////////////////////////////////////////////////////////////////
@@ -442,22 +444,21 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         return layer;
     }
 
-    private static NeuralNetwork<?> assembleNeuralNetworkByData(int inputSize, int outputSize, int hiddenLayerCount) {
+    private static NeuralNetwork<?> assembleNeuralNetworkByData(LizNeuralNetworkConfiguration configuration) {
         // Initialise the network
         NeuralNetwork network = new NeuralNetwork();
 
         // Attach the input layer
-        Layer inputLayer = generateAnInputLayer(inputSize);
+        Layer inputLayer = generateAnInputLayer(configuration.determineInputLayerSize());
         network.addLayer(0, inputLayer);
 
         // Attach all hidden layer
         int latestLayerIndex = 0;
         int currentLayerIndex = 1;
-        while (currentLayerIndex <= hiddenLayerCount) {
+        while (currentLayerIndex <= configuration.getHiddenLayerCount()) {
 
             // Attach a new hidden layers
-            //int neuronsInLayer = inputSize - currentLayerIndex * (inputSize - outputSize) / (hiddenLayerCount + 1);
-            int neuronsInLayer = inputSize;
+            int neuronsInLayer = configuration.determineHiddenLayerSize();
             Layer hiddenLayer = generateAHiddenLayer(neuronsInLayer);
 
             network.addLayer(currentLayerIndex, hiddenLayer);
@@ -469,7 +470,7 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         }
 
         // Attach the output layer
-        Layer outputLayer = generateAnOutputLayer(outputSize);
+        Layer outputLayer = generateAnOutputLayer(configuration.determineOutputLayerSize());
         network.addLayer(currentLayerIndex, outputLayer);
         ConnectionFactory.fullConnect(network.getLayerAt(latestLayerIndex), network.getLayerAt(currentLayerIndex));
 //        ConnectionFactory.fullConnect(network.getLayerAt(0), network.getLayerAt(currentLayerIndex), false);
@@ -519,44 +520,108 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     }
 
 
+    private static void copyIntIntoIntAndFill(int[] source, int[] target) {
+        IntStream.range(0, target.length)
+                .forEach(i -> {
+                    if (i < source.length) {
+                        target[i] = source[i];
+                    } else {
+                        target[i] = -1;
+                    }
+                });
+    }
+
+    private static void copyBooleanIntoIntAndFill(boolean[] source, int[] target) {
+        IntStream.range(0, target.length)
+                .forEach(i -> {
+                    if (i < source.length) {
+                        if (source[i]) {
+                            target[i] = 1;
+                        } else {
+                            target[i] = 0;
+                        }
+                    } else {
+                        target[i] = -1;
+                    }
+                });
+    }
+
     private double[] convertModelInputObjToModelInputVector(LizNeuralNetworkModelInput modelInputObj) {
 
-//        // Input checking - attackPower
-//        if (modelInputObj.getAttackPower() < configuration.getAttackPowerMin()) {
-//            throw new RuntimeException("Value of attackPower('" + modelInputObj.getAttackPower() + "') must not be under than interval('" + configuration.getAttackPowerMin() + "') minimum!");
-//        }
-//        if (modelInputObj.getAttackPower() > configuration.getAttackPowerMax()) {
-//            throw new RuntimeException("Value of maxAttackPower('" + modelInputObj.getAttackPower() + "')must not be above than interval('" + configuration.getAttackPowerMax() + "') maximum!");
-//        }
-//
-//        // Input checking - cell owners
-//        if (modelInputObj.getCellOccupierIndex().length != determineInputVectorOwnersSectionLength()) {
-//            throw new RuntimeException("Invalid length of cell owner ranks!");
-//        }
-//        if (modelInputObj.getCellGarrisonSize().length != determineInputVectorDefendersSectionLength()) {
-//            throw new RuntimeException("Invalid length of cell defenders!");
-//        }
-//
-//        // Initialisation
-//        ArrayList<Double> inputNodeValuesList = new ArrayList<>();
-//
-//        // Input nodes - Reserve size
-//        inputNodeValuesList.add(normaliseValue(modelInputObj.getAttackPower(), configuration.getAttackPowerMin(), configuration.getAttackPowerMax()));
-//
-//        // Input nodes - Cell owners
-//        for (int ownerKey : modelInputObj.getCellOccupierIndex()) {
-//            //int swappedKey = ownerKey + 1; // so -1 will be 0 and will mean empty. (Originally, in game state representation, -1 was referred to empty cell)
-//            double normalisedKey = normaliseValue(ownerKey, configuration.getOwnerRankMinIndex(), configuration.getOwnerRankMaxIndex());
-//            inputNodeValuesList.add(normalisedKey);
-//        }
-//
-//        // Input nodes - Defending troop size
-//        for (int defenderSize : modelInputObj.getCellGarrisonSize()) {
-//            inputNodeValuesList.add(normaliseValue(defenderSize, configuration.getDefendersMinCount(), configuration.getDefendersMaxCount()));
-//        }
-//
-//        return inputNodeValuesList.stream().mapToDouble(i -> i).toArray();
-        throw new RuntimeException("Not implemented yet!");
+        if (modelInputObj.getCellOccupierIndex().length > configuration.getInputLayer_cellOccupierIndexNodesSize()) {
+            throw new RuntimeException("Cell occupier index out of bounds!");
+        }
+        if (modelInputObj.getCellGarrisonSize().length > configuration.getInputLayer_cellGarrisonSizeNodesSize()) {
+            throw new RuntimeException("Cell garrison size out of bounds!");
+        }
+        if (modelInputObj.getPlayerTerritorySize().length > configuration.getInputLayer_playerTerritorySizeNodesSize()) {
+            throw new RuntimeException("Player territory size out of bounds!");
+        }
+
+        if (modelInputObj.getPlayerReserveSize().length > configuration.getInputLayer_playerReserveSizeNodesSize()) {
+            throw new RuntimeException("Player reserve size out of bounds!");
+        }
+
+        if (modelInputObj.getPlayerIsAlive().length > configuration.getInputLayer_playerIsAliveNodesSize()) {
+            throw new RuntimeException("Player is alive array out of bounds!");
+        }
+
+
+        //
+        int[] cellOccupierIndex = new int[configuration.getInputLayer_cellOccupierIndexNodesSize()];
+        int[] cellGarrisonSize = new int[configuration.getInputLayer_cellGarrisonSizeNodesSize()];
+        int[] playerTerritorySize = new int[configuration.getInputLayer_playerTerritorySizeNodesSize()];
+        int[] playerReserveSize = new int[configuration.getInputLayer_playerReserveSizeNodesSize()];
+        int[] playerIsAlive = new int[configuration.getInputLayer_playerIsAliveNodesSize()];
+
+        copyIntIntoIntAndFill(modelInputObj.getCellOccupierIndex(), cellOccupierIndex);
+        copyIntIntoIntAndFill(modelInputObj.getCellGarrisonSize(), cellGarrisonSize);
+        copyIntIntoIntAndFill(modelInputObj.getPlayerTerritorySize(), playerTerritorySize);
+        copyIntIntoIntAndFill(modelInputObj.getPlayerReserveSize(), playerReserveSize);
+        copyBooleanIntoIntAndFill(modelInputObj.getPlayerIsAlive(), playerIsAlive);
+
+
+        // Normalisations
+        ArrayList<Double> inputNodeValuesList = new ArrayList<>();
+
+
+        // Input nodes - cellOccupierIndex
+        for (int occupierKey : cellOccupierIndex) {
+            inputNodeValuesList.add(
+                    normaliseValue(occupierKey, -1, configuration.getMaximumPlayerIndex())
+            );
+        }
+
+        // Input nodes - cellGarrisonSize
+        for (int garrisonSize : cellGarrisonSize) {
+            inputNodeValuesList.add(
+                    normaliseValue(garrisonSize, -1, configuration.getMaximumGarrisonSize())
+            );
+        }
+
+        // Input nodes - playerTerritorySize
+        for (int territorySize : playerTerritorySize) {
+            inputNodeValuesList.add(
+                    normaliseValue(territorySize, -1, configuration.getMaximumCellCount())
+            );
+        }
+
+        // Input nodes - playerReserveSize
+        for (int reserveSize : playerReserveSize) {
+            inputNodeValuesList.add(
+                    normaliseValue(reserveSize, -1, configuration.getMaximumReserveSize())
+            );
+        }
+
+
+        // Input nodes - playerIsAlive
+        for (int isAlive : playerIsAlive) {
+            inputNodeValuesList.add(
+                    normaliseValue(isAlive, -1, configuration.getMaximumAliveValue())
+            );
+        }
+
+        return inputNodeValuesList.stream().mapToDouble(i -> i).toArray();
     }
 
     private double[] convertModelOutputObjToModelOutputVector(LizNeuralNetworkModelOutput modelOutputObj) {
@@ -565,30 +630,23 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
 
     private LizNeuralNetworkModelOutput convertModelOutputVectorToModelOutputObj(double[] modelOutputVector) {
 
-//        if (modelOutputVector.length != determineOutputVectorLength()) {
-//            throw new RuntimeException("Output size is wrong!");
-//        }
-//
-//        // Denormalisation - Cell hit scores
-//        double[] cellHitScoresNormalised = new double[determineOutputVectorAttackProbabilitySectionLength()];
-//        System.arraycopy(modelOutputVector, 0, cellHitScoresNormalised, 0, determineOutputVectorAttackProbabilitySectionLength());
-//        double[] cellHitScoresDenormalised = new double[determineOutputVectorAttackProbabilitySectionLength()];
-//        for (int i = 0; i < cellHitScoresNormalised.length; i++) {
-//            cellHitScoresDenormalised[i] = denormaliseValue(cellHitScoresNormalised[i], 0, 100); // values denormalised between 0% and 100%
-//        }
-//
-//        // Denormalisation - Attacking troops size
-//        double attackingTroopSizeNormalised = modelOutputVector[modelOutputVector.length - 1]; // Pointing to the last index
-//        double attackingTroopSizeDenormalised = denormaliseValue(attackingTroopSizeNormalised, configuration.getAttackPowerMin(), configuration.getAttackPowerMax());
-//
-//        // Generate output
-//        double[] output = new double[determineOutputVectorLength()];
-//        System.arraycopy(cellHitScoresDenormalised, 0, output, 0, cellHitScoresDenormalised.length);
-//        output[output.length - 1] = attackingTroopSizeDenormalised;
-//        printOutputVectorInfo(output);
+        // Input checking
+        if (modelOutputVector.length != determineOutputVectorLength()) {
+            throw new RuntimeException("Output size is wrong!");
+        }
 
-//        return output;
-        throw new RuntimeException("Not implemented yet!");
+        // Denormalisation
+        double[] operatorProbabilityDenormalised = new double[determineOutputVectorLength()];
+        double[] operatorProbabilityNormalised = new double[determineOutputVectorLength()];
+        System.arraycopy(modelOutputVector, 0, operatorProbabilityNormalised, 0, determineOutputVectorLength());
+
+        for (int i = 0; i < operatorProbabilityNormalised.length; i++) {
+            operatorProbabilityDenormalised[i] = denormaliseValue(operatorProbabilityNormalised[i], 0, 100); // values denormalised between 0% and 100%
+        }
+
+        return LizNeuralNetworkModelOutput.builder()
+                .operatorProbability(operatorProbabilityDenormalised)
+                .build();
     }
 
 //    private double[] generateOutputVectorByTrainingData(LizInputData trainingData) {
@@ -616,25 +674,25 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private int determineInputVectorLength() {
-        //return INPUT_VECTOR_ATTACKPOWER_SECTION_LEGNTH + INPUT_VECTOR_ENEMY_SECTION_LEGNTH + determineInputVectorOwnersSectionLength() + determineInputVectorDefendersSectionLength(); // 1X attackPower + 1X enemiesCount + 42X cellOwnerKey + 42X cellDefendersSizeValue
-        return INPUT_VECTOR_ATTACKPOWER_SECTION_LEGNTH + determineInputVectorOwnersSectionLength() + determineInputVectorDefendersSectionLength(); // 1X attackPower + 1X enemiesCount + 42X cellOwnerKey + 42X cellDefendersSizeValue
+        return configuration.determineInputLayerSize();
     }
 
     private int determineOutputVectorLength() {
-        return determineOutputVectorAttackProbabilitySectionLength();// 42X CellHitScore (probability of attack) + 1X AttackingTroopSize
+        return configuration.determineOutputLayerSize();
     }
 
-    private int determineInputVectorOwnersSectionLength() {
-        return configuration.getCellCount();
-    }
 
-    private int determineInputVectorDefendersSectionLength() {
-        return configuration.getCellCount();
-    }
-
-    private int determineOutputVectorAttackProbabilitySectionLength() {
-        return configuration.getCellCount();
-    }
+//    private int determineInputVectorOwnersSectionLength() {
+//        return lizNeuralNetworkConfiguration.getCellCount();
+//    }
+//
+//    private int determineInputVectorDefendersSectionLength() {
+//        return lizNeuralNetworkConfiguration.getCellCount();
+//    }
+//
+//    private int determineOutputVectorAttackProbabilitySectionLength() {
+//        return lizNeuralNetworkConfiguration.getCellCount();
+//    }
 
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -652,52 +710,146 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     /// INNER CLASSES //////////////////////////////////////////////////////////////////////////////////////////////////
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class Configuration {
 
-        private int enemiesCountMin;
-        private int enemiesCountMax;
+    public static class LizNeuralNetworkConfiguration {
 
-        private int ownerRankMinIndex;
-        private int ownerRankMaxIndex;
+        private int hiddenLayerCount;
 
-        private int defendersMinCount;
-        private int defendersMaxCount;
+        private int inputLayer_cellOccupierIndexNodesSize;
+        private int inputLayer_cellGarrisonSizeNodesSize;
+        private int inputLayer_playerTerritorySizeNodesSize;
+        private int inputLayer_playerReserveSizeNodesSize;
+        private int inputLayer_playerIsAliveNodesSize;
 
-        private int attackPowerMin;
-        private int attackPowerMax;
-
-        private int cellCount;
+        private int outputLayer_operatorSkipNodesSize;
+        private int outputLayer_operatorAttackNodes;
 
 
-        private static void validation(Configuration configuration) {
-            // Validations
-            if (configuration.enemiesCountMax <= configuration.enemiesCountMin) {
-                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-            }
-
-            if (configuration.ownerRankMaxIndex <= configuration.ownerRankMinIndex) {
-                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-            }
-
-            if (configuration.defendersMaxCount <= configuration.defendersMinCount) {
-                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-            }
-
-            if (configuration.attackPowerMax <= configuration.attackPowerMin) {
-                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-            }
+        private int maximumPlayerIndex;
+        private int maximumGarrisonSize;
+        private int maximumReserveSize;
+        private int maximumCellCount;
+        private int maximumAliveValue;
 
 
+        public int determineInputLayerSize() {
+            return inputLayer_cellOccupierIndexNodesSize +
+                    inputLayer_cellGarrisonSizeNodesSize +
+                    inputLayer_playerTerritorySizeNodesSize +
+                    inputLayer_playerReserveSizeNodesSize +
+                    inputLayer_playerIsAliveNodesSize;
         }
 
-        public void validate() {
-            Configuration.validation(this);
+        public int determineOutputLayerSize() {
+            return inputLayer_cellOccupierIndexNodesSize +
+                    inputLayer_cellGarrisonSizeNodesSize +
+                    inputLayer_playerTerritorySizeNodesSize +
+                    inputLayer_playerReserveSizeNodesSize +
+                    inputLayer_playerIsAliveNodesSize;
+        }
+
+        public int determineHiddenLayerSize() {
+            return determineInputLayerSize();
+        }
+
+        private static void validation(LizNeuralNetworkConfiguration configuration) {
+
+            // Input nodes - section length checking
+            if (configuration.inputLayer_cellOccupierIndexNodesSize < 1) {
+                throw new RuntimeException("Parameter inputLayer_cellOccupierIndexNodesSize must be greater than 0!");
+            }
+            if (configuration.inputLayer_cellGarrisonSizeNodesSize < 1) {
+                throw new RuntimeException("Parameter inputLayer_cellGarrisonSize must be greater than 0!");
+            }
+            if (configuration.inputLayer_playerTerritorySizeNodesSize < 1) {
+                throw new RuntimeException("Parameter inputLayer_playerTerritorySizeNodesSize must be greater than 0!");
+            }
+            if (configuration.inputLayer_playerReserveSizeNodesSize < 1) {
+                throw new RuntimeException("Parameter inputLayer_playerReserveSizeNodesSize must be greater than 0!");
+            }
+            if (configuration.inputLayer_playerIsAliveNodesSize < 1) {
+                throw new RuntimeException("Parameter inputLayer_playerIsAliveNodesSize must be greater than 0!");
+            }
+
+            // Output nodes - section length checking
+            if (configuration.outputLayer_operatorSkipNodesSize != 1) {
+                throw new RuntimeException("Parameter outputLayer_operatorSkipNodesSize must be equal to 1!");
+            }
+            if (configuration.outputLayer_operatorAttackNodes < 1) {
+                throw new RuntimeException("Parameter outputLayer_operatorAttackNodes must be greater than 0!");
+            }
+
+
+            // Length equalness checking
+            if (configuration.inputLayer_cellOccupierIndexNodesSize != configuration.inputLayer_cellGarrisonSizeNodesSize) {
+                throw new RuntimeException("Parameter inputLayer_cellOccupierIndexNodesSize must be equal to parameter inputLayer_cellGarrisonSize!");
+            }
+
+            if (configuration.inputLayer_cellOccupierIndexNodesSize != configuration.outputLayer_operatorAttackNodes) {
+                throw new RuntimeException("Parameter inputLayer_cellOccupierIndexNodesSize must be equal to parameter outputLayer_attackNodes!");
+            }
+
+            // Other
+            if (configuration.hiddenLayerCount < 1) {
+                throw new RuntimeException("Parameter hiddenLayerCount must be greater than 0!");
+            }
         }
 
     }
+
+//    @Getter
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    @Builder
+//    public static class Configuration {
+//        private int maxPlayerCount;
+//        private int maxCellCount;
+//
+//
+//
+////        private int enemiesCountMin;
+////        private int enemiesCountMax;
+////
+////        private int ownerRankMinIndex;
+////        private int ownerRankMaxIndex;
+////
+////        private int defendersMinCount;
+////        private int defendersMaxCount;
+////
+////        private int attackPowerMin;
+////        private int attackPowerMax;
+////
+////        private int cellCount;
+//
+//
+//        private static void validation(Configuration configuration) {
+//            // Validations
+//            if (configuration.enemiesCountMax <= configuration.enemiesCountMin) {
+//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
+//            }
+//
+//            if (configuration.ownerRankMaxIndex <= configuration.ownerRankMinIndex) {
+//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
+//            }
+//
+//            if (configuration.defendersMaxCount <= configuration.defendersMinCount) {
+//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
+//            }
+//
+//            if (configuration.attackPowerMax <= configuration.attackPowerMin) {
+//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
+//            }
+//
+//
+//        }
+//
+//        public void validate() {
+//            Configuration.validation(this);
+//        }
+//
+//    }
 }

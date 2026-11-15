@@ -13,7 +13,7 @@ spring:
 
   cloud:
     function:
-      definition: queueExecutionTaskProcessingItemRead;queueHistoryBroadcast
+      definition: queueExecutionTaskProcessingItemRead;queueHistoryBroadcastReceiver
     stream:
       bindings:
         queueExecutionTaskProcessingItemRead-out-0:
@@ -25,7 +25,7 @@ spring:
           consumer:
             concurrency: 1
 #           queueName: ai-liz-concept-execution-task-processing-queue
-        queueHistoryBroadcast-in-0:
+        queueHistoryBroadcastReceiver-in-0:
           destination: history-broadcast-main
           group: ai-liz-history-queue
           contentType: application/json
@@ -44,7 +44,7 @@ spring:
               exchangeType: direct
               acknowledgeMode: AUTO
 
-          queueHistoryBroadcast-in-0:
+          queueHistoryBroadcastReceiver-in-0:
             consumer:
               bindingRoutingKey: x-route
               exchangeType: topic
