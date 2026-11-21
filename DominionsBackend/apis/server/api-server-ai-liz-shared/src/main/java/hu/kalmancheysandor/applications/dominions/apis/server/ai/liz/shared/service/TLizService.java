@@ -1,6 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.service;
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.neural.LizNeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.service.TAiService;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryPlayer;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.history.LizHistoryScenario;
@@ -46,7 +46,7 @@ public abstract class TLizService extends TAiService {
                 .inputLayer_playerReserveSizeNodesSize(10)
                 .inputLayer_playerIsAliveNodesSize(10)
                 .outputLayer_operatorSkipNodesSize(1)
-                .outputLayer_operatorAttackNodes(50)
+                .outputLayer_operatorAttackNodesSize(50)
                 .hiddenLayerCount(4)
                 .maximumPlayerIndex(10)
                 .maximumGarrisonSize(100)

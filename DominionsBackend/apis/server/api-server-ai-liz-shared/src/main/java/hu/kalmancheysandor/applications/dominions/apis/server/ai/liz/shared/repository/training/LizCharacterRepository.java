@@ -14,23 +14,23 @@ import java.util.List;
 @Repository
 public interface LizCharacterRepository extends JpaRepository<LizCharacter, String>, UUIDRepository<LizCharacter, String> {
 
-    public LizCharacter findById(int lizCharacterId);
+    public LizCharacter findById(int characterId);
 
-    public LizCharacter findByUuid(String lizCharacterUuid);
+    public LizCharacter findByUuid(String characterUuid);
 
     public LizCharacter findByCode(String code);
 
     public List<LizCharacter> findAll();
 
-    public void deleteById(int lizCharacterId);
+    public void deleteById(int characterId);
 
-    public void deleteByUuid(String lizCharacterUuid);
+    public void deleteByUuid(String characterUuid);
 
-    public boolean existsById(int lizCharacterId);
+    public boolean existsById(int characterId);
 
-    public boolean existsByUuid(String lizCharacterUuid);
+    public boolean existsByUuid(String characterUuid);
 
-    public LizCharacter save(LizCharacter lizCharacter);
+    public LizCharacter save(LizCharacter character);
 
     @Query("SELECT t FROM LizCharacter t WHERE t.enabled=true")
     List<LizCharacter> listAllEnabled();
@@ -53,11 +53,11 @@ public interface LizCharacterRepository extends JpaRepository<LizCharacter, Stri
     public boolean isCodeReserved(@Param("code") String title, @Param("excludedId") int excludedId);
 
 
-    @Query("SELECT t.enabled FROM LizCharacter t WHERE t.id=:lizCharacterId")
-    boolean isEnabled(@Param("lizCharacterId") int lizCharacterId);
+    @Query("SELECT t.enabled FROM LizCharacter t WHERE t.id=:characterId")
+    boolean isEnabled(@Param("characterId") int characterId);
 
     @Query("SELECT FALSE")
-    boolean isReferencedElsewhere(@Param("lizCharacterId") int lizCharacterId);
+    boolean isReferencedElsewhere(@Param("characterId") int characterId);
 }
 
 

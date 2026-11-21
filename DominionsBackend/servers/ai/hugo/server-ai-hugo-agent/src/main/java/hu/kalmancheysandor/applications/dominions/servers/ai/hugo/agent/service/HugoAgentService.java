@@ -1,11 +1,11 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.agent.service;
 
 
-import hu.kalmancheysandor.applications.dominions.apis.ai.algorithm.maxf.IMaxFAlgorithm;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoFirstHeuristicEvaluator;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.HugoSecondHeuristicEvaluator;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.IHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoFirstHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoSecondHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoEngine;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.heuristic.HugoHeuristicEvaluatorType;
@@ -47,7 +47,7 @@ public class HugoAgentService extends THugoService {
         registerHistoryScenarioIfNotExists(scenarioUuid, scenarioName);
 
         //
-        IMaxFAlgorithm engine = new HugoEngine();
+        IHugoEngine engine = new HugoEngine();
         engine.registerHeuristicEvaluator(
                 determineHeuristicEvaluatorByCharacterCode(myCharacterCode)
         );
@@ -70,7 +70,7 @@ public class HugoAgentService extends THugoService {
         }
     }
 
-    private IHeuristicEvaluator determineHeuristicEvaluatorByCharacterCode(String characterCode) {
+    private IHugoHeuristicEvaluator determineHeuristicEvaluatorByCharacterCode(String characterCode) {
         HugoHeuristicEvaluatorType heuristicEvaluatorType = determineHeuristicEvaluatorTypeFromCharacterCode(characterCode);
         if (HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR.equals(heuristicEvaluatorType)) {
             return new HugoFirstHeuristicEvaluator();

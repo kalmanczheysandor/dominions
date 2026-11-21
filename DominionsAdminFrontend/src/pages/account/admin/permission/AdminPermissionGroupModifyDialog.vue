@@ -64,6 +64,8 @@ export default {
                             rows: [
                                 {Field: 'Ai.Hugo.Character', Caption: 'AI > Hugo > Character'},
                                 {Field: 'Ai.Hugo.Variant', Caption: 'AI > Hugo > Variant'},
+                                {Field: 'Ai.Otto.Character', Caption: 'AI > Otto > Character'},
+                                {Field: 'Ai.Otto.Variant', Caption: 'AI > Otto > Variant'},
                                 {Field: 'Ai.Liz.Character', Caption: 'AI > Liz > Character'},
                                 {Field: 'Ai.Liz.Variant', Caption: 'AI > Liz > Variant'},
                                 {Field: 'Ai.Liz.Concept', Caption: 'AI > Liz > Concept'},

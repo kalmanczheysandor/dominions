@@ -1,7 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.servers.site;
 
 
-
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDGenerator;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -10,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 

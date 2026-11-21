@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-ai-maxf</artifactId>
+            <artifactId>api-ai-simultan</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

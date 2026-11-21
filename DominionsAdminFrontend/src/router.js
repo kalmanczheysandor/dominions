@@ -21,6 +21,8 @@ import LizVariantPage from "@/pages/ai/liz/variant/LizVariantPage.vue";
 import LizNeuralConceptPage from "@/pages/ai/liz/concept/LizNeuralConceptPage.vue";
 import HugoVariantPage from "@/pages/ai/hugo/variant/HugoVariantPage.vue";
 import HugoCharacterPage from "@/pages/ai/hugo/character/HugoCharacterPage.vue";
+import OttoCharacterPage from "@/pages/ai/otto/character/OttoCharacterPage.vue";
+import OttoVariantPage from "@/pages/ai/otto/variant/OttoVariantPage.vue";
 
 
 export const router = createRouter({
@@ -178,6 +180,37 @@ export const router = createRouter({
                 cssName: 'DefaultPageStyle'
             }
         },
+
+
+        {
+            name: 'Ai.Otto.Character',
+            path: '/ai/otto/character',
+            component: OttoCharacterPage,
+            meta: {
+                title: 'Otto-Characters',
+                requiresAuth: true,
+                requiredPermissions: [authService.generateAccessPermissionOn('Ai.Otto.Character')],
+                cssName: 'DefaultPageStyle'
+            }
+        },
+        {
+            name: 'Ai.Otto.Variant',
+            path: '/ai/otto/variant',
+            component: OttoVariantPage,
+            meta: {
+                title: 'Otto-Variants',
+                requiresAuth: true,
+                requiredPermissions: [authService.generateAccessPermissionOn('Ai.Otto.Variant')],
+                cssName: 'DefaultPageStyle'
+            }
+        },
+
+
+
+
+
+
+
 
 
         {

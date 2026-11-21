@@ -145,10 +145,33 @@ public class PlayOrchestrator {
 
 
             if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_LIZ) {
-                player = new ArtificialPlayer(aiPlayerIndex, "AI-LIZ-UserUuid"+aiPlayerIndex, "AiLiz["+ aiPlayerIndex+"]:" +gameMapConfigurationPlayer.getCharacter(), GameMapEngineType.AI_LIZ, gameMapConfigurationPlayer.getCharacter(), "AI-LIZ-EndpointKey-" + aiPlayerIndex);
+                player = new ArtificialPlayer(
+                        aiPlayerIndex,
+                        "AI-LIZ-UserUuid" + aiPlayerIndex,
+                        "AiLiz[" + aiPlayerIndex + "]:" + gameMapConfigurationPlayer.getCharacter(),
+                        GameMapEngineType.AI_LIZ,
+                        gameMapConfigurationPlayer.getCharacter(),
+                        "AI-LIZ-EndpointKey-" + aiPlayerIndex
+                );
             } else if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_HUGO) {
-                player = new ArtificialPlayer(aiPlayerIndex, "AI-HUGO-UserUuid"+aiPlayerIndex, "AiHugo["+ aiPlayerIndex+"]:" +gameMapConfigurationPlayer.getCharacter(), GameMapEngineType.AI_HUGO, gameMapConfigurationPlayer.getCharacter(), "AI-HUGO-EndpointKey-" + aiPlayerIndex);
-            }  else {
+                player = new ArtificialPlayer(
+                        aiPlayerIndex,
+                        "AI-HUGO-UserUuid" + aiPlayerIndex,
+                        "AiHugo[" + aiPlayerIndex + "]:" + gameMapConfigurationPlayer.getCharacter(),
+                        GameMapEngineType.AI_HUGO,
+                        gameMapConfigurationPlayer.getCharacter(),
+                        "AI-HUGO-EndpointKey-" + aiPlayerIndex
+                );
+            } else if (gameMapConfigurationPlayer.getEngine() == GameMapEngineType.AI_OTTO) {
+                player = new ArtificialPlayer(
+                        aiPlayerIndex,
+                        "AI-OTTO-UserUuid" + aiPlayerIndex,
+                        "AiOtto[" + aiPlayerIndex + "]:" + gameMapConfigurationPlayer.getCharacter(),
+                        GameMapEngineType.AI_OTTO,
+                        gameMapConfigurationPlayer.getCharacter(),
+                        "AI-OTTO-EndpointKey-" + aiPlayerIndex
+                );
+            } else {
                 throw new IllegalPointOfExecution("Unknown ai engine type is found:" + gameMapConfigurationPlayer.getEngine().name());
             }
 

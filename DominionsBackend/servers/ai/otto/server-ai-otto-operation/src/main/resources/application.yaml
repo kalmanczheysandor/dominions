@@ -1,0 +1,14 @@
+server:
+  port: 17043
+
+spring:
+  application:
+    name: 'server-ai-otto-operation'
+  config:
+    import: configserver:http://server-config:8888
+
+
+
+
+
+

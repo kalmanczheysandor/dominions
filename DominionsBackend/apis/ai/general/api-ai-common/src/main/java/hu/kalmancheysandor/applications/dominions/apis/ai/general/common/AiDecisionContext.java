@@ -23,6 +23,8 @@ public class AiDecisionContext {
     private Map<Integer, Integer> reserves = new HashMap<>();
     private Map<Integer,Player> players;
 
+
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -43,5 +45,29 @@ public class AiDecisionContext {
         public int hashCode() {
             return Objects.hashCode(playerKey);
         }
+
+        @Override
+        public String toString() {
+            return "Player{" +
+                    "playerKey=" + playerKey +
+                    ", playerType=" + playerType +
+                    ", name='" + name + '\'' +
+                    ", userUuid='" + userUuid + '\'' +
+                    '}';
+        }
     }
+
+
+    @Override
+    public String toString() {
+        return "AiDecisionContext{" +
+                "gameState=" + gameState +
+                ", yourPlayerKey=" + yourPlayerKey +
+                ", yourUserUuid='" + yourUserUuid + '\'' +
+                ", yourReserveSize=" + yourReserveSize +
+                ", reserves=" + reserves +
+                ", players=" + players +
+                '}';
+    }
+
 }

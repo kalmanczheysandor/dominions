@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz;
+package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.neural;
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.*;
@@ -71,10 +71,7 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
 
 
     @Override
-    public NeuralNetworkTrainingResult train(List<INeuralNetworkTrainingItem> trainingItemList,
-                                             INeuralNetworkTrainingConfiguration trainingConfiguration,
-                                             List<INeuralNetworkTrainingItem> testingItemList
-    ) {
+    public NeuralNetworkTrainingResult train(INeuralNetworkTrainingConfiguration trainingConfiguration, List<INeuralNetworkTrainingItem> trainingItemList, List<INeuralNetworkTrainingItem> testingItemList) {
         System.out.println("<<<< LizNeuralNetwork: Training.Start >>>>");
 
         // Convert
@@ -519,7 +516,6 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         return trainingSet;
     }
 
-
     private static void copyIntIntoIntAndFill(int[] source, int[] target) {
         IntStream.range(0, target.length)
                 .forEach(i -> {
@@ -527,6 +523,16 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
                         target[i] = source[i];
                     } else {
                         target[i] = -1;
+                    }
+                });
+    }
+    private static void copyDoubleIntoDoubleAndFillWithZero(double[] source, double[] target) {
+        IntStream.range(0, target.length)
+                .forEach(i -> {
+                    if (i < source.length) {
+                        target[i] = source[i];
+                    } else {
+                        target[i] = 0.0;
                     }
                 });
     }
@@ -549,21 +555,21 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     private double[] convertModelInputObjToModelInputVector(LizNeuralNetworkModelInput modelInputObj) {
 
         if (modelInputObj.getCellOccupierIndex().length > configuration.getInputLayer_cellOccupierIndexNodesSize()) {
-            throw new RuntimeException("Cell occupier index out of bounds!");
+            throw new RuntimeException("Cell occupier index out of bounds!"+modelInputObj.getCellOccupierIndex().length+" > "+configuration.getInputLayer_cellOccupierIndexNodesSize());
         }
         if (modelInputObj.getCellGarrisonSize().length > configuration.getInputLayer_cellGarrisonSizeNodesSize()) {
-            throw new RuntimeException("Cell garrison size out of bounds!");
+            throw new RuntimeException("Cell garrison size out of bounds!"+modelInputObj.getCellGarrisonSize().length+" > "+configuration.getInputLayer_cellGarrisonSizeNodesSize());
         }
         if (modelInputObj.getPlayerTerritorySize().length > configuration.getInputLayer_playerTerritorySizeNodesSize()) {
-            throw new RuntimeException("Player territory size out of bounds!");
+            throw new RuntimeException("Player territory size out of bounds!"+modelInputObj.getPlayerTerritorySize().length+" > "+configuration.getInputLayer_playerTerritorySizeNodesSize());
         }
 
         if (modelInputObj.getPlayerReserveSize().length > configuration.getInputLayer_playerReserveSizeNodesSize()) {
-            throw new RuntimeException("Player reserve size out of bounds!");
+            throw new RuntimeException("Player reserve size out of bounds!"+modelInputObj.getPlayerReserveSize().length+" > "+configuration.getInputLayer_playerReserveSizeNodesSize());
         }
 
         if (modelInputObj.getPlayerIsAlive().length > configuration.getInputLayer_playerIsAliveNodesSize()) {
-            throw new RuntimeException("Player is alive array out of bounds!");
+            throw new RuntimeException("Player is alive array out of bounds!"+modelInputObj.getPlayerIsAlive().length+" > "+configuration.getInputLayer_playerIsAliveNodesSize());
         }
 
 
@@ -579,7 +585,6 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         copyIntIntoIntAndFill(modelInputObj.getPlayerTerritorySize(), playerTerritorySize);
         copyIntIntoIntAndFill(modelInputObj.getPlayerReserveSize(), playerReserveSize);
         copyBooleanIntoIntAndFill(modelInputObj.getPlayerIsAlive(), playerIsAlive);
-
 
         // Normalisations
         ArrayList<Double> inputNodeValuesList = new ArrayList<>();
@@ -625,7 +630,24 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     }
 
     private double[] convertModelOutputObjToModelOutputVector(LizNeuralNetworkModelOutput modelOutputObj) {
-        throw new RuntimeException("Not implemented yet!");
+
+        // Input checking
+        if (modelOutputObj.getOperatorProbability().length > determineOutputVectorLength()) {
+            throw new RuntimeException("Operator probability out of bounds!");
+        }
+
+        double[] operatorProbability = new double[determineOutputVectorLength()]; // Int is not problem because it is a flag
+        copyDoubleIntoDoubleAndFillWithZero(modelOutputObj.getOperatorProbability(), operatorProbability);
+
+        // Normalisations
+        ArrayList<Double> outputNodeValuesList = new ArrayList();
+
+        // Input nodes - cellOccupierIndex
+        for (double probability : operatorProbability) {
+            outputNodeValuesList.add(probability);
+        }
+
+        return outputNodeValuesList.stream().mapToDouble(i -> i).toArray();
     }
 
     private LizNeuralNetworkModelOutput convertModelOutputVectorToModelOutputObj(double[] modelOutputVector) {
@@ -726,7 +748,7 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         private int inputLayer_playerIsAliveNodesSize;
 
         private int outputLayer_operatorSkipNodesSize;
-        private int outputLayer_operatorAttackNodes;
+        private int outputLayer_operatorAttackNodesSize;
 
 
         private int maximumPlayerIndex;
@@ -745,11 +767,8 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         }
 
         public int determineOutputLayerSize() {
-            return inputLayer_cellOccupierIndexNodesSize +
-                    inputLayer_cellGarrisonSizeNodesSize +
-                    inputLayer_playerTerritorySizeNodesSize +
-                    inputLayer_playerReserveSizeNodesSize +
-                    inputLayer_playerIsAliveNodesSize;
+            return outputLayer_operatorSkipNodesSize +
+                    outputLayer_operatorAttackNodesSize;
         }
 
         public int determineHiddenLayerSize() {
@@ -779,7 +798,7 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
             if (configuration.outputLayer_operatorSkipNodesSize != 1) {
                 throw new RuntimeException("Parameter outputLayer_operatorSkipNodesSize must be equal to 1!");
             }
-            if (configuration.outputLayer_operatorAttackNodes < 1) {
+            if (configuration.outputLayer_operatorAttackNodesSize < 1) {
                 throw new RuntimeException("Parameter outputLayer_operatorAttackNodes must be greater than 0!");
             }
 
@@ -789,7 +808,7 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
                 throw new RuntimeException("Parameter inputLayer_cellOccupierIndexNodesSize must be equal to parameter inputLayer_cellGarrisonSize!");
             }
 
-            if (configuration.inputLayer_cellOccupierIndexNodesSize != configuration.outputLayer_operatorAttackNodes) {
+            if (configuration.inputLayer_cellOccupierIndexNodesSize != configuration.outputLayer_operatorAttackNodesSize) {
                 throw new RuntimeException("Parameter inputLayer_cellOccupierIndexNodesSize must be equal to parameter outputLayer_attackNodes!");
             }
 

@@ -1,9 +1,8 @@
-package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz;
+package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.neural;
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetworkModelInput;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetworkModelOutput;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetworkTrainingItem;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;

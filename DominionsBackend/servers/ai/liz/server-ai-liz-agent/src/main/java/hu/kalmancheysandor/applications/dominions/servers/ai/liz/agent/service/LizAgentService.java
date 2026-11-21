@@ -2,9 +2,11 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.liz.agent.service;
 
 
 
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.evalutor.LizR3OperatorScoreEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.interfaces.ILizEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.LizNeuralNetwork;
-import hu.kalmancheysandor.applications.dominions.apis.ai.neural.INeuralAiAlgorithm;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.interfaces.ILizOperatorScoreEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.neural.LizNeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetwork;
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
@@ -103,8 +105,10 @@ public class LizAgentService extends TLizService {
         int conceptId = determineConceptIdFromCharacterCode(myCharacterCode);
         int latestExecutionId = determineLatestFinishedExecution(conceptId);
 
+
         // Initialise the decision-making engine
-        INeuralAiAlgorithm aiDecisionEngine = new LizEngine();
+        ILizEngine aiDecisionEngine = new LizEngine();
+        aiDecisionEngine.registerOperatorScoreEvaluator(new LizR3OperatorScoreEvaluator());
 
         // Register all enemy network
         for (Map.Entry<Integer, AiDecisionRequest.Player> playerEntry : enemyPlayers.entrySet()) {

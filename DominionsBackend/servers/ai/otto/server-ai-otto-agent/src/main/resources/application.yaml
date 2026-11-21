@@ -1,0 +1,8 @@
+server:
+  port: 17044
+
+spring:
+  application:
+    name: 'server-ai-otto-agent'
+  config:
+    import: configserver:http://server-config:8888

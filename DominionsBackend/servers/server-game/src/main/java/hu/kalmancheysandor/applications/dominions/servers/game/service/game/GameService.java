@@ -24,10 +24,10 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.pro
 
 //import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.hugo.HugoAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy.LizAgentServerProxy;
+import hu.kalmancheysandor.applications.dominions.apis.server.ai.otto.shared.proxy.OttoAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.scenario.GameScenarioItemResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.game.GameScenario;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity.history.History;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotFoundException;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotPublishedException;
@@ -47,7 +47,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.game.common.except
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.session.GameSessionStillRecruitingException;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameSessionRepository;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDGenerator;
-import hu.kalmancheysandor.applications.dominions.servers.game.queue.HistoryQueueItem;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -58,6 +57,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,14 +83,6 @@ public class GameService {
     @Autowired
     private UUIDGenerator uuidGenerator;
 
-//    @Autowired
-//    private PlayOrchestrator playOrchestrator;
-
-//    @Autowired
-//    private OttoAiAgenServerProxy ottoAiAgenServerProxy;
-//
-//    @Autowired
-//    private EgonAiAgentServerProxy egonAiServerProxy;
 
     @Autowired
     private LizAgentServerProxy lizAgentServerProxy;
@@ -97,8 +90,9 @@ public class GameService {
     @Autowired
     private HugoAgentServerProxy hugoAgentServerProxy;
 
-//    @Autowired
-//    private HelgaAiAgentServerProxy helgaAiAgentServerProxy;
+    @Autowired
+    private OttoAgentServerProxy ottoAgentServerProxy;
+
 
     @Autowired
     private SiteUserRepository siteUserRepository;
@@ -162,16 +156,16 @@ public class GameService {
         GameSession gameSessionSaved = uuidGenerator.saveWithRetry(gameSessionRepository, gameSessionToSave);
 
         // Generate response
-        GamePlayCreateResponse response = new GamePlayCreateResponse();
-        response.setGameSessionUuid(gameSessionSaved.getUuid());
-        response.setPlayerIndex(humanPlayer.getIndex());
-        response.setSecretKey("ASecretKey");   //TODO
-        response.setGameMapState(gameMapState);
-        response.setGameMapConfiguration(gameMapObj.getConfiguration());
-        response.setMaxHumanPlayerCount(playStateObj.getMaxHumanPlayerSlotCount());
-        response.setCurrentHumanPlayerCount(playStateObj.getHumanPlayerCount());
-        response.setStatusCode(playStateObj.getStatus());
-        return response;
+        return GamePlayCreateResponse.builder()
+                .gameSessionUuid(gameSessionSaved.getUuid())
+                .playerIndex(humanPlayer.getIndex())
+                .secretKey("ASecretKey")   //TODO
+                .gameMapState(gameMapState)
+                .gameMapConfiguration(gameMapObj.getConfiguration())
+                .maxHumanPlayerCount(playStateObj.getMaxHumanPlayerSlotCount())
+                .currentHumanPlayerCount(playStateObj.getHumanPlayerCount())
+                .statusCode(playStateObj.getStatus())
+                .build();
     }
 
     public GamePlayJoinResponse joinToGamePlay(@NotNull GamePlayJoinRequest request) {
@@ -212,19 +206,16 @@ public class GameService {
         PlayState modifiedPlayState = playOrchestrator.getPlayState();
 
         // Generate response
-        GamePlayJoinResponse response = new GamePlayJoinResponse();
-        response.setGameSessionUuid(gameSessionModified.getUuid());
-        response.setPlayerIndex(humanPlayer.getIndex());
-        response.setSecretKey("ASecretKey");   //TODO
-
-        response.setGameMapState(GameMapState.createByPlayState(modifiedPlayState)); // Already containing the joined player
-        response.setGameMapConfiguration(gameMapObj.getConfiguration());
-
-        response.setMaxHumanPlayerCount(modifiedPlayState.getMaxHumanPlayerSlotCount());
-        response.setCurrentHumanPlayerCount(modifiedPlayState.getHumanPlayerCount());
-        response.setStatusCode(modifiedPlayState.getStatus());
-
-        return response;
+        return GamePlayJoinResponse.builder()
+                .gameSessionUuid(gameSessionModified.getUuid())
+                .playerIndex(humanPlayer.getIndex())
+                .secretKey("ASecretKey")   //TODO
+                .gameMapState(GameMapState.createByPlayState(modifiedPlayState)) // Already containing the joined player
+                .gameMapConfiguration(gameMapObj.getConfiguration())
+                .maxHumanPlayerCount(modifiedPlayState.getMaxHumanPlayerSlotCount())
+                .currentHumanPlayerCount(modifiedPlayState.getHumanPlayerCount())
+                .statusCode(modifiedPlayState.getStatus())
+                .build();
     }
 
 
@@ -260,18 +251,17 @@ public class GameService {
         int missingIntentionCount = calculateMissingIntentionCount(playStateObj);
 
         // Generate response
-        GamePlayStateResponse response = new GamePlayStateResponse();
-        response.setGameMapState(GameMapState.createByPlayState(playStateObj)); // Already containing the joined player
-        response.setGameMapConfiguration(gameMapObj.getConfiguration());
-
-        response.setMaxHumanPlayerCount(playStateObj.getMaxHumanPlayerSlotCount());
-        response.setCurrentHumanPlayerCount(playStateObj.getHumanPlayerCount());
-        response.setStatusCode(playStateObj.getStatus());
-        response.setParticipants(participants);
-        response.setTurn(playStateObj.getTurn());
-        response.setWinnerKeys(playStateObj.getGameState().getWinnerKeys());
-        response.setMissingPlayerRespondCount(missingIntentionCount);
-        return response;
+        return GamePlayStateResponse.builder()
+                .gameMapState(GameMapState.createByPlayState(playStateObj))
+                .gameMapConfiguration(gameMapObj.getConfiguration())
+                .maxHumanPlayerCount(playStateObj.getMaxHumanPlayerSlotCount())
+                .currentHumanPlayerCount(playStateObj.getHumanPlayerCount())
+                .statusCode(playStateObj.getStatus())
+                .participants(participants)
+                .turn(playStateObj.getTurn())
+                .winnerKeys(playStateObj.getGameState().getWinnerKeys())
+                .missingPlayerRespondCount(missingIntentionCount)
+                .build();
     }
 
     public List<GamePlayItemResponse> listAllRecruitingGamePlay() {
@@ -287,18 +277,18 @@ public class GameService {
         for (GameSession gameSession : gameSessionList) {
 
             GameScenario gameScenario = gameScenarioRepository.findById(gameSession.getScenarioId());
-            // New item
-            GamePlayItemResponse responseItem = new GamePlayItemResponse();
-            responseItem.setUuid(gameSession.getUuid());
-            responseItem.setFreeSlotCount(gameSession.getFreeSlotCount());
-            responseItem.setScenarioUuid(gameScenario.getUuid());
-            responseItem.setTitle(gameScenario.getTitle());
-            responseItem.setDifficulty(gameScenario.getDifficulty());
-            responseItem.setPlayerAiCount(gameScenario.getPlayerAiCount());
-            responseItem.setPlayerHumanCount(gameScenario.getPlayerHumanCount());
 
             // Add to list
-            response.add(responseItem);
+            response.add(GamePlayItemResponse.builder()
+                    .uuid(gameSession.getUuid())
+                    .freeSlotCount(gameSession.getFreeSlotCount())
+                    .scenarioUuid(gameScenario.getUuid())
+                    .title(gameScenario.getTitle())
+                    .difficulty(gameScenario.getDifficulty())
+                    .playerAiCount(gameScenario.getPlayerAiCount())
+                    .playerHumanCount(gameScenario.getPlayerHumanCount())
+                    .build()
+            );
         }
         return response;
     }
@@ -312,18 +302,16 @@ public class GameService {
         List<GameScenarioItemResponse> response = new ArrayList<>();
         for (GameScenario gameScenario : gameSessionList) {
 
-            // New item
-            GameScenarioItemResponse responseItem = new GameScenarioItemResponse();
-            responseItem.setUuid(gameScenario.getUuid());
-            responseItem.setTitle(gameScenario.getTitle());
-            responseItem.setDifficulty(gameScenario.getDifficulty());
-            responseItem.setDescription(gameScenario.getDescription());
-
-            responseItem.setPlayerHumanCount(gameScenario.getPlayerHumanCount());
-            responseItem.setPlayerAiCount(gameScenario.getPlayerAiCount());
-
             // Add to list
-            response.add(responseItem);
+            response.add(GameScenarioItemResponse.builder()
+                    .uuid(gameScenario.getUuid())
+                    .title(gameScenario.getTitle())
+                    .difficulty(gameScenario.getDifficulty())
+                    .description(gameScenario.getDescription())
+                    .playerHumanCount(gameScenario.getPlayerHumanCount())
+                    .playerAiCount(gameScenario.getPlayerAiCount())
+                    .build()
+            );
         }
         return response;
     }
@@ -392,11 +380,16 @@ public class GameService {
         assertGameSessionIsNotRecruiting(request.getGameSessionUuid());
 
         // Execution
-        sendActionToGamePlay(request.getGameSessionUuid(), request.getPlayerIndex(), request.getTargetCellKey(), request.getAttackingTroopSize());
+        sendActionToGamePlay(
+                request.getGameSessionUuid(),
+                request.getPlayerIndex(),
+                request.getTargetCellKey(),
+                request.getAttackingTroopSize()
+        );
 
         //Generate response
-        GamePlayAttackActionResponse response = new GamePlayAttackActionResponse();
-        return response;
+        return GamePlayAttackActionResponse.builder()
+                .build();
     }
 
     public GamePlayReserveActionResponse sendReserveActionToGamePlay(GamePlayReserveActionRequest request) {
@@ -408,11 +401,16 @@ public class GameService {
         assertGameSessionIsNotRecruiting(request.getGameSessionUuid());
 
         // Execution
-        sendActionToGamePlay(request.getGameSessionUuid(), request.getPlayerIndex(), null, 0);
+        sendActionToGamePlay(
+                request.getGameSessionUuid(),
+                request.getPlayerIndex(),
+                null,
+                0
+        );
 
         //Generate response
-        GamePlayReserveActionResponse response = new GamePlayReserveActionResponse();
-        return response;
+        return GamePlayReserveActionResponse.builder()
+                .build();
     }
 
     private void sendActionToGamePlay(String gameSessionUuid, int playerIndex, Integer targetCellKey, int attackingTroopSize) {
@@ -430,7 +428,6 @@ public class GameService {
             throw new GameScenarioNotFoundException(gameSessionToModify.getScenarioId());
         }
 
-
         // Convert json fields to object
         PlayState playStateObj = convertJsonToPlayStateObj(gameSessionToModify.getPlayState());
         GameMap gameMapObj = convertJsonToGameMapObj(gameSessionToModify.getGameMap());
@@ -440,14 +437,13 @@ public class GameService {
 
         // Orchestrator: Collecting all Ai intention and store
         if (playOrchestrator.getAiPlayerMaxSlotSize() > 0 && playOrchestrator.aiMissingIntentionCount() > 0) {
-            Map<Integer, GameAction> aiPlayerIntentions = communicateToAiPlayers(
+            playOrchestrator.saveMultipleIntention(communicateToAiPlayers(
                     playOrchestrator.getAllAiPlayers(),
                     playOrchestrator.getPlayState(),
                     gameScenario.getUuid(),
                     gameScenario.getTitle(),
                     gameSessionToModify.getUuid()
-            );
-            playOrchestrator.saveMultipleIntention(aiPlayerIntentions);
+            ));
         }
 
 
@@ -585,8 +581,6 @@ public class GameService {
     }
 
 
-
-
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Request and Response generator methods ///////////////////////////////////////////////////////////////
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -641,9 +635,27 @@ public class GameService {
 
     private Map<Integer, GameAction> communicateToAiPlayers(Map<Integer, PlayerData> players, PlayState playState, String scenarioUuid, String scenarioTitle, String sessionUuid) {
 
-        Map<Integer, GameAction> intentions = new HashMap<>();
-        for (Map.Entry<Integer, PlayerData> playerEntry : players.entrySet()) {
+        class AiAnswer {
+            private int playerKey;
+            private AiDecisionResponse response;
 
+            AiAnswer(int playerKey, AiDecisionResponse response) {
+                this.playerKey = playerKey;
+                this.response = response;
+            }
+
+            public int getPlayerKey() {
+                return playerKey;
+            }
+
+            public AiDecisionResponse getResponse() {
+                return response;
+            }
+        }
+        List<CompletableFuture<AiAnswer>> futures = new ArrayList<>();
+
+        // Call asynchronously all ai endpoints
+        for (Map.Entry<Integer, PlayerData> playerEntry : players.entrySet()) {
             // Jump to next player if this one is not an artificial one
             if (!playerEntry.getValue().isArtificial()) {
                 continue;
@@ -654,35 +666,97 @@ public class GameService {
             ArtificialPlayer aiPlayer = (ArtificialPlayer) playerEntry.getValue();
 
             // Send request
-            AiDecisionResponse aiDecisionResponseObj = waitingAiResponse(aiPlayer, generateAiRequest(
-                            aiPlayerIndex,
-                            aiPlayer.getUserUuid(),
-                            aiPlayer.getName(),
-                            aiPlayer.getCharacterCode(),
-                            playState,
-                            scenarioUuid,
-                            scenarioTitle,
-                            sessionUuid
-                    )
-            );
+            futures.add(CompletableFuture.supplyAsync(() -> {
+                AiDecisionRequest requestObj = generateAiRequest(
+                        aiPlayerIndex,
+                        aiPlayer.getUserUuid(),
+                        aiPlayer.getName(),
+                        aiPlayer.getCharacterCode(),
+                        playState,
+                        scenarioUuid,
+                        scenarioTitle,
+                        sessionUuid
+                );
+                AiDecisionResponse responseObj = waitingAiResponse(aiPlayer, requestObj);
+
+                return new AiAnswer(aiPlayerIndex, responseObj);
+            }));
+
+        }
+
+        // Wait for and join all async responses
+        List<AiAnswer> responseList = futures.stream()
+                .map(CompletableFuture::join)
+                .toList();
+
+        // Save Intentions
+        Map<Integer, GameAction> intentions = new HashMap<>();
+        for (AiAnswer answer : responseList) {
+            AiDecisionResponse decisionObj = answer.getResponse();
+            int aiPlayerIndex = answer.getPlayerKey();
 
             // Create an Action by Ai response
-            Integer targetCellKey = aiDecisionResponseObj.getTargetCellKey();
-            Integer troopSize = aiDecisionResponseObj.getTroopSize();
+            Integer targetCellKey = decisionObj.getTargetCellKey();
+            Integer troopSize = decisionObj.getTroopSize();
             if (targetCellKey != null && targetCellKey == 0 && troopSize == 0) { // When it is a reserve-action
                 targetCellKey = null;
             }
             GameAction aiAction = new GameAction(aiPlayerIndex, targetCellKey, troopSize);
 
-
             intentions.put(aiPlayerIndex, aiAction);
-
 
             System.out.println("Ai Intention is[" + aiPlayerIndex + "]:" + aiAction);
         }
 
         return intentions;
     }
+
+
+//
+//
+//    private Map<Integer, GameAction> communicateToAiPlayers(Map<Integer, PlayerData> players, PlayState playState, String scenarioUuid, String scenarioTitle, String sessionUuid) {
+//
+//        Map<Integer, GameAction> intentions = new HashMap<>();
+//        for (Map.Entry<Integer, PlayerData> playerEntry : players.entrySet()) {
+//
+//            // Jump to next player if this one is not an artificial one
+//            if (!playerEntry.getValue().isArtificial()) {
+//                continue;
+//            }
+//
+//            //
+//            int aiPlayerIndex = playerEntry.getKey();
+//            ArtificialPlayer aiPlayer = (ArtificialPlayer) playerEntry.getValue();
+//
+//            // Send request
+//            AiDecisionResponse aiDecisionResponseObj = waitingAiResponse(aiPlayer, generateAiRequest(
+//                    aiPlayerIndex,
+//                    aiPlayer.getUserUuid(),
+//                    aiPlayer.getName(),
+//                    aiPlayer.getCharacterCode(),
+//                    playState,
+//                    scenarioUuid,
+//                    scenarioTitle,
+//                    sessionUuid
+//            ));
+//
+//            // Create an Action by Ai response
+//            Integer targetCellKey = aiDecisionResponseObj.getTargetCellKey();
+//            Integer troopSize = aiDecisionResponseObj.getTroopSize();
+//            if (targetCellKey != null && targetCellKey == 0 && troopSize == 0) { // When it is a reserve-action
+//                targetCellKey = null;
+//            }
+//            GameAction aiAction = new GameAction(aiPlayerIndex, targetCellKey, troopSize);
+//
+//
+//            intentions.put(aiPlayerIndex, aiAction);
+//
+//
+//            System.out.println("Ai Intention is[" + aiPlayerIndex + "]:" + aiAction);
+//        }
+//
+//        return intentions;
+//    }
 
     private AiDecisionResponse waitingAiResponse(ArtificialPlayer artificialPlayer, AiDecisionRequest aiDecisionRequestObj) {
 
@@ -692,26 +766,12 @@ public class GameService {
         AiDecisionResponse aiDecisionResponseObj;
 
         // Wait for ai response
-//        if (engineType == GameMapEngineType.AI_OTTO) {
-//        //    aiDecisionResponseObj = ottoAiAgenServerProxy.generateResponse(aiDecisionRequestObj);
-//        } else if (GameMapEngineType.AI_EGON == engineType) {
-//          //  aiDecisionResponseObj = egonAiServerProxy.generateResponse(aiDecisionRequestObj);
-//        } else if (GameMapEngineType.AI_LIZ == engineType) {
-//            //aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
-//
-//        } else if (GameMapEngineType.AI_HUGO == engineType) {
-//            //aiDecisionResponseObj = hugoAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
-//        } else if (GameMapEngineType.AI_HELGA == engineType) {
-//        //aiDecisionResponseObj = helgaAiAgentServerProxy.generateResponse(aiDecisionRequestObj);
-//        } else {
-//            throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
-//        }
-//
-
         if (engineType == GameMapEngineType.AI_LIZ) {
             aiDecisionResponseObj = lizAgentServerProxy.generateResponse(aiDecisionRequestObj);
         } else if (engineType == GameMapEngineType.AI_HUGO) {
             aiDecisionResponseObj = hugoAgentServerProxy.generateResponse(aiDecisionRequestObj);
+        } else if (engineType == GameMapEngineType.AI_OTTO) {
+            aiDecisionResponseObj = ottoAgentServerProxy.generateResponse(aiDecisionRequestObj);
         } else {
             throw new IllegalPointOfExecution("Unknown ai engine:" + engineType.name());
         }

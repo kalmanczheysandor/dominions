@@ -34,6 +34,16 @@ app:
         maximum-pool-size: 3
         minimum-idle: 1
 
+
+    ai-otto:
+      jdbc-url: jdbc:mysql://${DB_HOST}:${DB_PORT}/dominions_ai_otto?createDatabaseIfNotExist=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+      hikari:
+        transaction-isolation: TRANSACTION_REPEATABLE_READ
+        maximum-pool-size: 3
+        minimum-idle: 1
+
 spring:
   datasource:
     hikari:

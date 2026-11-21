@@ -1,7 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training;
 
 
-
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.neural.LizNeuralConcept;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,26 +12,26 @@ import java.util.List;
 
 
 @Repository
-public interface LizNeuralConceptRepository extends JpaRepository< LizNeuralConcept, String>, UUIDRepository< LizNeuralConcept, String> {
+public interface LizNeuralConceptRepository extends JpaRepository<LizNeuralConcept, String>, UUIDRepository<LizNeuralConcept, String> {
 
-    public LizNeuralConcept findById(int  lizNeuralConceptId);
+    public LizNeuralConcept findById(int conceptId);
 
-    public  LizNeuralConcept findByUuid(String  lizNeuralConceptUuid);
+    public LizNeuralConcept findByUuid(String conceptUuid);
 
-    public List< LizNeuralConcept> findAll();
+    public List<LizNeuralConcept> findAll();
 
-    public void deleteById(int  lizNeuralConceptId);
+    public void deleteById(int conceptId);
 
-    public void deleteByUuid(String  lizNeuralConceptUuid);
+    public void deleteByUuid(String conceptUuid);
 
-    public boolean existsById(int  lizNeuralConceptId);
+    public boolean existsById(int conceptId);
 
-    public boolean existsByUuid(String  lizNeuralConceptUuid);
+    public boolean existsByUuid(String conceptUuid);
 
-    public  LizNeuralConcept save(LizNeuralConcept  lizNeuralConcept);
+    public LizNeuralConcept save(LizNeuralConcept concept);
 
     @Query("SELECT t FROM  LizNeuralConcept t")
-    List< LizNeuralConcept> listAll();
+    List<LizNeuralConcept> listAll();
 
     @Query("SELECT t FROM  LizNeuralConcept t WHERE t.enabled=true")
     List<LizNeuralConcept> listAllEnabled();
@@ -50,10 +49,6 @@ public interface LizNeuralConceptRepository extends JpaRepository< LizNeuralConc
     List<LizNeuralConcept> listAllEnabledWithMultipleExcludedUuid(@Param("excludedUuidList") List<String> excludedUuidList);
 
 
-
-
-
-
     @Query("SELECT CASE WHEN count(t) > 0 THEN true ELSE false END FROM LizNeuralConcept t WHERE t.name = :name")
     public boolean isNameReserved(@Param("name") String title);
 
@@ -61,18 +56,14 @@ public interface LizNeuralConceptRepository extends JpaRepository< LizNeuralConc
     public boolean isNameReserved(@Param("name") String title, @Param("excludedId") int excludedId);
 
 
-
-
-
-    @Query("SELECT t.enabled FROM  LizNeuralConcept t WHERE t.id=:lizNeuralConceptId")
-    boolean isEnabled(@Param("lizNeuralConceptId") int  lizNeuralConceptId);
-
+    @Query("SELECT t.enabled FROM  LizNeuralConcept t WHERE t.id=:conceptId")
+    boolean isEnabled(@Param("conceptId") int conceptId);
 
 
     @Query("SELECT CASE WHEN " +
-            "EXISTS (SELECT 1 FROM LizVariant t WHERE t.concept.id = :lizNeuralConceptId) " +
+            "EXISTS (SELECT 1 FROM LizVariant t WHERE t.concept.id = :conceptId) " +
             "THEN TRUE ELSE FALSE END")
-    boolean isReferencedElsewhere(@Param("lizNeuralConceptId") int  lizNeuralConceptId);
+    boolean isReferencedElsewhere(@Param("conceptId") int conceptId);
 }
 
 

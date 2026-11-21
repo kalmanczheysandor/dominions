@@ -115,7 +115,6 @@ public class GameService {
 
         // Access image file
         int gameScenarioId = gameScenario.getId();
-//        String fullPath = "d:/gameScenarios/" + gameScenarioId + "/main.jpg";
         String fullPath = getMainImagesFolder() + "/" + gameScenarioId + "/main.jpg";
         System.out.println("FULL PATH: " + fullPath);
         return FileHandler.accessFileContentIfExists(fullPath);

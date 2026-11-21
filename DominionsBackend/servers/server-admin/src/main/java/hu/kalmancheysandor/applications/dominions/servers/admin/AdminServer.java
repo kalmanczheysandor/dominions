@@ -29,6 +29,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.proxy",
+        "hu.kalmancheysandor.applications.dominions.apis.server.ai.otto.shared.proxy",
 })
 @EnableJpaRepositories(basePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.user.common.repository",

@@ -32,6 +32,20 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>hu.kalmancheysandor.applications.dominions</groupId>
+            <artifactId>api-server-ai-hugo-shared</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.kalmancheysandor.applications.dominions</groupId>
+            <artifactId>api-server-ai-otto-shared</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!--.......USER.......-->
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
@@ -68,12 +82,7 @@
             <artifactId>api-server-game-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-server-ai-hugo-shared</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
 
 
 

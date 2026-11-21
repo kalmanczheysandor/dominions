@@ -3,7 +3,7 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.serv
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.*;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.neural.*;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetwork;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.NeuralNetworkTrainingResult;
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.NeuralNetworkTrainingSnapshot;
@@ -113,8 +113,8 @@ public class LizNeuralTrainingService extends TLizService {
             if (!trainingItemList.isEmpty()) {
                 isTrainingStarted = true;
                 neuralTrainingResult = neuralNetwork.train(
-                        trainingItemList,
                         trainingConfiguration,
+                        trainingItemList,
                         testingItemList
                 );
             }
@@ -153,11 +153,14 @@ public class LizNeuralTrainingService extends TLizService {
 
             // Create decision object
             INeuralNetworkTrainingItem item = convertPlayerDecisionToNeuralNetworkTrainingItem(playerDecisionObj);
-            if (itemCount % 2 == 0) {
-                trainingItemList.add(item);
-            } else {
-                testingItemList.add(item);
-            }
+//            if (itemCount % 2 == 0) {
+//                trainingItemList.add(item);
+//            } else {
+//                testingItemList.add(item);
+//            }
+
+            trainingItemList.add(item);
+            testingItemList.add(item);
             itemCount++;
         }
         return Map.of("trainingData", trainingItemList, "testingData", testingItemList);

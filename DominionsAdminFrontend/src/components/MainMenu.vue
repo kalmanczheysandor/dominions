@@ -116,6 +116,22 @@ export default {
                                 ]
                             },
                             {
+                                title: 'Otto engine',
+                                icon: 'mdi-account-outline',
+                                subItems: [
+                                    {
+                                        title: 'Character',
+                                        icon: 'mdi-account-group',
+                                        route: '/ai/otto/character'
+                                    },
+                                    {
+                                        title: 'Variant',
+                                        icon: 'mdi-account-group',
+                                        route: '/ai/otto/variant'
+                                    }
+                                ]
+                            },
+                            {
                                 title: 'Liz Engine',
                                 icon: 'mdi-account-outline',
                                 subItems: [

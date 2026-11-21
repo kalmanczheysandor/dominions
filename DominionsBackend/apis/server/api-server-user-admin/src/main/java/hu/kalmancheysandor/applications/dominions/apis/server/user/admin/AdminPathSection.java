@@ -28,6 +28,8 @@ public class AdminPathSection extends SecurityPermissionPathGenerator {
         validTargets.add("Ai.Hugo.Character");
         validTargets.add("Ai.Hugo.Variant");
 
+        validTargets.add("Ai.Otto.Character");
+        validTargets.add("Ai.Otto.Variant");
 
         validTargets.add("Account.Admin.User");
         validTargets.add("Account.Admin.PermissionGroup");

@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz;
+package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.neural;
 
 public class NetworkTrainer {
 //

@@ -1,4 +1,4 @@
-package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz;
+package hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.neural;
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.neural.network.INeuralNetworkTrainingConfiguration;
 import lombok.AllArgsConstructor;

@@ -133,7 +133,35 @@ export default class TController {
                         ['GameScenarioReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.title + '" game-scenario record is still referenced elsewhere!'}],
                         ['GameScenarioTitleIsReservedException', {type: 'Warning', message: 'The title "' + parameters.title + '" is already in use!'}],
 
-                        // HugoCharacter
+
+                    // OttoCharacter
+                    ['OttoCharacterNotFoundException', {type: 'Warning', message: 'Couldn\'t find the character record!'}],
+                    ['OttoCharacterNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the character record by uuid:' + parameters.uuid}],
+                    ['OttoCharacterNotFoundByCodeException', {type: 'Warning', message: 'Couldn\'t find the character record by code:' + parameters.code}],
+                    ['OttoCharacterAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" character record association is restricted!'}],
+                    ['OttoCharacterReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" character record is still referenced elsewhere!'}],
+                    ['OttoCharacterNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+                    ['OttoCharacterCodeIsReservedException', {type: 'Warning', message: 'The code "' + parameters.code + '" is already in use!'}],
+
+                    // OttoVariant
+                    ['OttoVariantNotFoundException', {type: 'Warning', message: 'Couldn\'t find the variant record!'}],
+                    ['OttoVariantNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the variant record by uuid:' + parameters.uuid}],
+                    ['OttoVariantAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record association is restricted!'}],
+                    ['OttoVariantReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record is still referenced elsewhere!'}],
+                    ['OttoVariantNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+
+                    // OttoEvaluator
+                    ['OttoEvaluatorNotFoundException', {type: 'Warning', message: 'Couldn\'t find the evaluator record!'}],
+                    ['OttoEvaluatorNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the evaluator record by uuid:' + parameters.uuid}],
+                    ['OttoEvaluatorNotFoundByCodeException.java', {type: 'Warning', message: 'Couldn\'t find the evaluator record by code:' + parameters.uuid}],
+                    ['OttoEvaluatorAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" evaluator record association is restricted!'}],
+                    ['OttoEvaluatorReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" evaluator record is still referenced elsewhere!'}],
+                    ['OttoEvaluatorNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+                    ['OttoUnexpectedEvaluatorEvaluatorTypeCodeException.java', {type: 'Warning', message: 'Unexpected evaluator typeCode:' + parameters.typeCode}],
+
+
+
+                    // HugoCharacter
                         ['HugoCharacterNotFoundException', {type: 'Warning', message: 'Couldn\'t find the character record!'}],
                         ['HugoCharacterNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the character record by uuid:' + parameters.uuid}],
                         ['HugoCharacterNotFoundByCodeException', {type: 'Warning', message: 'Couldn\'t find the character record by code:' + parameters.code}],

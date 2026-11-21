@@ -49,7 +49,7 @@ public class PlayerDecision {
 
 
         // Create field items
-        int cellCount = gameState.getOpponents().length;
+        int cellCount = gameState.getCellCount();
         Map<Integer, BoardField> boardFields = new HashMap<>();
         for (int cellIndex = 0; cellIndex < cellCount; cellIndex++) {
             GameStateCell cell = gameState.getCells()[cellIndex];
@@ -82,8 +82,9 @@ public class PlayerDecision {
     }
 
     @Data
+    @NoArgsConstructor
     public static class BoardPlayer {
-        private final int index;
+        private int index;
         public int reserveSize;
         private int territorySize;
         private boolean alive;
@@ -110,10 +111,13 @@ public class PlayerDecision {
     }
 
     @Data
+    @NoArgsConstructor
     public static class BoardField {
-        private final int index;
+        private int index;
         private int occupierIndex;
         private int garrisonSize;
+
+
 
         public BoardField(int index, int occupierIndex, int garrisonSize) {
             this.index = index;

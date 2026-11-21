@@ -18,10 +18,10 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @JsonAutoDetect(
-    fieldVisibility = JsonAutoDetect.Visibility.ANY,
-    getterVisibility = JsonAutoDetect.Visibility.NONE,
-    isGetterVisibility = JsonAutoDetect.Visibility.NONE,
-    setterVisibility = JsonAutoDetect.Visibility.NONE
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        isGetterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 public class GameState {
     private GameStateStatusCode statusCode;
@@ -34,9 +34,9 @@ public class GameState {
     private GameStatePlayer[] opponents;
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     ///  FACTORY METHODS /////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static GameState deepCopy(GameState gameState) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -94,9 +94,9 @@ public class GameState {
     }
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     /// INITIALISATION METHODS ///////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public GameState(GameStateCell[] cells, GameStatePlayer[] opponents, boolean[][] neighbouringMatrix) {
         init(cells, opponents, neighbouringMatrix);
@@ -142,13 +142,13 @@ public class GameState {
     }
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     /// VALIDATION METHODS ///////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void validate(GameState gameState) {
-        if(gameState.getStatusCode()==GameStateStatusCode.FINISHED) {
-            if(!gameState.isNoMoreEmptyCell()) {
+        if (gameState.getStatusCode() == GameStateStatusCode.FINISHED) {
+            if (!gameState.isNoMoreEmptyCell()) {
                 throw new GeneralGameStateException("Game state is not a final state because there is at least one empty cell!");
             }
         }
@@ -200,9 +200,9 @@ public class GameState {
         return alivePlayers;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
     /// GETTER & SETTER METHODS //////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public int getCellCount() {
         return this.cells != null ? this.cells.length : 0;
@@ -234,7 +234,7 @@ public class GameState {
     }
 
 
-    public int[] getAlivePlayers() {
+    public int[] getAlivePlayerIndexes() {
         List<Integer> alivePlayers = new ArrayList<>();
 
         for (int playerIndex = 0; playerIndex < opponents.length; playerIndex++) {
@@ -245,6 +245,19 @@ public class GameState {
         }
         return alivePlayers.stream().mapToInt(i -> i).toArray();
     }
+
+    public GameStatePlayer[] getAlivePlayers() {
+        List<GameStatePlayer> alivePlayers = new ArrayList<>();
+
+        for (int playerIndex = 0; playerIndex < opponents.length; playerIndex++) {
+            GameStatePlayer player = opponents[playerIndex];
+            if (player.isAlive()) {
+                alivePlayers.add(player);
+            }
+        }
+        return alivePlayers.toArray(new GameStatePlayer[0]);
+    }
+
 
     public boolean[][] getNeighboursMatrix() {
         return neighboursMatrix;
@@ -317,5 +330,92 @@ public class GameState {
         return s;
     }
 
+    /// /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public static Map<Integer,GameStateCell> collectAliveEnemiesOfPlayer(GameState gameState, int playerKey) {
+        GameStatePlayer[] opponents = gameState.getOpponents();
+        Map<Integer, GameStateCell> enemies = new HashMap<>();
+        for (int currentPlayerKey = 0; currentPlayerKey < opponents.length; currentPlayerKey++) {
+
+            if (currentPlayerKey != playerKey) {
+                GameStatePlayer opponent = opponents[currentPlayerKey];
+                if (opponent.isAlive()) {
+                    enemies.put(currentPlayerKey, gameState.getCell(currentPlayerKey));
+                }
+            }
+        }
+
+        return enemies;
+    }
+
+
+    public static boolean isCellInAttackZoneOfPlayer(GameState gameState, int playerKey, int observedCellKey) {
+        Set<Integer> cellKeysOfAttackZone = collectCellKeysOfCurrentAttackZoneOfPlayer(gameState, playerKey);
+        return cellKeysOfAttackZone.contains(observedCellKey);
+    }
+
+    public static int collectEnemyPlayerCountInTheNeighbour(GameState gameState, int cellKey) {
+        //
+        Map<Integer, GameStateCell> neighbourCells = collectNeighbourCellsOfACell(gameState, cellKey);
+        Set<Integer> enemyKeys = new HashSet<>();
+        for (Map.Entry<Integer, GameStateCell> entry : neighbourCells.entrySet()) {
+            Integer occupierKey = entry.getValue().getOccupierKey();
+            enemyKeys.add(occupierKey);
+        }
+        return enemyKeys.size();
+    }
+
+    public static Map<Integer, GameStateCell> collectNeighbourCellsOfACell(GameState gameState, int cellKey) {
+
+        //
+        Map<Integer, GameStateCell> realNeighbours = new HashMap<>();
+        boolean[] neighboursRow = gameState.getNeighboursMatrix()[cellKey];
+        for (int neighbourKey = 0; neighbourKey < neighboursRow.length; neighbourKey++) {
+            if (neighboursRow[neighbourKey] == true) {
+                realNeighbours.put(neighbourKey, gameState.getCell(neighbourKey));
+            }
+        }
+        return realNeighbours;
+    }
+
+    public static Set<Integer> collectCellKeysOfCurrentAttackZoneOfPlayer(GameState gameState, int playerKey) {
+
+        Set<Integer> cellKeys = collectCellKeysOfAPlayer(gameState, playerKey);
+
+        Map<Integer, GameStateCell> neighbourCells;
+        Integer neighbourCellKey;
+        GameStateCell neighbourCell;
+        Set<Integer> attackZoneKeys = new HashSet<>();
+        for (Integer cellKey : cellKeys) {
+            neighbourCells = collectNeighbourCellsOfACell(gameState, cellKey);
+
+            for (Map.Entry<Integer, GameStateCell> entry : neighbourCells.entrySet()) {
+                neighbourCellKey = entry.getKey();
+                neighbourCell = entry.getValue();
+                if (neighbourCell.isEmpty() || neighbourCell.getOccupierKey() != playerKey) {
+                    attackZoneKeys.add(neighbourCellKey);
+                }
+            }
+        }
+
+        return attackZoneKeys;
+    }
+
+
+    public static Set<Integer> collectCellKeysOfAPlayer(GameState gameState, int playerKey) {
+        Set<Integer> playerCellKeys = new HashSet<>();
+        int key = 0;
+        for (GameStateCell cell : gameState.getCells()) {
+            if (cell.getOccupierKey() == playerKey) {
+                playerCellKeys.add(key);
+            }
+            key++;
+        }
+        return playerCellKeys;
+    }
 
 }

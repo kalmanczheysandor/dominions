@@ -15,21 +15,21 @@ import java.util.List;
 @Repository
 public interface LizVariantRepository extends JpaRepository< LizVariant, String>, UUIDRepository< LizVariant, String> {
 
-    public LizVariant findById(int  lizVariantId);
+    public LizVariant findById(int  variantId);
 
-    public  LizVariant findByUuid(String  lizVariantUuid);
+    public  LizVariant findByUuid(String  variantUuid);
 
     public List< LizVariant> findAll();
 
-    public void deleteById(int  lizVariantId);
+    public void deleteById(int  variantId);
 
-    public void deleteByUuid(String  lizVariantUuid);
+    public void deleteByUuid(String  variantUuid);
 
-    public boolean existsById(int  lizVariantId);
+    public boolean existsById(int  variantId);
 
-    public boolean existsByUuid(String  lizVariantUuid);
+    public boolean existsByUuid(String  variantUuid);
 
-    public  LizVariant save( LizVariant  lizVariant);
+    public  LizVariant save( LizVariant  variant);
 
     @Query("SELECT t FROM  LizVariant t")
     List< LizVariant> listAll();
@@ -64,15 +64,15 @@ public interface LizVariantRepository extends JpaRepository< LizVariant, String>
 
 
 
-    @Query("SELECT t.enabled FROM  LizVariant t WHERE t.id=:lizVariantId")
-    boolean isEnabled(@Param("lizVariantId") int  lizVariantId);
+    @Query("SELECT t.enabled FROM  LizVariant t WHERE t.id=:variantId")
+    boolean isEnabled(@Param("variantId") int  variantId);
 
 
 
     @Query("SELECT CASE WHEN " +
-            "EXISTS (SELECT 1 FROM LizCharacter t WHERE t.variant.id = :lizVariantId) " +
+            "EXISTS (SELECT 1 FROM LizCharacter t WHERE t.variant.id = :variantId) " +
             "THEN TRUE ELSE FALSE END")
-    boolean isReferencedElsewhere(@Param("lizVariantId") int  lizVariantId);
+    boolean isReferencedElsewhere(@Param("variantId") int  variantId);
 }
 
 
