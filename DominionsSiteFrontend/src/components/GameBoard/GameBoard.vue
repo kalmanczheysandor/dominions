@@ -52,6 +52,7 @@
                 <div id="Section3">
                     <button type="button" title="Resign" id="ResignIcon"
                             class=" mdi-exit-run mdi"
+                            v-show="false"
                             @click="eventAttemptResign"
                     />
                 </div>
@@ -312,15 +313,7 @@ export default {
             this.refreshAllCountryState();
         },
 
-        // async eventLeaveGame() {
-        //     // Confirming
-        //     const confirmed = await TConfirmDialog('Do you wish to continue?');
-        //     if (!confirmed.ok) {
-        //         return;
-        //     }
-        //
-        //     this.$emit('whenActionIsResign', {});
-        // },
+
         eventAttackAction() {
 
             // Initialisation
@@ -528,12 +521,6 @@ export default {
             console.log('refreshAllCountryState');
             this.refreshAllCountryState();
 
-            // // Draw players panel
-            // let totalCellCount = Object.keys(response.cells).length
-            // refreshPlayersTable(players, totalCellCount)
-            //
-            // // Refresh turn label
-            // document.getElementById('TurnLabel').innerHTML = '#' + response.currentTurn;
 
         },
 

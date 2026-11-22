@@ -265,8 +265,8 @@
         background-color: white;
 
         display: flex;
-        flex-wrap: wrap; /* Ha nincs hely, új sorba tör */
-        gap: 10px; /* Távolság az elemek között */
+        flex-wrap: wrap;
+        gap: 10px;
         flex-direction: row;
 
         align-items: flex-start;

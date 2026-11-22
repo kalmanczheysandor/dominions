@@ -31,9 +31,9 @@
             },
             onSave() {
                 if (this.$refs.form.validate()) {
-                    this.$emit("save", { ...this.formData }); // Emitálás szülő komponensnek
+                    this.$emit("save", { ...this.formData });
                     this.resetForm();
-                    this.dialogVisible = false; // Dialógus bezárása
+                    this.dialogVisible = false;
                 } else {
                     console.log("Form validation failed.");
                 }

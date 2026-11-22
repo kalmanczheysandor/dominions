@@ -1,5 +1,4 @@
 import TService from "@/framework/TService";
-import {authService} from "@/services/auth/AuthService";
 
 class AccountService extends TService {
     #baseUrl = super.extendWithBaseUrl('/account');

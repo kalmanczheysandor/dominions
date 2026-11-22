@@ -71,9 +71,7 @@ import MenuBar from "@/components/MenuBar.vue";
 import backendConfiguration from "@/configurations/backendConfiguration";
 
 export default {
-    // props: {
-    //     boardUuid: String,
-    // },
+
     components: {
         MenuBar
     },

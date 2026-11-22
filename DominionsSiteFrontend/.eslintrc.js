@@ -14,7 +14,6 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     "vue/valid-v-slot": "off",
-    'no-unused-vars': 'off',  // A nem használt változók és osztályok figyelmen kívül hagyása
-    // 'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    'no-unused-vars': 'off',
   }
 }

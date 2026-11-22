@@ -208,20 +208,7 @@ export default {
             this.startPolling();
 
             const gameBoardComponent = this.$refs.GameBoardComponent;
-            // await gameService.listenOnStateChanel(this.GlobalStore.GamePlayPage.gameSessionUuid, (gameMapStateResponse) => {
-            //     console.log("---REFRESH---")
-            //     console.log(gameMapStateResponse)
-            //
-            //     // Refresh values
-            //     gameBoardComponent.refreshPlayState({
-            //         state: gameMapStateResponse.gameMapState,
-            //         statusCode: gameMapStateResponse.statusCode,
-            //         maxHumanPlayerCount: gameMapStateResponse.maxHumanPlayerCount,
-            //         currentHumanPlayerCount: gameMapStateResponse.currentHumanPlayerCount,
-            //         turn: gameMapStateResponse.turn,
-            //         winnerKeys: gameMapStateResponse.winnerKeys
-            //     });
-            // })
+
         },
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

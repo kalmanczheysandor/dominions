@@ -38,16 +38,6 @@ class AuthService extends TService {
         return permissions.includes(permission);
     }
 
-    // isRoutingPermitted(to, from) {
-    //     if(to.path == '/breed' && this.hasCurrentUserPermission('Breed:VIEW')) {
-    //         return true;
-    //     }
-    //     if(from.path == '') {
-    //         console.log('');
-    //     }
-    //
-    //     return false;
-    // }
 
 
     isAccessActionGrantedOn(resource) {

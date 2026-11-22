@@ -41,6 +41,7 @@
 import TController from "@/framework/TController";
 import TConfirmDialog from "@/framework/component/TConfirmDialog/TConfirmDialog";
 import authService from "@/services/auth/AuthService";
+import TInfoDialog from "@/framework/component/TInfoDialog/TInfoDialog";
 
 export default {
     components: {},
@@ -64,7 +65,13 @@ export default {
         },
         async eventClickOnChartsMenuButton() {
             try {
-                this.$router.push('/charts');
+
+                await TInfoDialog({
+                    title: 'Sorry',
+                    message: 'Not available right now'
+                });
+
+                //this.$router.push('/charts');
             } catch (exp) {
                 await TController.handleExceptions(exp);
             }
@@ -82,25 +89,6 @@ export default {
                 await TController.handleExceptions(exp);
             }
         },
-
-
-        // async eventOnClickProfileMenuButton() {
-        //     try {
-        //         this.$router.push('/main');
-        //     } catch(exp) {
-        //         await TController.displayExceptionMessages(exp);
-        //     }
-        // },
-        // async eventOnClickLogoutMenuButton() {
-        //     // Confirming
-        //     const confirmed = await TConfirmDialog('Do you wish to logout?');
-        //     if(!confirmed.ok) {
-        //         return;
-        //     }
-        //
-        //     await authService.logout();
-        //     this.$router.push('/login');
-        // },
 
     },
 };

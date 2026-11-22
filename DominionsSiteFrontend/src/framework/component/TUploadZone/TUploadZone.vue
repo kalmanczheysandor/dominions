@@ -249,7 +249,7 @@
 
 <style>
     .FinishedItem {
-    //border:1px green solid !important;
+
     }
 
     .FinishedItem img {
@@ -339,7 +339,6 @@
     }
 
     .TUploadZone > .Actions > .Icon {
-    //text-shadow: 0px 0px 2px black; text-shadow: #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px; color: white; font-size: 30px; opacity: 0.2;
     }
 
     .TUploadZone > .Actions > .Icon:hover {

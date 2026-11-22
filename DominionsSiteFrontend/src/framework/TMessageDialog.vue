@@ -61,7 +61,7 @@
             eventOk() {
                 this.isVisible = false;
                 if (this.okMethodToCall) {
-                    this.okMethodToCall(); // Lokális confirm esemény hívása
+                    this.okMethodToCall();
                 }
             },
             open(okEvent = null, title = null, messages = null) {

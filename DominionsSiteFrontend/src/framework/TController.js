@@ -36,7 +36,7 @@ export default class TController {
         }
 
         //
-        const dialogData =  TController.generateMessageDialogData(exp);
+        const dialogData = TController.generateMessageDialogData(exp);
 
         // Show the message dialog
         if (dialogData.type === 'Warning') {
@@ -82,94 +82,94 @@ export default class TController {
                         ['HttpStatusResponseProxyException', {type: 'Error', message: 'Inner module communication error with code:' + parameters.statusCode, title: 'Error'}],
 
 
-                    // SiteAccountSignUp
-                    ['SiteAccountSignUpVerificationTokenNotFoundException', {type: 'Warning', message: 'Sign up verification token is not found!'}],
-                    ['SiteAccountSignUpUserDetailsNotFoundException', {type: 'Warning', message: 'Sign up user details is not found!'}],
-                    ['SiteAccountSignUpUserUuidDuplicationException', {type: 'Warning', message: 'User UUID already exists!'}],
-                    ['SiteAccountSignUpReservedUserIdentifierException', {type: 'Warning', message: 'User identifier already exists!'}],
+                        // SiteAccountSignUp
+                        ['SiteAccountSignUpVerificationTokenNotFoundException', {type: 'Warning', message: 'Sign up verification token is not found!'}],
+                        ['SiteAccountSignUpUserDetailsNotFoundException', {type: 'Warning', message: 'Sign up user details is not found!'}],
+                        ['SiteAccountSignUpUserUuidDuplicationException', {type: 'Warning', message: 'User UUID already exists!'}],
+                        ['SiteAccountSignUpReservedUserIdentifierException', {type: 'Warning', message: 'User identifier already exists!'}],
 
-                    // SiteAccountRecovery
-                    ['SiteAccountRecoveryVerificationTokenNotFoundException', {type: 'Warning', message: 'Recovery verification token is not found!'}],
-                    ['SiteAccountRecoveryUserDetailsNotFoundException', {type: 'Warning', message: 'Recovery user details not found!'}],
-                    ['SiteAccountRecoveryUserUuidDuplicationException', {type: 'Warning', message: 'User UUID already exists!'}],
-                    ['SiteAccountRecoveryIdentifierNotFoundException', {type: 'Warning', message: 'User identifier not found!'}],
-                    ['SiteAccountRecoveryUserNotFinalisedException', {type: 'Warning', message: 'User is not finalised!'}],
-                    ['SiteAccountRecoveryUserNotEnabledException', {type: 'Warning', message: 'User is not enabled!'}],
-                    ['SiteAccountRecoveryConfirmPasswordMismatchException', {type: 'Warning', message: 'Confirm password mismatch!'}],
+                        // SiteAccountRecovery
+                        ['SiteAccountRecoveryVerificationTokenNotFoundException', {type: 'Warning', message: 'Recovery verification token is not found!'}],
+                        ['SiteAccountRecoveryUserDetailsNotFoundException', {type: 'Warning', message: 'Recovery user details not found!'}],
+                        ['SiteAccountRecoveryUserUuidDuplicationException', {type: 'Warning', message: 'User UUID already exists!'}],
+                        ['SiteAccountRecoveryIdentifierNotFoundException', {type: 'Warning', message: 'User identifier not found!'}],
+                        ['SiteAccountRecoveryUserNotFinalisedException', {type: 'Warning', message: 'User is not finalised!'}],
+                        ['SiteAccountRecoveryUserNotEnabledException', {type: 'Warning', message: 'User is not enabled!'}],
+                        ['SiteAccountRecoveryConfirmPasswordMismatchException', {type: 'Warning', message: 'Confirm password mismatch!'}],
 
-                    // AccountSettings
-                    ['SiteAccountSettingsUserNotFoundException', {type: 'Warning', message: 'Couldn\'t find the user record!'}],
-                    ['SiteAccountSettingsUserNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the user record by uuid:' + parameters.uuid}],
-                    ['SiteAccountSettingsIdentifierIsReservedException', {type: 'Warning', message: 'The identifier "' + parameters.identifier + '" is already in use!'}],
-                    ['SiteAccountSettingsCredentialCurrentPasswordMismatchException', {type: 'Warning', message: 'The given password is not matching with the current one!'}],
-                    ['SiteAccountSettingsCredentialConfirmPasswordMismatchException', {type: 'Warning', message: 'The confirm password is not matching!'}],
+                        // AccountSettings
+                        ['SiteAccountSettingsUserNotFoundException', {type: 'Warning', message: 'Couldn\'t find the user record!'}],
+                        ['SiteAccountSettingsUserNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the user record by uuid:' + parameters.uuid}],
+                        ['SiteAccountSettingsIdentifierIsReservedException', {type: 'Warning', message: 'The identifier "' + parameters.identifier + '" is already in use!'}],
+                        ['SiteAccountSettingsCredentialCurrentPasswordMismatchException', {type: 'Warning', message: 'The given password is not matching with the current one!'}],
+                        ['SiteAccountSettingsCredentialConfirmPasswordMismatchException', {type: 'Warning', message: 'The confirm password is not matching!'}],
 
-                    // GamePlaySession
-                    ['GameSessionNotRecruitingException', {type: 'Warning', message: 'No more free slot!'}],
-                    ['PlayerEndpointKeyAlreadyRegisteredSessionException', {type: 'Warning', message: 'This endpoint is already attached to this gameplay!'}],
-                    ['UserUuidAlreadyRegisteredSessionException', {type: 'Warning', message: 'You are already in!'}],
+                        // GamePlaySession
+                        ['GameSessionNotRecruitingException', {type: 'Warning', message: 'No more free slot!'}],
+                        ['PlayerEndpointKeyAlreadyRegisteredSessionException', {type: 'Warning', message: 'This endpoint is already attached to this gameplay!'}],
+                        ['UserUuidAlreadyRegisteredSessionException', {type: 'Warning', message: 'You are already in!'}],
 
-                    // GameScenario
-                    ['GameScenarioNotFoundException', {type: 'Warning', message: 'Couldn\'t find the game-scenario record!'}],
-                    ['GameScenarioNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the game-scenario record by uuid:' + parameters.uuid}],
-                    ['GameScenarioAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.title + '" game-scenario record association is restricted!'}],
-                    ['GameScenarioReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.title + '" game-scenario record is still referenced elsewhere!'}],
-                    ['GameScenarioTitleIsReservedException', {type: 'Warning', message: 'The title "' + parameters.title + '" is already in use!'}],
+                        // GameScenario
+                        ['GameScenarioNotFoundException', {type: 'Warning', message: 'Couldn\'t find the game-scenario record!'}],
+                        ['GameScenarioNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the game-scenario record by uuid:' + parameters.uuid}],
+                        ['GameScenarioAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.title + '" game-scenario record association is restricted!'}],
+                        ['GameScenarioReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.title + '" game-scenario record is still referenced elsewhere!'}],
+                        ['GameScenarioTitleIsReservedException', {type: 'Warning', message: 'The title "' + parameters.title + '" is already in use!'}],
 
-                    // HugoCharacter
-                    ['HugoCharacterNotFoundException', {type: 'Warning', message: 'Couldn\'t find the character record!'}],
-                    ['HugoCharacterNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the character record by uuid:' + parameters.uuid}],
-                    ['HugoCharacterNotFoundByCodeException', {type: 'Warning', message: 'Couldn\'t find the character record by code:' + parameters.code}],
-                    ['HugoCharacterAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" character record association is restricted!'}],
-                    ['HugoCharacterReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" character record is still referenced elsewhere!'}],
-                    ['HugoCharacterNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
-                    ['HugoCharacterCodeIsReservedException', {type: 'Warning', message: 'The code "' + parameters.code + '" is already in use!'}],
+                        // HugoCharacter
+                        ['HugoCharacterNotFoundException', {type: 'Warning', message: 'Couldn\'t find the character record!'}],
+                        ['HugoCharacterNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the character record by uuid:' + parameters.uuid}],
+                        ['HugoCharacterNotFoundByCodeException', {type: 'Warning', message: 'Couldn\'t find the character record by code:' + parameters.code}],
+                        ['HugoCharacterAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" character record association is restricted!'}],
+                        ['HugoCharacterReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" character record is still referenced elsewhere!'}],
+                        ['HugoCharacterNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+                        ['HugoCharacterCodeIsReservedException', {type: 'Warning', message: 'The code "' + parameters.code + '" is already in use!'}],
 
-                    // HugoVariant
-                    ['HugoVariantNotFoundException', {type: 'Warning', message: 'Couldn\'t find the variant record!'}],
-                    ['HugoVariantNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the variant record by uuid:' + parameters.uuid}],
-                    ['HugoVariantAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record association is restricted!'}],
-                    ['HugoVariantReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record is still referenced elsewhere!'}],
-                    ['HugoVariantNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
-
-
-                    // HugoHeuristic
-                    ['HugoHeuristicNotFoundException', {type: 'Warning', message: 'Couldn\'t find the heuristic record!'}],
-                    ['HugoHeuristicNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the heuristic record by uuid:' + parameters.uuid}],
-                    ['HugoHeuristicNotFoundByCodeException.java', {type: 'Warning', message: 'Couldn\'t find the heuristic record by code:' + parameters.uuid}],
-                    ['HugoHeuristicAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" heuristic record association is restricted!'}],
-                    ['HugoHeuristicReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" heuristic record is still referenced elsewhere!'}],
-                    ['HugoHeuristicNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
-                    ['HugoUnexpectedHeuristicEvaluatorTypeCodeException.java', {type: 'Warning', message: 'Unexpected heuristic typeCode:' + parameters.typeCode}],
+                        // HugoVariant
+                        ['HugoVariantNotFoundException', {type: 'Warning', message: 'Couldn\'t find the variant record!'}],
+                        ['HugoVariantNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the variant record by uuid:' + parameters.uuid}],
+                        ['HugoVariantAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record association is restricted!'}],
+                        ['HugoVariantReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record is still referenced elsewhere!'}],
+                        ['HugoVariantNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
 
 
-                    // LizCharacter
-                    ['LizCharacterNotFoundException', {type: 'Warning', message: 'Couldn\'t find the character record!'}],
-                    ['LizCharacterNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the character record by uuid:' + parameters.uuid}],
-                    ['LizCharacterNotFoundByCodeException', {type: 'Warning', message: 'Couldn\'t find the character record by code:' + parameters.code}],
-                    ['LizCharacterAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" character record association is restricted!'}],
-                    ['LizCharacterReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" character record is still referenced elsewhere!'}],
-                    ['LizCharacterNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
-                    ['LizCharacterCodeIsReservedException', {type: 'Warning', message: 'The code "' + parameters.code + '" is already in use!'}],
+                        // HugoHeuristic
+                        ['HugoHeuristicNotFoundException', {type: 'Warning', message: 'Couldn\'t find the heuristic record!'}],
+                        ['HugoHeuristicNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the heuristic record by uuid:' + parameters.uuid}],
+                        ['HugoHeuristicNotFoundByCodeException.java', {type: 'Warning', message: 'Couldn\'t find the heuristic record by code:' + parameters.uuid}],
+                        ['HugoHeuristicAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" heuristic record association is restricted!'}],
+                        ['HugoHeuristicReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" heuristic record is still referenced elsewhere!'}],
+                        ['HugoHeuristicNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+                        ['HugoUnexpectedHeuristicEvaluatorTypeCodeException.java', {type: 'Warning', message: 'Unexpected heuristic typeCode:' + parameters.typeCode}],
 
 
-                    // LizVariant
-                    ['LizVariantNotFoundException', {type: 'Warning', message: 'Couldn\'t find the variant record!'}],
-                    ['LizVariantNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the variant record by uuid:' + parameters.uuid}],
-                    ['LizVariantAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record association is restricted!'}],
-                    ['LizVariantReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record is still referenced elsewhere!'}],
-                    ['LizVariantNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+                        // LizCharacter
+                        ['LizCharacterNotFoundException', {type: 'Warning', message: 'Couldn\'t find the character record!'}],
+                        ['LizCharacterNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the character record by uuid:' + parameters.uuid}],
+                        ['LizCharacterNotFoundByCodeException', {type: 'Warning', message: 'Couldn\'t find the character record by code:' + parameters.code}],
+                        ['LizCharacterAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" character record association is restricted!'}],
+                        ['LizCharacterReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" character record is still referenced elsewhere!'}],
+                        ['LizCharacterNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+                        ['LizCharacterCodeIsReservedException', {type: 'Warning', message: 'The code "' + parameters.code + '" is already in use!'}],
 
-                    // LizNeuralConcept
-                    ['LizNeuralConceptNotFoundException', {type: 'Warning', message: 'Couldn\'t find the concept record!'}],
-                    ['LizNeuralConceptNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the concept record by uuid:' + parameters.uuid}],
-                    ['LizNeuralConceptAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" concept record association is restricted!'}],
-                    ['LizNeuralConceptReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" concept record is still referenced elsewhere!'}],
-                    ['LizNeuralConceptNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
-                    ['LizNeuralConceptHistoryPlayerNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the history-player for concept record by uuid:' + parameters.uuid}],
-                    ['LizNeuralConceptHistoryScenarioNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the history-scenario for concept record by uuid:' + parameters.uuid}],
-                    ['LizNeuralConceptDirectoryDeletionFailedException', {type: 'Warning', message: 'Couldn\'t delete file structure of concept'}],
-                    ['LizNeuralConceptDeletionBlockedByActiveExecutionException', {type: 'Warning', message: 'Couldn\'t delete concept while there is any unfinished execution!'}],
+
+                        // LizVariant
+                        ['LizVariantNotFoundException', {type: 'Warning', message: 'Couldn\'t find the variant record!'}],
+                        ['LizVariantNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the variant record by uuid:' + parameters.uuid}],
+                        ['LizVariantAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record association is restricted!'}],
+                        ['LizVariantReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" variant record is still referenced elsewhere!'}],
+                        ['LizVariantNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+
+                        // LizNeuralConcept
+                        ['LizNeuralConceptNotFoundException', {type: 'Warning', message: 'Couldn\'t find the concept record!'}],
+                        ['LizNeuralConceptNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the concept record by uuid:' + parameters.uuid}],
+                        ['LizNeuralConceptAssociationRestrictedException', {type: 'Warning', message: 'The "' + parameters.name + '" concept record association is restricted!'}],
+                        ['LizNeuralConceptReferencedElsewhereException', {type: 'Warning', message: 'The "' + parameters.name + '" concept record is still referenced elsewhere!'}],
+                        ['LizNeuralConceptNameIsReservedException', {type: 'Warning', message: 'The name "' + parameters.name + '" is already in use!'}],
+                        ['LizNeuralConceptHistoryPlayerNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the history-player for concept record by uuid:' + parameters.uuid}],
+                        ['LizNeuralConceptHistoryScenarioNotFoundByUuidException', {type: 'Warning', message: 'Couldn\'t find the history-scenario for concept record by uuid:' + parameters.uuid}],
+                        ['LizNeuralConceptDirectoryDeletionFailedException', {type: 'Warning', message: 'Couldn\'t delete file structure of concept'}],
+                        ['LizNeuralConceptDeletionBlockedByActiveExecutionException', {type: 'Warning', message: 'Couldn\'t delete concept while there is any unfinished execution!'}],
 
                     ])
                 );
@@ -247,7 +247,6 @@ export default class TController {
             }
         }
     }
-
 
 
     static determineDialogData(exp, messageList = {}) {

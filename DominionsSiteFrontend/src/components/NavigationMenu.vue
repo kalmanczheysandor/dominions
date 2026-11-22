@@ -53,12 +53,7 @@
             };
         },
         computed: {
-            // currentPath() {
-            //     return this.$route.path;
-            // },
-            // isGamePlayMode() {
-            //     return this.currentPath.startsWith("/game/play");
-            // }
+
         },
         mounted() {
 
@@ -67,56 +62,7 @@
         },
         methods: {
 
-            // async eventClickOnPlayMenuButton() {
-            //     try {
-            //         this.$router.push('/game/lobby');
-            //         this.$emit('whenClickOnPlayMenuButton');
-            //     } catch (exp) {
-            //         await TController.displayExceptionMessages(exp);
-            //     }
-            // },
-            // async eventClickOnSettingsMenuButton() {
-            //     try {
-            //         this.$router.push('/account/settings');
-            //         this.$emit('whenClickOnSettingsMenuButton');
-            //     } catch (exp) {
-            //         await TController.displayExceptionMessages(exp);
-            //     }
-            // },
-            // async eventClickOnChartsMenuButton() {
-            //     try {
-            //         this.$router.push('/charts');
-            //         this.$emit('whenClickOnChartsMenuButton');
-            //     } catch (exp) {
-            //         await TController.displayExceptionMessages(exp);
-            //     }
-            // },
-            // async eventClickOnLogoutMenuButton() {
-            //     try {
-            //         try {
-            //             // Confirming
-            //             const confirmed = await TConfirmDialog('Do you wish to logout?');
-            //             if (!confirmed.ok) {
-            //                 return;
-            //             }
-            //             await authService.logout();
-            //             this.$router.push('/');
-            //         } catch (exp) {
-            //             await TController.displayExceptionMessages(exp);
-            //         }
-            //         this.$emit('whenClickOnLogoutMenuButton');
-            //     } catch (exp) {
-            //         await TController.displayExceptionMessages(exp);
-            //     }
-            // },
-            //
-            // async eventClickOnResignMenuButton() {
-            //     try {
-            //         this.$emit('whenClickOnResignMenuButton');
-            //     } catch (exp) {
-            //         await TController.displayExceptionMessages(exp);
-            //     }
-            // },
+
         }
 
 

@@ -16,7 +16,7 @@
                            Developed at the <strong>University of Debrecen, Faculty of Informatics</strong>, as part of a BSc thesis by <strong>Sándor Kálmánchey</strong>, <br>under the academic supervision of <strong>Tamás Kádek</strong>.
                        </p>
                         <p>
-                            © 2025 – Version 1.0
+                            © 2026 – Version 1.0
                         </p>
                         <p>
                             All rights reserved.
@@ -37,7 +37,6 @@
 <script>
 
 
-import NavigationMenu from "@/components/NavigationMenu.vue";
 
 export default {
     name: 'App',
@@ -48,21 +47,7 @@ export default {
     },
 
     methods: {
-        // showConfirmDialog(okMethod = null, cancelMethod = null, title = null, message = null) {
-        //     this.$refs.ConfirmDialog.showDialog(okMethod, cancelMethod, title, message);
-        // },
-        // showInfoDialog(okMethod = null, title = null, message = null) {
-        //     this.$refs.InfoDialog.open(okMethod, title, message);
-        // },
-        // showSuccessDialog(okMethod = null, title = null, message = null) {
-        //     this.$refs.SuccessDialog.open(okMethod, title, message);
-        // },
-        // showWarnDialog(okMethod = null, title = null, message = null) {
-        //     this.$refs.WarnDialog.open(okMethod, title, message);
-        // },
-        // showErrorDialog(okMethod = null, title = null, message = null) {
-        //     this.$refs.ErrorDialog.open(okMethod, title, message);
-        // }
+
     }
 };
 </script>

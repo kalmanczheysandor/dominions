@@ -160,44 +160,6 @@
             },
 
 
-            // bindCroppie(imageUrl) {
-            //     let el = this.$refs.croppieContainer;
-            //
-            //     // Create a new Croppie instance
-            //     this.croppie = new Croppie(el, {
-            //         viewport: {width: this.cropWidth, height: this.cropHeight, type: 'square'},
-            //         boundary: {width: this.boundaryWidth, height: this.boundaryHeight},
-            //         showZoomer: true,
-            //         enableOrientation: true,
-            //         enableExif: true,
-            //         zoom: 0
-            //     });
-            //
-            //     // Fetch the image with credentials: 'include'
-            //     fetch(imageUrl, {
-            //         method: 'GET',
-            //         credentials: 'include' // Ensure credentials (cookies, etc.) are included
-            //     })
-            //     .then(response => response.blob())
-            //     .then(blob => {
-            //         const reader = new FileReader();
-            //         reader.onloadend = () => {
-            //             let image = reader.result; // Convert the image blob to base64
-            //             this.croppie.bind({
-            //                 url: image,  // Use the base64 image
-            //                 orientation: 1,
-            //                 enableOrientation: true,
-            //                 zoom: 0
-            //             });
-            //         };
-            //         reader.readAsDataURL(blob); // Read the image blob as base64
-            //     })
-            //     .catch(error => {
-            //         console.error('Error loading image:', error);
-            //     });
-            // },
-
-
             bindCroppie(image) {
                 let el = this.$refs.croppieContainer;
                 this.croppie = new Croppie(el, {

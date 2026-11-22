@@ -103,8 +103,7 @@ import backendConfiguration from "@/configurations/backendConfiguration";
 import NavigationMenu from "@/components/NavigationMenu.vue";
 import MenuBar from "@/components/MenuBar.vue";
 
-console.log("NavigationMenu importált:", NavigationMenu);
-console.log("NavigationMenu CroppieInput:", CroppieInput);
+
 
 
 

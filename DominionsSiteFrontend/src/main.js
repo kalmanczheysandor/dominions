@@ -41,21 +41,7 @@ const vuetify = createVuetify({
             color:'red'
         }
     },
-    // theme: {
-    //     themes: {
-    //         light: {
-    //             colors: {
-    //                 primary: '#1976D2',
-    //                 secondary: '#424242',
-    //                 accent: '#8C9EFF',
-    //                 error: '#F44336',
-    //                 info: '#2196F3',
-    //                 success: '#4CAF50',
-    //                 warning: '#FF9800',
-    //             },
-    //         },
-    //     },
-    // }
+
 })
 
 
@@ -65,15 +51,7 @@ const vuetify = createVuetify({
 
 
 const pinia = createPinia();
-// pinia.use(createPersistedState );
 pinia.use(piniaPersist);
-
-// Pinia persist plugin beállítása
-// pinia.use(({ store }) => {
-//     store.$persistedState = store.$state;
-// });
-
-//useAuthStore(pinia);
 
 import VueApexCharts from "vue3-apexcharts";
 

@@ -28,11 +28,6 @@ export default {
         }
     },
 
-    // async beforeRouteEnter(to, from, next) {
-    //
-    //     next()
-    //     await this.doVerification()
-    // },
     methods: {
         async doVerification() {
             try {
@@ -49,37 +44,6 @@ export default {
                 await TController.handleExceptions(exp);
             }
         },
-        // async eventClickOnRegistrationButton() {
-        //     try {
-        //
-        //         // Form validation
-        //         await this.$refs.Form.validate();
-        //         if(!this.Form.validation.isValid) {
-        //             return;
-        //         }
-        //
-        //         // // Do login
-        //         // await accountService.signUp({
-        //         //     identifier: this.Form.Fields.IdentifierEmailInput.value,
-        //         //     password: this.Form.Fields.PasswordInput.value,
-        //         //     confirmPassword: this.Form.Fields.PasswordAgainInput.value,
-        //         //     name: this.Form.Fields.NameTextInput.value,
-        //         // });
-        //         //
-        //         // await TInfoDialog({
-        //         //     title: 'Registration',
-        //         //     message: 'A verification email was sent to: '+this.Form.Fields.IdentifierEmailInput.value
-        //         // });
-        //
-        //         if(this.$refs.Form) {
-        //             this.$refs.Form.reset();
-        //         }
-        //
-        //         this.$router.push('/main');
-        //     } catch(exp) {
-        //         await TController.displayExceptionMessages(exp);
-        //     }
-        // }
     },
 
 

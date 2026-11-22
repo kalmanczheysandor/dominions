@@ -245,12 +245,7 @@ class TService {
         console.log(document.cookie);
         for (const cookie of cookies) {
             const [name, value] = cookie.split('=');
-
             console.log(name + ' == ' + value);
-
-            // if (name === 'SESSION') {
-            //     return value;
-            // }
         }
         return null;
     }

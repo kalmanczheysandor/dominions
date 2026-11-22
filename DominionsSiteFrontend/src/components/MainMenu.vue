@@ -78,8 +78,8 @@
                     profileAvatarUrl: '',
                 },
                 MainMenuComponent: {
-                    usersMenuOpen: false,  // Az "Users" menü állapota
-                    settingsMenuOpen: false,  // A "Settings" menü állapota
+                    usersMenuOpen: false,
+                    settingsMenuOpen: false,
                     menuItems: [
                         {
                             title: 'Breeds',
@@ -162,6 +162,3 @@
     };
 </script>
 
-<style scoped>
-    /* Egyedi stílusok, ha szükséges */
-</style>
