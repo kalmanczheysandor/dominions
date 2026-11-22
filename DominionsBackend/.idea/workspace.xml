@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0c1bdf60-ec16-4dd1-9ee7-9a77e3d2f167" name="Changes" comment="Plenty of modifications before exam.">
+      <change afterPath="$PROJECT_DIR$/.containerisation/docker-compose_v261122-2126.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/public/.htaccess" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/public/image/WP_20230815_23_38_43_Pro.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/BasicDialog.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/ServerResponseManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/ServerResponseManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/XDialog.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/assets/croppie.css" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/assets/croppie.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/assets/image/Background2.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/assets/image/Background3.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/assets/image/LoginBackround.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/assets/image/LoginBackround.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/components/HelloWorld.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/components/MainMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/components/MainMenu.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/components/UniversalDialog.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TConfirmDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TConfirmDialog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TMessageDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TMessageDialog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/TService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/CroppieInput/CroppieInput.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/CroppieInput/CroppieInput.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TAlertDialog/TAlertDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TAlertDialog/TAlertDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TCheckboxMatrixInput/TCheckboxMatrixInput.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TCheckboxMatrixInput/TCheckboxMatrixInput.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TConfirmDialog/TConfirmDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TConfirmDialog/TConfirmDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TPhotoGrid/TPhotoGrid.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TPhotoGrid/TPhotoGrid.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TUploadZone/TUploadZone.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TUploadZone/TUploadZone.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TWarningDialog/TWarningDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/framework/component/TWarningDialog/TWarningDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/pages/MainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/pages/MainPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/pages/account/admin/user/AdminUserModifyDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/pages/account/admin/user/AdminUserModifyDialog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/services/account/site/user/SiteUserService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/services/account/site/user/SiteUserService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/services/auth/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsAdminFrontend/src/services/auth/AuthService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/views/AboutView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsAdminFrontend/src/views/HomeView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ai/algorithm/api-ai-simultan/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/algorithm/simultan/CompositeOperator.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ai/algorithm/api-ai-simultan/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/algorithm/simultan/CompositeOperator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ai/algorithm/api-ai-simultan/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/algorithm/simultan/TTestAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ai/engine/api-ai-liz/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/engine/liz/neural/LizNeuralNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ai/engine/api-ai-liz/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/engine/liz/neural/LizNeuralNetwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ai/engine/api-ai-liz/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/engine/liz/neural/LizNeuralNetworkModelInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/ai/engine/api-ai-liz/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/engine/liz/neural/LizNeuralNetworkModelInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/ai/engine/api-ai-liz/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/engine/liz/neural/NetworkTrainer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/map/configuration/GameMapConfigurationPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/map/configuration/GameMapConfigurationPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/map/state/GameMapState.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/map/state/GameMapState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/orchestration/PlayOrchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/orchestration/PlayOrchestrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/orchestration/PlayState.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/orchestration/PlayState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/action/GameAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/action/GameAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/machine/GameStateMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/machine/GameStateMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/machine/exception/action/NotEnoughSupplyGameStateMachineException.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/machine/exception/action/NotEnoughSupplyGameStateMachineException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/state/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/state/GameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/state/GameStateCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/game/api-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/game/common/representation/state/GameStateCell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/common/dto/AiDecisionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/common/dto/AiDecisionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/common/dto/queue/AiHistoryQueueItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/common/dto/queue/AiHistoryQueueItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/history/HugoHistoryPlayerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/history/HugoHistoryPlayerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/history/HugoHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/history/HugoHistoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/history/HugoHistoryScenarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/history/HugoHistoryScenarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/training/HugoVariantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/repository/training/HugoVariantRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/service/THugoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-hugo-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/hugo/shared/service/THugoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/advice/character/LizCharacterGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/advice/character/LizCharacterGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/advice/concept/LizNeuralConceptGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/advice/concept/LizNeuralConceptGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/solution/LizPersonnelSolutionAccessResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/solution/LizPersonnelSolutionCreateRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/solution/LizPersonnelSolutionCreateResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/solution/LizPersonnelSolutionDeleteRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/solution/LizPersonnelSolutionItemResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/solution/LizPersonnelSolutionUpdateRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/solution/LizPersonnelSolutionUpdateResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/variant/LizVariantCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/variant/LizVariantCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/xxx/LizPersonnelSolutionTrainingAccessResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/xxx/LizPersonnelSolutionTrainingCreateRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/xxx/LizPersonnelSolutionTrainingCreateResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/xxx/LizPersonnelSolutionTrainingDeleteRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/xxx/LizPersonnelSolutionTrainingItemResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/xxx/LizPersonnelSolutionTrainingUpdateRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/dto/xxx/LizPersonnelSolutionTrainingUpdateResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/proxy/LizTrainingServerPersonnelSolutionProxy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/proxy/LizTrainingServerPersonnelSolutionTrainingProxy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/history/LizHistoryPlayerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/history/LizHistoryPlayerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/history/LizHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/history/LizHistoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/history/LizHistoryScenarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/history/LizHistoryScenarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/LizVariantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/LizVariantRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralExecutionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralExecutionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingResultRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingResultRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingSnapshotRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingSnapshotRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingTaskRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/repository/training/neural/LizNeuralTrainingTaskRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/service/TLizService.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-ai-liz-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/ai/liz/shared/service/TLizService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/common/controller/advice/ProxyExceptionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/common/controller/advice/ProxyExceptionAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/game/common/exception/game/scenario/GameScenarioAssociationRestrictedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/game/common/exception/game/scenario/GameScenarioAssociationRestrictedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/game/common/repository/history/HistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-game-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/game/common/repository/history/HistoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-mailing-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/mailing/shared/dto/SiteAccountRecoveryVerificationMailEnqueueResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-mailing-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/mailing/shared/dto/SiteAccountRecoveryVerificationMailEnqueueResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-mailing-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/mailing/shared/dto/SiteAccountSignUpVerificationMailEnqueueResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-mailing-shared/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/mailing/shared/dto/SiteAccountSignUpVerificationMailEnqueueResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupCreateResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupCreateResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupDeleteRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupDeleteRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/dto/account/permission/AdminPermissionGroupUpdateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/entity/account/AdminUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/entity/account/AdminUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/entity/account/AdminUserAuthorisationGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/entity/account/AdminUserAuthorisationGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/entity/account/AdminUserAuthorisationGroupPermission.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/entity/account/AdminUserAuthorisationGroupPermission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserAuthorisationGroupPermissionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserAuthorisationGroupPermissionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserAuthorisationGroupRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserAuthorisationGroupRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserGroupRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserGroupRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-admin/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/admin/repository/account/AdminUserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/common/security/authentication/TAuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-common/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/common/security/authentication/TAuthenticationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupCreateResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupCreateResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupDeleteRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupDeleteRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/dto/account/permission/SitePermissionGroupUpdateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/entity/account/SiteUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/entity/account/SiteUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/entity/account/SiteUserAuthorisationGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/entity/account/SiteUserAuthorisationGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/entity/account/SiteUserAuthorisationGroupPermission.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/entity/account/SiteUserAuthorisationGroupPermission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserAuthorisationGroupPermissionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserAuthorisationGroupPermissionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserAuthorisationGroupRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserAuthorisationGroupRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserGroupRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserGroupRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/repository/account/SiteUserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/security/SiteUserSecurityDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/server/api-server-user-site/src/main/java/hu/kalmancheysandor/applications/dominions/apis/server/user/site/security/SiteUserSecurityDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/util/api-util-uuid/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apis/util/api-util-uuid/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/util/api-util-validate/src/main/java/hu/kalmancheysandor/applications/dominions/apis/util/validate/asserted/exception/DoubleValueIOutOfIntervalVariableAssertException.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/util/api-util-validate/src/main/java/hu/kalmancheysandor/applications/dominions/apis/util/validate/asserted/exception/DoubleIsValueIOutOfIntervalVariableAssertException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/util/api-util-validate/src/main/java/hu/kalmancheysandor/applications/dominions/apis/util/validate/asserted/exception/IntValueIOutOfIntervalVariableAssertException.java" beforeDir="false" afterPath="$PROJECT_DIR$/apis/util/api-util-validate/src/main/java/hu/kalmancheysandor/applications/dominions/apis/util/validate/asserted/exception/IntValueIsOutOfIntervalVariableAssertException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/HugoAgentServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/HugoAgentServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/configuration/database/DataSourcesConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/configuration/database/DataSourcesConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/service/HugoAgentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/agent/service/HugoAgentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/HugoOperationServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/HugoOperationServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/controller/HugoVariantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/controller/HugoVariantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/queue/QueueConsumers.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/hugo/server-ai-hugo-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/hugo/operation/queue/QueueConsumers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/LizAgentServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/LizAgentServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/configuration/database/DataSourcesConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/configuration/database/DataSourcesConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/service/LizAgentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-agent/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/agent/service/LizAgentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/configuration/database/DataSourcesConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/configuration/database/DataSourcesConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/controller/LizVariantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/controller/LizVariantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/queue/QueueConsumers.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/queue/QueueConsumers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/service/neural/LizNeuralConceptService.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/service/neural/LizNeuralConceptService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/service/neural/LizNeuralOrchestrationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/service/neural/LizNeuralOrchestrationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/service/neural/LizNeuralQueueService.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/ai/liz/server-ai-liz-operation/src/main/java/hu/kalmancheysandor/applications/dominions/servers/ai/liz/operation/service/neural/LizNeuralQueueService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/configuration/feign/FeignAsyncConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/configuration/feign/FeignAsyncConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/configuration/feign/FeignSessionInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/configuration/feign/FeignSessionInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/account/admin/settings/AdminAccountSettingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/account/admin/settings/AdminAccountSettingsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/account/site/permission/SitePermissionGroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/account/site/permission/SitePermissionGroupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/hugo/HugoCharacterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/hugo/HugoCharacterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/hugo/HugoVariantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/hugo/HugoVariantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/liz/LizCharacterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/liz/LizCharacterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/liz/LizVariantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/controller/training/liz/LizVariantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/dto/game/scenario/GameScenarioUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/dto/game/scenario/GameScenarioUpdateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/service/game/scenario/GameScenarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/service/game/scenario/GameScenarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/service/game/scenario/exception/GameScenarioInvalidGameMapContentException.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-admin/src/main/java/hu/kalmancheysandor/applications/dominions/servers/admin/service/game/scenario/exception/GameScenarioInvalidGameMapContentException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-auth/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-auth/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-auth/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-auth/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/configuration/security/admin/AdminAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/configuration/security/admin/AdminAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/configuration/security/site/SiteAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/configuration/security/site/SiteAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/dto/admin/AdminAuthenticationFailureResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/dto/admin/AdminAuthenticationFailureResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/dto/site/SiteAuthenticationFailureResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-auth/src/main/java/hu/kalmancheysandor/applications/dominions/servers/auth/dto/site/SiteAuthenticationFailureResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-config/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-config/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-config/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-config/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-eureka/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-eureka/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-eureka/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-eureka/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-game/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-game/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/exceptionhandling/GameSessionExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/exceptionhandling/GameSessionExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/queue/QueueConsumers.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/queue/QueueConsumers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/service/game/GameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-game/src/main/java/hu/kalmancheysandor/applications/dominions/servers/game/service/game/GameService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-gateway/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/configuration/ApplicationConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/configuration/CorsConf.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/configuration/CorsConf.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/configuration/CorsGlobalConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/configuration/RoutingConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/configuration/RoutingConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/configuration/SessionConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/LoggingFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/ResponseLoggingFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/ResponseManipulatorFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/ResponseManipulatorFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/SessionFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/SessionFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/x/FinalRequestUrlLoggingFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/x/IncomingRequestLoggingFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/x/NoRouteFoundLoggingHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-gateway/src/main/java/hu/kalmancheysandor/applications/dominions/servers/gateway/filter/x/RouteMatchedLoggingFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-mailing/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-mailing/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-mailing/src/main/java/hu/kalmancheysandor/applications/dominions/servers/mailing/MailingServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-mailing/src/main/java/hu/kalmancheysandor/applications/dominions/servers/mailing/MailingServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-mailing/src/main/java/hu/kalmancheysandor/applications/dominions/servers/mailing/configuration/database/DataSourcesConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-mailing/src/main/java/hu/kalmancheysandor/applications/dominions/servers/mailing/configuration/database/DataSourcesConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-mailing/src/main/java/hu/kalmancheysandor/applications/dominions/servers/mailing/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-mailing/src/main/java/hu/kalmancheysandor/applications/dominions/servers/mailing/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-monitoring/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-monitoring/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/configuration/feign/FeignAsyncConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/configuration/feign/FeignAsyncConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/configuration/feign/FeignSessionInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/configuration/feign/FeignSessionInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/configuration/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/controller/account/SiteAccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/controller/account/SiteAccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/controller/account/settings/SiteAccountSettingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/controller/account/settings/SiteAccountSettingsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/exceptionhandling/account/settings/SiteAccountSettingsGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/exceptionhandling/account/settings/SiteAccountSettingsGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/repository/account/SiteAccountRecoveryVerificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/repository/account/SiteAccountRecoveryVerificationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/repository/account/SiteAccountSignUpVerificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/servers/server-site/src/main/java/hu/kalmancheysandor/applications/dominions/servers/site/repository/account/SiteAccountSignUpVerificationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/public/.htaccess" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/BasicDialog.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/ServerResponseManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/ServerResponseManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/XDialog.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/croppie.css" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/croppie.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/Background01.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/Background01.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/DefaultBackground.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/DefaultBackground.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/LoginBackround.webp" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/LoginBackround.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/battle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/image/battle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/style/vuetify.css" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/assets/style/vuetify.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/GameBoard/GameBoard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/GameBoard/GameBoard.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/HelloWorld.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/MainMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/MainMenu.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/NavigationMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/NavigationMenu.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/UniversalDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/components/UniversalDialog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/DialogService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/TController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/TController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/TMessageDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/TMessageDialog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/TService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/TService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/CroppieInput/CroppieInput.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/CroppieInput/CroppieInput.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TAlertDialog/TAlertDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TAlertDialog/TAlertDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TCheckboxMatrixInput/TCheckboxMatrixInput.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TCheckboxMatrixInput/TCheckboxMatrixInput.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TConfirmDialog/TConfirmDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TConfirmDialog/TConfirmDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TPhotoGrid/TPhotoGrid.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TPhotoGrid/TPhotoGrid.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TUploadZone/TUploadZone.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TUploadZone/TUploadZone.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TWarningDialog/TWarningDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/component/TWarningDialog/TWarningDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/exception/socket/TSocketException.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/exception/socket/TSocketException.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/utils/TString.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/framework/utils/TString.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/MainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/MainPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/account/AccountSignUpVerificationPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/account/AccountSignUpVerificationPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/account/profile/ProfilePage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/account/profile/ProfilePage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/account/settings/AccountSettingsPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/account/settings/AccountSettingsPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/game/lobby/GameLobbyPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/game/lobby/GameLobbyPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/game/play/GamePlayPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/pages/game/play/GamePlayPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/SocketService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/account/AccountService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/account/AccountService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/auth/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/auth/AuthService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/game/GameService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/game/GameService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/game/board/GameBoardSelectorService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DominionsSiteFrontend/src/services/game/lobby/GameLobbyService.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="module" />
+      <option value="repository" />
+    </option>
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/@/@Szakdolgozat1/_projects/Dominions/DominionsBackend" value="3M977FiIkjYirmZNDZ4t9hz6iHW" />
+    </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;kalmanczheysandor&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kalmanczheysandor/dominions.git&quot;,
+    &quot;accountId&quot;: &quot;f2daa638-769c-4f47-be3f-10d893c78333&quot;
+  }
+}</component>
+  <component name="MavenRunner">
+    <option name="jreName" value="17" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="3M977FiIkjYirmZNDZ4t9hz6iHW" />
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="BACKGROUND" />
+        <option name="worktreeMode" value="WORKSPACE" />
+      </template>
+    </option>
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.OttoSandboxTest01.executor": "Run",
+    "Application.S1.executor": "Run",
+    "Maven.dominions-root [clean].executor": "Run",
+    "Maven.dominions-root [package].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "junkyard",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/@/@Szakdolgozat1/_projects/Dominions/DominionsBackend/.containerisation",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\@\@Szakdolgozat1\_projects\Dominions\DominionsBackend\.containerisation" />
+      <recent name="C:\@\@Szakdolgozat1\_projects\Dominions\DominionsBackend\maps" />
+      <recent name="C:\@\@Szakdolgozat1\_projects\Dominions\DominionsBackend\servers\ai\otto\server-ai-otto-operation\src\main\resources" />
+      <recent name="C:\@\@Szakdolgozat1\_projects\Dominions\DominionsBackend\servers\ai\otto\server-ai-otto-agent\src\main\resources" />
+      <recent name="C:\@\@Szakdolgozat1\_projects\Dominions\DominionsBackend\config" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.evalutor" />
+      <recent name="hu.kalmancheysandor.applications.dominions.apis.util.validate.asserted.exception" />
+      <recent name="hu.kalmancheysandor.applications.dominions.apis.ai.engine.liz.interfaces" />
+      <recent name="hu.kalmancheysandor.applications.dominions.servers.admin.controller.training.otto" />
+      <recent name="hu.kalmancheysandor.applications.dominions.apis.ai.engine.otto" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.OttoSandboxTest01">
+    <configuration name="OttoSandboxTest01" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="hu.kalmancheysandor.applications.dominions.apis.ai.engine.otto.sandbox.OttoSandboxTest01" />
+      <module name="api-ai-otto" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hu.kalmancheysandor.applications.dominions.apis.ai.engine.otto.sandbox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="S1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.sandbox.S1" />
+      <module name="api-ai-hugo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.sandbox.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.OttoSandboxTest01" />
+        <item itemvalue="Application.S1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0c1bdf60-ec16-4dd1-9ee7-9a77e3d2f167" name="Changes" comment="" />
+      <created>1794750762496</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1794750762496</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Plenty of modifications before exam.">
+      <option name="closed" value="true" />
+      <created>1795290483105</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1795290483105</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Plenty of modifications before exam." />
+    <option name="LAST_COMMIT_MESSAGE" value="Plenty of modifications before exam." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/apis/ai/engine/api-ai-otto/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/engine/otto/evaluator/TOttoOperatorScoreEvaluator.java</url>
+          <line>131</line>
+          <properties class="hu.kalmancheysandor.applications.dominions.apis.ai.engine.otto.evaluator.TOttoOperatorScoreEvaluator">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/apis/ai/engine/api-ai-otto/src/main/java/hu/kalmancheysandor/applications/dominions/apis/ai/engine/otto/evaluator/TOttoOperatorScoreEvaluator.java</url>
+          <line>13</line>
+          <properties class="hu.kalmancheysandor.applications.dominions.apis.ai.engine.otto.evaluator.TOttoOperatorScoreEvaluator">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

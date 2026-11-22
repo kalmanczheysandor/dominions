@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+
+  - job_name: spring-microservices
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - server-gateway:15000
+          - server-eureka:15001
+          - server-auth:15002
+          - server-site:15009
+          - server-admin:15010
+          - server-game:15020
+          - server-mailing:15099
+          - server-ai-hugo-operation:15043
+          - server-ai-hugo-agent-1:15044
+          - server-ai-liz-operation:15042
+          - server-ai-liz-agent-1:15041

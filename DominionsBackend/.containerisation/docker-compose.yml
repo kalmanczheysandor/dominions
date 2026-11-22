@@ -1,0 +1,400 @@
+services:
+
+  server-config:
+    build: ../server-config
+    ports:
+      - "8888:8888"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    volumes:
+      - ${CENTRAL_CONFIG_REPO_PATH}:/config
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  server-gateway:
+    build: ../server-gateway
+    ports:
+      - "15000:15000"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+
+
+  server-eureka:
+    build: ../server-eureka
+    ports:
+      - "15001:15001"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:15001/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+
+  server-auth:
+    build: ../server-auth
+    ports:
+      - "15002:15002"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+  server-site:
+    build: ../server-site
+    ports:
+      - "15009:15009"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    volumes:
+      - ${HOST_GLOBAL_DATA_FOLDER}:${APP_GLOBAL_DATA_FOLDER}
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #
+  server-admin:
+    build: ../server-admin
+    ports:
+      - "15010:15010"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    volumes:
+      - ${HOST_GLOBAL_DATA_FOLDER}:${APP_GLOBAL_DATA_FOLDER}
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+  server-game:
+    build: ../server-game
+    ports:
+      - "15020:15020"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+  server-mailing:
+    build: ../server-mailing
+    ports:
+      - "15099:15099"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+
+  ################################################################################################
+  #######[ HUGO ]#################################################################################
+  ################################################################################################
+
+  server-ai-hugo-operation-1:
+    build: ../server-ai-hugo-operation
+    ports:
+      - "16101:15043"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #
+  server-ai-hugo-agent-1:
+    build: ../server-ai-hugo-agent
+    ports:
+      - "16151:15044"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+########################################
+
+
+  server-ai-hugo-operation-2:
+    build: ../server-ai-hugo-operation
+    ports:
+      - "16102:15043"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #
+  server-ai-hugo-agent-2:
+    build: ../server-ai-hugo-agent
+    ports:
+      - "16152:15044"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+ ################################################################################################
+ #######[ LIZ ]##################################################################################
+ ################################################################################################
+
+  server-ai-liz-operation-1:
+    build: ../server-ai-liz-operation
+    ports:
+      - "16201:15042"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #
+  server-ai-liz-agent-1:
+    build: ../server-ai-liz-agent
+    ports:
+      - "16251:15041"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+########################################
+
+  server-ai-liz-operation-2:
+    build: ../server-ai-liz-operation
+    ports:
+      - "16202:15042"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #
+  server-ai-liz-agent-2:
+    build: ../server-ai-liz-agent
+    ports:
+      - "16252:15041"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+
+  ################################################################################################
+  #######[ OTTO ]##################################################################################
+  ################################################################################################
+  server-ai-otto-operation-1:
+    build: ../server-ai-otto-operation
+    ports:
+      - "16301:17043"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #
+  server-ai-otto-agent-1:
+    build: ../server-ai-otto-agent
+    ports:
+      - "16351:17044"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  ########################################
+  server-ai-otto-operation-2:
+    build: ../server-ai-otto-operation
+    ports:
+      - "16302:17043"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  #
+  server-ai-otto-agent-2:
+    build: ../server-ai-otto-agent
+    ports:
+      - "16352:17044"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx2048m -Xms512m -Xss4m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+  ################################################################################################
+  #######[ MONITORING ]###########################################################################
+  ################################################################################################
+
+  #  server-zipkin:
+  #    image: openzipkin/zipkin
+  #    container_name: server-zipkin
+  #    ports:
+  #      - "9411:9411"
+  #    restart: unless-stopped
+  server-monitoring:
+    build: ../server-monitoring
+    ports:
+      - "15500:15500"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - ../.env
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    depends_on:
+      server-config:
+        condition: service_healthy
+
+  server-tempo:
+    image: grafana/tempo:3.0.0
+    container_name: server-tempo
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+      - "4318:4318"
+    volumes:
+      - ./config/tempo/tempo.yml:/etc/tempo/tempo.yml:ro
+      - tempo-data:/var/tempo
+    command:
+      - "-config.file=/etc/tempo/tempo.yml"
+    restart: unless-stopped
+
+
+  server-prometheus:
+    image: prom/prometheus:latest
+    container_name: server-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    restart: unless-stopped
+
+
+  server-loki:
+    image: grafana/loki:latest
+    container_name: server-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./config/loki/loki.yml:/etc/loki/loki.yml:ro
+      - loki-data:/loki
+    command:
+      - "-config.file=/etc/loki/loki.yml"
+    restart: unless-stopped
+
+
+  server-grafana:
+    image: grafana/grafana:latest
+    container_name: server-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+
+
+  server-alloy:
+    image: grafana/alloy:latest
+    container_name: server-alloy
+    volumes:
+      - ./config/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - "run"
+      - "/etc/alloy/config.alloy"
+    restart: unless-stopped
+
+volumes:
+  tempo-data:
+  prometheus-data:
+  loki-data:
+  grafana-data:
