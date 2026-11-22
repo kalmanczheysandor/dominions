@@ -1,6 +1,5 @@
 package hu.kalmancheysandor.applications.dominions.servers.admin.dto.game.scenario;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;

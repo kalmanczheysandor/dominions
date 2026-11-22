@@ -21,12 +21,4 @@ public class DataSourcesConfig {
         return ds;
     }
 
-//    @Bean
-//    @SpringSessionDataSource
-//    @ConfigurationProperties("app.datasource.session")
-//    public DataSource sessionDataSource() {
-//        HikariDataSource ds = DataSourceBuilder.create().type(HikariDataSource.class).build();
-//        //  ds.setTransactionIsolation("TRANSACTION_REPEATABLE_READ");
-//        return ds;
-//    }
 }

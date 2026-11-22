@@ -6,22 +6,10 @@ import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-/**
- * Configuration for async execution.
- *
- * When using @Async, Spring runs code in another thread.
- * In that case the HTTP request data (like session) is lost.
- *
- * This config helps to keep that data available.
- */
+
 @Configuration
 public class FeignAsyncConfig {
-    /**
-     * Copies the current request data to the new async thread.
-     *
-     * This makes sure that session and security information
-     * are still available inside @Async methods.
-     */
+
     @Bean
     public TaskDecorator contextCopyingDecorator() {
         return runnable -> {
@@ -36,12 +24,7 @@ public class FeignAsyncConfig {
             };
         };
     }
-    /**
-     * Custom executor for @Async methods.
-     *
-     * It uses the TaskDecorator to make sure the request
-     * data is passed to async threads.
-     */
+
     @Bean
     public ThreadPoolTaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

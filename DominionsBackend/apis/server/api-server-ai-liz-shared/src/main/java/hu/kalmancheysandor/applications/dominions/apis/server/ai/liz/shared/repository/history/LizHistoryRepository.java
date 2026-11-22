@@ -12,13 +12,8 @@ import java.util.List;
 
 @Repository
 public interface LizHistoryRepository extends JpaRepository<LizHistory, LizHistory.PrimaryKey> {
-//    public LizHistory findBy(long userId);
     public List<LizHistory> findAll();
-//
-//        public void deleteById(long userId);
-//        public boolean existsById(long userId);
     public LizHistory save(LizHistory history);
-
 
     @Query("SELECT t FROM LizHistory t WHERE t.playerId = :playerId")
     List<LizHistory> listAllAtPlayerId(@Param("playerId") int playerId);

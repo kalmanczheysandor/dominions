@@ -1,6 +1,5 @@
 package hu.kalmancheysandor.applications.dominions.servers.admin.controller.account.admin.settings;
 
-import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.admin.AdminPermission;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.admin.service.authentication.AdminAuthenticationService;
 import hu.kalmancheysandor.applications.dominions.apis.util.file.filehandler.FileHandler;

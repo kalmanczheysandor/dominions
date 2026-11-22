@@ -42,7 +42,6 @@ public class HugoVariantController {
         // Check permission
         authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().hugo().variant());
 
-        System.out.println("LLLLLLLLIST");
         return hugoOperationServerVariantProxy.listAll();
     }
 

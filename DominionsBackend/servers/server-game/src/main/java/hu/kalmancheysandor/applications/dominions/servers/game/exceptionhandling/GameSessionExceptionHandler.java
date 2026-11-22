@@ -39,9 +39,6 @@ public class GameSessionExceptionHandler {
         // Logging
         log.warn("Game session {} is already containing the secret key: {}", exception.getSessionKey(),exception.getEndpointKey());
 
-        System.out.println("PlayerEndpointKeyAlreadyRegisteredSessionException");
-
-
         // Generate response
         GeneralFailureResponse response = new GeneralFailureResponse(exception.getClass().getSimpleName(), exception.getMessage());
         response.addParameter("gameSessionUuid", exception.getSessionKey());

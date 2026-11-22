@@ -31,26 +31,17 @@ public class GameController {
 
     @GetMapping("/list/recruiting")
     public List<GamePlayItemResponse> listAllRecruitingGamePlay() {
-        // Check permission
-        //SecurityAuthorisation.assertHasAccessPermission(SecurityPermission.generator().breed());
-
         return gameService.listAllRecruitingGamePlay();
     }
 
     @GetMapping("/list/scenario")
     public List<GameScenarioItemResponse> listAllPublishedGameScenario() {
-        // Check permission
-        //SecurityAuthorisation.assertHasAccessPermission(SecurityPermission.generator().breed());
-
         return gameService.listAllPublishedGameScenario();
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public GamePlayCreateResponse createGamePlay(@Valid @RequestBody GamePlayCreateRequest request) {
-        // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
-
         return gameService.createGamePlay(request);
     }
 
@@ -58,8 +49,6 @@ public class GameController {
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
     public GamePlayJoinResponse joinToGamePlay(@NotNull @RequestBody GamePlayJoinRequest request) {
-        // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
 
         return gameService.joinToGamePlay(request);
     }
@@ -68,24 +57,14 @@ public class GameController {
     @PostMapping("/state")
     @ResponseStatus(HttpStatus.OK)
     public GamePlayStateResponse stateOfGamePlay(@NotNull @RequestBody GamePlayStateRequest request) {
-        // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
-
         return gameService.stateOfGamePlay(request);
-
     }
-
-
-
-
 
 
     @PostMapping("/action/attack")
     @ResponseStatus(HttpStatus.OK)
     public GamePlayAttackActionResponse sendAttackActionToGamePlay(@NotNull @RequestBody GamePlayAttackActionRequest request) {
-        // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
-        System.out.println("game-attack");
+
         return gameService.sendAttackActionToGamePlay(request);
     }
 
@@ -93,43 +72,8 @@ public class GameController {
     @PostMapping("/action/reserve")
     @ResponseStatus(HttpStatus.OK)
     public GamePlayReserveActionResponse sendReserveActionToGamePlay(@NotNull @RequestBody GamePlayReserveActionRequest request) {
-        // Check permission
-        //SecurityAuthorisation.assertHasAddPermission(SecurityPermission.generator().dog());
-
         return gameService.sendReserveActionToGamePlay(request);
     }
 
-
-
-
-
-//
-//    @GetMapping("/{uuid}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void access(@PathVariable("uuid") String uuid) {
-//        System.out.println("Test endpoint invocated!");
-//
-//
-//
-//
-//        // A bejelentkezett felhasználó adatainak elérése
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (authentication != null) {
-//            String username = authentication.getName();  // A felhasználó neve
-//            System.out.println("Bejelentkezett felhasználó: " + username);
-//
-//            // Felhasználói jogosultságok ellenőrzése
-//            authentication.getAuthorities().forEach(authority -> {
-//                System.out.println("Jogosultság: " + authority.getAuthority());
-//            });
-//        }
-//        else{
-//            System.out.println("Nincs authentikalva");
-//        }
-//
-//
-//
-//    }
 
 }

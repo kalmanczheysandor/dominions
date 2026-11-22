@@ -5,11 +5,9 @@ import hu.kalmancheysandor.applications.dominions.apis.server.common.configurati
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.SecurityContextDebugFilter;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAccessDenyHandler;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.configuration.security.TAuthenticationEntryPoint;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,11 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
-import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
@@ -60,25 +54,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOrigins(
-//                                adminSiteUrl,
-//                                gameSiteUrl
-//                        )
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
-//                        .allowedHeaders("*")
-//                        .allowCredentials(true); // Allows a session cookie-kat
-//                //.exposedHeaders("Set-Cookie"); // TODO: ez itt lehet hogy nem kell
-//            }
-//        };
-//    }
-
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {

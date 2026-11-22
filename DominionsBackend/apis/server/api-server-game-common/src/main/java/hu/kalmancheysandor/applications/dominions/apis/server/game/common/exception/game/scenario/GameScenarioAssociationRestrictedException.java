@@ -1,6 +1,4 @@
-package hu.kalmancheysandor.applications.dominions.servers.admin.service.game.scenario.exception;
-
-
+package hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.service.exception.record.RecordAssociationRestrictedException;
 
 public class GameScenarioAssociationRestrictedException extends RecordAssociationRestrictedException {

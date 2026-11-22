@@ -42,7 +42,6 @@ public class LizCharacterController {
         // Check permission
         authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().liz().character());
 
-        System.out.println("LLLLLLLLIST");
         return lizOperationServerCharacterProxy.listAll();
     }
 

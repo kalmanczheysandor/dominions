@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21
+FROM eclipse-temurin:21-jre
 
 COPY server-ai-liz-agent.jar app.jar
 

@@ -61,9 +61,9 @@ public class GameAction {
     @Override
     public String toString() {
         return "GameAction{" +
-            "playerKey=" + getPlayerKey() +
-            ", targetCellKey=" + getTargetCellKey() +
-            ", attackingTroopSize=" + getAttackingTroopSize() +
-            '}';
+                "playerKey=" + getPlayerKey() +
+                ", targetCellKey=" + getTargetCellKey() +
+                ", attackingTroopSize=" + getAttackingTroopSize() +
+                '}';
     }
 }

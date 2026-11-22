@@ -12,23 +12,16 @@ import java.util.List;
 
 @Repository
 public interface LizNeuralTrainingRepository extends JpaRepository<LizNeuralTraining, LizNeuralTraining.PrimaryKey> {
-//    public LizNeuralTraining findById(int lizTrainingId);
     public List<LizNeuralTraining> findAll();
-//    public void deleteById(int lizTrainingId);
-//    public boolean existsById(int lizTrainingId);
+
     public LizNeuralTraining save(LizNeuralTraining lizNeuralTraining);
-
-//    @Modifying
-//    @Query("DELETE FROM LizNeuralTraining t WHERE t.scenarioId <= :scenarioId")
-//    void deleteAllWhereScenarioId(@Param("scenarioId") int scenarioId);
-
 
     @Modifying
     @Query("""
-        DELETE
-        FROM LizNeuralTraining t
-        WHERE t.conceptId=:conceptId
-    """)
+                DELETE
+                FROM LizNeuralTraining t
+                WHERE t.conceptId=:conceptId
+            """)
     void deleteAllWhereConceptId(
             @Param("conceptId") int conceptId
     );

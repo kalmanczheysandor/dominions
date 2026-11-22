@@ -81,32 +81,6 @@ public class SiteAccountSettingsGlobalExceptionHandler {
 
         return response;
     }
-//
-//    @ExceptionHandler(SiteAccountSettingsAssociationRestrictedException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public GeneralFailureResponse handle(SiteAccountSettingsAssociationRestrictedException exception) {
-//        // Logging
-//        log.warn("Profile association is restricted. Profile id: {}.Profile identifier: {}",exception.getId(), exception.getIdentifier());
-//
-//        // Generate response
-//        GeneralFailureResponse response = new GeneralFailureResponse(exception.getClass().getSimpleName(), exception.getMessage());
-//        response.addParameter("identifier", exception.getIdentifier());
-//
-//        return response;
-//    }
-//
-//    @ExceptionHandler(SiteAccountSettingsReferencedElsewhereException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public GeneralFailureResponse handle(SiteAccountSettingsReferencedElsewhereException exception) {
-//        // Logging
-//        log.warn("Profile with '{}' id is still referenced.Profile identifier: {}.", exception.getId(), exception.getIdentifier());
-//
-//        // Generate response
-//        GeneralFailureResponse response = new GeneralFailureResponse(exception.getClass().getSimpleName(), exception.getMessage());
-//        response.addParameter("identifier", exception.getIdentifier());
-//
-//        return response;
-//    }
 
 
 }

@@ -1,7 +1,6 @@
 package hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository.training;
 
 
-
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity.training.LizVariant;
 import hu.kalmancheysandor.applications.dominions.apis.util.uuid.UUIDRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,26 +12,26 @@ import java.util.List;
 
 
 @Repository
-public interface LizVariantRepository extends JpaRepository< LizVariant, String>, UUIDRepository< LizVariant, String> {
+public interface LizVariantRepository extends JpaRepository<LizVariant, String>, UUIDRepository<LizVariant, String> {
 
-    public LizVariant findById(int  variantId);
+    public LizVariant findById(int variantId);
 
-    public  LizVariant findByUuid(String  variantUuid);
+    public LizVariant findByUuid(String variantUuid);
 
-    public List< LizVariant> findAll();
+    public List<LizVariant> findAll();
 
-    public void deleteById(int  variantId);
+    public void deleteById(int variantId);
 
-    public void deleteByUuid(String  variantUuid);
+    public void deleteByUuid(String variantUuid);
 
-    public boolean existsById(int  variantId);
+    public boolean existsById(int variantId);
 
-    public boolean existsByUuid(String  variantUuid);
+    public boolean existsByUuid(String variantUuid);
 
-    public  LizVariant save( LizVariant  variant);
+    public LizVariant save(LizVariant variant);
 
     @Query("SELECT t FROM  LizVariant t")
-    List< LizVariant> listAll();
+    List<LizVariant> listAll();
 
     @Query("SELECT t FROM  LizVariant t WHERE t.enabled=true")
     List<LizVariant> listAllEnabled();
@@ -50,10 +49,6 @@ public interface LizVariantRepository extends JpaRepository< LizVariant, String>
     List<LizVariant> listAllEnabledWithMultipleExcludedUuid(@Param("excludedUuidList") List<String> excludedUuidList);
 
 
-
-
-
-
     @Query("SELECT CASE WHEN count(t) > 0 THEN true ELSE false END FROM  LizVariant t WHERE t.name = :name")
     public boolean isNameReserved(@Param("name") String title);
 
@@ -61,18 +56,14 @@ public interface LizVariantRepository extends JpaRepository< LizVariant, String>
     public boolean isNameReserved(@Param("name") String title, @Param("excludedId") int excludedId);
 
 
-
-
-
     @Query("SELECT t.enabled FROM  LizVariant t WHERE t.id=:variantId")
-    boolean isEnabled(@Param("variantId") int  variantId);
-
+    boolean isEnabled(@Param("variantId") int variantId);
 
 
     @Query("SELECT CASE WHEN " +
             "EXISTS (SELECT 1 FROM LizCharacter t WHERE t.variant.id = :variantId) " +
             "THEN TRUE ELSE FALSE END")
-    boolean isReferencedElsewhere(@Param("variantId") int  variantId);
+    boolean isReferencedElsewhere(@Param("variantId") int variantId);
 }
 
 

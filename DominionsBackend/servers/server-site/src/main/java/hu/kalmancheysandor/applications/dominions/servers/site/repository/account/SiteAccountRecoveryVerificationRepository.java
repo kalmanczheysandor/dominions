@@ -16,9 +16,13 @@ import java.util.List;
 @Repository
 public interface SiteAccountRecoveryVerificationRepository extends JpaRepository<SiteAccountRecoveryVerification, String>, UUIDRepository<SiteAccountRecoveryVerification, String> {
     public SiteAccountRecoveryVerification findByUuid(String siteAccountRecoveryVerificationUuid);
+
     public List<SiteAccountRecoveryVerification> findAll();
+
     public void deleteByUuid(String siteAccountRecoveryVerificationUuid);
+
     public boolean existsByUuid(String siteAccountRecoveryVerificationUuid);
+
     public SiteAccountRecoveryVerification save(SiteAccountRecoveryVerification siteAccountRecoveryVerification);
 
     public SiteAccountRecoveryVerification findByUserUuid(String userUuid);
@@ -26,7 +30,7 @@ public interface SiteAccountRecoveryVerificationRepository extends JpaRepository
 
     @Query("SELECT t FROM SiteAccountRecoveryVerification t")
     public List<SiteAccountRecoveryVerification> listAll();
-    
+
     @Modifying
     @Query("DELETE FROM SiteAccountRecoveryVerification t WHERE t.dateExpiration <= :timeNow")
     public void deleteAllExpired(@Param("timeNow") LocalDateTime timeNow);

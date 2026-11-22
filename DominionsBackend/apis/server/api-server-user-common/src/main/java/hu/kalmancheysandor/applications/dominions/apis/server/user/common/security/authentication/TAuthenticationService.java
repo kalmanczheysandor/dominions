@@ -74,13 +74,6 @@ public abstract class TAuthenticationService {
         return false;
     }
 
-//    // TODO: eltuntetni mindenhonnan ezt a metodust
-//    @Deprecated
-//    private void assertHasPermission(String requiredPermission) {
-//        if (!hasPermission(requiredPermission)) {
-//            throw new AccessDeniedException("You do not have the required " + requiredPermission + " permission.");
-//        }
-//    }
 
     public void assertHasAccessPermission(String resourceName) {
         if (!hasAccessPermission(resourceName)) {

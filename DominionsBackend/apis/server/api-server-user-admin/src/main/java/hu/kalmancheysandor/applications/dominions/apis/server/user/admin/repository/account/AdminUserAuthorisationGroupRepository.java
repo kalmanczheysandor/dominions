@@ -11,20 +11,26 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AdminUserAuthorisationGroupRepository extends JpaRepository<AdminUserAuthorisationGroup, Integer>, UUIDRepository<AdminUserAuthorisationGroup,Integer> {
+public interface AdminUserAuthorisationGroupRepository extends JpaRepository<AdminUserAuthorisationGroup, Integer>, UUIDRepository<AdminUserAuthorisationGroup, Integer> {
     public AdminUserAuthorisationGroup findById(int authorisationGroupId);
+
     public AdminUserAuthorisationGroup findByName(String authorisationGroupName);
+
     public List<AdminUserAuthorisationGroup> findAll();
+
     public List<AdminUserAuthorisationGroup> findAllByEnabled(boolean enabled);
+
     public void deleteById(int authorisationGroupId);
+
     public boolean existsById(int authorisationGroupId);
+
     public AdminUserAuthorisationGroup save(AdminUserAuthorisationGroup userGroup);
 
     @Query("SELECT CASE WHEN count(g) > 0 THEN true ELSE false END FROM AdminUserAuthorisationGroup g WHERE g.name = :paramName")
     public boolean isNameReserved(@Param("paramName") String name);
 
     @Query("SELECT CASE WHEN count(g) > 0 THEN true ELSE false END FROM AdminUserAuthorisationGroup g WHERE g.name = :paramName and g.id<> :paramExcludedId")
-    public boolean isNameReserved(@Param("paramName") String name, @Param("paramExcludedId")  int excludedId);
+    public boolean isNameReserved(@Param("paramName") String name, @Param("paramExcludedId") int excludedId);
 
 
     @Query("SELECT g.enabled FROM AdminUserAuthorisationGroup g WHERE g.id=:paramId")
@@ -46,17 +52,10 @@ public interface AdminUserAuthorisationGroupRepository extends JpaRepository<Adm
     List<AdminUserAuthorisationGroup> listAllEnabledWithMultipleExcludedUuid(@Param("excludedUuidList") List<String> excludedUuidList);
 
 
-
-
-
-
-
-
-
     @Query("SELECT CASE WHEN " +
-        "EXISTS (SELECT 1 FROM AdminUserGroup g WHERE g.groupId = :paramGroupId) OR " +
-        "EXISTS (SELECT 1 FROM AdminUserGroup g WHERE g.groupId = :paramGroupId) " +
-        "THEN TRUE ELSE FALSE END")
+            "EXISTS (SELECT 1 FROM AdminUserGroup g WHERE g.groupId = :paramGroupId) OR " +
+            "EXISTS (SELECT 1 FROM AdminUserGroup g WHERE g.groupId = :paramGroupId) " +
+            "THEN TRUE ELSE FALSE END")
     boolean isReferencedElsewhere(@Param("paramGroupId") int groupId);
 
 

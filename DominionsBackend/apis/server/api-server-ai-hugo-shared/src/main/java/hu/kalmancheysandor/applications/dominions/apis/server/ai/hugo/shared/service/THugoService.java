@@ -2,14 +2,10 @@ package hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.se
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.service.TAiService;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.heuristic.HugoHeuristicEvaluatorType;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.history.HugoHistoryPlayer;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.history.HugoHistoryScenario;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.history.HugoHistorySession;
 
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.training.HugoCharacter;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.training.HugoVariant;
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.character.HugoCharacterNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.history.HugoHistoryPlayerNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.history.HugoHistoryScenarioNotFoundByUuidException;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.exception.history.HugoHistorySessionNotFoundByUuidException;
@@ -29,14 +25,8 @@ public abstract class THugoService extends TAiService {
     @Autowired
     private HugoHistoryPlayerRepository hugoHistoryPlayerRepository;
 
-
     @Autowired
     private HugoHistorySessionRepository hugoHistorySessionRepository;
-
-
-
-
-
 
     protected void registerHistoryScenarioIfNotExists(String scenarioUuid, String scenarioName) {
         // Determine current record and its id
@@ -46,8 +36,7 @@ public abstract class THugoService extends TAiService {
         }
     }
 
-
-    protected void registerHistoryPlayerIfNotExists(String userUuid,String userName) {
+    protected void registerHistoryPlayerIfNotExists(String userUuid, String userName) {
         // Determine current record and its id
         HugoHistoryPlayer hugoHistoryPlayer = hugoHistoryPlayerRepository.findByUserUuid(userUuid);
         if (hugoHistoryPlayer == null) { // Register it if it was not
@@ -88,7 +77,5 @@ public abstract class THugoService extends TAiService {
         }
         return hugoHistorySession;
     }
-
-
 
 }

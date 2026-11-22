@@ -10,10 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @Validated
 public class AdminPermissionGroupUpdateRequest {
-
-//    @NotNull(message = "Field must not be null")
-//    @Email(message="Field must be a in e-mail format")
-//    @NotBlank(message = "Field must not be blank")
     private String name;
     private boolean enabled;
 

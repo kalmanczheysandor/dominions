@@ -12,16 +12,6 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourcesConfig {
 
-
-//    @Bean
-//    @Primary
-//    @ConfigurationProperties("app.datasource.main")
-//    public DataSource mainDataSource() {
-//        HikariDataSource ds = DataSourceBuilder.create().type(HikariDataSource.class).build();
-//        //  ds.setTransactionIsolation("TRANSACTION_REPEATABLE_READ");
-//        return ds;
-//    }
-
     @Bean
     @Primary
     @ConfigurationProperties("app.datasource.ai-hugo")
@@ -30,10 +20,4 @@ public class DataSourcesConfig {
         return ds;
     }
 
-//    @Bean
-//    @SpringSessionDataSource
-//    @ConfigurationProperties("app.datasource.session")
-//    public DataSource sessionDataSource() {
-//        return DataSourceBuilder.create().build();
-//    }
 }

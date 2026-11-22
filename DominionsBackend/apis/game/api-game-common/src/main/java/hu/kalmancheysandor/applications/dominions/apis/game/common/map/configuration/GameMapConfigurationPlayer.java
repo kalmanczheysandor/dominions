@@ -25,8 +25,7 @@ public class GameMapConfigurationPlayer implements Serializable {
     private GameMapPlayerType type;
     @JsonProperty("engine")
     private GameMapEngineType engine;
-//    @JsonProperty("character")
-//    private GameMapCharacterCode character;
+
 
     @JsonProperty("character")
     private String character;
@@ -40,16 +39,11 @@ public class GameMapConfigurationPlayer implements Serializable {
             if (GameMapEngineType.HUMAN != engine) {
                 throw new IncompatibleEngineTypeGameMapException();
             }
-//            if (GameMapCharacterCode.HUMAN != character) {
-//                throw new IncompatibleCharacterCodeGameMapException();
-//            }
+
         } else if (GameMapPlayerType.ARTIFICIAL == type) {
             if (GameMapEngineType.HUMAN == engine) {
                 throw new IncompatibleEngineTypeGameMapException();
             }
-//            if (GameMapCharacterCode.HUMAN == character) {
-//                throw new IncompatibleCharacterCodeGameMapException();
-//            }
         }
     }
 }

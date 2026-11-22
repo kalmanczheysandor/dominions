@@ -11,22 +11,26 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SiteUserAuthorisationGroupRepository extends JpaRepository<SiteUserAuthorisationGroup, Integer>, UUIDRepository<SiteUserAuthorisationGroup,Integer> {
+public interface SiteUserAuthorisationGroupRepository extends JpaRepository<SiteUserAuthorisationGroup, Integer>, UUIDRepository<SiteUserAuthorisationGroup, Integer> {
     public SiteUserAuthorisationGroup findById(int authorisationGroupId);
+
     public SiteUserAuthorisationGroup findByName(String authorisationGroupName);
+
     public List<SiteUserAuthorisationGroup> findAll();
+
     public List<SiteUserAuthorisationGroup> findAllByEnabled(boolean enabled);
+
     public void deleteById(int authorisationGroupId);
+
     public boolean existsById(int authorisationGroupId);
+
     public SiteUserAuthorisationGroup save(SiteUserAuthorisationGroup userGroup);
 
     @Query("SELECT CASE WHEN count(g) > 0 THEN true ELSE false END FROM SiteUserAuthorisationGroup g WHERE g.name = :paramName")
     public boolean isNameReserved(@Param("paramName") String name);
 
     @Query("SELECT CASE WHEN count(g) > 0 THEN true ELSE false END FROM SiteUserAuthorisationGroup g WHERE g.name = :paramName and g.id<> :paramExcludedId")
-    public boolean isNameReserved(@Param("paramName") String name, @Param("paramExcludedId")  int excludedId);
-
-
+    public boolean isNameReserved(@Param("paramName") String name, @Param("paramExcludedId") int excludedId);
 
 
     @Query("SELECT g.enabled FROM SiteUserAuthorisationGroup g WHERE g.id=:paramId")
@@ -48,17 +52,10 @@ public interface SiteUserAuthorisationGroupRepository extends JpaRepository<Site
     List<SiteUserAuthorisationGroup> listAllEnabledWithMultipleExcludedUuid(@Param("excludedUuidList") List<String> excludedUuidList);
 
 
-
-
-
-
-
-
-
     @Query("SELECT CASE WHEN " +
-        "EXISTS (SELECT 1 FROM SiteUserGroup g WHERE g.groupId = :paramGroupId) OR " +
-        "EXISTS (SELECT 1 FROM SiteUserGroup g WHERE g.groupId = :paramGroupId) " +
-        "THEN TRUE ELSE FALSE END")
+            "EXISTS (SELECT 1 FROM SiteUserGroup g WHERE g.groupId = :paramGroupId) OR " +
+            "EXISTS (SELECT 1 FROM SiteUserGroup g WHERE g.groupId = :paramGroupId) " +
+            "THEN TRUE ELSE FALSE END")
     boolean isReferencedElsewhere(@Param("paramGroupId") int groupId);
 
 

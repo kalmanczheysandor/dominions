@@ -16,5 +16,4 @@ public class AiHistoryQueueItem {
     private String sessionUuid;
     private String scenarioUuid;
     private String scenarioName;
-//    private int scenarioId;
 }

@@ -13,7 +13,6 @@
     <artifactId>server-admin</artifactId>
 
     <dependencies>
-
         <!-- .......COMMON.......-->
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
@@ -58,23 +57,11 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-
         <!--.......WEBSOCKET.......-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-bus-amqp</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
-<!--        </dependency>-->
-
 
         <!--.......GAME.......-->
         <dependency>
@@ -82,11 +69,6 @@
             <artifactId>api-server-game-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-
-
-
-
     </dependencies>
 
 

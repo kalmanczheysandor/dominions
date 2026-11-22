@@ -11,6 +11,5 @@ public class SitePermissionGroupCreateResponse {
     private String uuid;
     private String name;
     private boolean enabled;
-
     private List<String> permissions;
 }

@@ -26,7 +26,6 @@ public class LizCharacterGlobalExceptionHandler {
                 ex.getClass().getSimpleName(),
                 ex.getMessage()
         );
-
         return response;
     }
 

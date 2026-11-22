@@ -23,13 +23,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @EnableFeignClients
 @EnableJpaRepositories(basePackages = {
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.repository",
-//    "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
         "hu.kalmancheysandor.applications.dominions.servers.mailing"
 })
 @EntityScan(basePackages = {
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.entity",
-//        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity",
         "hu.kalmancheysandor.applications.dominions.servers.mailing"
 })
 public class MailingServer {

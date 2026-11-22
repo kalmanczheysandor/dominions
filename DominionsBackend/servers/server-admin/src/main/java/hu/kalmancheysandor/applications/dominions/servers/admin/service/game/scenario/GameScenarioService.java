@@ -46,9 +46,6 @@ public class GameScenarioService {
     @Autowired
     private ApplicationConfig applicationConfig;
 
-//    @Autowired
-//    private LizAiAgentServerProxy lizAiAgentServerProxy;
-
     @Autowired
     private LizTrainingServerTrainingProxy lizTrainingServerTrainingProxy;
 
@@ -66,9 +63,8 @@ public class GameScenarioService {
 
         // Access image file
         int gameScenarioId = gameScenario.getId();
-//        String fullPath = "d:/gameScenarios/" + gameScenarioId + "/main.jpg";
         String fullPath = getMainImagesFolder() + "/" + gameScenarioId + "/main.jpg";
-        System.out.println("FULL PATH: " + fullPath);
+
         return FileHandler.accessFileContentIfExists(fullPath);
     }
 
@@ -128,9 +124,7 @@ public class GameScenarioService {
 
 
         // Save image
-//        String filename = "d:/gameScenarios/" + gameScenarioSaved.getId() + "/main.jpg";
         String filename = getMainImagesFolder() + "/" + gameScenarioSaved.getId() + "/main.jpg";
-        System.out.println("image path:" + filename);
         FileHandler.saveBase64Image(filename, request.getImageBase64());
 
         // Generate response

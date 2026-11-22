@@ -35,10 +35,6 @@ public class SiteUserAuthorisationGroupPermission {
     @Column(name = "permission_is_delete", columnDefinition = "TINYINT(1) UNSIGNED", nullable = false)
     private boolean permissionIsDelete;
 
-//    @ManyToOne
-//    @JoinColumn(name = "group_id")
-//    private UserAuthorisationGroup group;
-
 
     public SiteUserAuthorisationGroupPermission(String target, Integer groupId, boolean permissionIsView, boolean permissionIsAdd, boolean permissionIsEdit, boolean permissionIsDelete) {
         this.groupId = groupId;

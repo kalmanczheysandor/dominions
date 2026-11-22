@@ -23,14 +23,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableFeignClients
 @EnableJpaRepositories(basePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.repository",
-//        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
         "hu.kalmancheysandor.applications.dominions.servers.ai.hugo.agent"
 })
 @EntityScan(basePackages = {
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.entity",
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.site.entity",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity",
-//        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity",
         "hu.kalmancheysandor.applications.dominions.servers.ai.hugo.agent"
 })
 public class HugoAgentServer {
@@ -38,10 +34,6 @@ public class HugoAgentServer {
         SpringApplication.run(HugoAgentServer.class, args);
     }
 
-//    @Bean
-//    public IAiEngine getBasicEngine() {
-//        return new HugoAiAdvancedEngine();
-//    }
 
     @Bean
     public ModelMapper modelMapper() {

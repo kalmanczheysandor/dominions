@@ -13,11 +13,15 @@ import java.util.List;
 @Repository
 public interface AdminUserGroupRepository extends JpaRepository<AdminUserGroup, AdminUserGroup.PrimaryKey> {
     public AdminUserGroup findByGroupIdAndUserId(int groupId, int userId);
+
     public List<AdminUserGroup> findAll();
+
     public List<AdminUserGroup> findAllByUserId(int userId);
 
-    public void deleteByGroupIdAndUserId(int groupId,int userId);
-    public boolean existsByGroupIdAndUserId(int groupId,int userId);
+    public void deleteByGroupIdAndUserId(int groupId, int userId);
+
+    public boolean existsByGroupIdAndUserId(int groupId, int userId);
+
     public AdminUserGroup save(AdminUserGroup siteUserGroup);
 
     @Modifying
@@ -27,7 +31,6 @@ public interface AdminUserGroupRepository extends JpaRepository<AdminUserGroup, 
     @Modifying
     @Query("DELETE FROM AdminUserGroup g WHERE g.userId=:paramUserId and g.groupId IN (SELECT a.id FROM AdminUserAuthorisationGroup a WHERE a.enabled = true)")
     public void deleteAllEnabledGroupsOfUser(@Param("paramUserId") int userId);
-
 
 
 }

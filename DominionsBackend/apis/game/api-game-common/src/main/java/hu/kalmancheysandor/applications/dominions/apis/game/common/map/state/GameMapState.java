@@ -48,19 +48,10 @@ public class GameMapState implements Serializable {
             Integer occupierKey = gameStateCell.getOccupierKey();
             if (occupierKey == -1) occupierKey = null;       // -1 means that there is no occupier
 
-//            // Determine: neighbour indexes
-//            boolean[] isNeighboursArr = gameState.getNeighboursMatrix()[cellIndex];
-//            ArrayList<Integer> neighbourIndexList = new ArrayList<>();
-//            for (int neighbourIndex = 0; neighbourIndex < isNeighboursArr.length; neighbourIndex++) {
-//                if (isNeighboursArr[neighbourIndex] == true) {
-//                    neighbourIndexList.add(neighbourIndex);
-//                }
-//            }
             // Create item and add
             GameMapStateCell gameMapStateCellItem = new GameMapStateCell();
             gameMapStateCellItem.setOccupierKey(occupierKey);
             gameMapStateCellItem.setArmySize(gameStateCell.getDefendingTroopSize());
-
 
             // Add a cell item to the map
             gameMapState.addCell(cellIndex, gameMapStateCellItem);

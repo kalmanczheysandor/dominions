@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class SitePermissionGroupDeleteRequest {
-
     @NotNull(message = "Field must not be null!")
     @NotEmpty(message = "Field must not be empty!")
     private String[] items;

@@ -12,7 +12,7 @@ import hu.kalmancheysandor.applications.dominions.apis.general.exceptions.Illega
 
 import java.util.*;
 
-//@Component
+
 public class GameStateMachine {
     private GameState gameState;
 
@@ -49,7 +49,6 @@ public class GameStateMachine {
                 actions.add(observedAction);
             }
         }
-        //  System.out.println(group);
 
         // Resolving conflict groups. Find the highest offer in each group
         // Under each index where more than one action are stored, conflict resolution has to be performed.
@@ -98,11 +97,11 @@ public class GameStateMachine {
         }
 
 
-        if (!isNoMoreEmptyCell()&& countAlivePlayers()==1) {
+        if (!isNoMoreEmptyCell() && countAlivePlayers() == 1) {
             List<Integer> winnerKeys = listTheStrongestPlayerKeys();
-            Integer theWinnerKey =winnerKeys.get(0);
-            System.out.println("THE WINNERRRR:"+theWinnerKey);
-            if(winnerKeys.size()!=1) {
+            Integer theWinnerKey = winnerKeys.get(0);
+            System.out.println("THE WINNERRRR:" + theWinnerKey);
+            if (winnerKeys.size() != 1) {
                 throw new IllegalPointOfExecution("Exactly one player key must be present.");
             }
             occupyEverythingForTheWinner(winnerKeys.get(0));
@@ -119,8 +118,8 @@ public class GameStateMachine {
                 if (weakestPlayersCount == 0) {
                     throw new IllegalPointOfExecution();
                 }
-                System.out.println("Weakest"+weakestPlayers);
-                System.out.println("Weakest count:"+weakestPlayersCount);
+                System.out.println("Weakest" + weakestPlayers);
+                System.out.println("Weakest count:" + weakestPlayersCount);
 
                 if (alivePlayersCount == weakestPlayersCount) { // All player equally strong/weak
                     // There is no removal of any player
@@ -135,7 +134,7 @@ public class GameStateMachine {
                     // The game continues
 
                     // Demolish dominions of all weakest players
-                    for(Integer weakestPlayerKey:weakestPlayers){
+                    for (Integer weakestPlayerKey : weakestPlayers) {
                         demolishPlayerDominion(weakestPlayerKey);
                         getPlayer(weakestPlayerKey).setAlive(false);
                         getPlayer(weakestPlayerKey).setReserveSize(0);
@@ -185,10 +184,6 @@ public class GameStateMachine {
                 throw new NoTroopsWereSentGameStateMachineException(playerKey);
             }
 
-            // When it is an attack without troops
-//            if (action.getAttackingTroopSize() > 100) {
-//                throw new TooMuchTroopsWereSentGameStateMachineException(playerKey);
-//            }
 
             // When it is an attack but the army size is over calculated
             if (player.getReserveSize() < action.getAttackingTroopSize()) {
@@ -205,7 +200,7 @@ public class GameStateMachine {
             }
 
             if (isPlayerCausingDoughnutEffect(state, action.getPlayerKey())) {
-//                System.out.println("DOUGHNUT ? ["+action.getPlayerKey()+"] >> yes ");
+
                 if (!isCellAnEmptyNeighbourOfPlayer(state, action.getPlayerKey(), action.getTargetCellKey())) {
                     //throw new OutOfDoughnutAttackRangePlayerActionException(action.getPlayerKey(), action.getTargetCellKey());
                 }
@@ -280,42 +275,6 @@ public class GameStateMachine {
         }
     }
 
-//    private Integer findTheWeakestPlayer() {
-//        //System.out.println("findTheWeakestPlayer");
-//        int weakestValue = Integer.MAX_VALUE;
-//        int foundCount = 0;
-//        Integer weakestKey = null;
-//
-//        GameStatePlayer[] opponents = gameState.getOpponents();
-//        for (int playerKey = 0; playerKey < opponents.length; playerKey++) {
-//            GameStatePlayer player = opponents[playerKey];
-//
-//            if (player.isAlive()) {
-//                //System.out.println("--------" + playerKey+"--------");
-//                int dominionSize = countPlayerCells(playerKey);
-//
-////                System.out.println("PlayerIndex:" + playerKey);
-////                System.out.println("dominionSize:" + dominionSize);
-//
-//
-//                if (dominionSize == weakestValue) {
-//                    foundCount++;
-//                    weakestKey = null;
-//                } else if (dominionSize < weakestValue) {
-//                    weakestValue = dominionSize;
-//                    foundCount = 1;
-//                    weakestKey = playerKey;
-//                }
-//            }
-//        }
-//
-//        if (foundCount == 1 && weakestKey != null) {
-//            return weakestKey;
-//        }
-//        return null;
-//    }
-
-
     private List<Integer> listTheWeakestPlayerKeys() {
         int weakestValue = Integer.MAX_VALUE;
         List<Integer> weakestKeys = new ArrayList<>();
@@ -351,13 +310,13 @@ public class GameStateMachine {
         GameStatePlayer[] opponents = gameState.getOpponents();
         for (int playerKey = 0; playerKey < opponents.length; playerKey++) {
             GameStatePlayer player = opponents[playerKey];
-            System.out.println("PlayerKey:"+playerKey);
+            System.out.println("PlayerKey:" + playerKey);
             System.out.println(player);
 
             if (player.isAlive()) {
                 int currentSizeOfDominion = countPlayerCells(playerKey);
-                System.out.println("currentSizeOfDominion:"+currentSizeOfDominion);
-                System.out.println("strongestValue:"+strongestValue);
+                System.out.println("currentSizeOfDominion:" + currentSizeOfDominion);
+                System.out.println("strongestValue:" + strongestValue);
 
                 if (currentSizeOfDominion == strongestValue) {
                     System.out.println("equal");
@@ -437,18 +396,6 @@ public class GameStateMachine {
         return realNeighbours;
     }
 
-//    private Set<Integer> getEmptyCellKeys() {
-//        Set<Integer> emptyCellKeys = new HashSet<>();
-//        GameState.Cell[] cells = gameState.getCells();
-//
-//        for (int cellKey = 0; cellKey < cells.length; cellKey++) {
-//            if (cells[cellKey].isEmpty()) {
-//                emptyCellKeys.add(cellKey);
-//            }
-//        }
-//        return emptyCellKeys;
-//    }
-
     private GameStatePlayer getPlayer(int playerKey) {
         GameStatePlayer[] opponents = gameState.getOpponents();
         return opponents[playerKey];
@@ -522,7 +469,6 @@ public class GameStateMachine {
         }
         return true;
     }
-
 
 
 }

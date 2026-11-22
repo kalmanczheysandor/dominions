@@ -26,12 +26,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableFeignClients
 @EnableJpaRepositories(basePackages = {
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.repository",
-//        "hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository",
         "hu.kalmancheysandor.applications.dominions.servers.ai.liz.agent"
 })
 @EntityScan(basePackages = {
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.common.entity",
-//    "hu.kalmancheysandor.applications.dominions.apis.server.user.site.entity",
         "hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.entity",
         "hu.kalmancheysandor.applications.dominions.apis.server.game.common.entity",
         "hu.kalmancheysandor.applications.dominions.servers.ai.liz.agent"
@@ -58,7 +55,6 @@ public class LizAgentServer {
     public UUIDGenerator uuidGenerator() {
         return new UUIDGenerator();
     }
-
 
 
 }

@@ -28,7 +28,5 @@ public interface HugoHistoryPlayerRepository extends JpaRepository<HugoHistoryPl
 
     public void deleteById(int id);
 
-//    public boolean existsByUserUuid(String userUuid);
-
     public HugoHistoryPlayer save(HugoHistoryPlayer lizHistoryPlayer);
 }

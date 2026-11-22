@@ -21,10 +21,10 @@ public class CorsConf extends CorsConfiguration {
     public CorsWebFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // FONTOS: kell, hogy a cookie/session működjön cross-origin esetén
+        // IMPORTANT: Required for cookies/sessions to work in cross-origin requests
         config.setAllowCredentials(true);
 
-        // Csak az engedélyezett domainek, amik ténylegesen hívhatják a gateway-t
+        // Only allow the specified domains to make requests to the gateway
         config.setAllowedOrigins(List.of(
                 adminSiteUrl,
                 gameSiteUrl
@@ -32,14 +32,14 @@ public class CorsConf extends CorsConfiguration {
 //        config.setAllowedOrigins( List.of( "http://localhost:8080" ) ); //Collections.singtonList(....);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("Set-Cookie")); // ez a kulcs ahhoz, hogy a böngésző elfogadja a Set-Cookie fejlécet a válaszban.
+        config.setExposedHeaders(List.of("Set-Cookie")); // Required for the browser to accept the Set-Cookie header in the response.
 
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);  // Alkalmazzuk minden REST végpontra is
+        source.registerCorsConfiguration("/**", config);  // Apply the configuration to all REST endpoints
 
 
-        // WebSocketekhez is kiterjesztjük a CORS beállítást
+        // Extend the CORS configuration to WebSocket endpoints as well
         source.registerCorsConfiguration("/test/spring-boot-chat", config); // WebSocket endpoint
         source.registerCorsConfiguration("/test/app/chat", config);       // WebSocket endpoint
 

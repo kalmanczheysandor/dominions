@@ -25,15 +25,15 @@ public interface LizNeuralTrainingSnapshotRepository extends JpaRepository<LizNe
     public List<LizNeuralTrainingSnapshot> listAllAtScenarioId(@Param("scenarioId") int scenarioId);
 
     @Query("""
-        SELECT t
-        FROM LizNeuralTrainingSnapshot t
-        WHERE
-            t.conceptId = :conceptId AND
-            t.executionId = :executionId AND
-            t.scenarioId = :scenarioId AND
-            t.playerId = :playerId
-        ORDER BY t.turn ASC
-    """)
+                SELECT t
+                FROM LizNeuralTrainingSnapshot t
+                WHERE
+                    t.conceptId = :conceptId AND
+                    t.executionId = :executionId AND
+                    t.scenarioId = :scenarioId AND
+                    t.playerId = :playerId
+                ORDER BY t.turn ASC
+            """)
     List<LizNeuralTrainingSnapshot> listAllWhereConceptIdAndExecutionIdAndScenarioIdAndPlayerId(
             @Param("conceptId") int conceptId,
             @Param("executionId") int executionId,
@@ -43,15 +43,15 @@ public interface LizNeuralTrainingSnapshotRepository extends JpaRepository<LizNe
 
 
     @Query("""
-        SELECT t
-        FROM LizNeuralTrainingSnapshot t
-        WHERE
-            t.conceptId = :conceptId AND
-            t.executionId = :executionId AND
-            t.scenarioId = :scenarioId AND
-            t.playerId = :playerId
-        ORDER BY t.turn ASC
-    """)
+                SELECT t
+                FROM LizNeuralTrainingSnapshot t
+                WHERE
+                    t.conceptId = :conceptId AND
+                    t.executionId = :executionId AND
+                    t.scenarioId = :scenarioId AND
+                    t.playerId = :playerId
+                ORDER BY t.turn ASC
+            """)
     Stream<LizNeuralTrainingSnapshot> streamAllWhereConceptIdAndExecutionIdAndScenarioIdAndPlayerId(
             @Param("conceptId") int conceptId,
             @Param("executionId") int executionId,
@@ -60,14 +60,14 @@ public interface LizNeuralTrainingSnapshotRepository extends JpaRepository<LizNe
     );
 
     @Query("""
-    SELECT COUNT(t)
-    FROM LizNeuralTrainingSnapshot t
-    WHERE
-        t.conceptId = :conceptId AND
-        t.executionId = :executionId AND
-        t.scenarioId = :scenarioId AND
-        t.playerId = :playerId
-""")
+                SELECT COUNT(t)
+                FROM LizNeuralTrainingSnapshot t
+                WHERE
+                    t.conceptId = :conceptId AND
+                    t.executionId = :executionId AND
+                    t.scenarioId = :scenarioId AND
+                    t.playerId = :playerId
+            """)
     long countAllWhereConceptIdAndExecutionIdAndScenarioIdAndPlayerId(
             @Param("conceptId") int conceptId,
             @Param("executionId") int executionId,
@@ -75,22 +75,12 @@ public interface LizNeuralTrainingSnapshotRepository extends JpaRepository<LizNe
             @Param("playerId") int playerId
     );
 
-//    @Query("SELECT t FROM LizNeuralTrainingSnapshot t WHERE t.trainingId = :trainingId")
-//    public List<LizNeuralTrainingSnapshot> listAllAtTrainingId(@Param("trainingId") int trainingId);
-//
-//    @Query("SELECT t FROM LizNeuralTrainingSnapshot t WHERE  t.scenarioId = :scenarioId AND t.trainingId = :trainingId AND t.playerId = :playerId ORDER BY t.turn")
-//    public List<LizNeuralTrainingSnapshot> listAllAtScenarioIdAndTrainingIdAndPlayerId(@Param("scenarioId") int scenarioId, @Param("trainingId") int trainingId, @Param("playerId") int playerId);
-
-//    @Modifying
-//    @Query("DELETE FROM LizNeuralTrainingSnapshot t WHERE t.scenarioId <= :scenarioId")
-//    void deleteAllWhereScenarioId(@Param("scenarioId") int scenarioId);
-
     @Modifying
     @Query("""
-        DELETE
-        FROM LizNeuralTrainingSnapshot t
-        WHERE t.conceptId=:conceptId and t.executionId=:executionId and t.scenarioId=:scenarioId and t.playerId=:playerId
-    """)
+                DELETE
+                FROM LizNeuralTrainingSnapshot t
+                WHERE t.conceptId=:conceptId and t.executionId=:executionId and t.scenarioId=:scenarioId and t.playerId=:playerId
+            """)
     void deleteAllWhereConceptIdAndExecutionIdAndScenarioIdAndPlayerId(
             @Param("conceptId") int conceptId,
             @Param("executionId") int executionId,
@@ -99,13 +89,12 @@ public interface LizNeuralTrainingSnapshotRepository extends JpaRepository<LizNe
     );
 
 
-
     @Modifying
     @Query("""
-        DELETE
-        FROM LizNeuralTrainingSnapshot t
-        WHERE t.conceptId=:conceptId
-    """)
+                DELETE
+                FROM LizNeuralTrainingSnapshot t
+                WHERE t.conceptId=:conceptId
+            """)
     void deleteAllWhereConceptId(
             @Param("conceptId") int conceptId
     );

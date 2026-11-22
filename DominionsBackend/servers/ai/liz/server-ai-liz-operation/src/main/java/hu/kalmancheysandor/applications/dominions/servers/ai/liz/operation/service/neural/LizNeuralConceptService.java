@@ -113,6 +113,7 @@ public class LizNeuralConceptService extends TLizService {
             throw new LizNeuralConceptNameIsReservedException(request.getName());
         }
 
+        // TODO: Ezzel mi legyen?
         // Checking: Whether the new code is reserved
        /* if (lizNeuralConceptRepository.isCodeReserved(request.getCode())) {
             throw new LizNeuralConceptCodeIsReservedException(request.getCode());
@@ -145,6 +146,8 @@ public class LizNeuralConceptService extends TLizService {
         if (lizNeuralConceptRepository.isNameReserved(request.getName(), recordId)) {
             throw new LizNeuralConceptNameIsReservedException(request.getName());
         }
+
+        // TODO: Ezzel mi legyen?
         // Checking: Whether the new name is reserved
         /*if (lizNeuralConceptRepository.isCodeReserved(request.getCode(), recordId)) {
             throw new LizNeuralConceptCodeIsReservedException(request.getCode());
@@ -421,11 +424,6 @@ public class LizNeuralConceptService extends TLizService {
         }
 
         return outputList;
-
-
-//        return historyPlayerList.stream()
-//                .map(item -> modelMapper.map(item, LizNeuralConceptResultHistoryPlayerOptionResponse.class))
-//                .collect(Collectors.toList());
     }
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////

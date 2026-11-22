@@ -40,8 +40,7 @@ public class SiteUser implements UUIDIdentifiable {
     @Column(name = "is_finalised", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private boolean finalised;
 
-//    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
-//    private List<SiteUserGroup> siteUserGroups;
+
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private List<SiteUserGroup> siteUserGroups;

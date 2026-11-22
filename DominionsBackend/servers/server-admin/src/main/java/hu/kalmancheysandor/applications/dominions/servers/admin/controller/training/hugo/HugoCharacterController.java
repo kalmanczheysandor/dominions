@@ -42,7 +42,6 @@ public class HugoCharacterController {
         // Check permission
         authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().hugo().character());
 
-        System.out.println("LLLLLLLLIST");
         return hugoOperationServerCharacterProxy.listAll();
     }
 

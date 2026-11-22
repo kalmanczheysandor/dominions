@@ -12,11 +12,15 @@ import java.util.List;
 @Repository
 public interface SiteUserGroupRepository extends JpaRepository<SiteUserGroup, SiteUserGroup.PrimaryKey> {
     public SiteUserGroup findByGroupIdAndUserId(int groupId, int userId);
+
     public List<SiteUserGroup> findAll();
+
     public List<SiteUserGroup> findAllByUserId(int userId);
 
-    public void deleteByGroupIdAndUserId(int groupId,int userId);
-    public boolean existsByGroupIdAndUserId(int groupId,int userId);
+    public void deleteByGroupIdAndUserId(int groupId, int userId);
+
+    public boolean existsByGroupIdAndUserId(int groupId, int userId);
+
     public SiteUserGroup save(SiteUserGroup siteUserGroup);
 
     @Modifying
@@ -26,7 +30,6 @@ public interface SiteUserGroupRepository extends JpaRepository<SiteUserGroup, Si
     @Modifying
     @Query("DELETE FROM SiteUserGroup g WHERE g.userId=:paramUserId and g.groupId IN (SELECT a.id FROM SiteUserAuthorisationGroup a WHERE a.enabled = true)")
     public void deleteAllEnabledGroupsOfUser(@Param("paramUserId") int userId);
-
 
 
 }

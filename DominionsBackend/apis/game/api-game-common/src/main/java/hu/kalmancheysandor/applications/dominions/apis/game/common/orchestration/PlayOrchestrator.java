@@ -334,13 +334,6 @@ public class PlayOrchestrator {
         return PlayStateStatusCode.PLAYING == this.playState.status;
     }
 
-//    private void start() {
-//        addMissingAiPlayers();
-//
-//        this.playState.status = PlayStateStatusCode.PLAYING;
-//        this.playState.gameState = new GameState(gameMap);
-//    }
-
 
     public boolean isPlayerEndpointKeyAlreadyRegistered(@NotNull String endpointKey) {
         for (PlayerData player : this.playState.players.values()) {
@@ -363,14 +356,6 @@ public class PlayOrchestrator {
         }
         return false;
     }
-
-
-//    public int nextAvailablePlayerIndex() {
-//        if (!isAnyFreeHumanPlayerSlotsAvailable()||!isAnyFreeAiPlayerSlotsAvailable()) {
-//            throw new NoMoreFreePlayerSlotSessionException(sessionKey);
-//        }
-//        return players.size();
-//    }
 
 
     public int playerCount() {

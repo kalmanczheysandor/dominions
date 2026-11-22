@@ -60,8 +60,6 @@ public class ProxyExceptionAdvice {
     }
 
 
-
-
     @ExceptionHandler(BrokenResponseProxyException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public GeneralErrorResponse handle(BrokenResponseProxyException exception) {
@@ -79,9 +77,5 @@ public class ProxyExceptionAdvice {
         log.warn("EEEXCEPTION:"+exception.getClass().getSimpleName());
         exception.printStackTrace();
         throw exception;
-//        System.err.println(exception);
-//        // Generate response
-//        GeneralErrorResponse response = new GeneralErrorResponse(exception.getClass().getSimpleName(), exception.getMessage());
-//        return response;
     }
 }

@@ -2,10 +2,6 @@ package hu.kalmancheysandor.applications.dominions.apis.server.user.site.securit
 
 import hu.kalmancheysandor.applications.dominions.apis.server.user.common.security.UserSecurityDetails;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 

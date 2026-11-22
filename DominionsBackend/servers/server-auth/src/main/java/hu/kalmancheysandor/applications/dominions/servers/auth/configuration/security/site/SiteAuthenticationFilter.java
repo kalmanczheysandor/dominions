@@ -45,9 +45,9 @@ public class SiteAuthenticationFilter extends AbstractAuthenticationProcessingFi
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(identifier, password);
 
         System.out.println("------------Attempt to authenticate [SiteAuthenticationFilter]-------------");
-        System.out.println("Identifier:" + identifier);
-        System.out.println("Password:" + password);
-        System.out.println("Cookies:" + request.getHeader("Cookie"));
+//        System.out.println("Identifier:" + identifier);
+//        System.out.println("Password:" + password);
+//        System.out.println("Cookies:" + request.getHeader("Cookie"));
 
         return getAuthenticationManager().authenticate(authRequest);
     }
@@ -131,16 +131,5 @@ public class SiteAuthenticationFilter extends AbstractAuthenticationProcessingFi
         response.setContentType("application/json");
         response.getWriter().write(objectMapper.writeValueAsString(failureResponse));
     }
-//    @Override
-//    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-//        SiteAuthenticationFailureResponse failureResponse = SiteAuthenticationFailureResponse.builder()
-//                .message("Invalid username or password")
-//                .endpoint(endpoint)
-//                .build();
-//
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        response.setContentType("application/json");
-//        response.getWriter().write(objectMapper.writeValueAsString(failureResponse));
-//    }
 
 }

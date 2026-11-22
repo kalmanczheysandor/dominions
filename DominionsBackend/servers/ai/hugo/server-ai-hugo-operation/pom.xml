@@ -35,11 +35,7 @@
             <artifactId>api-server-ai-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-       <!-- <dependency>
-            <groupId>hu.kalmancheysandor.applications.dominions</groupId>
-            <artifactId>api-server-game-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>-->
+
         <!--.......USER.......-->
         <dependency>
             <groupId>hu.kalmancheysandor.applications.dominions</groupId>
@@ -54,23 +50,6 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
-        <!-- .......AI.......-->
-<!--        <dependency>-->
-<!--            <groupId>hu.kalmancheysandor.applications.dominions</groupId>-->
-<!--            <artifactId>api-ai-common</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>hu.kalmancheysandor.applications.dominions</groupId>-->
-<!--            <artifactId>api-ai-neural</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>hu.kalmancheysandor.applications.dominions</groupId>-->
-<!--            <artifactId>api-ai-liz</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
 
 
         <!--.......SECURITY.......-->
@@ -104,27 +83,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.25</version>
         </dependency>
-        <!--.......STREAMING.......-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-stream</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-function-core</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-stream-rabbit</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-function-context</artifactId>-->
-<!--        </dependency>-->
-
+        <!--.......?????.......-->
 
 
         <dependency>

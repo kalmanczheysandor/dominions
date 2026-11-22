@@ -33,7 +33,6 @@ public abstract class TLizService extends TAiService {
     @Autowired
     private LizHistoryPlayerRepository lizHistoryPlayerRepository;
 
-
     @Autowired
     private LizHistorySessionRepository lizHistorySessionRepository;
 

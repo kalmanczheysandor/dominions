@@ -22,7 +22,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDe
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.queue.AiHistoryQueueItem;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.proxy.HugoAgentServerProxy;
 
-//import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.proxy.hugo.HugoAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy.LizAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.otto.shared.proxy.OttoAgentServerProxy;
 import hu.kalmancheysandor.applications.dominions.apis.server.common.component.config.ApplicationConfig;
@@ -120,7 +119,6 @@ public class GameService {
         GameScenario gameScenario = gameScenarioRepository.findByUuid(request.getScenarioUuid());
 
         // Initialise play state
-//        GameMap gameMapObj = GameMap.createByJsonFile("maps/map26-H1A1-LizDecisionMaking-001.json");
         GameMap gameMapObj = GameMap.createByJsonContent(gameScenario.getGameMap());
         PlayState playStateObj = PlayState.createByGameMap(gameMapObj);
 
@@ -317,60 +315,6 @@ public class GameService {
     }
 
 
-//    public GamePlayResignResponse sendResignActionToGamePlay(GamePlayResignRequest request) {
-//        // Remove all expired sessions
-//        removeAllExpiredSessions();
-//
-//        // Checking
-//        assertGameSessionUuidExists(request.getGameSessionUuid());
-//        assertGameSessionIsNotRecruiting(request.getGameSessionUuid());
-//
-//
-//        // Access entity via repository
-//        GameSession gameSessionToModify = gameSessionRepository.findByUuid(request.getGameSessionUuid());
-//
-//        // Convert json fields to object
-//        PlayState playStateObj = convertJsonToPlayStateObj(gameSessionToModify.getPlayState());
-//        GameMap gameMapObj = convertJsonToGameMapObj(gameSessionToModify.getGameMap());
-//
-//        // Orchestrator: Initialise
-//        PlayOrchestrator playOrchestrator = PlayOrchestrator.create(request.getGameSessionUuid(), gameMapObj, playStateObj);
-//
-//        // Orchestrator: Collecting all Ai intention and store
-//        if (playOrchestrator.getAiPlayerMaxSlotSize() > 0 && playOrchestrator.aiMissingIntentionCount() > 0) {
-//            Map<Integer, GameAction> aiPlayerIntentions = communicateToAiPlayers(playOrchestrator.getAllAiPlayers(), playOrchestrator.getPlayState(), gameSessionToModify.getScenarioId());
-//            playOrchestrator.saveMultipleIntention(aiPlayerIntentions);
-//        }
-//
-//
-//        // Orchestrator: Initialise human intention and store
-//        if (targetCellKey != null && targetCellKey == 0 && attackingTroopSize == 0) { // When it is a reserve-action
-//            targetCellKey = null;
-//        }
-//        GameAction action = new GameAction(playerIndex, targetCellKey, attackingTroopSize);
-//        playOrchestrator.saveIntention(playerIndex, action);
-//
-//        // Save intention into history before collision
-//        if (playOrchestrator.isInPlayingStatus() && !playOrchestrator.isAnyMissingIntention()) {
-//            saveCurrentIntentionsIntoHistory(gameSessionToModify, playOrchestrator.getPlayState());
-//        }
-//
-//        // Orchestrator: do some process
-//        playOrchestrator.process();
-//
-//        // Modify entity properties and save
-//        gameSessionToModify.setPlayState(convertPlayStateObjToJson(playOrchestrator.getPlayState()));
-//        gameSessionToModify.setDateModified(LocalDateTime.now());
-//        gameSessionToModify.setDateExpiration((LocalDateTime.now()).plusHours(applicationConfig.getGame().getSession().getExpirationHours()));
-//        GameSession gameSessionModified = uuidGenerator.saveWithRetry(gameSessionRepository, gameSessionToModify);
-//
-//        PlayState modifiedPlayState = playOrchestrator.getPlayState();
-//        //Generate response
-//        GamePlayAttackActionResponse response = new GamePlayAttackActionResponse();
-//        return response;
-//    }
-
-
     public GamePlayAttackActionResponse sendAttackActionToGamePlay(GamePlayAttackActionRequest request) {
         // Remove all expired sessions
         removeAllExpiredSessions();
@@ -549,9 +493,7 @@ public class GameService {
 
     private GameMap convertJsonToGameMapObj(String gameMapStr) {
         try {
-            return objectMapper.readValue(gameMapStr, new TypeReference<GameMap>() {
-            });
-//            return objectMapper.readValue(gameMapStr, GameMap.class);
+            return objectMapper.readValue(gameMapStr, new TypeReference<GameMap>() {});
         } catch (JsonMappingException e) {
             throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
@@ -572,7 +514,6 @@ public class GameService {
         try {
             return objectMapper.readValue(playStateStr, new TypeReference<PlayState>() {
             });
-//            return objectMapper.readValue(playStateStr, PlayState.class);
         } catch (JsonMappingException e) {
             throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
@@ -710,53 +651,6 @@ public class GameService {
 
         return intentions;
     }
-
-
-//
-//
-//    private Map<Integer, GameAction> communicateToAiPlayers(Map<Integer, PlayerData> players, PlayState playState, String scenarioUuid, String scenarioTitle, String sessionUuid) {
-//
-//        Map<Integer, GameAction> intentions = new HashMap<>();
-//        for (Map.Entry<Integer, PlayerData> playerEntry : players.entrySet()) {
-//
-//            // Jump to next player if this one is not an artificial one
-//            if (!playerEntry.getValue().isArtificial()) {
-//                continue;
-//            }
-//
-//            //
-//            int aiPlayerIndex = playerEntry.getKey();
-//            ArtificialPlayer aiPlayer = (ArtificialPlayer) playerEntry.getValue();
-//
-//            // Send request
-//            AiDecisionResponse aiDecisionResponseObj = waitingAiResponse(aiPlayer, generateAiRequest(
-//                    aiPlayerIndex,
-//                    aiPlayer.getUserUuid(),
-//                    aiPlayer.getName(),
-//                    aiPlayer.getCharacterCode(),
-//                    playState,
-//                    scenarioUuid,
-//                    scenarioTitle,
-//                    sessionUuid
-//            ));
-//
-//            // Create an Action by Ai response
-//            Integer targetCellKey = aiDecisionResponseObj.getTargetCellKey();
-//            Integer troopSize = aiDecisionResponseObj.getTroopSize();
-//            if (targetCellKey != null && targetCellKey == 0 && troopSize == 0) { // When it is a reserve-action
-//                targetCellKey = null;
-//            }
-//            GameAction aiAction = new GameAction(aiPlayerIndex, targetCellKey, troopSize);
-//
-//
-//            intentions.put(aiPlayerIndex, aiAction);
-//
-//
-//            System.out.println("Ai Intention is[" + aiPlayerIndex + "]:" + aiAction);
-//        }
-//
-//        return intentions;
-//    }
 
     private AiDecisionResponse waitingAiResponse(ArtificialPlayer artificialPlayer, AiDecisionRequest aiDecisionRequestObj) {
 

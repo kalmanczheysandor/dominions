@@ -117,7 +117,6 @@ public class LizNeuralConceptGlobalExceptionHandler {
         log.error("LizNeuralConcept-HistoryScenario not found by UUID: {}", exception.getUuid(), exception);
 
         // Generate response
-        // Response
         GeneralFailureResponse response = new GeneralFailureResponse(
                 exception.getClass().getSimpleName(),
                 exception.getMessage()

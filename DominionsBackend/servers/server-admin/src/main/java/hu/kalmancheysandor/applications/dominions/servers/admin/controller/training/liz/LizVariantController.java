@@ -1,7 +1,5 @@
 package hu.kalmancheysandor.applications.dominions.servers.admin.controller.training.liz;
 
-
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.character.option.LizCharacterVariantOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.variant.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.variant.option.LizVariantConceptOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.proxy.LizOperationServerVariantProxy;
@@ -43,7 +41,6 @@ public class LizVariantController {
         // Check permission
         authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().liz().variant());
 
-        System.out.println("LLLLLLLLIST");
         return lizOperationServerVariantProxy.listAll();
     }
 

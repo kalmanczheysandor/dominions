@@ -24,8 +24,6 @@ public class SiteUserAuthorisationGroup implements UUIDIdentifiable {
     @Column(name = "is_enabled", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean enabled;
 
-//    @OneToMany(mappedBy = "groupId", fetch = FetchType.LAZY)
-//    private List<SiteUserAuthorisationGroupPermission> permissionList;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", referencedColumnName = "id", insertable = false, updatable = false)

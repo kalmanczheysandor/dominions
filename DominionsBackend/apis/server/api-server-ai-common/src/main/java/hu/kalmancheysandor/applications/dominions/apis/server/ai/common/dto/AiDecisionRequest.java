@@ -21,7 +21,7 @@ public class AiDecisionRequest {
     private Integer yourReserveSize;
     private Map<Integer, Integer> reserves = new HashMap<>();
     private Map<Integer,Player> enemyPlayers;
-    //private Integer scenarioId;
+
     private String scenarioUuid;
     private String scenarioName;
     private String playerCharacterCode;

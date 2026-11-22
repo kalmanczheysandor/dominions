@@ -22,6 +22,7 @@ public class HugoVariantController {
     private HugoVariantService hugoVariantService;
     @Autowired
     private AdminAuthenticationService authenticationService;
+
     /// ///////////////////////////////////// ACCESS ////////////////////////////////////////////////////////////
 
     @GetMapping("/{uuid}")
@@ -37,7 +38,7 @@ public class HugoVariantController {
 
     @GetMapping("/list")
     public List<HugoVariantItemResponse> listAll() {
-// Check permission
+        // Check permission
         authenticationService.assertHasAccessPermission(AdminPermission.generator().ai().hugo().variant());
 
         return hugoVariantService.listAll();
@@ -80,6 +81,7 @@ public class HugoVariantController {
 
         return hugoVariantService.atUpdateListHeuristic(uuid);
     }
+
     /// ///////////////////////////////////// DELETE /////////////////////////////////////////////////////////////
 
     @DeleteMapping("/{uuid}/delete")

@@ -9,8 +9,5 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class QueueConsumers {
 
-//    @Bean
-//    public Consumer<HistoryQueueItem> queueHistory(GameService gameService) {
-//        return gameService::queueHistoryRead;
-//    }
+
 }

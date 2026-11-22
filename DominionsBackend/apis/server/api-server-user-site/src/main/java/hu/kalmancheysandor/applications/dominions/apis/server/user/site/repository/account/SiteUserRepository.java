@@ -11,14 +11,19 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SiteUserRepository extends JpaRepository<SiteUser, Integer>, UUIDRepository<SiteUser,Integer> {
+public interface SiteUserRepository extends JpaRepository<SiteUser, Integer>, UUIDRepository<SiteUser, Integer> {
     public SiteUser findByIdentifier(String username);
+
     public SiteUser findById(int userId);
+
     public SiteUser findByUuid(String uuid);
 
     public List<SiteUser> findAll();
+
     public void deleteById(int userId);
+
     public boolean existsById(int userId);
+
     public SiteUser save(SiteUser siteUser);
 
     @Query("SELECT u.enabled FROM SiteUser u WHERE u.identifier = :paramIdentifier")
@@ -28,7 +33,7 @@ public interface SiteUserRepository extends JpaRepository<SiteUser, Integer>, UU
     public boolean isIdentifierReserved(@Param("paramIdentifier") String identifier);
 
     @Query("SELECT CASE WHEN count(u) > 0 THEN true ELSE false END FROM SiteUser u WHERE u.identifier = :paramIdentifier and u.id<> :paramExcludedId")
-    public boolean isIdentifierReserved(@Param("paramIdentifier") String identifier, @Param("paramExcludedId")  int excludedId);
+    public boolean isIdentifierReserved(@Param("paramIdentifier") String identifier, @Param("paramExcludedId") int excludedId);
 
 
     @Query("SELECT FALSE")

@@ -2,7 +2,6 @@ package hu.kalmancheysandor.applications.dominions.servers.admin.controller.acco
 
 
 import hu.kalmancheysandor.applications.dominions.apis.server.user.admin.AdminPermission;
-import hu.kalmancheysandor.applications.dominions.apis.server.user.site.SitePermission;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.dto.account.permission.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.service.account.permission.SitePermissionGroupService;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.service.authentication.SiteAuthenticationService;

@@ -24,13 +24,9 @@ public interface HugoHistoryScenarioRepository extends JpaRepository<HugoHistory
 
     public List<HugoHistoryScenario> findAll();
 
-
     public void deleteById(int id);
 
-//    public boolean existsByScenarioUuid(String scenarioUuid);
-
     public HugoHistoryScenario save(HugoHistoryScenario hugoHistoryScenario);
-
 
     @Query("SELECT COUNT(t) FROM HugoHistoryScenario t")
     int countAll();

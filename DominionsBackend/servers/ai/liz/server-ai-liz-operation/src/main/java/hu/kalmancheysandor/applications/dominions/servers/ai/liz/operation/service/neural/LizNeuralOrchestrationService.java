@@ -438,55 +438,7 @@ public class LizNeuralOrchestrationService extends TLizService {
         execution.setDateModified(dateNow);
         execution.setDateFinished(dateNow);
     }
-//
-//    private void atomicTaskProcessing(LizNeuralTrainingTask task) {
-//        // Access entity: Toplevel record
-//        LizNeuralConcept concept = accessConceptRecordById(task.getConceptId());
-//
-//        //
-//        LizNeuralExecution execution = accessExecutionRecordById(task.getExecutionId());
-//        LocalDateTime dateNow = LocalDateTime.now();
-//
-//        // Set training configuration
-//        LizNeuralNetworkTrainingConfiguration trainingConfig = convertConceptToTrainingConfiguration(concept);
-//
-//        LizNeuralTrainingTask.TaskResult resultCode;
-//        try {
-//            //
-//            lizNeuralTrainingService.trainAPlayer(task, trainingConfig);
-//
-//            //
-//            resultCode = LizNeuralTrainingTask.TaskResult.SUCCEEDED;
-//
-//            System.out.println("XXXX____DONE " + execution.getTaskAllCount() + "-" + execution.getTaskPhaseFinishedCount());
-//        } catch (Exception e) {
-//            resultCode = LizNeuralTrainingTask.TaskResult.FAILED;
-//
-//            System.out.println("AAA____FAILED");
-//        }
-//
-//        // Task
-//        task.setTaskPhase(LizNeuralTrainingTask.TaskPhase.FINISHED);
-//        task.setTaskResult(resultCode);
-//        task.setDateModified(dateNow);
-//        task.setDateFinished(dateNow);
-//
-//        //
-//        adjustExecutionRecordCountersOnTaskPhaseChangeFromQueuedToFinished(execution, LizNeuralTrainingTask.TaskResult.SUCCEEDED);
-//
-//        // Execution
-//        execution.setDateModified(dateNow);
-//
-//        //
-//        if (execution.getTaskAllCount() == execution.getTaskPhaseFinishedCount()) {
-//            execution.setProcessPhase(LizNeuralExecution.ProcessPhase.FINISHED);
-//            execution.setDateFinished(dateNow);
-//        }
-//
-//
-//        entityManager.flush();
-//
-//    }
+
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////
     /// CONCEPT-RECORD METHODS ////////////////////////////////////////////////////////////////////////////
@@ -531,12 +483,6 @@ public class LizNeuralOrchestrationService extends TLizService {
                     .build()
             );
 
-//            LizNeuralExecution executionToSave = new LizNeuralExecution();
-//            executionToSave.setName("Liz Build[" + concept.getId() + "] " + creationDate.toString());
-//            executionToSave.setConcept(concept);
-//            executionToSave.setProcessPhase(LizNeuralExecution.ProcessPhase.INITIALISED);
-//            executionToSave.setDateCreated(creationDate);
-//            LizNeuralExecution executionSaved = uuidGenerator.saveWithRetry(lizNeuralExecutionRepository, executionToSave);
             entityManager.flush(); // Important in order to trigger database level unique conflict which occurs even before transaction commit.
 
             if (executionSaved == null) {
@@ -806,24 +752,6 @@ public class LizNeuralOrchestrationService extends TLizService {
                 .build()
         );
 
-        //
-//        List<LizHistoryPlayer> playersList = lizHistoryPlayerRepository.findAll();
-//        for (LizHistoryPlayer player : playersList) {
-//            lizNeuralTrainingTaskRepository.save(LizNeuralTrainingTask.builder()
-//                    .conceptId(conceptId)
-//                    .executionId(executionId)
-//                    .scenarioId(trainingSaved.getScenarioId())
-//                    .playerId(player.getId())
-//                    .taskPhase(LizNeuralTrainingTask.TaskPhase.CREATED)
-//                    .taskResult(LizNeuralTrainingTask.TaskResult.PENDING)
-//                    .dateCreated(dateNow)
-//                    .build()
-//            );
-//
-//            adjustExecutionRecordCountersOnTaskCreate(execution);
-//        }
-
-
         try (Stream<LizHistoryPlayer> stream = lizHistoryPlayerRepository.streamAll()) {
             stream.forEach(player -> {
                 lizNeuralTrainingTaskRepository.save(LizNeuralTrainingTask.builder()
@@ -878,32 +806,6 @@ public class LizNeuralOrchestrationService extends TLizService {
 
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////////////////
-    /// QUEUE-CONSUMER METHODS ////////////////////////////////////////////////////////////////////////////
-    /// ///////////////////////////////////////////////////////////////////////////////////////////////////
-//    private void queueTaskProcessingItemRead(LizNeuralConceptTaskProcessingQueueItem queueItem) {
-//        System.out.println("TASK_READ: " + queueItem.toString());
-//        int conceptId = queueItem.getConceptId();
-//        int executionId = queueItem.getExecutionId();
-//        int scenarioId = queueItem.getScenarioId();
-//        int playerId = queueItem.getPlayerId();
-//
-//        //
-//        LizNeuralTrainingTask task = lizNeuralTrainingTaskRepository.findByCompositeKey(conceptId, executionId, scenarioId, playerId);
-//        if (task == null) {
-//            throw new LizNeuralTrainingTaskNotFoundException();
-//        }
-//
-//        //
-//        if (!isTaskAllowedToBeProcessed(task)) { // broker fuggetlen: ez kavzi feldolgozvat jelent. ha exceptiont dobnal akkor nemely broker ujra pobalkozna
-//            return;
-//        }
-//
-//
-//        //
-//        atomicTaskProcessing(task);
-//    }
-//
 
     /// ///////////////////////////////////////////////////////////////////////////////////////////////////
     /// HELPER METHODS ////////////////////////////////////////////////////////////////////////////////////
@@ -1009,40 +911,6 @@ public class LizNeuralOrchestrationService extends TLizService {
 
     }
 
-//
-//    // TODO: ismetlodik
-//    // TODO: Tedd megosztott helyre
-//    private LizHistoryPlayer findHistoryPlayerAndRegisterIfNotExists(String userUuid) {
-//        // Determine current record and its id
-//        LizHistoryPlayer lizHistoryPlayer = lizHistoryPlayerRepository.findByUserUuid(userUuid);
-//        if (lizHistoryPlayer == null) { // Register it if it was not
-//            lizHistoryPlayer = lizHistoryPlayerRepository.save(new LizHistoryPlayer(userUuid));
-//        }
-//        return lizHistoryPlayer;
-//    }
-//
-//    // TODO: Tedd megosztott helyre
-//    private LizHistorySession findHistorySessionAndRegisterIfNotExists(String sessionUuid) {
-//        // Determine current record and its id
-//        LizHistorySession lizHistorySession = lizHistorySessionRepository.findBySessionUuid(sessionUuid);
-//        if (lizHistorySession == null) { // Register it if it was not
-//            lizHistorySession = lizHistorySessionRepository.save(new LizHistorySession(sessionUuid));
-//        }
-//        return lizHistorySession;
-//    }
-//    // TODO: Tedd megosztott helyre
-//    private LizHistoryScenario findHistoryScenarioAndRegisterIfNotExists(String scenarioUuid) {
-//        // Determine current record and its id
-//        LizHistoryScenario lizHistoryScenario = lizHistoryScenarioRepository.findByScenarioUuid(scenarioUuid);
-//        if (lizHistoryScenario == null) { // Register it if it was not
-//            lizHistoryScenario = lizHistoryScenarioRepository.save(new LizHistoryScenario(scenarioUuid));
-//        }
-//        return lizHistoryScenario;
-//    }
-
-
-    // TODO: ?? ismetlodo??
-    // TODO: Tedd megosztott helyre
     private String convertPlayerDecisionObjToJson(PlayerDecision playerDecision) {
         try {
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);

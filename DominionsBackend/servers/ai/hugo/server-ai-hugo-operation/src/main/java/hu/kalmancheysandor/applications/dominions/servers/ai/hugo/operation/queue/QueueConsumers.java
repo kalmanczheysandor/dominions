@@ -12,32 +12,4 @@ public class QueueConsumers {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @Bean
-//    public Consumer<HugoNeuralConceptTaskProcessingQueueItem> queueExecutionTaskProcessingItemRead(HugoNeuralOrchestrationService service) {
-//        System.out.println("THE BEAN");
-//        return service::eventTaskProcessingQueueItemReceived;
-//    }
-//
-//
-//    @Bean
-//    public Consumer<AiHistoryQueueItem> queueHistoryBroadcast(HugoNeuralOrchestrationService service) {
-//        System.out.println("TTX");
-//        return service::eventHistoryQueueItemReceived;
-//    }
-
-
-    //
-//    @Bean
-//    public Consumer<String> queueHistoryBroadcast(LizService lizService) {
-//        return payload -> {
-//            try {
-//                AiHistoryQueueItem queueItem = objectMapper.readValue(payload, AiHistoryQueueItem.class);
-//                lizService.queueHistoryRead(queueItem);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        };
-//    }
-
-
 }

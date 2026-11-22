@@ -42,7 +42,7 @@ public class SiteAccountSettingsController {
     public SiteAccountSettingsProfileDetailsAccessResponse accessAccountProfileDetails() {
         // Check permission
         authenticationService.assertHasAccessPermission(SitePermission.generator().account().settings());
-        System.out.println("XXX-A1");
+
         return siteSettingsService.accessAccountProfileDetails();
     }
 

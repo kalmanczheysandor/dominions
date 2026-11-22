@@ -79,9 +79,6 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         List<LizNeuralNetworkTrainingItem> testingItems = LizNeuralNetworkTrainingItem.convertTrainingItemList(testingItemList);
         LizNeuralNetworkTrainingConfiguration lizTrainingConfiguration = LizNeuralNetworkTrainingConfiguration.generateInstance(trainingConfiguration);
 
-//        List<LizNeuralNetworkModelInput> trainingDataRows = LizNeuralNetworkModelInput.convertInputDataList(trainingItemList);
-//        List<LizNeuralNetworkModelInput> testingDataRows = LizNeuralNetworkModelInput.convertInputDataList(testingItemsList);
-
         // Print training data list
         //printTrainingDataList(trainingDataRows);
 
@@ -170,11 +167,6 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     }
 
 
-//    private void process() {
-//
-//    }
-
-
     private boolean evaluationOfAnOutput(double[] networkOutput, double[] desiredOutput) {
         boolean isOk = true;
         for (int i = 0; i < networkOutput.length; i++) {
@@ -229,46 +221,6 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
                 .build();
     }
 
-//
-//    @Override
-//    public void test(List<INeuralInputData> testingDataList) {
-//        System.out.println("<<<< LizNeuralNetwork: Testing >>>>");
-//
-//        // Convert
-//        List<LizInputData> testingDataRows = LizInputData.convertInputDataList(testingDataList);
-//
-//        // Build data set
-//        DataSet testingSet = buildDataSet(testingDataRows);
-////        printDataSet(testingSet);
-//
-//        // Test the trained neural network
-//        System.out.println("Testing trained neural network:");
-//        int okCount = 0;
-//        for (DataSetRow dataRow : testingSet.getRows()) {
-//            network.setInput(dataRow.getInput());
-//            network.calculate();
-//
-//            double[] networkOutput = network.getOutput();
-//            double[] desiredOutput = dataRow.getDesiredOutput();
-//
-//            boolean result = evaluationOfAnOutput(networkOutput, desiredOutput);
-//            if (result) {
-//                okCount++;
-//            }
-//
-//        }
-//
-//        double precisionRate = 0.0;
-//        int itemsCount = testingSet.size();
-//        if (itemsCount > 0) {
-//            precisionRate = (double) okCount / (double) itemsCount;
-//        }
-//
-
-    /// /        System.out.println("OkCount: " + okCount);
-    /// /        System.out.println("ItemsCount: " + itemsCount);
-//        System.out.println("Precision Rateeee: " + precisionRate);
-//    }
     @Override
     public INeuralNetworkModelOutput calculate(INeuralNetworkModelInput modelInput) {
         System.out.println("<<<< LizNeuralNetwork: calculate >>>>");
@@ -278,145 +230,24 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
 
         // Vectorisation
         double[] modelInputVector = convertModelInputObjToModelInputVector(modelInputObj);
-
+        System.out.println("[LIZ.calculate] Neural network input vector is: " + java.util.Arrays.toString(modelInputVector));
 
         // Get result from the model
         network.setInput(modelInputVector);
         network.calculate();
         double[] modelOutputVector = network.getOutput();
 
+        System.out.println("[LIZ.calculate] Neural network output data is: " + java.util.Arrays.toString(modelOutputVector));
+
         return convertModelOutputVectorToModelOutputObj(modelOutputVector);
     }
 
 
-//    private void printOutputVectorInfo(double[] outputVector) {
-//        String[] s1 = new String[determineOutputVectorLength()];
-//        String[] s2 = new String[determineOutputVectorLength()];
-//        String[] s3 = new String[determineOutputVectorLength()];
-//
-//        int columnIndex = 0;
-//        for (double value : outputVector) {
-//            if (columnIndex + 1 <= determineOutputVectorAttackProbabilitySectionLength()) {
-//                s1[columnIndex] = "C" + columnIndex;
-//                s2[columnIndex] = "";
-//                if (value > 0.0) {
-//                    s2[columnIndex] = "X";
-//                }
-//
-//                s3[columnIndex] = value + "%";
-//            } else if (columnIndex + 1 <= determineOutputVectorAttackProbabilitySectionLength() + 1) {
-//                s1[columnIndex] = "AttackPower";
-//                s2[columnIndex] = "";
-//                s3[columnIndex] = String.valueOf(value);
-//            }
-//            columnIndex++;
-//        }
-//
-//        TArray.printMatrix(new Object[][]{
-//                s1,
-//                s2,
-//                s3
-//        });
-//    }
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Network assembling /////////////////////////////////////////////////////////////////////////////////////////////
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//
-//    private static NeuralNetwork<?> assembleNeuralNetworkByData(int inputSize, int outputSize) {
-//
-//        // --- Input réteg ---
-//        Layer inputLayer = new Layer();
-//        for (int i = 0; i < inputSize; i++) {
-//            inputLayer.addNeuron(new InputNeuron());  // input neuron
-//        }
-//
-//        // --- Rejtett réteg 1 ---
-//        Layer hiddenLayerOne = new Layer();
-//        for (int i = 0; i < inputSize; i++) {
-//            hiddenLayerOne.addNeuron(new Neuron());
-//        }
-//
-//        // --- Rejtett réteg 2 ---
-//        Layer hiddenLayerTwo = new Layer();
-//        for (int i = 0; i < inputSize; i++) {
-//            hiddenLayerTwo.addNeuron(new Neuron(,new Tanh()));
-//        }
-//
-//        // --- Output réteg ---
-//        Layer outputLayer = new Layer();
-//        for (int i = 0; i < outputSize; i++) {
-//            outputLayer.addNeuron(new Neuron(TransferFunctionType.SIGMOID.getTransferFunction()));
-//        }
-//
-//        // --- Háló létrehozása ---
-//        NeuralNetwork<Neuron> network = new NeuralNetwork<>();
-//
-//        network.addLayer(0, inputLayer);
-//        network.addLayer(1, hiddenLayerOne);
-//        ConnectionFactory.fullConnect(inputLayer, hiddenLayerOne); // teljes összekötés + bias
-//
-//        network.addLayer(2, hiddenLayerTwo);
-//        ConnectionFactory.fullConnect(hiddenLayerOne, hiddenLayerTwo); // teljes összekötés + bias
-//
-//        network.addLayer(3, outputLayer);
-//        ConnectionFactory.fullConnect(hiddenLayerTwo, outputLayer); // teljes összekötés + bias
-//
-//        // opcionális: skip connection az inputról outputra (bias nélkül)
-//        ConnectionFactory.fullConnect(inputLayer, outputLayer, false);
-//
-//        // --- Bemeneti és kimeneti neuronok beállítása ---
-//        network.setInputNeurons(inputLayer.getNeurons());
-//        network.setOutputNeurons(outputLayer.getNeurons());
-//
-//        network.setNetworkType(NeuralNetworkType.MULTI_LAYER_PERCEPTRON);
-//
-//        return network;
-//    }
-
-//
-//    private static NeuralNetwork<?> assembleNeuralNetworkByData(int inputSize, int outputSize) {
-//
-//        Layer inputLayer = new Layer();
-//        for (int i = 1; i <= inputSize; i++) {
-//            inputLayer.addNeuron(new Neuron());
-//        }
-//
-//        Layer hiddenLayerOne = new Layer();
-//        for (int i = 1; i <= inputSize; i++) {
-//            hiddenLayerOne.addNeuron(new Neuron());
-//        }
-//
-//        Layer hiddenLayerTwo = new Layer();
-//        for (int i = 1; i <= inputSize; i++) {
-//            hiddenLayerTwo.addNeuron(new Neuron());
-//        }
-//
-//        Layer outputLayer = new Layer();
-//        for (int i = 1; i <= outputSize; i++) {
-//            outputLayer.addNeuron(new Neuron());
-//        }
-//
-//        NeuralNetwork network = new NeuralNetwork();
-//
-//        network.addLayer(0, inputLayer);
-//        network.addLayer(1, hiddenLayerOne);
-//        ConnectionFactory.fullConnect(network.getLayerAt(0), network.getLayerAt(1));
-//
-//        network.addLayer(2, hiddenLayerTwo);
-//        ConnectionFactory.fullConnect(network.getLayerAt(1), network.getLayerAt(2));
-//
-//        network.addLayer(3, outputLayer);
-//        ConnectionFactory.fullConnect(network.getLayerAt(2), network.getLayerAt(3));
-//        ConnectionFactory.fullConnect(network.getLayerAt(0), network.getLayerAt(network.getLayersCount() - 1), false);
-//
-//        network.setInputNeurons(inputLayer.getNeurons());
-//        network.setOutputNeurons(outputLayer.getNeurons());
-//
-//        network.setNetworkType(NeuralNetworkType.MULTI_LAYER_PERCEPTRON);
-//        return network;
-//    }
     private static Layer generateAnInputLayer(int neuronCount) {
         Layer layer = new Layer();
         for (int i = 1; i <= neuronCount; i++) {
@@ -470,15 +301,12 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
         Layer outputLayer = generateAnOutputLayer(configuration.determineOutputLayerSize());
         network.addLayer(currentLayerIndex, outputLayer);
         ConnectionFactory.fullConnect(network.getLayerAt(latestLayerIndex), network.getLayerAt(currentLayerIndex));
-//        ConnectionFactory.fullConnect(network.getLayerAt(0), network.getLayerAt(currentLayerIndex), false);
-
         network.setInputNeurons(inputLayer.getNeurons());
         network.setOutputNeurons(outputLayer.getNeurons());
 
         network.setNetworkType(NeuralNetworkType.MULTI_LAYER_PERCEPTRON);
         return network;
     }
-
 
     private NeuralNetwork<?> assembleNeuralNetworkByNetworkFile(String filePath) {
         // Load file
@@ -657,39 +485,27 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
             throw new RuntimeException("Output size is wrong!");
         }
 
+
+
+
+
         // Denormalisation
-        double[] operatorProbabilityDenormalised = new double[determineOutputVectorLength()];
         double[] operatorProbabilityNormalised = new double[determineOutputVectorLength()];
+        double[] operatorProbabilityDenormalised = new double[determineOutputVectorLength()];
         System.arraycopy(modelOutputVector, 0, operatorProbabilityNormalised, 0, determineOutputVectorLength());
 
+
         for (int i = 0; i < operatorProbabilityNormalised.length; i++) {
-            operatorProbabilityDenormalised[i] = denormaliseValue(operatorProbabilityNormalised[i], 0, 100); // values denormalised between 0% and 100%
+            operatorProbabilityDenormalised[i] = denormaliseValue(operatorProbabilityNormalised[i], 0, 1); // values denormalised between 0% and 100%
         }
 
+        System.out.println("[NORMALIZED] Neural network output vector is: " + java.util.Arrays.toString(operatorProbabilityNormalised));
+        System.out.println("[DENORMALIZED] Neural network output vector is: " + java.util.Arrays.toString(operatorProbabilityDenormalised));
         return LizNeuralNetworkModelOutput.builder()
                 .operatorProbability(operatorProbabilityDenormalised)
                 .build();
     }
 
-//    private double[] generateOutputVectorByTrainingData(LizInputData trainingData) {
-//        // Input checking - Cell owners
-//        if (trainingData.getCellOccupierIndex().length != determineInputVectorOwnersSectionLength()) {
-//            throw new RuntimeException("Invalid length of cell owner ranks!");
-//        }
-//        if (trainingData.getCellGarrisonSize().length != determineInputVectorDefendersSectionLength()) {
-//            throw new RuntimeException("Invalid length of cell defenders!");
-//        }
-//
-//        // Initialise
-//        int cellCount = trainingData.getCellOccupierIndex().length;
-//
-//        // Output nodes - Targeted cell percentage
-//        double[] outputNodeValuesArray = new double[cellCount];     // By default, all values are 0 (because array default values) which means 0% probability
-//        if (trainingData.getChosenTarget() != -1) {        // When attack action happened and not reserve action
-//            outputNodeValuesArray[trainingData.getChosenTarget()] = normaliseValue(100, 0, 100);        // The potentiality id 100%, others 0%
-//        }
-//        return outputNodeValuesArray;
-//    }
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Helper methods //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -702,19 +518,6 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     private int determineOutputVectorLength() {
         return configuration.determineOutputLayerSize();
     }
-
-
-//    private int determineInputVectorOwnersSectionLength() {
-//        return lizNeuralNetworkConfiguration.getCellCount();
-//    }
-//
-//    private int determineInputVectorDefendersSectionLength() {
-//        return lizNeuralNetworkConfiguration.getCellCount();
-//    }
-//
-//    private int determineOutputVectorAttackProbabilitySectionLength() {
-//        return lizNeuralNetworkConfiguration.getCellCount();
-//    }
 
 
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -736,7 +539,6 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-
     public static class LizNeuralNetworkConfiguration {
 
         private int hiddenLayerCount;
@@ -820,55 +622,4 @@ public class LizNeuralNetwork extends TNeuralNetwork implements INeuralNetwork {
 
     }
 
-//    @Getter
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @Builder
-//    public static class Configuration {
-//        private int maxPlayerCount;
-//        private int maxCellCount;
-//
-//
-//
-////        private int enemiesCountMin;
-////        private int enemiesCountMax;
-////
-////        private int ownerRankMinIndex;
-////        private int ownerRankMaxIndex;
-////
-////        private int defendersMinCount;
-////        private int defendersMaxCount;
-////
-////        private int attackPowerMin;
-////        private int attackPowerMax;
-////
-////        private int cellCount;
-//
-//
-//        private static void validation(Configuration configuration) {
-//            // Validations
-//            if (configuration.enemiesCountMax <= configuration.enemiesCountMin) {
-//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-//            }
-//
-//            if (configuration.ownerRankMaxIndex <= configuration.ownerRankMinIndex) {
-//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-//            }
-//
-//            if (configuration.defendersMaxCount <= configuration.defendersMinCount) {
-//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-//            }
-//
-//            if (configuration.attackPowerMax <= configuration.attackPowerMin) {
-//                throw new RuntimeException("Parameter ...max must be grater then parameter ...min!");
-//            }
-//
-//
-//        }
-//
-//        public void validate() {
-//            Configuration.validation(this);
-//        }
-//
-//    }
 }

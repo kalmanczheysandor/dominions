@@ -13,9 +13,9 @@ public class NotEnoughSupplyGameStateMachineException extends TPlayerActionGameS
     @Override
     public String toString() {
         return "NotEnoughSupplyPlayerActionOnGameStateException{" +
-            "expectedSupplySize=" + expectedSupplySize +
-            ", availableSupplySize=" + availableSupplySize +
-            ", playerKey=" + getPlayerKey() +
-            '}';
+                "expectedSupplySize=" + expectedSupplySize +
+                ", availableSupplySize=" + availableSupplySize +
+                ", playerKey=" + getPlayerKey() +
+                '}';
     }
 }

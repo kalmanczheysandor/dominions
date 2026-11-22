@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -38,5 +39,16 @@ public class LizNeuralNetworkModelInput implements INeuralNetworkModelInput {
             inputList.add(convertInstance(modelInputObj));
         }
         return inputList;
+    }
+
+    @Override
+    public String toString() {
+        return "LizNeuralNetworkModelInput{" +
+                "cellOccupierIndex=" + Arrays.toString(cellOccupierIndex) +
+                ", cellGarrisonSize=" + Arrays.toString(cellGarrisonSize) +
+                ", playerTerritorySize=" + Arrays.toString(playerTerritorySize) +
+                ", playerReserveSize=" + Arrays.toString(playerReserveSize) +
+                ", playerIsAlive=" + Arrays.toString(playerIsAlive) +
+                '}';
     }
 }

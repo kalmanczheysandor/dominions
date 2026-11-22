@@ -1,7 +1,5 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.liz.operation.controller;
 
-
-import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.character.option.LizCharacterVariantOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.variant.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.liz.shared.dto.variant.option.LizVariantConceptOptionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.admin.AdminPermission;

@@ -17,11 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
-import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -60,29 +57,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOrigins(
-//                                gameSiteUrl
-//                        )
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
-//                        .allowedHeaders("*")
-//                        .allowCredentials(true)
-//                        .exposedHeaders("Set-Cookie")   // TODO: It might does not needs
-//                ;
-//            }
-//        };
-//    }
-
-//    @Bean
-//    public SecurityContextRepository securityContextRepository() {
-//        return new HttpSessionSecurityContextRepository();
-//    }
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {

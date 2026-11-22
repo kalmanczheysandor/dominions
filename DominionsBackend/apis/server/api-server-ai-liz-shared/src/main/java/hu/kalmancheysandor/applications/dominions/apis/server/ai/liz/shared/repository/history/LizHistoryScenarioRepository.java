@@ -24,25 +24,16 @@ public interface LizHistoryScenarioRepository extends JpaRepository<LizHistorySc
 
     public List<LizHistoryScenario> findAll();
 
-
     public void deleteById(int id);
-
-//    public boolean existsByScenarioUuid(String scenarioUuid);
 
     public LizHistoryScenario save(LizHistoryScenario lizHistoryScenario);
 
-
     @Query("SELECT COUNT(t) FROM LizHistoryScenario t")
     int countAll();
-
 
     @Query("SELECT t FROM LizHistoryScenario t")
     List<LizHistoryScenario> listAll();
 
     @Query("SELECT t FROM LizHistoryScenario t")
     Stream<LizHistoryScenario> streamAll();
-
-
-
-
 }

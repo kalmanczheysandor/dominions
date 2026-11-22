@@ -54,11 +54,5 @@ public class GameStateCell {
     public String toString() {
         return "Cell{" + "occupierKey=" + occupierKey + ", defendingTroopSize=" + defendingTroopSize + '}';
     }
-//        public void decrementTroopSize(int decrementWithValue) {
-//            this.troopSize -= decrementWithValue;
-//            if(this.troopSize<0) {
-//                this.troopSize=0;
-//            }
-//
-//        }
+
 }

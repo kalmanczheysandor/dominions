@@ -29,7 +29,5 @@ public interface LizHistoryPlayerRepository extends JpaRepository<LizHistoryPlay
 
     public void deleteById(int id);
 
-//    public boolean existsByUserUuid(String userUuid);
-
     public LizHistoryPlayer save(LizHistoryPlayer lizHistoryPlayer);
 }

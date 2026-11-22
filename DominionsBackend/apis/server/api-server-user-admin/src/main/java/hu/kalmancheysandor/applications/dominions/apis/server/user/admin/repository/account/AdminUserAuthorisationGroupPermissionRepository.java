@@ -12,18 +12,21 @@ import java.util.List;
 @Repository
 public interface AdminUserAuthorisationGroupPermissionRepository extends JpaRepository<AdminUserAuthorisationGroupPermission, AdminUserAuthorisationGroupPermission.PrimaryKey> {
     public AdminUserAuthorisationGroupPermission findByGroupIdAndTarget(int authorisationGroupId, String target);
+
     public AdminUserAuthorisationGroupPermission findByGroupId(int authorisationGroupId);
 
     public List<AdminUserAuthorisationGroupPermission> findAll();
+
     public void deleteByGroupIdAndTarget(int authorisationGroupId, String target);
+
     public boolean existsByGroupIdAndTarget(int authorisationGroupId, String target);
+
     public AdminUserAuthorisationGroupPermission save(AdminUserAuthorisationGroupPermission permission);
 
 
     @Modifying
     @Query("DELETE FROM AdminUserAuthorisationGroupPermission p WHERE p.groupId=:paramGroupId")
     public void deleteAllPermissionsOfPermissionGroup(@Param("paramGroupId") int groupId);
-
 
 
 }

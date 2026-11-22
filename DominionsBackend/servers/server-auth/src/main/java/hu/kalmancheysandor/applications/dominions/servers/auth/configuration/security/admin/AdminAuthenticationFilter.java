@@ -48,9 +48,9 @@ public class AdminAuthenticationFilter extends AbstractAuthenticationProcessingF
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(identifier, password);
 
         System.out.println("------------Attempt to authenticate [AdminAuthenticationFilter]-------------");
-        System.out.println("Identifier:" + identifier);
-        System.out.println("Password:" + password);
-        System.out.println("Cookies:" + request.getHeader("Cookie"));
+//        System.out.println("Identifier:" + identifier);
+//        System.out.println("Password:" + password);
+//        System.out.println("Cookies:" + request.getHeader("Cookie"));
 
 
         return getAuthenticationManager().authenticate(authRequest);

@@ -178,7 +178,6 @@ public class GameState {
     }
 
     public boolean isFinalState() {
-//        if (isNoMoreEmptyCell() && countAlivePlayers() <= 2) {
         if (isNoMoreEmptyCell()) {
             return true;
         }

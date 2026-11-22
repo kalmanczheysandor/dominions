@@ -1,11 +1,11 @@
 package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.agent.service;
 
 
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.HugoEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoFirstHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoSecondHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoHeuristicEvaluator;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.next.*;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionResponse;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.hugo.shared.entity.heuristic.HugoHeuristicEvaluatorType;

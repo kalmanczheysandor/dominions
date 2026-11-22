@@ -12,13 +12,9 @@ import java.util.List;
 
 @Repository
 public interface HugoHistoryRepository extends JpaRepository<HugoHistory, HugoHistory.PrimaryKey> {
-//    public LizHistory findBy(long userId);
     public List<HugoHistory> findAll();
-//
-//        public void deleteById(long userId);
-//        public boolean existsById(long userId);
-    public HugoHistory save(HugoHistory history);
 
+    public HugoHistory save(HugoHistory history);
 
     @Query("SELECT t FROM HugoHistory t WHERE t.playerId = :playerId")
     List<HugoHistory> listAllAtPlayerId(@Param("playerId") int playerId);
