@@ -8,9 +8,6 @@ export const ServerResponseManager = {
             data = await response.json();
         }
 
-        // console.log("data");
-        // console.log(data);
-
         if(response.ok) {
             return {success: true, data: data};
         } else {
@@ -38,9 +35,4 @@ export const ServerResponseManager = {
             return {success: false, messages: errorMessages};
         }
     }
-
-
-
-
-
 }

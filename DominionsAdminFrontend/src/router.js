@@ -118,46 +118,6 @@ export const router = createRouter({
                 cssName: 'DefaultPageStyle'
             }
         },
-        // {
-        //     name: 'Ai.Liz.Solution',
-        //     path: '/ai/liz/ss',
-        //     component: LizSolutionPage,
-        //     meta: {
-        //         title: 'Liz Solutions',
-        //         requiresAuth: true,
-        //         requiredPermissions: [authService.generateAccessPermissionOn('Ai.Liz.Solution')],
-        //         cssName: 'DefaultPageStyle'
-        //     }
-        // },
-
-
-        // {
-        //     name: 'Ai.Liz.Personnel.Solution.Training',
-        //     path: '/ai/liz/personnel/0/solution/:solutionUuid/training',
-        //     component: LizPersonnelSolutionTrainingPage,
-        //     props: true,
-        //     meta: {
-        //         title: 'Liz - Training',
-        //         requiresAuth: true,
-        //         requiredPermissions: [authService.generateAccessPermissionOn('Ai.Liz.Personnel.Solution')],
-        //         cssName: 'DefaultPageStyle'
-        //     }
-        // },
-
-        // {
-        //     name: 'Ai.Liz.Personnel.Solution',
-        //     path: '/ai/liz/personnel/:personnelUuid/solution',
-        //     component: LizPersonnelSolutionPage,
-        //     props: true,
-        //     meta: {
-        //         title: 'Liz - Solution',
-        //         requiresAuth: true,
-        //         requiredPermissions: [authService.generateAccessPermissionOn('Ai.Liz.Personnel.Solution')],
-        //         cssName: 'DefaultPageStyle'
-        //     }
-        // },
-
-
         {
             name: 'Ai.Hugo.Character',
             path: '/ai/hugo/character',
@@ -204,14 +164,6 @@ export const router = createRouter({
                 cssName: 'DefaultPageStyle'
             }
         },
-
-
-
-
-
-
-
-
 
         {
             name: 'Ai.Liz.Character',

@@ -20,13 +20,11 @@
                             Kádek</strong>.
                         </p>
                         <p>
-                            © 2025 – Version 1.0
+                            © 2026 – Version 1.0
                         </p>
                         <p>
                             All rights reserved.
                         </p>
-
-
                     </div>
                 </footer>
             </v-container>

@@ -230,7 +230,7 @@ export default {
 
                 // Load image
                 await this.$refs.PhotoCroppieInput.openFile(backendConfiguration.BACKEND_BASE_URL + '/account/admin/user/' + uuid + '/photo');
-                // await this.$refs.PhotoCroppieInput.openFile("C:/@/@Szakdolgozat1/_apps/Dominions/DominionsBackend/.data/images/admin-user/settings/3/photo.jpg");
+
             } catch (exp) {
                 await TController.handleExceptions(exp);
                 this.close();

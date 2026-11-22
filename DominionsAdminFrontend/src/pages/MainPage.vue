@@ -1,5 +1,5 @@
 <template>
-    MainPAge
+Welcome
 </template>
 
 <script>

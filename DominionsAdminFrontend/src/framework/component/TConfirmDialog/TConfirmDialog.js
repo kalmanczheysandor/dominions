@@ -62,21 +62,7 @@ const TConfirmDialog = (message) => {
                     color:'red'
                 }
             },
-            // theme: {
-            //     themes: {
-            //         light: {
-            //             colors: {
-            //                 primary: '#1976D2',
-            //                 secondary: '#424242',
-            //                 accent: '#8C9EFF',
-            //                 error: '#F44336',
-            //                 info: '#2196F3',
-            //                 success: '#4CAF50',
-            //                 warning: '#FF9800',
-            //             },
-            //         },
-            //     },
-            // }
+
         })
 
         app.use(vuetify)

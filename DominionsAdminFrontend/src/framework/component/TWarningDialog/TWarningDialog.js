@@ -44,7 +44,7 @@ const TWarningDialog = (params) => {
 
         const vuetify = createVuetify({
             components,
-            directives, // Directives biztosítása
+            directives,
         })
 
         app.use(vuetify)

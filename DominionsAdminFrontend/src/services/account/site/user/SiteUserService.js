@@ -5,9 +5,6 @@ class SiteUserService extends TService {
     #baseUrl = super.extendWithBaseUrl('/account/site/user');
     #permissionResource = 'Account.Site.User';
 
-
-
-
     async accessByUuid(uuid) {
         // Checking permission
         authService.assertAccessActionGrantedOn(this.#permissionResource);

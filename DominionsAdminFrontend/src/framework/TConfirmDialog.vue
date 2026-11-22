@@ -28,13 +28,13 @@
             cancel() {
                 this.visible = false;
                 if (this.cancelMethod) {
-                    this.cancelMethod(); // Lokális cancel esemény hívása
+                    this.cancelMethod();
                 }
             },
             confirm() {
                 this.visible = false;
                 if (this.confirmMethod) {
-                    this.confirmMethod(); // Lokális confirm esemény hívása
+                    this.confirmMethod();
                 }
             },
             showDialog(confirmEvent = null, cancelEvent = null, title = null, message = null) {

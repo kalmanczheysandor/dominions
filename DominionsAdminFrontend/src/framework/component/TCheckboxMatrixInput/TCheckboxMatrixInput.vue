@@ -131,10 +131,10 @@
     .TCheckboxMatrixInput > table td {
         padding: 0px;
 
-        justify-content: center; /* Vízszintes középre igazítás */
+        justify-content: center;
         text-align: center;
         text-overflow: ellipsis;
-        align-items: center; /* Függőleges középre igazítás */
+        align-items: center;
         white-space: nowrap;
 
         background-color: transparent;

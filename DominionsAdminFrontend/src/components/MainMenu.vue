@@ -92,8 +92,8 @@ export default {
                 profileAvatarUrl: '',
             },
             MainMenuComponent: {
-                usersMenuOpen: false,  // Az "Users" menü állapota
-                settingsMenuOpen: false,  // A "Settings" menü állapota
+                usersMenuOpen: false,
+                settingsMenuOpen: false,
                 menuItems: [
                     {
                         title: 'Ai',
@@ -210,22 +210,7 @@ export default {
 
                         ]
                     },
-                    // {
-                    //     title: 'Enrolment',
-                    //     icon: 'mdi-view-dashboard',
-                    //     subItems: [
-                    //         {title: 'Clients', icon: 'mdi-account-group', route: '/enrollment/client'},
-                    //         {title: 'Permissions', icon: 'mdi-view-dashboard', route: '/enrollment/permission'}
-                    //     ]
-                    // },
-                    // {
-                    //     title: 'Settings',
-                    //     icon: 'mdi-cog',
-                    //     subItems: [
-                    //         {title: 'General', route: 'general-settings'},
-                    //         {title: 'Security', route: 'security-settings'}
-                    //     ]
-                    // }
+
                 ]
             }
         };

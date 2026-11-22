@@ -24,13 +24,13 @@ class TService {
 
             //
             if (type === 'GeneralErrorResponse') {
-                throw new GeneralBackendException(code,parameters);
+                throw new GeneralBackendException(code, parameters);
             } else if (type === 'GeneralFailureResponse') {
-                throw new GeneralBackendException(code,parameters);
+                throw new GeneralBackendException(code, parameters);
             } else if (type === 'SecurityFailureResponse') {
-                throw new SecurityBackendException(code,parameters);
+                throw new SecurityBackendException(code, parameters);
             } else if (type === 'AuthenticationFailureResponse') {
-                throw new AuthenticationBackendException(code,parameters);
+                throw new AuthenticationBackendException(code, parameters);
             } else {
                 throw new CustomErrorException('Unsupported response type is found:' + type + '!');
             }

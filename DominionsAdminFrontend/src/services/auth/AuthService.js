@@ -28,16 +28,6 @@ class AuthService extends TService {
         return permissions.includes(permission);
     }
 
-    // isRoutingPermitted(to, from) {
-    //     if(to.path == '/breed' && this.hasCurrentUserPermission('Breed:VIEW')) {
-    //         return true;
-    //     }
-    //     if(from.path == '') {
-    //         console.log('');
-    //     }
-    //
-    //     return false;
-    // }
 
     isAccessActionGrantedOn(resource) {
         return this.hasCurrentUserPermission(resource + ':VIEW');
@@ -155,15 +145,6 @@ class AuthService extends TService {
             this.invalidateAuthentication();
             console.log("A4",url);
 
-            //window.location.href = "/login"; // Átirányítás
-
-
-            //
-            // // Save data of authenticated user
-            // const authStore = this.getAuthStore();
-            // authStore.isAuthenticated = true;
-            // authStore.user.identifier = answer.identifier;
-            // authStore.user.permissions = answer.permissions;
 
             return answer;
 

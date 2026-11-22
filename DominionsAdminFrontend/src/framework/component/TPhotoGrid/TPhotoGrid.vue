@@ -90,7 +90,6 @@
     .TPhotoGrid > .ImageFrame > .Actions > .Icon {
         position: relative;
         display: inline;
-    //text-shadow: 0px 0px 2px black; text-shadow: #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px, #000 0px 0px 1px; color: white; font-size: 30px; opacity: 0.2;
     }
 
     .TPhotoGrid > .ImageFrame > .Actions > .Icon:hover {

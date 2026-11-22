@@ -159,45 +159,6 @@
                 this.croppie.setZoom(0);
             },
 
-
-            // bindCroppie(imageUrl) {
-            //     let el = this.$refs.croppieContainer;
-            //
-            //     // Create a new Croppie instance
-            //     this.croppie = new Croppie(el, {
-            //         viewport: {width: this.cropWidth, height: this.cropHeight, type: 'square'},
-            //         boundary: {width: this.boundaryWidth, height: this.boundaryHeight},
-            //         showZoomer: true,
-            //         enableOrientation: true,
-            //         enableExif: true,
-            //         zoom: 0
-            //     });
-            //
-            //     // Fetch the image with credentials: 'include'
-            //     fetch(imageUrl, {
-            //         method: 'GET',
-            //         credentials: 'include' // Ensure credentials (cookies, etc.) are included
-            //     })
-            //     .then(response => response.blob())
-            //     .then(blob => {
-            //         const reader = new FileReader();
-            //         reader.onloadend = () => {
-            //             let image = reader.result; // Convert the image blob to base64
-            //             this.croppie.bind({
-            //                 url: image,  // Use the base64 image
-            //                 orientation: 1,
-            //                 enableOrientation: true,
-            //                 zoom: 0
-            //             });
-            //         };
-            //         reader.readAsDataURL(blob); // Read the image blob as base64
-            //     })
-            //     .catch(error => {
-            //         console.error('Error loading image:', error);
-            //     });
-            // },
-
-
             bindCroppie(image) {
                 let el = this.$refs.croppieContainer;
                 this.croppie = new Croppie(el, {
@@ -221,7 +182,7 @@
             async openFile(imageUrl) {
 
                 if(imageUrl instanceof Blob) {
-                    console.log('A1');
+
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         let image = e.target.result; // Set the selected image
@@ -231,7 +192,7 @@
                     };
                     reader.readAsDataURL(imageUrl);
                 } else if(typeof imageUrl === 'string') {
-console.log('A2');
+
                     try {
                         // Communicate to backend
                         const response = await fetch(imageUrl, {
@@ -290,7 +251,6 @@ console.log('A2');
 
                 // Destroy the current Croppie instance
                 if(this.croppie !== null) {
-                    //this.image='http://localhost:8080/favicon.ico',
                     this.croppie.destroy();
                     this.croppie = null;
                 }
