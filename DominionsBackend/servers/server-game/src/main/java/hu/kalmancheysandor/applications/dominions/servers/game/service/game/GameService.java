@@ -32,7 +32,6 @@ import hu.kalmancheysandor.applications.dominions.apis.server.game.common.except
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.exception.game.scenario.GameScenarioNotPublishedException;
 
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.game.GameScenarioRepository;
-import hu.kalmancheysandor.applications.dominions.apis.server.game.common.repository.history.HistoryRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.entity.account.SiteUser;
 import hu.kalmancheysandor.applications.dominions.apis.server.user.site.repository.account.SiteUserRepository;
 import hu.kalmancheysandor.applications.dominions.apis.server.game.common.dto.game.*;
@@ -57,7 +56,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,9 +93,9 @@ public class GameService {
 
     @Autowired
     private SiteUserRepository siteUserRepository;
-
-    @Autowired
-    private HistoryRepository historyRepository;
+//
+//    @Autowired
+//    private HistoryRepository historyRepository;
 
 
     @Autowired
@@ -597,30 +595,47 @@ public class GameService {
 
         // Call asynchronously all ai endpoints
         for (Map.Entry<Integer, PlayerData> playerEntry : players.entrySet()) {
+            int aiPlayerIndex = playerEntry.getKey();
+
             // Jump to next player if this one is not an artificial one
             if (!playerEntry.getValue().isArtificial()) {
                 continue;
             }
 
-            //
-            int aiPlayerIndex = playerEntry.getKey();
+            // Check whether the player is alive
+            if (!playState.getGameState().getOpponent(aiPlayerIndex).isAlive()) {
+                continue;
+            }
+
             ArtificialPlayer aiPlayer = (ArtificialPlayer) playerEntry.getValue();
 
             // Send request
             futures.add(CompletableFuture.supplyAsync(() -> {
-                AiDecisionRequest requestObj = generateAiRequest(
-                        aiPlayerIndex,
-                        aiPlayer.getUserUuid(),
-                        aiPlayer.getName(),
-                        aiPlayer.getCharacterCode(),
-                        playState,
-                        scenarioUuid,
-                        scenarioTitle,
-                        sessionUuid
-                );
-                AiDecisionResponse responseObj = waitingAiResponse(aiPlayer, requestObj);
+                try {
+                    System.out.println("Executing AiAnswer for name:" + aiPlayer.getName()+" character code"+ aiPlayer.getCharacterCode());
+                    AiDecisionRequest requestObj = generateAiRequest(
+                            aiPlayerIndex,
+                            aiPlayer.getUserUuid(),
+                            aiPlayer.getName(),
+                            aiPlayer.getCharacterCode(),
+                            playState,
+                            scenarioUuid,
+                            scenarioTitle,
+                            sessionUuid
+                    );
+                    AiDecisionResponse responseObj = waitingAiResponse(aiPlayer, requestObj);
 
-                return new AiAnswer(aiPlayerIndex, responseObj);
+                    return new AiAnswer(aiPlayerIndex, responseObj);
+                } catch (Exception e) {
+                    log.error(
+                            "AI request failed: name={}, code={}",
+                            aiPlayer.getName(),
+                            aiPlayer.getCharacterCode(),
+                            e
+                    );
+                    throw new RuntimeException(e);
+                }
+
             }));
 
         }
@@ -639,7 +654,7 @@ public class GameService {
             // Create an Action by Ai response
             Integer targetCellKey = decisionObj.getTargetCellKey();
             Integer troopSize = decisionObj.getTroopSize();
-            if (targetCellKey != null && targetCellKey == 0 && troopSize == 0) { // When it is a reserve-action
+            if (targetCellKey != null && targetCellKey == 0 && troopSize == 0) { // When it is a Skip action
                 targetCellKey = null;
             }
             GameAction aiAction = new GameAction(aiPlayerIndex, targetCellKey, troopSize);

@@ -39,8 +39,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class OttoVariantService extends TOttoService {
 
-
-
     @Autowired
     private OttoVariantRepository ottoVariantRepository;
 
@@ -58,8 +56,8 @@ public class OttoVariantService extends TOttoService {
 
     private List<EvaluatorItem> evaluatorList = List.of(
             new EvaluatorItem(1, OttoOperatorScoreEvaluatorType.R1.toString(), "00000-R1", OttoOperatorScoreEvaluatorType.R1.toString()),
-            new EvaluatorItem(1, OttoOperatorScoreEvaluatorType.R2.toString(), "00000-R2", OttoOperatorScoreEvaluatorType.R2.toString()),
-            new EvaluatorItem(1, OttoOperatorScoreEvaluatorType.R3.toString(), "00000-R3", OttoOperatorScoreEvaluatorType.R3.toString())
+            new EvaluatorItem(2, OttoOperatorScoreEvaluatorType.R2.toString(), "00000-R2", OttoOperatorScoreEvaluatorType.R2.toString()),
+            new EvaluatorItem(3, OttoOperatorScoreEvaluatorType.R3.toString(), "00000-R3", OttoOperatorScoreEvaluatorType.R3.toString())
     );
 
     public OttoVariantAccessResponse access(@NotBlank String recordUuid) {

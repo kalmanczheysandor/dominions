@@ -12,4 +12,11 @@ public class IntValueIsUnderMinimumVariableAssertException extends TVariableAsse
     public int getMinimum() {
         return minimum;
     }
+
+    @Override
+    public String toString() {
+        return "IntValueIsUnderMinimumVariableAssertException{" +
+                "minimum=" + minimum +
+                '}';
+    }
 }

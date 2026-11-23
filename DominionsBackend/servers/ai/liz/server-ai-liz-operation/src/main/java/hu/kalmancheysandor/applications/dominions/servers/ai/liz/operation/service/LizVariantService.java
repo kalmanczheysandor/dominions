@@ -97,7 +97,6 @@ public class LizVariantService extends TLizService {
         // Save lizPersonnel
         LizVariant recordToSave = new LizVariant();
         recordToSave.setName(request.getName());
-        recordToSave.setConfSearchDepth(request.getConfSearchDepth());
         recordToSave.setConcept(lizNeuralConcept);
         recordToSave.setEnabled(request.isEnabled());
         recordToSave.setDateCreated(LocalDateTime.now());
@@ -142,7 +141,6 @@ public class LizVariantService extends TLizService {
 
         // Modify lizPersonnel
         recordToModify.setName(request.getName());
-        recordToModify.setConfSearchDepth(request.getConfSearchDepth());
         recordToModify.setConcept(lizNeuralConcept);
         recordToModify.setEnabled(request.isEnabled());
         recordToModify.setDateModified(LocalDateTime.now());

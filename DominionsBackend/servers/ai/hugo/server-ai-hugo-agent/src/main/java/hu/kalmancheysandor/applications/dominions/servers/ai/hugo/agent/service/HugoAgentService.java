@@ -2,8 +2,10 @@ package hu.kalmancheysandor.applications.dominions.servers.ai.hugo.agent.service
 
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.HugoEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoFirstHeuristicEvaluator;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoSecondHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoH0HeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoH1HeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoH2HeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoH3HeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.server.ai.common.dto.AiDecisionRequest;
@@ -48,6 +50,9 @@ public class HugoAgentService extends THugoService {
 
         //
         IHugoEngine engine = new HugoEngine();
+        engine.setSearchDepthLimit(
+                determineSearchDepthLimit(myCharacterCode)
+        );
         engine.registerHeuristicEvaluator(
                 determineHeuristicEvaluatorByCharacterCode(myCharacterCode)
         );
@@ -72,10 +77,15 @@ public class HugoAgentService extends THugoService {
 
     private IHugoHeuristicEvaluator determineHeuristicEvaluatorByCharacterCode(String characterCode) {
         HugoHeuristicEvaluatorType heuristicEvaluatorType = determineHeuristicEvaluatorTypeFromCharacterCode(characterCode);
-        if (HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR.equals(heuristicEvaluatorType)) {
-            return new HugoFirstHeuristicEvaluator();
-        } else if (HugoHeuristicEvaluatorType.HUGO_SECOND_HEURISTIC_EVALUATOR.equals(heuristicEvaluatorType)) {
-            return new HugoSecondHeuristicEvaluator();
+
+        if (HugoHeuristicEvaluatorType.H0.equals(heuristicEvaluatorType)) {
+            return new HugoH0HeuristicEvaluator();
+        } else if (HugoHeuristicEvaluatorType.H1.equals(heuristicEvaluatorType)) {
+            return new HugoH1HeuristicEvaluator();
+        } else if (HugoHeuristicEvaluatorType.H2.equals(heuristicEvaluatorType)) {
+            return new HugoH2HeuristicEvaluator();
+        } else if (HugoHeuristicEvaluatorType.H3.equals(heuristicEvaluatorType)) {
+            return new HugoH3HeuristicEvaluator();
         } else {
             throw new HugoUnexpectedHeuristicEvaluatorTypeCodeException(heuristicEvaluatorType.toString());
         }
@@ -101,13 +111,40 @@ public class HugoAgentService extends THugoService {
         }
 
         //
-        if (HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR.toString().equals(variant.getHeuristicCode())) {
-            return HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR;
-        } else if (HugoHeuristicEvaluatorType.HUGO_SECOND_HEURISTIC_EVALUATOR.toString().equals(variant.getHeuristicCode())) {
-            return HugoHeuristicEvaluatorType.HUGO_SECOND_HEURISTIC_EVALUATOR;
+        if (HugoHeuristicEvaluatorType.H0.toString().equals(variant.getHeuristicCode())) {
+            return HugoHeuristicEvaluatorType.H0;
+        } else if (HugoHeuristicEvaluatorType.H1.toString().equals(variant.getHeuristicCode())) {
+            return HugoHeuristicEvaluatorType.H1;
+        } else if (HugoHeuristicEvaluatorType.H2.toString().equals(variant.getHeuristicCode())) {
+            return HugoHeuristicEvaluatorType.H2;
+        } else if (HugoHeuristicEvaluatorType.H3.toString().equals(variant.getHeuristicCode())) {
+            return HugoHeuristicEvaluatorType.H3;
         } else {
             throw new HugoUnexpectedHeuristicEvaluatorTypeCodeException(variant.getHeuristicCode());
         }
+    }
+
+    private int determineSearchDepthLimit(String code) {
+        // Find and validate character
+        HugoCharacter character = hugoCharacterRepository.findByCode(code);
+        if (character == null) {
+            throw new HugoCharacterNotFoundByUuidException(code);
+        }
+        if (!character.isEnabled()) {
+            throw new HugoCharacterAssociationRestrictedException(character.getId(), character.getName());
+        }
+
+        // Find variant
+        HugoVariant variant = character.getVariant();
+        if (variant == null) {
+            throw new HugoVariantNotFoundException();
+        }
+        if (!variant.isEnabled()) {
+            throw new HugoVariantAssociationRestrictedException(character.getId(), character.getName());
+        }
+
+
+        return variant.getConfSearchDepth();
     }
 
 }

@@ -2,9 +2,11 @@ package hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.sandbox;
 
 
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.HugoEngine;
-import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoSecondHeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoH2HeuristicEvaluator;
+import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.evalutor.HugoH3HeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoEngine;
 import hu.kalmancheysandor.applications.dominions.apis.ai.general.common.AiDecisionContext;
+import hu.kalmancheysandor.applications.dominions.apis.ai.general.common.AiDecisionResult;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.map.GameMap;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.map.GameMapPlayerType;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameState;
@@ -1511,10 +1513,11 @@ public class S1 {
 
 
         IHugoEngine engine = new HugoEngine();
-        engine.registerHeuristicEvaluator(new HugoSecondHeuristicEvaluator());
-        engine.makeDecision(decisionContext);
+        engine.registerHeuristicEvaluator(new HugoH2HeuristicEvaluator());
+        engine.setSearchDepthLimit(2);
+        AiDecisionResult obj = engine.makeDecision(decisionContext);
 
-
+        System.out.println(obj);
     }
 
     public static void main(String[] args) {

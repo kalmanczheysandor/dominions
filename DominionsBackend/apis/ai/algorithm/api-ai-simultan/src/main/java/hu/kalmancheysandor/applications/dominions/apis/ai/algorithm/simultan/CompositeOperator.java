@@ -3,12 +3,11 @@ package hu.kalmancheysandor.applications.dominions.apis.ai.algorithm.simultan;
 import java.util.*;
 
 public class CompositeOperator {
-
     private int playerKey;
-    private Integer targetIndex;
+    private int targetIndex;
     private List<ElementaryOperator> combinations;
 
-    public CompositeOperator(int playerKey, Integer targetIndex, List<ElementaryOperator> combinations) {
+    public CompositeOperator(int playerKey, int targetIndex, List<ElementaryOperator> combinations) {
         this.playerKey = playerKey;
         this.targetIndex = targetIndex;
         this.combinations = combinations;
@@ -19,7 +18,7 @@ public class CompositeOperator {
         return playerKey;
     }
 
-    public Integer getTargetIndex() {
+    public int getTargetIndex() {
         return targetIndex;
     }
 
@@ -39,12 +38,13 @@ public class CompositeOperator {
     }
 
     public static CompositeOperator create(int leadPlayerKey, List<ElementaryOperator> combination) {
-        Integer targetIndex = null;
+        int targetIndex =0;
         boolean isFound = false;
+
         for (ElementaryOperator operator : combination) {
             if (operator.getPlayerKey() == leadPlayerKey) {
                 isFound = true;
-                targetIndex = operator.getTargetIndex();
+                targetIndex = operator.getOperatorKey();
                 break;
             }
         }
@@ -91,14 +91,13 @@ public class CompositeOperator {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         CompositeOperator that = (CompositeOperator) o;
-        return playerKey == that.playerKey && Objects.equals(targetIndex, that.targetIndex);
+        return playerKey == that.playerKey && targetIndex == that.targetIndex;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(playerKey, targetIndex);
     }
-
 
     public static void main(String[] args) {
         List<ElementaryOperator> operators = Arrays.asList(
@@ -115,7 +114,7 @@ public class CompositeOperator {
             System.out.println("--------------leadPlayer:" + compositeOperator.getPlayerKey() + " targetIndex:" + compositeOperator.getTargetIndex() + "-----------------------");
 
             for (ElementaryOperator op : compositeOperator.getCombinations()) {
-                System.out.println("Player:" + op.getPlayerKey() + " Target:" + op.getTargetIndex());
+                System.out.println("Player:" + op.getPlayerKey() + " Target:" + op.getOperatorKey());
             }
         }
     }

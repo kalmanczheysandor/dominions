@@ -28,36 +28,47 @@ public abstract class TSimultaNAlgorithm extends TAiAlgorithm implements ISimult
 
     @Override
     public AiDecisionResult makeDecision(AiDecisionContext context) {
-
         // Parameter validations
         assertObjectIsNotNull(context, "context");
+        assertIntIsNotUnderMinimum(getSearchDepthLimit(),"searchDepthLimit",1);
 
         // Gain the best step
-        Integer chosenCellKey = expandState(
+        Integer chosenOperatorKey = expandState(
                 context.getGameState(), // Initialstate of recursive caluclation
                 context.getYourPlayerKey(), // Supported player key
-                1, // Maximum deepness
+                this.searchDepthLimit, // Maximum deepness
                 0  // Parent level deepness
         ).getAdvisedStepKey();
 
         System.out.println("countOfLeafNodes: " + countOfLeafNodes);
 
 
+        if (chosenOperatorKey == null) {
+            throw new RuntimeException("Decision operator key is: null");
+        }
+
+
+
+
         // Generate return value
         AiDecisionResult aiDecisionResult;
-        if (chosenCellKey != null) { // when the action is attack
+        if (chosenOperatorKey == 0) {// When: skip
+            aiDecisionResult = new AiDecisionResult(null, 0);
+        }
+        else { // When: attack
             aiDecisionResult = new AiDecisionResult(
-                    chosenCellKey,
+                    chosenOperatorKey-1,
                     calculatePlayerMaxAttackPower(
                             context.getGameState(),
                             context.getYourPlayerKey()
                     )
             );
-        } else {      // When the action is: reserve
-            aiDecisionResult = new AiDecisionResult(0, 0);
         }
+        System.out.println("AiDecisionResult: " + aiDecisionResult);
         return aiDecisionResult;
     }
+
+
 
     private ChosenStepData expandState(GameState gameState, int supportedPlayerKey, int maxDeepness, int parentLevelDeepness) {
         // Parameter validations
@@ -185,7 +196,7 @@ public abstract class TSimultaNAlgorithm extends TAiAlgorithm implements ISimult
             );
             heuristicValues.add(currentHeuristicValue);
         }
-
+        System.out.println("Heuristic values: " + heuristicValues);
         return heuristicValues;
     }
 
@@ -208,14 +219,14 @@ public abstract class TSimultaNAlgorithm extends TAiAlgorithm implements ISimult
         assertObjectIsNotNull(compositeOperators, "compositeOperators");
         assertIntNotNegative(supportedPlayerKey, "supportedPlayerKey");
 
-        Integer targetedCellKey;
+
         List<CompositeOperator> combinationListInAGroup = new ArrayList<>();
         Map<Integer, List<CompositeOperator>> nodeGroups = new HashMap<>();
 
         for (CompositeOperator compositeOperator : compositeOperators) {
 
             // Determine group-key
-            targetedCellKey = compositeOperator.getTargetIndex();
+           int  targetedCellKey = compositeOperator.getTargetIndex();
 
             // Add to related group
             if (!nodeGroups.containsKey(targetedCellKey)) {
@@ -245,14 +256,22 @@ public abstract class TSimultaNAlgorithm extends TAiAlgorithm implements ISimult
         Set<GameAction> actions = new HashSet<>();
         for (ElementaryOperator elementaryOperator : compositeOperator.getCombinations()) {
             int playerKey = elementaryOperator.getPlayerKey();
-            Integer targetCellKey = elementaryOperator.getTargetIndex();
+            int operatorKey = elementaryOperator.getOperatorKey();
 
             int troopSize = getPlayerReserveSize(initialGameState, playerKey);
+
             troopSize = (troopSize > TROOPS_SIZE_MAX) ? TROOPS_SIZE_MAX : troopSize;
-            if (targetCellKey == null) {//When reserve action
+            if (operatorKey == 0) {//When reserve action
                 troopSize = 0;
+                actions.add(new GameAction(playerKey, null, troopSize));// Skip action
             }
-            actions.add(new GameAction(playerKey, targetCellKey, troopSize));
+            else {
+                int targetedCellKey =  operatorKey-1;
+                actions.add(new GameAction(playerKey,targetedCellKey, troopSize));   // attack action
+            }
+
+
+
         }
 
         // Generate new game-state based on the intentions
@@ -292,10 +311,10 @@ public abstract class TSimultaNAlgorithm extends TAiAlgorithm implements ISimult
         //Adding attack steps
         Set<ElementaryOperator> elementaryOperators = new HashSet<>();
         for (Integer cellKey : collectCellKeysOfCurrentAttackZoneOfPlayer(gameState, playerKey)) {
-            elementaryOperators.add(new ElementaryOperator(playerKey, cellKey));
+            elementaryOperators.add(new ElementaryOperator(playerKey, cellKey+1));  // cellKeys are from 0... but first attack operator index is from 1.. and skip operator stays at 0-key
         }
         // Adding the "reserve" step
-        elementaryOperators.add(new ElementaryOperator(playerKey, null));
+        elementaryOperators.add(new ElementaryOperator(playerKey, 0));
 
         return elementaryOperators;
     }
@@ -318,14 +337,23 @@ public abstract class TSimultaNAlgorithm extends TAiAlgorithm implements ISimult
 
 
     /// ////////////////////////////////////////////////////////////////////////////////////////
-    ///  ETC
+    ///  Getter and Setter
     /// ////////////////////////////////////////////////////////////////////////////////////////
-    public void setSearchDepthLimit(int searchDepthLimit) {
-        // Parameter checking
-        assertIntNotNegative(searchDepthLimit, "searchDepthLimit");
 
-        this.searchDepthLimit = searchDepthLimit;
+    @Override
+    public void setSearchDepthLimit(int depthLimit){
+        // Parameter checking
+        assertIntNotNegative(depthLimit, "searchDepthLimit");
+        assertIntIsNotUnderMinimum(depthLimit,"searchDepthLimit",1);
+
+        this.searchDepthLimit = depthLimit;
     }
+
+
+    public int getSearchDepthLimit() {
+        return searchDepthLimit;
+    }
+
 
     /// ////////////////////////////////////////////////////////////////////////////////////////
     /// // Inner Classes /////////////////////////////////////////////////////////////////////

@@ -4,30 +4,38 @@ import java.util.Objects;
 
 public class ElementaryOperator {
     private int playerKey;
-    private Integer targetIndex;
+    private int operatorKey;
 
-    public ElementaryOperator(int playerKey, Integer targetIndex) {
+    public ElementaryOperator(int playerKey, int operatorKey) {
         this.playerKey = playerKey;
-        this.targetIndex = targetIndex;
+        this.operatorKey = operatorKey;
     }
 
     public int getPlayerKey() {
         return playerKey;
     }
 
-    public Integer getTargetIndex() {
-        return targetIndex;
+    public int getOperatorKey() {
+        return operatorKey;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ElementaryOperator that = (ElementaryOperator) o;
-        return playerKey == that.playerKey && Objects.equals(targetIndex, that.targetIndex);
+        return playerKey == that.playerKey && operatorKey == that.operatorKey;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerKey, targetIndex);
+        return Objects.hash(playerKey, operatorKey);
+    }
+
+    @Override
+    public String toString() {
+        return "ElementaryOperator{" +
+                "playerKey=" + playerKey +
+                ", operatorKey=" + operatorKey +
+                '}';
     }
 }

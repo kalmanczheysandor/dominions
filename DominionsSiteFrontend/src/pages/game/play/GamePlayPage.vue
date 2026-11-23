@@ -152,6 +152,7 @@ export default {
         },
 
 
+
         startPolling() {
             this.stopPolling();
             const poll = async () => {

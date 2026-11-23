@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class LizVariantAccessResponse {
     private String uuid;
     private String name;
-    private int confSearchDepth;
     private String conceptUuid;
     private String conceptName;
     private boolean enabled;

@@ -10,7 +10,8 @@
                                   :rules="Form.Fields.NameTextInput.rules" variant="outlined" density="compact"
                                   clearable/>
                     <v-text-field v-model="Form.Fields.ConfMaxIterationsPerTurn.value" label="Max search depth"
-                                  :rules="Form.Fields.ConfMaxIterationsPerTurn.rules" variant="outlined" density="compact"
+                                  :rules="Form.Fields.ConfMaxIterationsPerTurn.rules" variant="outlined"
+                                  density="compact"
                                   clearable/>
                     <v-autocomplete
                             v-model="Form.Fields.HeuristicSelectInput.selectedKey"
@@ -42,8 +43,6 @@ import {PositiveNumberFieldRuleWithZero, RequiredFieldRule, TextFieldRule} from 
 import hugoVariantService from "@/services/ai/hugo/variant/HugoVariantService";
 
 
-
-
 export default {
     name: "HugoVariantEditDialog",
     components: {TDialog},
@@ -61,7 +60,15 @@ export default {
                     },
                     ConfMaxIterationsPerTurn: {
                         value: "0",
-                        rules: [RequiredFieldRule, PositiveNumberFieldRuleWithZero]
+                        rules: [RequiredFieldRule, PositiveNumberFieldRuleWithZero, (value) => {
+                            if (isNaN(value)) {
+                                return 'Field must be in number format!';
+                            }
+                            if (!(value <= 2)) {
+                                return 'Field must be not grater than 2 !';
+                            }
+                            return true;
+                        }]
                     },
                     HeuristicSelectInput: {
                         itemsToDisplay: [],

@@ -3,5 +3,6 @@ package hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interface
 import hu.kalmancheysandor.applications.dominions.apis.ai.general.common.IAiAlgorithm;
 
 public interface IHugoEngine extends IAiAlgorithm {
-    void registerHeuristicEvaluator(IHugoHeuristicEvaluator evaluator);
+    public void registerHeuristicEvaluator(IHugoHeuristicEvaluator evaluator);
+    public void setSearchDepthLimit(int depthLimit);
 }

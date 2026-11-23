@@ -47,12 +47,15 @@
                            placeholder="Troops" v-model="action.troops"/>
                 </div>
                 <div id="Section2">
-
+                    {{turn}}
                 </div>
                 <div id="Section3">
+
+                </div>
+                <div id="Section4">
                     <button type="button" title="Resign" id="ResignIcon"
                             class=" mdi-exit-run mdi"
-                            v-show="false"
+                            disabled="false"
                             @click="eventAttemptResign"
                     />
                 </div>
@@ -68,8 +71,8 @@
                                 :key="'ContinentOutline-'+continentIndex" class="Continent"
                                 :points="continentItem.points"/>
 
-                        <!--                                &lt;!&ndash;LINKS&ndash;&gt;-->
-                        <!--                                <line v-for="(lineItem, lineIndex) in configuration.view.foreground.jumpLines" :key="'Line-'+lineIndex" :x1="lineItem.x1" :y1="lineItem.y1" :x2="lineItem.x2" :y2="lineItem.y2" stroke="#003d99" stroke-width="5" stroke-dasharray="5"/>-->
+                                                        <!--LINKS-->
+                                                        <line v-for="(lineItem, lineIndex) in configuration.view.foreground.jumpLines" :key="'Line-'+lineIndex" :x1="lineItem.x1" :y1="lineItem.y1" :x2="lineItem.x2" :y2="lineItem.y2" style="stroke: rgba(0, 0, 0, 0.1); stroke-width:5" stroke-dasharray="5"/>
 
                         <!--COUNTRIES-->
                         <polygon v-for="(countryItem, countryIndex) in configuration.view.foreground.countries"
@@ -1013,12 +1016,44 @@ export default {
     border-color: indigo !important;
 }
 
-.Player6 {
-    fill: goldenrod !important;
-    color: goldenrod !important;
-    background-color: goldenrod !important;
-    border-color: goldenrod !important;
+
+.Player5 {
+    fill: #ffff00 !important;
+    color: #ffff00 !important;
+    background-color: #ffff00 !important;
+    border-color: #ffff00 !important;
 }
+
+
+.Player6 {
+    fill: #0099ff !important;
+    color: #0099ff !important;
+    background-color: #0099ff !important;
+    border-color: #0099ff !important;
+}
+
+.Player7 {
+    fill: #992600 !important;
+    color: #992600 !important;
+    background-color: #992600 !important;
+    border-color: #992600 !important;
+}
+
+.Player8 {
+    fill: #fa33d1 !important;
+    color: #fa33d1 !important;
+    background-color: #fa33d1 !important;
+    border-color: #fa33d1 !important;
+}
+
+.Player9 {
+    fill: #44aa22 !important;
+    color: #44aa22 !important;
+    background-color: #44aa22 !important;
+    border-color: #44aa22 !important;
+}
+
+
 
 
 #MapPanel {
@@ -1079,15 +1114,37 @@ export default {
     position: absolute;
     top: 0px;
     left: 220px;
+
+    width:100px;
+    border: none;
+    height: 50px;
+    color: rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    font-weight: normal;
+    border-right: 1px black solid;
+    padding:5px;
+    text-align:center;
+    font-size:27px;
+}
+
+#MapPanel > #ActionBar > #Section3 {
+    position: absolute;
+    top: 0px;
+    left: 330px;
     right: 70px;
     border: none;
     height: 50px;
     color: rgba(0, 0, 0, 0.1);
     font-size: 20px;
     font-weight: normal;
+
+    background-color: transparent;
 }
 
-#MapPanel > #ActionBar > #Section3 {
+
+
+
+#MapPanel > #ActionBar > #Section4 {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -1172,7 +1229,7 @@ export default {
 }
 
 
-#MapPanel > #ActionBar > #Section3 > #ResignIcon {
+#MapPanel > #ActionBar > #Section4 > #ResignIcon {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -1187,14 +1244,14 @@ export default {
     transition: all 0.3s ease;
 }
 
-#MapPanel > #ActionBar > #Section3 > #ResignIcon:hover {
+#MapPanel > #ActionBar > #Section4 > #ResignIcon:hover {
     cursor: pointer;
     text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 0.9);
     box-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.9);
     transform: scale(1);
 }
 
-#MapPanel > #ActionBar > #Section3 > #ResignIcon:disabled {
+#MapPanel > #ActionBar > #Section4 > #ResignIcon:disabled {
     opacity: 0.2;
     cursor: not-allowed;
 }

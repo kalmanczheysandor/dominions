@@ -64,7 +64,17 @@ export default {
                     },
                     ConfMaxIterationsPerTurn: {
                         value: "0",
-                        rules: [RequiredFieldRule, PositiveNumberFieldRuleWithZero]
+                        rules: [RequiredFieldRule,
+                            PositiveNumberFieldRuleWithZero, (value) => {
+                                if(isNaN(value)) {
+                                    return 'Field must be in number format!';
+                                }
+                                if(!(value<=2)) {
+                                    return 'Field must be not grater than 2 !';
+                                }
+                                return true;
+                            }
+                        ]
                     },
                     HeuristicSelectInput: {
                         itemsToDisplay: [],

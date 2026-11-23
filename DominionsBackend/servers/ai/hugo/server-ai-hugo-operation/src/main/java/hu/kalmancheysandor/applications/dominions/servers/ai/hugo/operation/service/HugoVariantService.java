@@ -56,8 +56,10 @@ public class HugoVariantService extends THugoService {
     private ApplicationConfig applicationConfig;
 
     private List<HeuristicItem> heuristicList = List.of(
-            new HeuristicItem(1, HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR.toString(), "00000-h1", HugoHeuristicEvaluatorType.HUGO_FIRST_HEURISTIC_EVALUATOR.toString()),
-            new HeuristicItem(2, HugoHeuristicEvaluatorType.HUGO_SECOND_HEURISTIC_EVALUATOR.toString(), "00000-h2", HugoHeuristicEvaluatorType.HUGO_SECOND_HEURISTIC_EVALUATOR.toString())
+            new HeuristicItem(1, HugoHeuristicEvaluatorType.H0.toString(), "00000-H0", HugoHeuristicEvaluatorType.H0.toString()),
+            new HeuristicItem(2, HugoHeuristicEvaluatorType.H1.toString(), "00000-H1", HugoHeuristicEvaluatorType.H1.toString()),
+            new HeuristicItem(3, HugoHeuristicEvaluatorType.H2.toString(), "00000-H2", HugoHeuristicEvaluatorType.H2.toString()),
+            new HeuristicItem(4, HugoHeuristicEvaluatorType.H3.toString(), "00000-H3", HugoHeuristicEvaluatorType.H3.toString())
     );
 
     public HugoVariantAccessResponse access(@NotBlank String recordUuid) {

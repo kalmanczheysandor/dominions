@@ -5,7 +5,7 @@ import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces
 import hu.kalmancheysandor.applications.dominions.apis.ai.engine.hugo.interfaces.IHugoHeuristicEvaluator;
 import hu.kalmancheysandor.applications.dominions.apis.game.common.representation.state.GameState;
 
-public class HugoFirstHeuristicEvaluator implements IHugoHeuristicEvaluator {
+public class HugoH0HeuristicEvaluator extends THugoHeuristicEvaluator implements IHugoHeuristicEvaluator {
 
     @Override
     public IHugoHeuristicEvaluation evaluate(GameState gameState, int supportedPlayerKey) {

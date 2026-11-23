@@ -10,4 +10,12 @@ import lombok.NoArgsConstructor;
 public class AiDecisionResult {
     private Integer targetCellKey;
     private Integer troopSize;
+
+    @Override
+    public String toString() {
+        return "AiDecisionResult{" +
+                "targetCellKey=" + targetCellKey +
+                ", troopSize=" + troopSize +
+                '}';
+    }
 }

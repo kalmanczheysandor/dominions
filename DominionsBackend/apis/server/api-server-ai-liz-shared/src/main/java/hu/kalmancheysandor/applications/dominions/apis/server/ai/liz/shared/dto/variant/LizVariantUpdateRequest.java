@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Validated
 public class LizVariantUpdateRequest {
     private String name;
-    private int confSearchDepth;
     private String conceptUuid;
     private boolean enabled;
 }

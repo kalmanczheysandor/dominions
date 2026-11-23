@@ -30,15 +30,10 @@ public class LizVariant implements UUIDIdentifiable {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "conf_search_depth",  nullable = false)
-    private Integer confSearchDepth;
-
-
 
     @ManyToOne
     @JoinColumn(name = "concept_id",nullable = false)
     private LizNeuralConcept concept;
-
 
 
     @Column(name = "is_enabled", nullable = false, columnDefinition = "TINYINT(1)")
@@ -68,7 +63,6 @@ public class LizVariant implements UUIDIdentifiable {
                 "id=" + id +
                 ", uuid='" + uuid + '\'' +
                 ", name='" + name + '\'' +
-                ", confSearchDepth=" + confSearchDepth +
                 ", enabled=" + enabled +
                 ", dateCreated=" + dateCreated +
                 '}';

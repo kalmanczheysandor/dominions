@@ -10,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class LizVariantCreateRequest {
     private String name;
-    private int confSearchDepth;
     private String conceptUuid;
     private boolean enabled;
 }

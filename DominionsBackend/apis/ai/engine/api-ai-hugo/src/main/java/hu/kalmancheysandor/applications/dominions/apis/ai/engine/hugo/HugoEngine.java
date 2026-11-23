@@ -16,13 +16,6 @@ public class HugoEngine extends TSimultaNAlgorithm implements IHugoEngine {
     }
 
 
-    protected double modulateHeuristicValues(List<Double> gameStateVariantValues) {
-        return gameStateVariantValues.stream()
-                .mapToDouble(Double::doubleValue)
-                .average()
-                .orElseThrow();
-
-    }
 
     @Override
     public void registerHeuristicEvaluator(IHugoHeuristicEvaluator evaluator) {

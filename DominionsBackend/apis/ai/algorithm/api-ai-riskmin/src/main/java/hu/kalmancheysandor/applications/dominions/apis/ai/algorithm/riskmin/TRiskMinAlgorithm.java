@@ -51,11 +51,11 @@ public abstract class TRiskMinAlgorithm extends TAiAlgorithm implements IRiskMin
                 context.getPlayers()
         );
         if (choosenOperator == null) {
-            throw new RuntimeException("Decision cell is null");
+            throw new RuntimeException("Decision operator key is: null");
         }
 
         //
-        System.out.println("Decision cell:" + choosenOperator.getTarget());
+        System.out.println("Decision operator key is:" + choosenOperator.getTarget());
         System.out.println("supportedPlayerAttackPower:" + choosenOperator.attackPower);
 
         return new AiDecisionResult(choosenOperator.getTarget(), choosenOperator.attackPower);
@@ -94,7 +94,7 @@ public abstract class TRiskMinAlgorithm extends TAiAlgorithm implements IRiskMin
         System.out.println("ENEMYPlayers:" + enemyPlayers);
 
         // Preparation
-        int attackPowerOfSupportedPlayer = calculatePlayerMaxAttackPower(gameState, supportedPlayerKey);
+        int maxAttackPowerOfSupportedPlayer = calculatePlayerMaxAttackPower(gameState, supportedPlayerKey);
 
         // Build risk groups
         Map<Double, Set<Integer>> riskGroups = new TreeMap<>(Comparator.naturalOrder()); // Providing increasing order of keys
@@ -124,7 +124,7 @@ public abstract class TRiskMinAlgorithm extends TAiAlgorithm implements IRiskMin
             }
 
             // 2 Strategic Group: Weaker
-            found = findTheFirstMostWeakCell(gameState, riskGroup, riskScore, attackPowerOfSupportedPlayer);
+            found = findTheFirstMostWeakCell(gameState, riskGroup, riskScore, maxAttackPowerOfSupportedPlayer);
             if (found != null) {
                 choosen = chooseBetweenNewlyFoundAndPreviouslyChosen(found, choosen);
                 System.out.println("2SG.Found:"+found);
@@ -140,7 +140,7 @@ public abstract class TRiskMinAlgorithm extends TAiAlgorithm implements IRiskMin
             }
 
             // 4 Strategic Group: Equal
-            found = findTheFirstEqualCell(gameState, riskGroup, riskScore, attackPowerOfSupportedPlayer);
+            found = findTheFirstEqualCell(gameState, riskGroup, riskScore, maxAttackPowerOfSupportedPlayer);
             if (found != null) {
                 choosen = chooseBetweenNewlyFoundAndPreviouslyChosen(found, choosen);
                 System.out.println("4SG.Found:"+found);
@@ -148,7 +148,7 @@ public abstract class TRiskMinAlgorithm extends TAiAlgorithm implements IRiskMin
             }
 
             // 5 Strategic Group: Stronger
-            found = findTheFirstLessStrongCell(gameState, riskGroup,riskScore, attackPowerOfSupportedPlayer);
+            found = findTheFirstLessStrongCell(gameState, riskGroup,riskScore, maxAttackPowerOfSupportedPlayer);
             if (found != null) {
                 choosen = chooseBetweenNewlyFoundAndPreviouslyChosen(found, choosen);
                 System.out.println("5SG.Found:"+found);
@@ -158,7 +158,10 @@ public abstract class TRiskMinAlgorithm extends TAiAlgorithm implements IRiskMin
 
         //
         if (choosen != null) {
-            return new Operator(choosen.getKey(), attackPowerOfSupportedPlayer);
+            if(choosen.getKey()==0) {
+                return new Operator(choosen.getKey(), 0);
+            }
+            return new Operator(choosen.getKey(), maxAttackPowerOfSupportedPlayer);
         }
 
         return null;

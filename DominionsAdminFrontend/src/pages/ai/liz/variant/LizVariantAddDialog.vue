@@ -9,9 +9,7 @@
                     <v-text-field v-model="Form.Fields.NameTextInput.value" label="Name"
                                   :rules="Form.Fields.NameTextInput.rules" variant="outlined" density="compact"
                                   clearable/>
-                    <v-text-field v-model="Form.Fields.ConfMaxIterationsPerTurn.value" label="Max search depth"
-                                  :rules="Form.Fields.ConfMaxIterationsPerTurn.rules" variant="outlined" density="compact"
-                                  clearable/>
+
                     <v-autocomplete
                             v-model="Form.Fields.ConceptSelectInput.selectedKey"
                             :rules="Form.Fields.ConceptSelectInput.rules"
@@ -62,10 +60,7 @@ export default {
                         value: "",
                         rules: [RequiredFieldRule, TextFieldRule]
                     },
-                    ConfMaxIterationsPerTurn: {
-                        value: "0",
-                        rules: [RequiredFieldRule, PositiveNumberFieldRuleWithZero]
-                    },
+
                     ConceptSelectInput: {
                         itemsToDisplay: [],
                         searchText: '',
@@ -102,7 +97,6 @@ export default {
                 // Save form value
                 await lizVariantService.save({
                     name: this.Form.Fields.NameTextInput.value,
-                    confSearchDepth: this.Form.Fields.ConfMaxIterationsPerTurn.value,
                     conceptUuid: this.Form.Fields.ConceptSelectInput.selectedKey,
                     enabled: this.Form.Fields.EnabledCheckInput.isChecked
                 });
